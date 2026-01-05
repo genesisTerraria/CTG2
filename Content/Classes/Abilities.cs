@@ -125,10 +125,10 @@ namespace CTG2.Content
                 newItem.Prefix(itemData.Prefix);
 
                 Player.armor[c] = newItem;
-                if (Player.armor[c].type == ItemID.EoCShield && Player.GetModPlayer<ClassSystem>().simpleDashSelected) {
-                    Item simpledash = new Item(5558,1,0);
-                    Player.armor[c] = simpledash;
-                }
+                // if (Player.armor[c].type == ItemID.EoCShield && Player.GetModPlayer<ClassSystem>().simpleDashSelected) {
+                //     Item simpledash = new Item(5558,1,0);
+                //     Player.armor[c] = simpledash;
+                // }
             }
 
             for (int d = 0; d < Player.miscEquips.Length; d++)
@@ -210,10 +210,19 @@ namespace CTG2.Content
                                 Main.NewText($"{attacker.GetModPlayer<Abilities>().class7HitCounter}/10 hits");
                             else
                             {
-                                Main.NewText("10/10 hits");
+                                Main.NewText("10/10 hits. Ability ready!");
                             }
                             }
                         }
+                        break;
+                    case 153: // Regen Mutant
+                        attacker.AddBuff(2, 150);
+                        ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
+                        packet.Write((byte)MessageType.RequestAddBuff);
+                        packet.Write(attacker.whoAmI);
+                        packet.Write(2);
+                        packet.Write(150);
+                        packet.Send();
                         break;
                 }
             }
@@ -406,6 +415,7 @@ namespace CTG2.Content
             if (psychicActive)
             {
                 // Only allow if enough HP
+                Player.AddBuff(21, 60);
                 return true;
             }
             return base.CanUseItem(item);
@@ -540,7 +550,7 @@ namespace CTG2.Content
                 Player.inferno = false;
                 foreach (Player other in Main.player)
                 {
-                    if (!other.active || other.dead || other.whoAmI == Player.whoAmI || other.ghost)
+                    if (!other.active || other.dead || other.whoAmI == Player.whoAmI || other.ghost || other.team == 0)
                         continue;
 
                     if (Vector2.Distance(Player.Center, other.Center) <= 22 * 16 && Vector2.Distance(Player.Center, other.Center) < class12ClosestDist && Player.team != other.team) // 22 block radius
@@ -779,7 +789,7 @@ namespace CTG2.Content
             if (cooldown == 1)
                 SoundEngine.PlaySound(abilityReady.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
 
-            if (((Player.HeldItem.type == ItemID.WhoopieCushion && Player.controlUseItem && Player.itemTime == 0) || CTG2.Ability1Keybind.JustPressed) && cooldown == 0 && playerManager.playerState == PlayerManager.PlayerState.Active) // Only activate if not on cooldown
+            if (((Player.HeldItem.type == ItemID.WhoopieCushion && Player.controlUseItem && Player.itemTime == 0) || CTG2.Ability1Keybind.JustPressed) && cooldown == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && !Player.HasBuff(BuffID.Webbed)) // Only activate if not on cooldown
             {
                 if (selectedClass == 1 || selectedClass == 4 || selectedClass == 7 || selectedClass == 11 || selectedClass == 13 || selectedClass == 17)
                     SoundEngine.PlaySound(abilityStart.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
