@@ -45,9 +45,6 @@ public class ProjectileOverrides : GlobalProjectile
 
         if (projectile.type == ProjectileID.ThornChakram)
         {
-            projectile.width = 30; //easier one blocking
-            projectile.height = 30;
-
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
                 Projectile barrier = Main.projectile[i];
@@ -185,11 +182,16 @@ public class ModifyHurtModPlayer : ModPlayer
         }
 
 
-        if (modPlayer.currentClass.Name == "Paladin" && Player.HeldItem.type == 4760 && Main.mouseRight) //Paladin buffs when it's hit
+        if (modPlayer.currentClass.Name == "Paladin")
         {
-            Player.AddBuff(BuffID.Honey, 300); //check if honey buff even works later
             Player.AddBuff(BuffID.RapidHealing, 300);
-            Player.AddBuff(ModContent.BuffType<Retaliation>(), 24);
+
+            if (Player.HeldItem.type == 4760 && Main.mouseRight) // Paladin buffs when hit
+            {
+                Player.AddBuff(BuffID.Honey, 300); //check if honey buff even works later
+                Player.AddBuff(2, 180); // regeneration
+                Player.AddBuff(ModContent.BuffType<Retaliation>(), 24);
+            }
         }
         else if (info.DamageSource.SourceProjectileType == ModContent.ProjectileType<AmalgamatedHandProjectile1>() || info.DamageSource.SourceProjectileType == ModContent.ProjectileType<AmalgamatedHandProjectile2>())
         {
