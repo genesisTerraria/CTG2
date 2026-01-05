@@ -338,6 +338,22 @@ public class GameManager : ModSystem
 
         Console.WriteLine("GameManager: Starting EndGame sequence");
 
+        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] Game has ended!"), Microsoft.Xna.Framework.Color.Yellow);
+        
+        switch (winner)
+        {
+            case 0:
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0000FF:{blueFurthest}%] v [c/FF0000:{redFurthest}%]"), Microsoft.Xna.Framework.Color.Yellow);
+                break;
+            case 1:
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0000FF:100%] v [c/FF0000:{redFurthest}%]"), Microsoft.Xna.Framework.Color.Yellow);
+                break;
+            case 2:
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0000FF:{blueFurthest}%] v [c/FF0000:100%]"), Microsoft.Xna.Framework.Color.Yellow);
+                break;
+        }
+        winner = 0;
+
         matchStage = 0;
         MatchTime = 0;
         intPercentageBlue = 0;
@@ -404,22 +420,6 @@ public class GameManager : ModSystem
         packetHeldBy2.Send();
 
         Console.WriteLine("GameManager: Reset gems");
-
-        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] Game has ended!"), Microsoft.Xna.Framework.Color.Yellow);
-        
-        switch (winner)
-        {
-            case 0:
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0000FF:{blueFurthest}%] v [c/FF0000:{redFurthest}%]"), Microsoft.Xna.Framework.Color.Yellow);
-                break;
-            case 1:
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0000FF:100%] v [c/FF0000:{redFurthest}%]"), Microsoft.Xna.Framework.Color.Yellow);
-                break;
-            case 2:
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0000FF:{blueFurthest}%] v [c/FF0000:100%]"), Microsoft.Xna.Framework.Color.Yellow);
-                break;
-        }
-        winner = 0;
 
         ModPacket packet = mod.GetPacket();
         packet.Write((byte)MessageType.SyncGameInformation);
@@ -514,6 +514,7 @@ public class GameManager : ModSystem
 
             ModPacket classSystemPacket = mod.GetPacket();
             classSystemPacket.Write((byte)MessageType.SyncClassSystemAttributes);
+            classSystemPacket.Write(player.whoAmI);
             classSystemPacket.Write(1800);
             classSystemPacket.Write(1200);
             classSystemPacket.Send(toClient: player.whoAmI);
