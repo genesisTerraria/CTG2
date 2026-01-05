@@ -231,7 +231,7 @@ public class ChargedBowProjectile : ModProjectile
 
 			Vector2 spawnPos =
 				player.MountedCenter +
-				Vector2.One.RotatedBy(Rotation - MathHelper.PiOver4) * 9f;
+				Vector2.One.RotatedBy(Rotation - MathHelper.PiOver4) * 2f;
 
 			Projectile arrow = Projectile.NewProjectileDirect(
 				Projectile.GetSource_FromThis(),
