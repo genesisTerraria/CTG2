@@ -35,7 +35,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint blowgunDelay = 40;
         private uint blowgunLastUsedCounter = 0;
 
-        private uint goldenShowerDelay = 50;
+        private uint goldenShowerDelay = 58;
         private uint goldenShowerLastUsedCounter = 0;
 
         private uint ghastlyglaiveDelay = 45;
@@ -64,7 +64,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case ItemID.GoldenShower: // Fish
                     item.useTime = 22;
                     item.useAnimation = 22;
-                    item.shootSpeed = 6.2f;
+                    item.shootSpeed = 6.37f;
                     item.damage = 35;
                     item.mana = 0;
                     item.scale = 0;
@@ -139,7 +139,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useAnimation = 28;
                     item.scale = 0f;
                     item.crit = 0;
-                    item.mana = 14;
+                    item.mana = 17;
                     break;
 
                 case ItemID.IceRod:
@@ -157,7 +157,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     break;
 
                 case 802: //rotted fork
-                    item.damage = 36;
+                    item.damage = 30;
                     item.useAnimation = 22;
                     item.useTime = 22;
                     item.shootSpeed = 3.6f;
