@@ -9,6 +9,7 @@ using CTG2.Content.Classes;
 using CTG2.Content.ClientSide;
 using CTG2.Content.ServerSide;
 using CTG2.Content.Commands;
+using CTG2.Content.Items;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
 using System.Collections.Generic;
@@ -122,7 +123,8 @@ namespace CTG2
         SyncUuidForPlayer = 85,
         ClearInventory = 86,
         SyncAbilityAttributes = 87,
-        SyncClassSystemAttributes = 88
+        SyncClassSystemAttributes = 88,
+        ArcherDash = 89
     }
 
     public class CTG2 : Mod
@@ -151,6 +153,7 @@ namespace CTG2
                 _ => $"TEAM {teamId}"
             };
         }
+
 
         private static Color GetTeamColor(int teamId)
         {
@@ -257,7 +260,16 @@ namespace CTG2
                         break;
 
                     player.AddBuff(buffType, time);
-                    NetMessage.SendData(MessageID.AddPlayerBuff, -1, -1, null, playerID, buffType, time);
+
+                    if (Main.netMode == NetmodeID.Server) {
+                        ModPacket packet = GetPacket();
+                        packet.Write((byte)MessageType.RequestAddBuff);
+                        packet.Write(playerID);
+                        packet.Write(buffType);
+                        packet.Write(time);
+                        // ignoreClient: whoAmI ensures we don't send the data back to the person who just sent it to us
+                        packet.Send(-1, playerID); 
+                    }
 
                     break;
                 case (byte)MessageType.SetCurrentClass:
@@ -675,13 +687,20 @@ namespace CTG2
                     int blockCounter = reader.ReadInt32();
                     int bombCounter = reader.ReadInt32();
 
-                    if (playerIndd == Main.myPlayer)
+                    if (Main.netMode == NetmodeID.Server)
                     {
-                        var sys = Main.player[playerIndd].GetModPlayer<ClassSystem>();
-
-                        sys.blockCounter = 0;
-                        sys.bombCounter = 0;
+                        ModPacket classSystemPacket = ModContent.GetInstance<CTG2>().GetPacket();
+                        classSystemPacket.Write((byte)MessageType.SyncClassSystemAttributes);
+                        classSystemPacket.Write(playerIndd);
+                        classSystemPacket.Write(blockCounter);
+                        classSystemPacket.Write(bombCounter);
+                        classSystemPacket.Send(toClient: playerIndd);
                     }
+
+                    var sys = Main.player[playerIndd].GetModPlayer<ClassSystem>();
+
+                    sys.blockCounter = blockCounter;
+                    sys.bombCounter = bombCounter;
 
                     break;
             
@@ -1092,15 +1111,27 @@ namespace CTG2
                     ProcessRequestBanPlayer(ref reader, whoAmI);
                     break;
 
+                case (byte)MessageType.ArcherDash:
+                        byte plyNum = reader.ReadByte();
+                        Player plyy = Main.player[plyNum];
+                        ArcherDashPlayer dashPly = plyy.GetModPlayer<ArcherDashPlayer>();
+
+                        dashPly.RecieveDash(plyy, reader);
+
+                        if (Main.netMode == NetmodeID.Server)
+                            dashPly.SendDash(plyy.velocity, -1, whoAmI);
+
+                        break;
+
                 case (byte)MessageType.DASH:
                     {
                         byte plyNum1 = reader.ReadByte();
                         Player ply1 = Main.player[plyNum1];
-                        DashPlayer3 dashPly = ply1.GetModPlayer<DashPlayer3>();
-                        dashPly.RecieveDash(ply1, reader);
+                        DashPlayer3 dashPlyy = ply1.GetModPlayer<DashPlayer3>();
+                        dashPlyy.RecieveDash(ply1, reader);
                         if (Main.netMode == 2)
                         {
-                            dashPly.SendDash(-1, whoAmI);
+                            dashPlyy.SendDash(-1, whoAmI);
                         }
                         break;
                     }
