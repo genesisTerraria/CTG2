@@ -299,45 +299,45 @@ namespace ClassesNamespace
         public void ApplyUpgrade(UpgradeConfig upgrade)
         {
             // reset all bonus stats
-             simpleDashSelected = false;
-             bonusHP = 0;
-             bonusRegen = 0;
-             bonusDef = 0;
-             bonusMoveSpeed = 0;
-             var playerManager = Player.GetModPlayer<PlayerManager>();
-             playerManager.currentUpgrade.Name = upgrade.Id;
+            //  simpleDashSelected = false;
+            //  bonusHP = 0;
+            //  bonusRegen = 0;
+            //  bonusDef = 0;
+            //  bonusMoveSpeed = 0;
+            //  var playerManager = Player.GetModPlayer<PlayerManager>();
+            //  playerManager.currentUpgrade.Name = upgrade.Id;
 
 
-            switch (upgrade.Id)
-             {
-                 // case "cloudInAbottle":
-                    // TrySwitchItems(5549, 53);
-                     // break;
-                 case "bonus_regen":
-                     bonusRegen += 2 * upgrade.Value;
-                     break;
-                 case "bonus_speed":
-                     bonusMoveSpeed += upgrade.Value / 100f;
-                     break;
-                 case "bonus_health":
-                     bonusHP += upgrade.Value;
-                     break;
-                 case "bonus_def":
-                     bonusDef += upgrade.Value;
-                     break;
-                 // case "simple_dash":
-                    // simpleDashSelected = true; //we use this in abilities.cs 
-                    // TrySwitchItems(ItemID.EoCShield, 5558);
-                    // break;
-                 case "reset":
-                    TrySwitchItems(5558, ItemID.EoCShield);
-                    TrySwitchItems(53, 5549);
-                    break;
-                 default:
-                     Main.NewText("upgrade id not found");
-                     break;
-             }
-             lastUpgrade = upgrade.Id;
+            // switch (upgrade.Id)
+            //  {
+            //      case "cloudInAbottle":
+            //         TrySwitchItems(5549, 53);
+            //          break;
+            //      case "bonus_regen":
+            //          bonusRegen += 2 * upgrade.Value;
+            //          break;
+            //      case "bonus_speed":
+            //          bonusMoveSpeed += upgrade.Value / 100f;
+            //          break;
+            //      case "bonus_health":
+            //          bonusHP += upgrade.Value;
+            //          break;
+            //      case "bonus_def":
+            //          bonusDef += upgrade.Value;
+            //          break;
+            //      case "simple_dash":
+            //         simpleDashSelected = true; //we use this in abilities.cs 
+            //         TrySwitchItems(ItemID.EoCShield, 5558);
+            //         break;
+            //      case "reset":
+            //         TrySwitchItems(5558, ItemID.EoCShield);
+            //         TrySwitchItems(53, 5549);
+            //         break;
+            //      default:
+            //          Main.NewText("upgrade id not found");
+            //          break;
+            //  }
+            //  lastUpgrade = upgrade.Id;
         }
 
         public void TrySwitchItems(int switchedOutItem, int switchedInItem) 
@@ -597,7 +597,6 @@ namespace ClassesNamespace
             //this is where dyes are set and forced on 
             int redDyeType = 1031;
             int blueDyeType = 1035;
-
             
             // Check if Player has a class selected and is on a team
             if (playerManager.currentClass != null && !string.IsNullOrEmpty(playerManager.currentClass.Name) && Player.team != 0)
