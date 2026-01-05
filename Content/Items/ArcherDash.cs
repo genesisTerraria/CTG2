@@ -4,6 +4,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using System;
 using Terraria.Audio;
+using System.IO;
 
 namespace CTG2.Content.Items
 {
@@ -39,6 +40,32 @@ namespace CTG2.Content.Items
 		public bool recentlyEnded = false;
 
 
+		public void SendDash(Vector2 velocity, int toWho = -1, int fromWho = -1)
+		{
+			ModPacket packet = Mod.GetPacket();
+			packet.Write((byte)MessageType.ArcherDash);
+			packet.Write((byte)Player.whoAmI);
+			packet.WriteVector2(velocity);
+			packet.Write(DashTimer);
+			packet.Write(DashDelay);
+			packet.Send(toWho, fromWho);
+		}
+
+
+		public void RecieveDash(Player player, BinaryReader reader)
+        {
+            Vector2 velocity = reader.ReadVector2();
+            int DashTimer = reader.ReadInt32();
+            int DashDelay = reader.ReadInt32();
+
+            player.velocity = velocity;
+            player.gravity = 0f;
+
+            // ensures afterimage + animation
+            player.eocDash = DashTimer;
+        }
+
+
 		public override void ResetEffects() {
 			// Reset our equipped flag. If the accessory is equipped somewhere, ExampleShield.UpdateAccessory will be called and set the flag before PreUpdateMovement
 			if (Player.whoAmI == Main.myPlayer)
@@ -69,34 +96,24 @@ namespace CTG2.Content.Items
 
 		public override void PreUpdateMovement() {
 
-			if (Player.whoAmI == Main.myPlayer)
+			if (Player.whoAmI == Main.myPlayer )
 			{
 				Vector2 newVelocity = Player.velocity;
 
-				if (dashKeybindActive && DashDelay == 0 && DashAccessoryEquipped) {
+				if (dashKeybindActive && DashDelay == 0 && DashAccessoryEquipped)
+				{
+					Vector2 direction = Main.MouseWorld - Player.Center;
+					if (direction.Length() == 0)
+						return;
 
-					// Get the player's position
-					Vector2 playerPosition = Main.player[Main.myPlayer].Center;
+					direction.Normalize();
+					Vector2 dashVelocity = direction * DashVelocity;
 
-					// Get the mouse cursor position
-					Vector2 cursorPosition = Main.MouseWorld;
-
-					// Find the vector from the player to the cursor
-					Vector2 directionToCursor = cursorPosition - playerPosition;
-
-					// Normalize the vector
-					if (directionToCursor.Length() > 0 && Player.velocity.Length() < DashVelocity) {
-						directionToCursor.Normalize();
-						newVelocity = directionToCursor * DashVelocity;
-						Player.gravity = 0f;
-						recentlyEnded = true;
-					}
-					else return;
-
-					// Start our dash
+					Player.velocity = dashVelocity;
+					Player.gravity = 0f;
 					DashDelay = DashCooldown;
 					DashTimer = DashDuration;
-					Player.velocity = newVelocity;
+					recentlyEnded = true;
 				}
 
 				if (DashDelay > 0) DashDelay--;
@@ -118,6 +135,16 @@ namespace CTG2.Content.Items
 					// Afterimage effect
 					Player.armorEffectDrawShadowEOCShield = true;
 					DashTimer--;
+
+					// Send dash packet
+					if (Main.netMode == NetmodeID.MultiplayerClient)
+					{
+						Vector2 velo = Player.velocity;
+						velo.Normalize();
+						velo *= DashVelocity;
+
+						SendDash(velo);
+					}
 				}
 				else
 					Player.armorEffectDrawShadowEOCShield = false;
