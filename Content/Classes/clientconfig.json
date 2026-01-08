@@ -277,10 +277,22 @@
       "ability-cooldown": 35,
       "health-from-kills": 0,
       "respawn-time": 4,
-      "buffs": [25, 29, 33, 36, 48, 107, 115, 146, 176],
+        "buffs": [ 25, 29, 33, 36, 48, 107, 115, 146, 176 ],
       "ability-id": 17,
       "upgrades": []
+    },
+    {
+        "name": "Rng Man",
+        "summary": "Gains random items every hit.",
+        "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+        "inventory": "rngman",
+        "icon": 95,
+        "ability-cooldown": 5,
+        "health-from-kills": 0,
+        "respawn-time": 4,
+        "buffs": [ 107 ],
+        "ability-id": 18,
+        "upgrades": []
     }
   ]
 }
-
