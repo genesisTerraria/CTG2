@@ -8,6 +8,7 @@ using System;
 using System.Linq;
 using ClassesNamespace;
 using CTG2.Content.ClientSide;
+using CTG2.Content.ServerSide;
 using Terraria.GameContent;
 using CTG2;
 
@@ -23,13 +24,15 @@ public class ClassUI : UIState
     private UIProgressBar _mobilityBar;
     private ClassConfig selectedClass;
     private UpgradeConfig selectedUpgrade;
+    private string _lastGamemode;
 
     public override void OnInitialize()
     {
         if (Main.dedServ) return;
 
         // Main container
-        _mainPanel = new UIPanel {
+        _mainPanel = new UIPanel
+        {
             Width = { Percent = 0.65f },
             Height = { Percent = 0.6f },
             HAlign = 0.5f,
@@ -44,25 +47,56 @@ public class ClassUI : UIState
         AddStatBars();
         AddUpgradeList();
 
+        // initialize last-known gamemode so we can detect changes and refresh UI
+        _lastGamemode = GetCurrentGamemode();
+
         // initial populate
         PopulateClasses();
     }
 
+    public override void Update(GameTime gameTime)
+    {
+        base.Update(gameTime);
+
+        // Auto-refresh the class list when gamemode changes.
+        var gm = ModContent.GetInstance<GameManager>();
+        string currentMode = GetCurrentGamemode();
+        if (gm != null && currentMode != _lastGamemode)
+        {
+            _lastGamemode = currentMode;
+            PopulateClasses();
+        }
+    }
+
+    private string GetCurrentGamemode()
+    {
+        var gm = ModContent.GetInstance<GameManager>();
+        if (gm == null) return "unknown";
+
+        if (gm.rngConfig) return "rng";
+        if (gm.scrimsConfig) return "scrims";
+        if (gm.pubsConfig) return "pubs";
+        return "none";
+    }
+
     private void AddClassList()
     {
-        var panel = new UIPanel {
+        var panel = new UIPanel
+        {
             Left = { Pixels = 0 },
             Top = { Pixels = 0 },
             Width = { Pixels = 200 },
             Height = { Percent = 1f }
         };
-        _classList = new UIList {
+        _classList = new UIList
+        {
             Top = { Pixels = 10 },
             Width = { Percent = 1f },
             Height = { Percent = 1f },
             ListPadding = 5f
         };
-        var bar = new UIScrollbar {
+        var bar = new UIScrollbar
+        {
             Height = { Percent = 1f },
             HAlign = 1f,
             VAlign = 0f
@@ -75,18 +109,21 @@ public class ClassUI : UIState
 
     private void AddClassInfo()
     {
-        var infoPanel = new UIPanel {
+        var infoPanel = new UIPanel
+        {
             Left = { Percent = 0.25f },
             Top = { Pixels = 10 },
             Width = { Percent = 0.5f },
             Height = { Pixels = 60 },
             BackgroundColor = new Color(50, 50, 70, 200)
         };
-        _classNameText = new UIText("Class Name") {
+        _classNameText = new UIText("Class Name")
+        {
             Top = { Pixels = 6 },
             HAlign = 0.5f
         };
-        _classSummaryText = new UIText("Class description goes here.") {
+        _classSummaryText = new UIText("Class description goes here.")
+        {
             Top = { Pixels = 30 },
             HAlign = 0.5f,
             OverflowHidden = true
@@ -107,7 +144,8 @@ public class ClassUI : UIState
 
     private void AddStatBars()
     {
-        var statsPanel = new UIPanel {
+        var statsPanel = new UIPanel
+        {
             Width = { Pixels = 220 },
             Height = { Pixels = 50 },
             HAlign = 0.5f,
@@ -115,13 +153,15 @@ public class ClassUI : UIState
             BackgroundColor = new Color(70, 50, 100, 200)
         };
         // You can implement UIProgressBar yourself or just use UIText placeholders:
-        _hpBar = new UIProgressBar() {
+        _hpBar = new UIProgressBar()
+        {
             Top = { Pixels = 6 },
             Left = { Pixels = 6 },
             Width = { Pixels = 200 },
             Height = { Pixels = 12 }
         };
-        _mobilityBar = new UIProgressBar() {
+        _mobilityBar = new UIProgressBar()
+        {
             Top = { Pixels = 30 },
             Left = { Pixels = 6 },
             Width = { Pixels = 200 },
@@ -134,20 +174,23 @@ public class ClassUI : UIState
 
     private void AddUpgradeList()
     {
-        var panel = new UIPanel {
+        var panel = new UIPanel
+        {
             Left = { Percent = 0.75f },
             Top = { Pixels = 0 },
             Width = { Percent = 0.2f },
             Height = { Percent = 1f },
             BackgroundColor = new Color(50, 70, 50, 200)
         };
-        _upgradeList = new UIList {
+        _upgradeList = new UIList
+        {
             Top = { Pixels = 10 },
             Width = { Percent = 1f },
             Height = { Percent = 1f },
             ListPadding = 5f
         };
-        var bar = new UIScrollbar {
+        var bar = new UIScrollbar
+        {
             Height = { Percent = 1f },
             HAlign = 1f,
             VAlign = 0f
@@ -161,17 +204,23 @@ public class ClassUI : UIState
     private void PopulateClasses()
     {
         _classList.Clear();
+        var gameManager = ModContent.GetInstance<GameManager>();
         foreach (var cls in CTG2.CTG2.config.Classes)
         {   
-            var btn = new UITextPanel<string>(cls.Name) {
-                Width  = { Percent = 1f },
-                Height = { Pixels  = 30 }
+            if (cls.AbilityID == 18 && !gameManager.rngConfig)
+                continue;
+            if (cls.AbilityID != 18 && gameManager.rngConfig)
+                continue;
+            var btn = new UITextPanel<string>(cls.Name)
+            {
+                Width = { Percent = 1f },
+                Height = { Pixels = 30 }
             };
             Color PanelColor = Color.DarkMagenta;
-            btn.BackgroundColor =  PanelColor;
+            btn.BackgroundColor = PanelColor;
             // store original for restoring
             Color normal = PanelColor;
-            Color hover  = normal * 1.5f;
+            Color hover = normal * 1.5f;
             Color selected = Color.Gold;
 
             btn.OnMouseOver += (evt, el) => {
@@ -241,15 +290,16 @@ public class ClassUI : UIState
         _upgradeList.Clear();
         foreach (var up in cfg.Upgrades)
         {
-            var btn = new UITextPanel<string>(up.Name) {
-                Width  = { Percent = 1f },
-                Height = { Pixels  = 30 }
+            var btn = new UITextPanel<string>(up.Name)
+            {
+                Width = { Percent = 1f },
+                Height = { Pixels = 30 }
             };
             Color PanelColor = Color.DarkMagenta;
-            btn.BackgroundColor =  PanelColor;
+            btn.BackgroundColor = PanelColor;
             // store original for restoring
             Color normal = PanelColor;
-            Color hover  = normal * 1.5f;
+            Color hover = normal * 1.5f;
             Color selected = Color.Gold;
 
             btn.OnMouseOver += (evt, el) => {

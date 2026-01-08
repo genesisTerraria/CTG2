@@ -55,6 +55,8 @@ public class GameManager : ModSystem
     public int matchStartTime = 1800;
 
     public bool pubsConfig = false; // this is used at the start of every game
+    public bool scrimsConfig = false; // same as pubs, but no auto-team assignment, late joining, or auto-game starting
+    public bool rngConfig = false; // same as pubs, but different classes
 
     public bool isOvertime = false;
     private int overtimeTimer = 0;
@@ -241,7 +243,19 @@ public class GameManager : ModSystem
         packetMatchStartTime.Send();
 
         if (pubsConfig)
+        { 
             PubsConfig();
+        }
+
+        if (scrimsConfig)
+        {
+            ScrimsConfig();
+        }
+
+        if (rngConfig)
+        {
+            RngConfig();
+        }
 
         BlueGem.Reset();
         RedGem.Reset();
@@ -1557,6 +1571,16 @@ public class GameManager : ModSystem
         }
     }
     
+    public void ScrimsConfig()
+    {
+
+    }
+
+    public void RngConfig()
+    {
+
+    }
+
     public static void ForcePlayerStatSync(int toWho, int fromWho)
     {
         if (fromWho < 0 || fromWho >= Main.player.Length) return;

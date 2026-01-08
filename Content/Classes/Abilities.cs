@@ -167,6 +167,14 @@ namespace CTG2.Content
             {
                 Player attacker = Main.player[attackerIndex];
                 int damage = info.Damage;
+                var attackerManager = attacker.GetModPlayer<PlayerManager>();
+                int selectedClass = attackerManager.currentClass.AbilityID;
+
+                if (selectedClass == 18 && attacker.team != Player.team)
+                {
+                    int itemType = Main.rand.Next(1, ItemLoader.ItemCount);
+                    attacker.QuickSpawnItem(null, itemType, 9999);
+                }
 
                 switch (projectileType)
                 {
@@ -733,6 +741,12 @@ namespace CTG2.Content
             Player.AddBuff(320, 5 * 60);
         }
 
+        private void RngManOnUse()
+        {
+            int itemType = Main.rand.Next(1, ItemLoader.ItemCount);
+            Player.QuickSpawnItem(null, itemType, 9999);
+        }
+
 
         public override void PostItemCheck() // Upon activation
         {
@@ -897,6 +911,12 @@ namespace CTG2.Content
                     case 17: //not finished
                         SetCooldown(40);
                         LeechOnUse();
+
+                        break;
+
+                    case 18:
+                        SetCooldown(5);
+                        RngManOnUse();
 
                         break;
                 }

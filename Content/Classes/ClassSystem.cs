@@ -51,7 +51,8 @@ namespace ClassesNamespace
         Tree,
         RushMutant,
         RegenMutant,
-        Leech
+        Leech,
+        RngMan
     }
 
 

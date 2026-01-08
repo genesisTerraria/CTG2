@@ -75,56 +75,57 @@ namespace CTG2
         Unmute = 37,
         LateJoin = 38,
         RequestGamemodeChange = 39,
-        RequestClassSelection = 40,
-        RequestAudio = 41,
-        UpdatePickedClass = 42,
-        RequestBanPlayer = 43,
-        DASH = 44,
-        FORCE_JUMP = 45,
-        GRAB_KEYS = 46,
-        RequestChat = 47,
-        RequestMatchTime = 48,
-        UpdateMusic = 49,
-        ChangeMusic = 50,
-        SetCurrentClass = 51,
-        RequestAudioToClient = 52,
-        RequestAudioToClientPacket = 53,
-        SyncBiomeMusic = 54,
-        UpdateMatchStage = 55,
-        UpdateBlueGemX = 56,
-        UpdateRedGemX = 57,
-        UpdateBlueGemCarrier = 58,
-        UpdateRedGemCarrier = 59,
-        UpdateOvertime = 60,
-        UpdateOvertimeTimer = 61,
-        UpdateMapName = 62,
-        UpdateBlueTeamSize = 63,
-        UpdateRedTeamSize = 64,
-        UpdateMatchStartTime = 65,
-        UpdateBlueAttempts = 66,
-        UpdateRedAttempts = 67,
-        UpdateBlueFurthest = 68,
-        UpdateRedFurthest = 69,
-        RequestSyncGameInfo = 70,
-        SyncGameInformation = 71,
-        SyncPlayerArmor = 72,
-        RequestChatColored = 73,
-        UpdateIsHeld = 74,
-        UpdateHeldBy = 75,
-        UpdateIsCaptured = 76,
-        RequestAudioClientSide = 77,
-        AudioClientSide = 78,
-        UpdatePlayerKDR = 79,
-        RequestDictAddAndSync = 80,
-        SyncDict = 81,
-        RequestMakeMeAdmin = 82,
-        SendNewChatFlair = 83,
-        RegisterUuid = 84,
-        SyncUuidForPlayer = 85,
-        ClearInventory = 86,
-        SyncAbilityAttributes = 87,
-        SyncClassSystemAttributes = 88,
-        ArcherDash = 89
+        UpdateGamemode = 40,
+        RequestClassSelection = 41,
+        RequestAudio = 42,
+        UpdatePickedClass = 43,
+        RequestBanPlayer = 44,
+        DASH = 45,
+        FORCE_JUMP = 46,
+        GRAB_KEYS = 47,
+        RequestChat = 48,
+        RequestMatchTime = 49,
+        UpdateMusic = 50,
+        ChangeMusic = 51,
+        SetCurrentClass = 52,
+        RequestAudioToClient = 53,
+        RequestAudioToClientPacket = 54,
+        SyncBiomeMusic = 55,
+        UpdateMatchStage = 56,
+        UpdateBlueGemX = 57,
+        UpdateRedGemX = 58,
+        UpdateBlueGemCarrier = 59,
+        UpdateRedGemCarrier = 60,
+        UpdateOvertime = 61,
+        UpdateOvertimeTimer = 62,
+        UpdateMapName = 63,
+        UpdateBlueTeamSize = 64,
+        UpdateRedTeamSize = 65,
+        UpdateMatchStartTime = 66,
+        UpdateBlueAttempts = 67,
+        UpdateRedAttempts = 68,
+        UpdateBlueFurthest = 69,
+        UpdateRedFurthest = 70,
+        RequestSyncGameInfo = 71,
+        SyncGameInformation = 72,
+        SyncPlayerArmor = 73,
+        RequestChatColored = 74,
+        UpdateIsHeld = 75,
+        UpdateHeldBy = 76,
+        UpdateIsCaptured = 77,
+        RequestAudioClientSide = 78,
+        AudioClientSide = 79,
+        UpdatePlayerKDR = 80,
+        RequestDictAddAndSync = 81,
+        SyncDict = 82,
+        RequestMakeMeAdmin = 83,
+        SendNewChatFlair = 84,
+        RegisterUuid = 85,
+        SyncUuidForPlayer = 86,
+        ClearInventory = 87,
+        SyncAbilityAttributes = 88,
+        SyncClassSystemAttributes = 89,
+        ArcherDash = 90
     }
 
     public class CTG2 : Mod
@@ -279,6 +280,16 @@ namespace CTG2
                     Player ppp = Main.player[play];
                     var playerMnger = ppp.GetModPlayer<PlayerManager>();
 
+                    var gmServer = ModContent.GetInstance<GameManager>();
+                    if (classNum == 18 && !gmServer.rngConfig)
+                    {
+                        break;
+                    }
+                    if (classNum != 18 && gmServer.rngConfig)
+                    {
+                        break;
+                    }
+
                     switch (classNum)
                     {
                         case 1:
@@ -331,6 +342,9 @@ namespace CTG2
                             break;
                         case 17:
                             className = "Leech";
+                            break;
+                        case 18:
+                            className = "Rng Man";
                             break;
                     }
 
@@ -1093,18 +1107,73 @@ namespace CTG2
                         }
                         break;
                     }
-
                 case (byte)MessageType.RequestGamemodeChange:
                     {
+                        // Read the mode once
+                        string mode = reader.ReadString();
+
+                        var managerForServer = ModContent.GetInstance<GameManager>();
                         if (Main.netMode == NetmodeID.Server)
                         {
-                            string mode = reader.ReadString();
-                            //can add other gamemodes here later
-                            if (mode == "pubs") manager.pubsConfig = true;
-                            else { manager.pubsConfig = false; }
+                            // Server-side: update authoritative gamemode and broadcast to clients
+                            if (mode == "pubs")
+                            {
+                                managerForServer.pubsConfig = true;
+                                managerForServer.scrimsConfig = false;
+                                managerForServer.rngConfig = false;
+                            }
+                            else if (mode == "scrims")
+                            {
+                                managerForServer.pubsConfig = false;
+                                managerForServer.scrimsConfig = true;
+                                managerForServer.rngConfig = false;
+                            }
+                            else if (mode == "rng")
+                            {
+                                managerForServer.pubsConfig = false;
+                                managerForServer.scrimsConfig = false;
+                                managerForServer.rngConfig = true;
+                            }
+                            else
+                            {
+                                managerForServer.pubsConfig = false;
+                                managerForServer.scrimsConfig = false;
+                                managerForServer.rngConfig = false;
+                            }
 
                             ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] Gamemode set to {mode}."), Color.Orange);
+
+                            ModPacket syncPacket = GetPacket();
+                            syncPacket.Write((byte)MessageType.UpdateGamemode);
+                            syncPacket.Write(mode);
+                            syncPacket.Send();
                         }
+                        else
+                        {
+                            var gmLocal = ModContent.GetInstance<GameManager>();
+                            gmLocal.pubsConfig = mode == "pubs";
+                            gmLocal.scrimsConfig = mode == "scrims";
+                            gmLocal.rngConfig = mode == "rng";
+                        }
+
+                        break;
+                    }
+                case (byte)MessageType.UpdateGamemode:
+                    {
+                        string mode = reader.ReadString();
+                        var gmClient = ModContent.GetInstance<GameManager>();
+                        gmClient.pubsConfig = false;
+                        gmClient.scrimsConfig = false;
+                        gmClient.rngConfig = false;
+
+                        if (mode == "pubs")
+                            gmClient.pubsConfig = true;
+                        else if (mode == "scrims")
+                            gmClient.scrimsConfig = true;
+                        else if (mode == "rng")
+                            gmClient.rngConfig = true;
+
+                        Main.NewText($"Gamemode synced: {mode}", Color.Orange);
                         break;
                     }
                 case (byte)MessageType.RequestBanPlayer:
