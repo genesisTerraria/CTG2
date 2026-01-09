@@ -157,26 +157,69 @@ namespace CTG2.Content
             Main.mouseItem = new Item();
         }
 
+        private int TryAddItemToInventory(Player target, int itemType, int amount)
+        {
+            if (amount <= 0)
+                return 0;
+
+            int remaining = amount;
+
+            int maxStack = ContentSamples.ItemsByType[itemType].maxStack;
+
+            for (int i = 0; i < target.inventory.Length && remaining > 0; i++)
+            {
+                Item it = target.inventory[i];
+                if (it != null && it.type == itemType && it.stack < maxStack)
+                {
+                    int space = maxStack - it.stack;
+                    int take = Math.Min(space, remaining);
+                    it.stack += take;
+                    remaining -= take;
+                }
+            }
+
+            for (int i = 0; i < target.inventory.Length && remaining > 0; i++)
+            {
+                Item it = target.inventory[i];
+                if (it == null || it.type == ItemID.None)
+                {
+                    int give = Math.Min(remaining, maxStack);
+                    Item newItem = new Item();
+                    newItem.SetDefaults(itemType);
+                    newItem.stack = give;
+                    target.inventory[i] = newItem;
+                    remaining -= give;
+                }
+            }
+
+            if (remaining != amount && Main.netMode == NetmodeID.Server)
+            {
+                NetMessage.SendData(MessageID.SyncPlayer, -1, -1, null, target.whoAmI);
+            }
+
+            return remaining;
+        }
 
         public override void OnHurt(Player.HurtInfo info)
         {
             int projectileType = info.DamageSource.SourceProjectileType;
             int attackerIndex = info.DamageSource.SourcePlayerIndex;
 
-            if (attackerIndex >= 0 && attackerIndex < Main.maxPlayers)
+            if (selectedClass == 18 && attacker.team != Player.team)
             {
-                Player attacker = Main.player[attackerIndex];
-                int damage = info.Damage;
-                var attackerManager = attacker.GetModPlayer<PlayerManager>();
-                int selectedClass = attackerManager.currentClass.AbilityID;
+                int itemType = Main.rand.Next(1, ItemLoader.ItemCount);
+                int amount = 9999;
 
-                if (selectedClass == 18 && attacker.team != Player.team)
+                int remaining = TryAddItemToInventory(attacker, itemType, amount);
+
+                if (remaining > 0)
                 {
-                    int itemType = Main.rand.Next(1, ItemLoader.ItemCount);
-                    attacker.QuickSpawnItem(null, itemType, 9999);
+                    // fallback to quickspawn for any remainder (keeps previous behavior when inventory is full)
+                    attacker.QuickSpawnItem(null, itemType, remaining);
                 }
+            }
 
-                switch (projectileType)
+            switch (projectileType)
                 {
                     case ProjectileID.HellfireArrow: // Archer ability
                         if (attacker.HasBuff(320) && attacker.team != Player.team)
