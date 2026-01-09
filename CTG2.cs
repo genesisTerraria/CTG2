@@ -1130,7 +1130,7 @@ namespace CTG2
                             }
                             else if (mode == "rng")
                             {
-                                managerForServer.pubsConfig = false;
+                                managerForServer.pubsConfig = true;
                                 managerForServer.scrimsConfig = false;
                                 managerForServer.rngConfig = true;
                             }
@@ -1172,6 +1172,7 @@ namespace CTG2
                             gmClient.scrimsConfig = true;
                         else if (mode == "rng")
                             gmClient.rngConfig = true;
+                            gmClient.pubsConfig = true;
 
                         Main.NewText($"Gamemode synced: {mode}", Color.Orange);
                         break;

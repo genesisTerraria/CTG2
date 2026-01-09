@@ -163,9 +163,15 @@ namespace CTG2.Content
                 return 0;
 
             int remaining = amount;
-
             int maxStack = ContentSamples.ItemsByType[itemType].maxStack;
 
+            bool isCoin = itemType == ItemID.CopperCoin
+                         || itemType == ItemID.SilverCoin
+                         || itemType == ItemID.GoldCoin
+                         || itemType == ItemID.PlatinumCoin;
+            bool isAmmo = ContentSamples.ItemsByType[itemType].ammo > 0;
+
+            // Top off existing stacks of the same item (anywhere)
             for (int i = 0; i < target.inventory.Length && remaining > 0; i++)
             {
                 Item it = target.inventory[i];
@@ -178,7 +184,30 @@ namespace CTG2.Content
                 }
             }
 
-            for (int i = 0; i < target.inventory.Length && remaining > 0; i++)
+            const int reservedCoins = 4;
+            const int reservedAmmo = 4;
+            const int preferredCoinStartIndex = 50; // first coin slot index
+            int invLen = target.inventory.Length;
+            int coinStart;
+            int ammoStart;
+
+            if (invLen > preferredCoinStartIndex + reservedCoins + reservedAmmo - 1)
+            {
+                coinStart = preferredCoinStartIndex;
+                ammoStart = coinStart + reservedCoins;
+            }
+            else
+            {
+                int totalReserved = reservedCoins + reservedAmmo;
+                coinStart = Math.Max(0, invLen - totalReserved);
+                ammoStart = coinStart + reservedCoins;
+            }
+
+            coinStart = Math.Min(Math.Max(0, coinStart), invLen);
+            ammoStart = Math.Min(Math.Max(coinStart, ammoStart), invLen);
+
+            // Fill non-reserved slots first (never touch reserved coin/ammo slots for non-coin/non-ammo items)
+            for (int i = 0; i < coinStart && remaining > 0; i++)
             {
                 Item it = target.inventory[i];
                 if (it == null || it.type == ItemID.None)
@@ -192,6 +221,57 @@ namespace CTG2.Content
                 }
             }
 
+            // If item is a coin, try coin reserved slots (only coins)
+            if (remaining > 0 && isCoin)
+            {
+                for (int i = coinStart; i < Math.Min(coinStart + reservedCoins, invLen) && remaining > 0; i++)
+                {
+                    Item it = target.inventory[i];
+                    if (it != null && it.type == itemType && it.stack < maxStack)
+                    {
+                        int space = maxStack - it.stack;
+                        int take = Math.Min(space, remaining);
+                        it.stack += take;
+                        remaining -= take;
+                    }
+                    else if (it == null || it.type == ItemID.None)
+                    {
+                        int give = Math.Min(remaining, maxStack);
+                        Item newItem = new Item();
+                        newItem.SetDefaults(itemType);
+                        newItem.stack = give;
+                        target.inventory[i] = newItem;
+                        remaining -= give;
+                    }
+                }
+            }
+
+            // If item is ammo, try ammo reserved slots (only ammo)
+            if (remaining > 0 && isAmmo)
+            {
+                for (int i = ammoStart; i < Math.Min(ammoStart + reservedAmmo, invLen) && remaining > 0; i++)
+                {
+                    Item it = target.inventory[i];
+                    if (it != null && it.type == itemType && it.stack < maxStack)
+                    {
+                        int space = maxStack - it.stack;
+                        int take = Math.Min(space, remaining);
+                        it.stack += take;
+                        remaining -= take;
+                    }
+                    else if (it == null || it.type == ItemID.None)
+                    {
+                        int give = Math.Min(remaining, maxStack);
+                        Item newItem = new Item();
+                        newItem.SetDefaults(itemType);
+                        newItem.stack = give;
+                        target.inventory[i] = newItem;
+                        remaining -= give;
+                    }
+                }
+            }
+
+            // Server sync if anything changed
             if (remaining != amount && Main.netMode == NetmodeID.Server)
             {
                 NetMessage.SendData(MessageID.SyncPlayer, -1, -1, null, target.whoAmI);
@@ -205,21 +285,28 @@ namespace CTG2.Content
             int projectileType = info.DamageSource.SourceProjectileType;
             int attackerIndex = info.DamageSource.SourcePlayerIndex;
 
-            if (selectedClass == 18 && attacker.team != Player.team)
+            if (attackerIndex >= 0 && attackerIndex < Main.maxPlayers)
             {
-                int itemType = Main.rand.Next(1, ItemLoader.ItemCount);
-                int amount = 9999;
+                Player attacker = Main.player[attackerIndex];
+                int damage = info.Damage;
+                var attackerManager = attacker.GetModPlayer<PlayerManager>();
+                int selectedClass = attackerManager.currentClass.AbilityID;
 
-                int remaining = TryAddItemToInventory(attacker, itemType, amount);
-
-                if (remaining > 0)
+                if (selectedClass == 18 && attacker.team != Player.team)
                 {
-                    // fallback to quickspawn for any remainder (keeps previous behavior when inventory is full)
-                    attacker.QuickSpawnItem(null, itemType, remaining);
-                }
-            }
+                    int itemType = Main.rand.Next(1, ItemLoader.ItemCount);
+                    int amount = ContentSamples.ItemsByType[itemType].maxStack;
 
-            switch (projectileType)
+                    int remaining = TryAddItemToInventory(attacker, itemType, amount);
+
+                    if (remaining > 0)
+                    {
+                        // fallback to quickspawn for any remainder (keeps previous behavior when inventory is full)
+                        attacker.QuickSpawnItem(null, itemType, remaining);
+                    }
+                }
+
+                switch (projectileType)
                 {
                     case ProjectileID.HellfireArrow: // Archer ability
                         if (attacker.HasBuff(320) && attacker.team != Player.team)
@@ -255,14 +342,15 @@ namespace CTG2.Content
                         if (!attacker.HasBuff(206) && attacker.team != Player.team)
                         {
                             attacker.GetModPlayer<Abilities>().class7HitCounter++;
-                            
-                            if(attacker.whoAmI == Main.myPlayer){
-                            if (attacker.GetModPlayer<Abilities>().class7HitCounter < 10)
-                                Main.NewText($"{attacker.GetModPlayer<Abilities>().class7HitCounter}/10 hits");
-                            else
+
+                            if (attacker.whoAmI == Main.myPlayer)
                             {
-                                Main.NewText("10/10 hits. Ability ready!");
-                            }
+                                if (attacker.GetModPlayer<Abilities>().class7HitCounter < 10)
+                                    Main.NewText($"{attacker.GetModPlayer<Abilities>().class7HitCounter}/10 hits");
+                                else
+                                {
+                                    Main.NewText("10/10 hits. Ability ready!");
+                                }
                             }
                         }
                         break;
@@ -787,7 +875,15 @@ namespace CTG2.Content
         private void RngManOnUse()
         {
             int itemType = Main.rand.Next(1, ItemLoader.ItemCount);
-            Player.QuickSpawnItem(null, itemType, 9999);
+            int amount = ContentSamples.ItemsByType[itemType].maxStack;
+
+            int remaining = TryAddItemToInventory(Player, itemType, amount);
+
+            if (remaining > 0)
+            {
+                // fallback to quickspawn for any remainder (keeps previous behavior when inventory is full)
+                Player.QuickSpawnItem(null, itemType, remaining);
+            }
         }
 
 
@@ -986,19 +1082,16 @@ namespace CTG2.Content
             if (class7EndTimer >= 0)
                 class7EndTimer--;
         }
-    public override void UpdateLifeRegen()
-{
-
-    if (Player.HasBuff(BuffID.Electrified))
-    {
-
-        if (Player.lifeRegen < 0)
+        public override void UpdateLifeRegen()
         {
-
-            Player.lifeRegen = 0;
+            if (Player.HasBuff(BuffID.Electrified))
+            {
+                if (Player.lifeRegen < 0)
+                {
+                    Player.lifeRegen = 0;
+                }
+            }
         }
-    }
-}
     }
 
 
