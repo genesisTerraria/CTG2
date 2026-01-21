@@ -235,8 +235,8 @@
       "Modded": false
     },
     {
-      "Name": "Mushroom",
-      "Type": 5,
+      "Name": "Lesser Healing Potion",
+      "Type": 28,
       "Stack": 500,
       "Prefix": 0,
       "Slot": 29,
