@@ -673,14 +673,11 @@ namespace CTG2.Content
 
         private void ClownOnUse() //not finished
         {
-            Player.AddBuff(320, 60);
-            Player.AddBuff(BuffID.Electrified, this.class12SwapTimer);
+            Player.AddBuff(BuffID.Electrified, 60);
 
             Player.GetModPlayer<ClassSystem>().clownSwapCaller = Player.whoAmI; //Gives this reference to clownpoststatus
 
             class12SwapTimer = 60;
-
-            Main.NewText("Swapping...");
         }
 
 
