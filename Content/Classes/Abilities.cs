@@ -555,7 +555,6 @@ namespace CTG2.Content
             {
                 // Only allow if enough HP
                 Player.AddBuff(21, 60);
-                return true;
             }
             return base.CanUseItem(item);
         }
