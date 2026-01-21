@@ -205,6 +205,71 @@ public class ModifyHurtModPlayer : ModPlayer
                 attacker.Heal(4);
             Player.ClearBuff(BuffID.Poisoned);
         }
+        else if (info.DamageSource.SourceProjectileType == 273)
+        {
+            Player attacker = Main.player[attackerIndex];
+            var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
+            if (attackerPlayer.currentClass.Name == "Leech")
+            {
+                attacker.AddBuff(2, 90);
+                attacker.AddBuff(58, 90);
+
+                ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
+                packet.Write((byte)MessageType.RequestAddBuff);
+                packet.Write(attacker.whoAmI);
+                packet.Write(2);
+                packet.Write(90);
+                packet.Send();
+
+                packet = ModContent.GetInstance<CTG2>().GetPacket();
+                packet.Write((byte)MessageType.RequestAddBuff);
+                packet.Write(attacker.whoAmI);
+                packet.Write(58);
+                packet.Write(90);
+                packet.Send();
+            }
+        }
+        else if (info.DamageSource.SourceProjectileType == 304)
+        {
+            Player attacker = Main.player[attackerIndex];
+            var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
+            if (attackerPlayer.currentClass.Name == "Leech")
+            {
+                attacker.AddBuff(2, 90);
+                attacker.AddBuff(5, 90);
+                attacker.AddBuff(7, 90);
+                attacker.AddBuff(114, 90);
+                
+                ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
+                packet.Write((byte)MessageType.RequestAddBuff);
+                packet.Write(attacker.whoAmI);
+                packet.Write(2);
+                packet.Write(90);
+                packet.Send();
+
+                packet = ModContent.GetInstance<CTG2>().GetPacket();
+                packet.Write((byte)MessageType.RequestAddBuff);
+                packet.Write(attacker.whoAmI);
+                packet.Write(5);
+                packet.Write(90);
+                packet.Send();
+
+                packet = ModContent.GetInstance<CTG2>().GetPacket();
+                packet.Write((byte)MessageType.RequestAddBuff);
+                packet.Write(attacker.whoAmI);
+                packet.Write(7);
+                packet.Write(90);
+                packet.Send();
+
+                packet = ModContent.GetInstance<CTG2>().GetPacket();
+                packet.Write((byte)MessageType.RequestAddBuff);
+                packet.Write(attacker.whoAmI);
+                packet.Write(114);
+                packet.Write(90);
+                packet.Send();
+                break;
+            }
+        }
         else if (info.DamageSource.SourceProjectileType == ProjectileID.ThornChakram)
         {
             Player.ClearBuff(BuffID.Poisoned);
