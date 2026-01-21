@@ -508,18 +508,18 @@ namespace ClassesNamespace
             var playerManager = Player.GetModPlayer<PlayerManager>();
             int gameTime = GameInfo.matchTime - GameInfo.matchStartTime;
 
-            if (gameTime % 60 == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0 && playerManager.currentClass?.Name == "Ninja") // ninja block conversion
-            {
-                for (int i = 0; i < Player.inventory.Length; i++)
-                {
-                    Item item = Player.inventory[i];
-                    if (item.type == 2)
-                    {
-                        Player.inventory[i].TurnToAir();
-                        giveItemDirect(ItemID.MudBlock, item.stack);
-                    }
-                }
-            }
+            // if (gameTime % 60 == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0 && playerManager.currentClass?.Name == "Ninja") // ninja block conversion
+            // {
+            //     for (int i = 0; i < Player.inventory.Length; i++)
+            //     {
+            //         Item item = Player.inventory[i];
+            //         if (item.type == 2)
+            //         {
+            //             Player.inventory[i].TurnToAir();
+            //             giveItemDirect(ItemID.MudBlock, item.stack);
+            //         }
+            //     }
+            // }
             
             if (gameTime >= bombCounter && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0) // miner bombs over time
             {
