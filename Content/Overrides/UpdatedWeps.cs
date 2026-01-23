@@ -89,16 +89,16 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     break;
                 case ItemID.ChainKnife: // Leech
-                    item.useTime = 4;
-                    item.useAnimation = 4;
-                    item.shootSpeed = 20;
+                    item.useTime = 40;
+                    item.useAnimation = 40;
+                    item.shootSpeed = 15;
                     item.damage = 31;
                     item.crit = 0;
                     break;
                 case ItemID.CursedFlames: // Leech
-                    item.useTime = 40;
-                    item.useAnimation = 40;
-                    item.shootSpeed = 15;
+                    item.useTime = 4;
+                    item.useAnimation = 4;
+                    item.shootSpeed = 20;
                     item.damage = 23;
                     item.mana = 0;
                     item.scale = 0;

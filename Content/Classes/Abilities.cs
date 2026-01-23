@@ -548,6 +548,7 @@ namespace CTG2.Content
             Player.AddBuff(181, 54000);
 
             psychicActive = true;
+            class8HP = Player.statLife;
         }
         public override bool CanUseItem(Item item)
         {
@@ -555,7 +556,9 @@ namespace CTG2.Content
             {
                 // Only allow if enough HP
                 Player.AddBuff(21, 60);
-                return true;
+
+                if (Player.statLife < class8HP) class8HP = Player.statLife;
+                else if (class8HP < Player.statLife) Player.statLife = class8HP;
             }
             return base.CanUseItem(item);
         }
@@ -565,11 +568,15 @@ namespace CTG2.Content
             {
                 int hpCost = manaConsumed;
                 Player.statLife -= hpCost;
+                class8HP = Player.statLife;
+
                 if (Player.statLife <= 0)
                 {
                     Player.KillMe(PlayerDeathReason.ByCustomReason(Terraria.Localization.NetworkText.FromLiteral($"{Player.name} finished ")), 9999, 0);
                     psychicActive = false;
+                    class8HP = 0;
                 }
+
                 NetMessage.SendData(MessageID.SyncPlayer, -1, -1, null, Player.whoAmI); // Sync HP
             }
         }
@@ -666,14 +673,11 @@ namespace CTG2.Content
 
         private void ClownOnUse() //not finished
         {
-            Player.AddBuff(320, 60);
-            Player.AddBuff(BuffID.Electrified, this.class12SwapTimer);
+            Player.AddBuff(BuffID.Electrified, 60);
 
             Player.GetModPlayer<ClassSystem>().clownSwapCaller = Player.whoAmI; //Gives this reference to clownpoststatus
 
             class12SwapTimer = 60;
-
-            Main.NewText("Swapping...");
         }
 
 
