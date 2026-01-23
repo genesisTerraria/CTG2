@@ -214,14 +214,15 @@ public class ModifyHurtModPlayer : ModPlayer
                 attacker.AddBuff(2, 90);
                 attacker.AddBuff(58, 90);
 
-                ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
+                var mod = ModContent.GetInstance<CTG2>();
+                ModPacket packet = mod.GetPacket();
                 packet.Write((byte)MessageType.RequestAddBuff);
                 packet.Write(attacker.whoAmI);
                 packet.Write(2);
                 packet.Write(90);
                 packet.Send();
 
-                packet = ModContent.GetInstance<CTG2>().GetPacket();
+                packet = mod.GetPacket();
                 packet.Write((byte)MessageType.RequestAddBuff);
                 packet.Write(attacker.whoAmI);
                 packet.Write(58);
@@ -239,29 +240,30 @@ public class ModifyHurtModPlayer : ModPlayer
                 attacker.AddBuff(5, 90);
                 attacker.AddBuff(7, 90);
                 attacker.AddBuff(114, 90);
-                
-                ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
+
+                var mod = ModContent.GetInstance<CTG2>();
+                ModPacket packet = mod.GetPacket();
                 packet.Write((byte)MessageType.RequestAddBuff);
                 packet.Write(attacker.whoAmI);
                 packet.Write(2);
                 packet.Write(90);
                 packet.Send();
 
-                packet = ModContent.GetInstance<CTG2>().GetPacket();
+                packet = mod.GetPacket();
                 packet.Write((byte)MessageType.RequestAddBuff);
                 packet.Write(attacker.whoAmI);
                 packet.Write(5);
                 packet.Write(90);
                 packet.Send();
 
-                packet = ModContent.GetInstance<CTG2>().GetPacket();
+                packet = mod.GetPacket();
                 packet.Write((byte)MessageType.RequestAddBuff);
                 packet.Write(attacker.whoAmI);
                 packet.Write(7);
                 packet.Write(90);
                 packet.Send();
 
-                packet = ModContent.GetInstance<CTG2>().GetPacket();
+                packet = mod.GetPacket();
                 packet.Write((byte)MessageType.RequestAddBuff);
                 packet.Write(attacker.whoAmI);
                 packet.Write(114);
