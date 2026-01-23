@@ -98,7 +98,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case ItemID.CursedFlames: // Leech
                     item.useTime = 35;
                     item.useAnimation = 35;
-                    item.shootSpeed = 12.5;
+                    item.shootSpeed = 12.5f;
                     item.damage = 23;
                     item.mana = 0;
                     item.scale = 0;
