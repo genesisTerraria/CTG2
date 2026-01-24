@@ -11,7 +11,7 @@ namespace CTG2.Content.Items {
 		{
 			Item.CloneDefaults(ItemID.MagicDagger);
 
-			Item.shoot = ModContent.ProjectileType<ZenProjectile>();
+			Item.shoot = 93;//ModContent.ProjectileType<ZenProjectile>();
 			Item.useAnimation = 10;
 			Item.useTime = 10;
 			Item.shootSpeed = 10f;
