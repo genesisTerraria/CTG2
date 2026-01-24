@@ -677,7 +677,7 @@ namespace CTG2.Content
 
 			ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
 			packet.Write((byte)MessageType.RequestAddBuff);
-			packet.Write(attacker.whoAmI);
+			packet.Write(Player.whoAmI);
 			packet.Write(BuffID.Electrified);
 			packet.Write(60);
 			packet.Send();
