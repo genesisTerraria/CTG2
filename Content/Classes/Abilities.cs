@@ -675,6 +675,14 @@ namespace CTG2.Content
         {
             Player.AddBuff(BuffID.Electrified, 60);
 
+			packet = ModContent.GetInstance<CTG2>().GetPacket();
+			packet.Write((byte)MessageType.RequestAddBuff);
+			packet.Write(attacker.whoAmI);
+			packet.Write(BuffID.Electrified);
+			packet.Write(60);
+			packet.Send();
+
+
             Player.GetModPlayer<ClassSystem>().clownSwapCaller = Player.whoAmI; //Gives this reference to clownpoststatus
 
             class12SwapTimer = 60;
@@ -690,7 +698,6 @@ namespace CTG2.Content
 
             if (class12SwapTimer == 0)
             {
-                Player.inferno = false;
                 foreach (Player other in Main.player)
                 {
                     if (!other.active || other.dead || other.whoAmI == Player.whoAmI || other.ghost || other.team == 0)
