@@ -13,6 +13,18 @@ using CTG2.Content.ClientSide;
 
 namespace CTG2.Content.Items.ModifiedWeps
 {
+    public class DisableAutofire : ModPlayer
+    {
+        private bool lastUsedItem = false;
+        public bool canUse = false;
+    
+        public override void PreUpdate()
+        {
+            canUse = !lastUsedItem && player.controlUseItem;
+            lastUsedItem = player.controlUseItem;
+        }
+    }
+    
     public class OverloadedWeps : GlobalItem
     {
 
@@ -256,6 +268,9 @@ namespace CTG2.Content.Items.ModifiedWeps
 
         public override bool CanUseItem(Item item, Player player)
         {
+            if (!canUse)
+                return false;
+                
             if (item.type == ItemID.Bananarang)
             {
                 if (Main.GameUpdateCount - bananarangLastUsedCounter >= bananarangDelay)
