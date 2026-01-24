@@ -251,28 +251,53 @@ namespace CTG2
 
                     int projectileIndex = Projectile.NewProjectile(Main.LocalPlayer.GetSource_Misc("Class15Ability"), spawnPos, velocity, projType, damage, knockback);
                     break;
+                    
                 case (byte)MessageType.RequestAddBuff:
-                    var playerID = reader.ReadInt32();
-                    var buffType = reader.ReadInt32();
-                    var time = reader.ReadInt32();
-
+                {
+                    // CLIENT -> SERVER ONLY
+                    if (Main.netMode != NetmodeID.Server)
+                        break;
+                
+                    int playerID = reader.ReadInt32();
+                    int buffType = reader.ReadInt32();
+                    int time = reader.ReadInt32();
+                
                     Player player = Main.player[playerID];
                     if (!player.active)
                         break;
-
+                
+                    // Server applies the buff
                     player.AddBuff(buffType, time);
-
-                    if (Main.netMode == NetmodeID.Server) {
-                        ModPacket packet = GetPacket();
-                        packet.Write((byte)MessageType.RequestAddBuff);
-                        packet.Write(playerID);
-                        packet.Write(buffType);
-                        packet.Write(time);
-                        // ignoreClient: whoAmI ensures we don't send the data back to the person who just sent it to us
-                        packet.Send(-1, playerID); 
-                    }
-
+                
+                    // Sync to all clients (including sender)
+                    ModPacket packet = GetPacket();
+                    packet.Write((byte)MessageType.SyncAddBuff);
+                    packet.Write(playerID);
+                    packet.Write(buffType);
+                    packet.Write(time);
+                    packet.Send();
+                
                     break;
+                }
+
+                case (byte)MessageType.SyncAddBuff:
+                {
+                    // SERVER -> CLIENTS ONLY
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                        break;
+                
+                    int playerID = reader.ReadInt32();
+                    int buffType = reader.ReadInt32();
+                    int time = reader.ReadInt32();
+                
+                    Player player = Main.player[playerID];
+                    if (!player.active)
+                        break;
+                
+                    player.AddBuff(buffType, time);
+                    break;
+                }
+                
                 case (byte)MessageType.SetCurrentClass:
                     int play = reader.ReadInt32();
                     int classNum = reader.ReadInt32();
