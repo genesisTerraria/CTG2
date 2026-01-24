@@ -43,6 +43,9 @@ namespace CTG2.Content.Classes
         private int totemTeam = 0;
         private int maxHP = 200;
 
+        private bool spawnPositionRecorded = false;
+        private Vector2 spawnPosition = Vector2.Zero;
+
         SoundStyle totemCrumble = new SoundStyle("CTG2/Content/Classes/TotemCrumble");
 
 
@@ -63,7 +66,7 @@ namespace CTG2.Content.Classes
             NPC.knockBackResist = 0; //make this higher for more knockback
 
             NPC.aiStyle = -1; 
-            NPC.noGravity = false;
+            NPC.noGravity = true;
             NPC.noTileCollide = false;
             NPC.friendly = false;
             NPC.chaseable = false;
@@ -163,12 +166,16 @@ namespace CTG2.Content.Classes
                     NPC.velocity.X = 0f;
             }
 
-            float gravity = 0.3f;
-            float maxFallSpeed = 10f;
+            if (!spawnPositionRecorded)
+            {
+                spawnPositionRecorded = true;
+                spawnPosition = NPC.Center;
+                NPC.velocity = Vector2.Zero;
+                NPC.netUpdate = true;
+            }
 
-            NPC.velocity.Y += gravity;
-            if (NPC.velocity.Y > maxFallSpeed)
-                NPC.velocity.Y = maxFallSpeed;
+            NPC.Center = spawnPosition;
+            NPC.velocity = Vector2.Zero;
 
             foreach (Player player in Main.player)
             {
@@ -177,9 +184,9 @@ namespace CTG2.Content.Classes
                 // ai[0] stores tiki's team
                 if (player.team != (int)NPC.ai[0])
                     continue;
-                
+
                 if (Vector2.Distance(NPC.Center, player.Center) <= 14 * 16 && frameCount % healFrameGap == 0) // 14 block radius
-                {   
+                {
                     player.Heal(1);
                 }
             }

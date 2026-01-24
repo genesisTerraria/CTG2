@@ -74,9 +74,11 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case ItemID.Blowgun: // Tiki Priest
                     item.useTime = 18;
                     item.useAnimation = 18;
+                    item.shoot = 267;
                     item.shootSpeed = 13f;
+                    item.useAmmo = AmmoID.None;
                     item.autoReuse = false;
-                    item.damage = 26;
+                    item.damage = 33;
                     item.crit = 0;
                     break;
                 case ItemID.Bananarang: // Tree
@@ -152,7 +154,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shoot = 496;
                     item.useAnimation = 18;
                     item.useTime = 18;
-                    item.shootSpeed = 4f;
+                    item.shootSpeed = 4.7f;
                     item.crit = 0;
                     break;
 

@@ -48,6 +48,7 @@ namespace CTG2.Content
         SoundStyle abilityStart = new SoundStyle("CTG2/Content/Classes/AbilityStart");
 	    SoundStyle abilityEnd = new SoundStyle("CTG2/Content/Classes/AbilityEnd");
         SoundStyle whiteMageHeal = new SoundStyle("CTG2/Content/Classes/WhiteMageHeal");
+        SoundStyle clownSwap = new SoundStyle("CTG2/Content/Classes/ClownSwap");
 
 
         private int GetItemIDByName(string itemName)
@@ -675,6 +676,35 @@ namespace CTG2.Content
         {
             Player.AddBuff(BuffID.Electrified, 60);
 
+            var mod = ModContent.GetInstance<CTG2>();
+            ModPacket packet = mod.GetPacket();
+            packet.Write((byte)MessageType.RequestAddBuff);
+            packet.Write(Player.whoAmI);
+            packet.Write(BuffID.Electrified);
+            packet.Write(60);
+            packet.Send();
+
+            foreach (Player other in Main.player)
+            {
+                if (!other.active || other.dead || other.whoAmI == Player.whoAmI)
+                    continue;
+
+                if (Vector2.Distance(Player.Center, other.Center) <= 22 * 16) // 22 block radius
+                {
+                    ModPacket audioPacket = mod.GetPacket();
+                    audioPacket.Write((byte)MessageType.RequestAudioToClient);
+                    audioPacket.Write("CTG2/Content/Classes/ClownSwap");
+                    audioPacket.Write(other.whoAmI);
+                    audioPacket.Send();
+                }
+            }
+
+            ModPacket audioPacketSelf = mod.GetPacket();
+            audioPacketSelf.Write((byte)MessageType.RequestAudioToClient);
+            audioPacketSelf.Write("CTG2/Content/Classes/ClownSwap");
+            audioPacketSelf.Write(Player.whoAmI);
+            audioPacketSelf.Send();
+
             Player.GetModPlayer<ClassSystem>().clownSwapCaller = Player.whoAmI; //Gives this reference to clownpoststatus
 
             class12SwapTimer = 60;
@@ -686,11 +716,10 @@ namespace CTG2.Content
             if (Player.GetModPlayer<ClassSystem>().clownSwapCaller != Player.whoAmI) //Run this only for the person who called it 
                 return; 
                 
-            if (class12SwapTimer != -1){ class12SwapTimer--; Player.inferno = true;}
+            if (class12SwapTimer != -1){ class12SwapTimer--; }
 
             if (class12SwapTimer == 0)
             {
-                Player.inferno = false;
                 foreach (Player other in Main.player)
                 {
                     if (!other.active || other.dead || other.whoAmI == Player.whoAmI || other.ghost || other.team == 0)

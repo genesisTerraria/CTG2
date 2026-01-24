@@ -435,9 +435,9 @@
       "Modded": false
     },
     {
-      "Name": "Poison Dart",
-      "Type": 1310,
-      "Stack": 9999,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 54,
       "Modded": false
