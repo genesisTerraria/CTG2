@@ -675,7 +675,7 @@ namespace CTG2.Content
         {
             Player.AddBuff(BuffID.Electrified, 60);
 
-			packet = ModContent.GetInstance<CTG2>().GetPacket();
+			ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
 			packet.Write((byte)MessageType.RequestAddBuff);
 			packet.Write(attacker.whoAmI);
 			packet.Write(BuffID.Electrified);
