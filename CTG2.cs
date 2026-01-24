@@ -125,7 +125,8 @@ namespace CTG2
         ClearInventory = 87,
         SyncAbilityAttributes = 88,
         SyncClassSystemAttributes = 89,
-        ArcherDash = 90
+        ArcherDash = 90,
+        SyncAddBuff = 91
     }
 
     public class CTG2 : Mod
