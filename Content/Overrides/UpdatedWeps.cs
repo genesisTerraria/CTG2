@@ -20,8 +20,8 @@ namespace CTG2.Content.Items.ModifiedWeps
     
         public override void PreUpdate()
         {
-            canUse = !lastUsedItem && player.controlUseItem;
-            lastUsedItem = player.controlUseItem;
+            canUse = !lastUsedItem && Player.controlUseItem;
+            lastUsedItem = Player.controlUseItem;
         }
     }
     
@@ -268,7 +268,9 @@ namespace CTG2.Content.Items.ModifiedWeps
 
         public override bool CanUseItem(Item item, Player player)
         {
-            if (!canUse)
+            var disableAutofire = player.GetModPlayer<DisableAutofire>();
+
+            if (!disableAutofire.canUse)
                 return false;
                 
             if (item.type == ItemID.Bananarang)
