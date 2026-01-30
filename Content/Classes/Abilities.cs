@@ -26,8 +26,6 @@ namespace CTG2.Content
         public int class4BuffTimer = 0;
         public bool class4PendingBuffs = false;
 
-        public int class6ReleaseTimer = -1;
-
         public int class7HitCounter = 0;
         public int class7EndTimer = -1;
 
@@ -474,52 +472,12 @@ namespace CTG2.Content
         }
 
 
-        private void JungleManOnUse()
+        private void TankOnUse()
         {
-            Player.AddBuff(149, 60);
-            Player.AddBuff(114, 60);
 
-            class6ReleaseTimer = 60;
         }
-
-
-        private void JungleManPostStatus()
-        {
-            class6ReleaseTimer = (class6ReleaseTimer > -1) ? class6ReleaseTimer - 1 : -1;
-
-            if (class6ReleaseTimer == 0)
-            {
-                Vector2 spawnPos = Player.Center + new Vector2(0, Player.height / 2);
-
-                for (int i = 0; i < 25; i++)
-                {
-                    // Horizontal speed, Vertical
-                    float speed = Main.rand.NextFloat(0f, 5f);
-
-                    // might be too fast currently
-                    float direction = Main.rand.NextBool() ? 0f : 180f;
-                    Vector2 velocity = direction.ToRotationVector2() * speed;
-
-                    //horizontal offset
-                    float xOffset = Main.rand.NextFloat(-32f, 32f); // 1 tile = 16px 
-                    float yOffset = Main.rand.NextFloat(-32f, 10f);
-
-                    Vector2 spawnPoss = Player.Center + new Vector2(xOffset, Player.height / 2f + yOffset);
-
-                    Projectile.NewProjectile(
-                        Player.GetSource_Misc("Class6GroundFlames"),
-                        spawnPoss,
-                        velocity,
-                        480, // cursed flame
-                        26,
-                        1f,
-                        Player.whoAmI
-                    );
-                }
-            }
-        }
-
-
+        
+        
         private void BlackMageOnUse()
         {
             if (Player.GetModPlayer<Abilities>().class7HitCounter >= 10)
@@ -1015,8 +973,8 @@ namespace CTG2.Content
                         break;
 
                     case 6:
-                        SetCooldown(31);
-                        JungleManOnUse();
+                        SetCooldown(40);
+                        TankOnUse();
 
                         break;
 
@@ -1104,7 +1062,6 @@ namespace CTG2.Content
         public override void PostUpdate()
         {
             GladiatorPostStatus();
-            JungleManPostStatus();
             PsychicPostStatus();
             ClownPostStatus();
             TreePostStatus();

@@ -334,7 +334,7 @@ namespace CTG2
                             className = "Paladin";
                             break;
                         case 6:
-                            className = "Jungle Man";
+                            className = "Tank";
                             break;
                         case 7:
                             className = "Black Mage";
@@ -712,7 +712,6 @@ namespace CTG2
                         abils.cooldown = cooldown;
                         abils.class4BuffTimer = class4BuffTimer;
                         abils.class4PendingBuffs = class4PendingBuffs;
-                        abils.class6ReleaseTimer = class6ReleaseTimer;
                         abils.class7HitCounter = class7HitCounter;
                         abils.class8HP = class8HP;
                         abils.psychicActive = psychicActive;

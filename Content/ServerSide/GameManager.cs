@@ -497,7 +497,6 @@ public class GameManager : ModSystem
             player.GetModPlayer<Abilities>().cooldown = 0;
             player.GetModPlayer<Abilities>().class4BuffTimer = 0;
             player.GetModPlayer<Abilities>().class4PendingBuffs = false;
-            player.GetModPlayer<Abilities>().class6ReleaseTimer = -1;
             player.GetModPlayer<Abilities>().class7HitCounter = 0;
             player.GetModPlayer<Abilities>().class8HP = 0;
             player.GetModPlayer<Abilities>().psychicActive = false;

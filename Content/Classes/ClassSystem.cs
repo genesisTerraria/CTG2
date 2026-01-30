@@ -39,7 +39,7 @@ namespace ClassesNamespace
         Beast,
         Gladiator,
         Paladin,
-        JungleMan,
+        Tank,
         BlackMage,
         Psychic,
         WhiteMage,
@@ -550,7 +550,7 @@ namespace ClassesNamespace
                     case "Paladin":
                         stack = 40;
                         break;
-                    case "Jungle Man":
+                    case "Tank":
                         stack = 40;
                         break;
                     case "Black Mage":

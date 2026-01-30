@@ -94,15 +94,15 @@
       ]
     },
     {
-      "name": "Jungle Man",
-      "summary": "GOD IS HERE",
-      "description": "The Deity of CTG. Be afraid for his judgement consumes all.",
-      "inventory": "jungleman",
-      "icon": 228,
-      "ability-cooldown": 31,
+      "name": "Tank",
+      "summary": "Frenzy Mid-Range tank.",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "tank",
+      "icon": 693,
+      "ability-cooldown": 10,
       "health-from-kills": 0,
-      "respawn-time": 5,
-      "buffs": [3, 6, 36, 107, 115],
+      "respawn-time": 4,
+      "buffs": [3, 33, 36, 46, 107, 257],
       "ability-id": 6,
       "upgrades": [
 

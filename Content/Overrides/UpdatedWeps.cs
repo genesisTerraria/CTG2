@@ -21,10 +21,15 @@ namespace CTG2.Content.Items.ModifiedWeps
 
         private uint zapinatorDelay = 51; //lowkey i think this is off rn but i cant tell 
         private uint zapinatorLastUsedCounter = 0;
+
         private uint grenadeDelay = 50;
         private uint grenadeLastUsedCounter = 0;
+
         private uint bananarangDelay = 55;
         private uint bananarangLastUsedCounter = 0;
+
+        private uint maceDelay = 60;
+        private uint maceLastUsedCounter = 0;
 
         private uint ThornChakramDelay = 30;
         private uint ThornChakramLastUsedCounter = 0;
@@ -106,6 +111,12 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.scale = 0;
                     item.crit = 0;
                     item.shoot = ProjectileID.VampireKnife;
+                    break;
+                case ItemID.Mace: // Tank
+                    item.useTime = 19;
+                    item.useAnimation = 19;
+                    item.damage = 17;
+                    item.crit = 0;
                     break;
 
                 case ItemID.ThornChakram:
@@ -258,6 +269,17 @@ namespace CTG2.Content.Items.ModifiedWeps
 
         public override bool CanUseItem(Item item, Player player)
         {
+            if (item.type == ItemID.Mace)
+            {
+                if (Main.GameUpdateCount - maceLastUsedCounter >= maceDelay)
+                {
+                    maceLastUsedCounter = Main.GameUpdateCount;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
             if (item.type == ItemID.Bananarang)
             {
                 if (Main.GameUpdateCount - bananarangLastUsedCounter >= bananarangDelay)
@@ -403,6 +425,9 @@ namespace CTG2.Content.Items.ModifiedWeps
                     break;
                 case ItemID.TopazRobe:
                     player.statManaMax2 -= 40;
+                    break;
+                case ItemID.RubyRobe:
+                    player.statManaMax2 -= 60;
                     break;
                 case ItemID.ChlorophyteHeadgear:
                     player.statManaMax2 -= 80;
