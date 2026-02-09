@@ -726,6 +726,9 @@ namespace CTG2.Content
                     packet4.Write(180);
                     packet4.Send();
 
+                    SoundEngine.PlaySound(SoundID.Item6, class12ClosestPlayer.Center);
+                    SoundEngine.PlaySound(SoundID.Item6, Player.Center);
+
                     Main.NewText("Successfully swapped!");
                     Player.GetModPlayer<ClassSystem>().clownSwapCaller = -1; //reset the caller after the logic is done
                 }
