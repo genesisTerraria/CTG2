@@ -41,7 +41,7 @@ namespace CTG2.Content.Classes
         private int hitCounter = 0;
         private float frameCount = 0;
         private int totemTeam = 0;
-        private int maxHP = 200;
+        private int maxHP = 600;
 
         private bool spawnPositionRecorded = false;
         private Vector2 spawnPosition = Vector2.Zero;
@@ -149,7 +149,7 @@ namespace CTG2.Content.Classes
 
         public override void AI()
         {
-            if (frameCount % 6 == 0) NPC.life--;
+            if (frameCount % 2 == 0) NPC.life--;
 
             float friction = 0f; //update this to change friction
 
