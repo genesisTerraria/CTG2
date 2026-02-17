@@ -1060,7 +1060,7 @@ namespace CTG2.Content
                         break;
 
                     case 5:
-                        SetCooldown(10);
+                        SetCooldown(15);
                         PaladinOnUse();
 
                         break;
@@ -1072,7 +1072,7 @@ namespace CTG2.Content
                         break;
 
                     case 7:
-                        SetCooldown(40);
+                        SetCooldown(42);
                         BlackMageOnUse();
 
                         break;
@@ -1102,7 +1102,7 @@ namespace CTG2.Content
                         break;
 
                     case 12: //not finished
-                        SetCooldown(27);
+                        SetCooldown(30);
                         ClownOnUse();
 
                         break;
