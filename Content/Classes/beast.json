@@ -29,7 +29,7 @@
     {
       "Name": "Dirt Block",
       "Type": 2,
-      "Stack": 180,
+      "Stack": 50,
       "Prefix": 0,
       "Slot": 3,
       "Modded": false
@@ -491,8 +491,8 @@
       "Modded": false
     },
     {
-      "Name": "Cactus Leggings",
-      "Type": 896,
+      "Name": "Fox Pants",
+      "Type": 1823,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 61,
@@ -507,18 +507,18 @@
       "Modded": false
     },
     {
-      "Name": "Rifle Scope",
-      "Type": 1300,
+      "Name": "Royal Gel",
+      "Type": 3090,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 63,
       "Modded": false
     },
     {
-      "Name": "Royal Gel",
-      "Type": 3090,
+      "Name": "Lucky Coin",
+      "Type": 855,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 62,
       "Slot": 64,
       "Modded": false
     },
