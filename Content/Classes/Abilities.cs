@@ -1072,7 +1072,7 @@ namespace CTG2.Content
                         break;
 
                     case 7:
-                        SetCooldown(1);
+                        SetCooldown(40);
                         BlackMageOnUse();
 
                         break;
