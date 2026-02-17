@@ -23,7 +23,11 @@ namespace CTG2.Content
     {
         public int cooldown = 0;
 
-        public int class4BuffTimer = 0;
+        public int class1EndTimer = -1;
+
+        public bool playedSound = false;
+
+        public int class4BuffTimer = -1;
         public bool class4PendingBuffs = false;
 
         public int class7HitCounter = 0;
@@ -31,14 +35,22 @@ namespace CTG2.Content
 
         public int class8HP = 0;
         public bool psychicActive = false;
+
+        public int class11EndTimer = -1;
+
         public int class12SwapTimer = -1;
         public int class12ClosestDist = 99999;
         public Player class12ClosestPlayer = null;
+
+        public int class13EndTimer = -1;
 
         public int class15AbilityTimer = -1;
 
         public CtgClass class16RushData;
         public CtgClass class16RegenData;
+
+        public int class17EndTimer = -1;
+
         public bool initializedMutant;
         public int mutantState = 1;
 
@@ -332,26 +344,26 @@ namespace CTG2.Content
                     case 304: // Leech ability
                         if (attacker.HasBuff(320) && attacker.team != Player.team)
                         {
-                            int healAmount = damage / 3;
+                            int healAmount = damage / 10;
                             attacker.statLife += healAmount;
                             attacker.HealEffect(healAmount);
                         }
                         break;
                     case 496: // Black Mage ability
-                        if (!attacker.HasBuff(206) && attacker.team != Player.team)
-                        {
-                            attacker.GetModPlayer<Abilities>().class7HitCounter++;
+                        // if (!attacker.HasBuff(206) && attacker.team != Player.team)
+                        // {
+                        //     attacker.GetModPlayer<Abilities>().class7HitCounter++;
 
-                            if (attacker.whoAmI == Main.myPlayer)
-                            {
-                                if (attacker.GetModPlayer<Abilities>().class7HitCounter < 10)
-                                    Main.NewText($"{attacker.GetModPlayer<Abilities>().class7HitCounter}/10 hits");
-                                else
-                                {
-                                    Main.NewText("10/10 hits. Ability ready!");
-                                }
-                            }
-                        }
+                        //     if (attacker.whoAmI == Main.myPlayer)
+                        //     {
+                        //         if (attacker.GetModPlayer<Abilities>().class7HitCounter < 10)
+                        //             Main.NewText($"{attacker.GetModPlayer<Abilities>().class7HitCounter}/10 hits");
+                        //         else
+                        //         {
+                        //             Main.NewText("10/10 hits. Ability ready!");
+                        //         }
+                        //     }
+                        // }
                         break;
                     case 153: // Regen Mutant
                         attacker.AddBuff(2, 150);
@@ -376,12 +388,20 @@ namespace CTG2.Content
         private void ArcherOnUse()
         {
             Player.AddBuff(320, 6 * 60);
+            class1EndTimer = 360;
+
+            playedSound = false;
+            SoundEngine.PlaySound(abilityStart.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
         }
 
 
         private void NinjaOnUse()
         {
             Player.AddBuff(BuffID.Invisibility, 60 * 60);
+
+            playedSound = false;
+            SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack, Player.Center);
+
         }
 
 
@@ -392,10 +412,13 @@ namespace CTG2.Content
             packet.Write((byte)MessageType.RequestSpawnNpc);
             packet.Write((int)Player.Center.X);
             packet.Write((int)Player.Center.Y);
-            packet.Write(ModContent.NPCType<StationaryBeast>());
+            packet.Write(-2);
             packet.Write(Player.team);
             packet.Write(0f);
             packet.Send();
+
+            playedSound = false;
+            SoundEngine.PlaySound(SoundID.DD2_BetsySummon, Player.Center);
         }
 
 
@@ -408,6 +431,10 @@ namespace CTG2.Content
 
             class4BuffTimer = 300;
             class4PendingBuffs = true;
+
+            playedSound = false;
+
+            SoundEngine.PlaySound(SoundID.DD2_KoboldIgnite, Player.Center);
         }
 
 
@@ -415,8 +442,6 @@ namespace CTG2.Content
         {
             if (class4PendingBuffs) // runs 5 second interval
             {
-                class4BuffTimer--;
-
                 if (class4BuffTimer <= 0)
                 {
 
@@ -434,6 +459,8 @@ namespace CTG2.Content
 
         private void PaladinOnUse()
         {
+            var mod = ModContent.GetInstance<CTG2>();
+
             foreach (Player other in Main.player)
             {
                 if (!other.active || other.dead || other.whoAmI == Player.whoAmI)
@@ -441,62 +468,86 @@ namespace CTG2.Content
 
                 if (Vector2.Distance(Player.Center, other.Center) <= 20 * 16 && Player.team == other.team) // 20 block radius
                 {
-                    var mod = ModContent.GetInstance<CTG2>();
-
                     ModPacket packet1 = mod.GetPacket();
                     packet1.Write((byte)MessageType.RequestAddBuff);
                     packet1.Write(other.whoAmI);
                     packet1.Write(58);
-                    packet1.Write(200);
+                    packet1.Write(120);
                     packet1.Send();
 
                     ModPacket packet2 = mod.GetPacket();
                     packet2.Write((byte)MessageType.RequestAddBuff);
                     packet2.Write(other.whoAmI);
                     packet2.Write(119);
-                    packet2.Write(200);
+                    packet2.Write(120);
                     packet2.Send();
 
                     ModPacket packet3 = mod.GetPacket();
                     packet3.Write((byte)MessageType.RequestAddBuff);
                     packet3.Write(other.whoAmI);
                     packet3.Write(2);
-                    packet3.Write(200);
+                    packet3.Write(120);
                     packet3.Send();
+
+                    ModPacket audioPacket = mod.GetPacket();
+                    audioPacket.Write((byte)MessageType.RequestAudioToClient);
+                    audioPacket.Write("CTG2/Content/Classes/WhiteMageHeal");
+                    audioPacket.Write(other.whoAmI);
+                    audioPacket.Send();
                 }
             }
 
-            Player.AddBuff(58, 100);
-            Player.AddBuff(119, 100);
-            Player.AddBuff(2, 100);
+            Player.AddBuff(58, 120);
+            Player.AddBuff(119, 120);
+            Player.AddBuff(2, 120);
+
+            ModPacket audioPacketSelf = mod.GetPacket();
+            audioPacketSelf.Write((byte)MessageType.RequestAudioToClient);
+            audioPacketSelf.Write("CTG2/Content/Classes/WhiteMageHeal");
+            audioPacketSelf.Write(Player.whoAmI);
+            audioPacketSelf.Send();
+
+            playedSound = false;
         }
 
 
         private void TankOnUse()
         {
-
+            playedSound = false;
         }
         
         
         private void BlackMageOnUse()
         {
-            if (Player.GetModPlayer<Abilities>().class7HitCounter >= 10)
-            {
-                Player.AddBuff(176, 15);
-                Player.AddBuff(206, 420);
-                Player.AddBuff(137, 420);
-                Player.AddBuff(320, 420);
+            Player.AddBuff(176, 15);
+            Player.AddBuff(206, 420);
+            Player.AddBuff(137, 420);
+            Player.AddBuff(320, 420);
 
-                class7EndTimer = 420;
+            Player.statMana = Player.statManaMax2;
 
-                Player.GetModPlayer<Abilities>().class7HitCounter = 0;
+            class7EndTimer = 420;
+            // if (Player.GetModPlayer<Abilities>().class7HitCounter >= 10)
+            // {
+            //     Player.AddBuff(176, 15);
+            //     Player.AddBuff(206, 420);
+            //     Player.AddBuff(137, 420);
+            //     Player.AddBuff(320, 420);
 
-                Main.NewText("Ability activated!");
-            }
-            else
-            {
-                Main.NewText($"{Player.GetModPlayer<Abilities>().class7HitCounter}/10 hits");
-            }
+            //     class7EndTimer = 420;
+
+            //     Player.GetModPlayer<Abilities>().class7HitCounter = 0;
+
+            //     Main.NewText("Ability activated!");
+            // }
+            // else
+            // {
+            //     Main.NewText($"{Player.GetModPlayer<Abilities>().class7HitCounter}/10 hits");
+            // }
+
+            playedSound = false;
+
+            SoundEngine.PlaySound(SoundID.Item104, Player.Center);
         }
 
 
@@ -508,6 +559,9 @@ namespace CTG2.Content
 
             psychicActive = true;
             class8HP = Player.statLife;
+
+            playedSound = false;
+            SoundEngine.PlaySound(SoundID.Item113, Player.Center);
         }
         public override bool CanUseItem(Item item)
         {
@@ -547,6 +601,8 @@ namespace CTG2.Content
 
         private void WhiteMageOnUse()
         {
+            Player.AddBuff(2, 300);
+
             var mod = ModContent.GetInstance<CTG2>();
 
             foreach (Player other in Main.player)
@@ -590,6 +646,8 @@ namespace CTG2.Content
             audioPacketSelf.Write("CTG2/Content/Classes/WhiteMageHeal");
             audioPacketSelf.Write(Player.whoAmI);
             audioPacketSelf.Send();
+
+            playedSound = false;
         }
 
 
@@ -619,14 +677,21 @@ namespace CTG2.Content
                     }
                 }
             }
+
+            playedSound = false;
+            SoundEngine.PlaySound(SoundID.DD2_MonkStaffGroundImpact.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
         }
 
 
         private void FishOnUse()
         {
-            Player.AddBuff(1, 180);
-            Player.AddBuff(104, 180);
-            Player.AddBuff(109, 180);
+            Player.AddBuff(1, 120);
+            Player.AddBuff(104, 120);
+            Player.AddBuff(109, 120);
+
+            playedSound = false;
+            class11EndTimer = 120;
+            SoundEngine.PlaySound(SoundID.Item66, Player.Center);
         }
 
 
@@ -666,6 +731,8 @@ namespace CTG2.Content
             Player.GetModPlayer<ClassSystem>().clownSwapCaller = Player.whoAmI; //Gives this reference to clownpoststatus
 
             class12SwapTimer = 60;
+
+            playedSound = false;
         }
 
 
@@ -740,6 +807,8 @@ namespace CTG2.Content
                 class12ClosestDist = 99999;
                 class12ClosestPlayer = null;
             }
+
+            playedSound = false;
         }
 
 
@@ -748,6 +817,11 @@ namespace CTG2.Content
         {
             Player.AddBuff(137, 6 * 60);
             Player.AddBuff(320, 6 * 60);
+
+            playedSound = false;
+            class13EndTimer = 360;
+
+            SoundEngine.PlaySound(SoundID.Item100, Player.Center);
         }
 
 
@@ -762,6 +836,10 @@ namespace CTG2.Content
             packet1.Write(Player.team);
             packet1.Write(0f);
             packet1.Send();
+
+            SoundEngine.PlaySound(SoundID.DD2_DefenseTowerSpawn, Player.Center);
+
+            playedSound = false;
         }
 
 
@@ -779,6 +857,10 @@ namespace CTG2.Content
                     Player.whoAmI
                 );
             }
+
+            playedSound = false;
+
+            SoundEngine.PlaySound(SoundID.NPCHit5, Player.Center);
         }
 
 
@@ -792,6 +874,9 @@ namespace CTG2.Content
                 {
                     foreach (Player other in Main.player)
                     {
+                        if (!other.active || other.dead || other.whoAmI == Player.whoAmI || other.ghost || other.team == 0)
+                            continue;
+
                         if (Player.whoAmI == other.whoAmI || Player.team == other.team) continue;
                         if (proj.Hitbox.Intersects(other.Hitbox))
                         {
@@ -804,6 +889,8 @@ namespace CTG2.Content
                     }
                 }
             }
+
+            playedSound = false;
         }
 
 
@@ -837,6 +924,7 @@ namespace CTG2.Content
                     return;
                 }
             }
+
         }
 
 
@@ -858,12 +946,19 @@ namespace CTG2.Content
 
                     break;
             }
+
+            playedSound = false;
+            SoundEngine.PlaySound(SoundID.NPCHit20, Player.Center);
         }
 
 
-        private void LeechOnUse() //not finished
+        private void LeechOnUse()
         {
             Player.AddBuff(320, 5 * 60);
+
+            playedSound = false;
+            class17EndTimer = 300;
+            SoundEngine.PlaySound(SoundID.Item60, Player.Center);
         }
 
         private void RngManOnUse()
@@ -897,38 +992,38 @@ namespace CTG2.Content
             switch (selectedClass)
             {
                 case 1:
-                    if (cooldown == 30 * 60)
-                        SoundEngine.PlaySound(abilityEnd.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+                    if (Player.dead || Player.ghost || (!playedSound && class1EndTimer == 0))
+                        SoundEngine.PlaySound(abilityEnd.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
 
                     break;
 
                 case 4:
-                    if (cooldown == 30 * 60)
-                        SoundEngine.PlaySound(abilityEnd.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+                    if (Player.dead || Player.ghost || (!playedSound && class4BuffTimer == 0))
+                        SoundEngine.PlaySound(SoundID.DD2_BookStaffCast, Player.Center);
 
                     break;
 
                 case 7:
-                    if (class7EndTimer == 0)
-                        SoundEngine.PlaySound(abilityEnd.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+                    if (Player.dead || Player.ghost || (!playedSound && class7EndTimer == 0))
+                        SoundEngine.PlaySound(SoundID.DD2_DarkMageSummonSkeleton, Player.Center);
 
                     break;
 
                 case 11:
-                    if (cooldown == 32 * 60)
-                        SoundEngine.PlaySound(abilityEnd.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+                    if (Player.dead || Player.ghost || (!playedSound && class11EndTimer == 0))
+                        SoundEngine.PlaySound(SoundID.Item77, Player.Center);
 
                     break;
 
                 case 13:
-                    if (cooldown == 35 * 60)
-                        SoundEngine.PlaySound(abilityEnd.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+                    if (Player.dead || Player.ghost || (!playedSound && class13EndTimer == 0))
+                        SoundEngine.PlaySound(SoundID.Item88, Player.Center);
 
                     break;
 
                 case 17:
-                    if (cooldown == 35 * 60)
-                        SoundEngine.PlaySound(abilityEnd.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+                    if (Player.dead || Player.ghost || (!playedSound && class17EndTimer == 0))
+                        SoundEngine.PlaySound(SoundID.Item90, Player.Center);
 
                     break;
             }
@@ -938,11 +1033,6 @@ namespace CTG2.Content
 
             if (((Player.HeldItem.type == ItemID.WhoopieCushion && Player.controlUseItem && Player.itemTime == 0) || CTG2.Ability1Keybind.JustPressed) && cooldown == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && !Player.HasBuff(BuffID.Webbed)) // Only activate if not on cooldown
             {
-                if (selectedClass == 1 || selectedClass == 4 || selectedClass == 7 || selectedClass == 11 || selectedClass == 13 || selectedClass == 17)
-                    SoundEngine.PlaySound(abilityStart.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
-                if (CTG2.Ability1Keybind.JustPressed && !(Player.HeldItem.type == ItemID.WhoopieCushion && Player.controlUseItem && Player.itemTime == 0))
-                    SoundEngine.PlaySound(SoundID.Item16);
-
                 switch (selectedClass)
                 {
                     case 1:
@@ -1024,7 +1114,7 @@ namespace CTG2.Content
                         break;
 
                     case 14: //not finished
-                        SetCooldown(20); //20
+                        SetCooldown(30); //20
                         TikiPriestOnUse();
 
                         break;
@@ -1072,8 +1162,25 @@ namespace CTG2.Content
             if (cooldown > 0)
                 cooldown--;
 
+            if (class1EndTimer >= 0)
+                class1EndTimer--;
+
+            if (class4BuffTimer >= 0)
+                class4BuffTimer--;
+
             if (class7EndTimer >= 0)
                 class7EndTimer--;
+
+            if (class11EndTimer >= 0)
+                class11EndTimer--;
+
+            if (class13EndTimer >= 0)
+                class13EndTimer--;
+            
+            if (class17EndTimer >= 0)
+                class17EndTimer--;
+
+
         }
         public override void UpdateLifeRegen()
         {
