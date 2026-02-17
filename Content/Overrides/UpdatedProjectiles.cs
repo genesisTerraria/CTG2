@@ -6,6 +6,7 @@ using CTG2.Content.Items;
 using Terraria.Audio;
 using CTG2.Content.ClientSide;
 using CTG2.Content.Buffs;
+using Microsoft.Xna.Framework;
 
 
 public class ProjectileOverrides : GlobalProjectile
@@ -185,12 +186,13 @@ public class ModifyHurtModPlayer : ModPlayer
         if (modPlayer.currentClass.Name == "Paladin")
         {
             Player.AddBuff(BuffID.RapidHealing, 300);
+            Player.AddBuff(BuffID.Lovestruck, 300);
 
             if (Player.HeldItem.type == 4760 && Main.mouseRight) // Paladin buffs when hit
             {
                 Player.AddBuff(BuffID.Honey, 300); //check if honey buff even works later
                 Player.AddBuff(2, 180); // regeneration
-                Player.AddBuff(ModContent.BuffType<Retaliation>(), 24);
+                Player.AddBuff(ModContent.BuffType<Retaliation>(), 30);
             }
         }
         else if (info.DamageSource.SourceProjectileType == ModContent.ProjectileType<AmalgamatedHandProjectile1>() || info.DamageSource.SourceProjectileType == ModContent.ProjectileType<AmalgamatedHandProjectile2>())
@@ -202,7 +204,23 @@ public class ModifyHurtModPlayer : ModPlayer
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
             if (attackerPlayer.currentClass.Name == "Tiki Priest")
+            {
                 attacker.Heal(4);
+
+                foreach (Player player in Main.player)
+                {
+                    if (!player.active || player.dead)
+                        continue;
+                    // ai[0] stores tiki's team
+                    if (player.team != attacker.team)
+                        continue;
+
+                    if (Vector2.Distance(attacker.Center, player.Center) <= 14 * 16) // 14 block radius
+                    {
+                        player.Heal(4);
+                    }
+                }
+            }
             Player.ClearBuff(BuffID.Poisoned);
         }
         else if (info.DamageSource.SourceProjectileType == 273)
