@@ -1,6 +1,6 @@
 {
-  "HealthPoints": 100,
-  "ManaPoints": 20,
+  "HealthPoints": 500,
+  "ManaPoints": 200,
   "InventoryItems": [
     {
       "Name": "Stardust Pickaxe",
