@@ -29,7 +29,7 @@
     {
       "Name": "Dirt Block",
       "Type": 2,
-      "Stack": 100,
+      "Stack": 25,
       "Prefix": 0,
       "Slot": 3,
       "Modded": false
@@ -502,15 +502,15 @@
       "Name": "Lucky Horseshoe",
       "Type": 158,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 76,
       "Slot": 62,
       "Modded": false
     },
     {
-      "Name": "Cloud in a Bottle",
-      "Type": 53,
+      "Name": "Tsunami in a Bottle",
+      "Type": 3201,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 76,
       "Slot": 63,
       "Modded": false
     },
