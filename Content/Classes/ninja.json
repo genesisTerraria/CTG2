@@ -27,9 +27,9 @@
       "Modded": true
     },
     {
-      "Name": "Dirt Block",
-      "Type": 2,
-      "Stack": 100,
+      "Name": "Mud Block",
+      "Type": 176,
+      "Stack": 50,
       "Prefix": 0,
       "Slot": 3,
       "Modded": false
@@ -502,7 +502,7 @@
       "Name": "Lucky Horseshoe",
       "Type": 158,
       "Stack": 1,
-      "Prefix": 64,
+      "Prefix": 65,
       "Slot": 62,
       "Modded": false
     },
@@ -510,7 +510,7 @@
       "Name": "Step Stool",
       "Type": 4341,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 65,
       "Slot": 63,
       "Modded": false
     },
