@@ -111,10 +111,25 @@ namespace CTG2.Content
                 if (type == TileID.GreenDungeonBrick)
                     return false;
 
+                if (type == TileID.DemoniteBrick)
+                    return false;
+
+                if (type == TileID.CrimstoneBrick)
+                    return false;
+
                 if (type == TileID.Candles)
                     return false;
 
                 if (type == TileID.Asphalt)
+                    return false;
+
+                if (type == TileID.Campfire)
+                    return false;
+
+                if (type == TileID.WaterCandle)
+                    return false;
+
+                if (type == TileID.Bubble)
                     return false;
 
                 return base.CanKillTile(i, j, type, ref blockDamaged);
