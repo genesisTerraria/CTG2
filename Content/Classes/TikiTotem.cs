@@ -20,28 +20,43 @@ namespace CTG2.Content.Classes
 
         public override bool InstancePerEntity => true;
 
-        public override void AI(NPC npc)
-        {
-            if (npc.life <= 0 && previousLife > 0) //use this for future sounds to play ondeath for all npcs that decay (no death reason)
+            public override void AI(NPC npc)
             {
-                if (npc.type == ModContent.NPCType<TikiTotem>())
-                    SoundEngine.PlaySound(totemCrumble.WithVolumeScale(Main.soundVolume * 3f), npc.Center);
-                else if (npc.type == ModContent.NPCType<StationaryBeast>())
-                    SoundEngine.PlaySound(SoundID.NPCDeath1, npc.Center);
-            }
+                if (npc.life <= 0 && previousLife > 0) //use this for future sounds to play ondeath for all npcs that decay (no death reason)
+                {
+                    if (npc.type == ModContent.NPCType<TikiTotem>())
+                    {
+                        SoundEngine.PlaySound(totemCrumble.WithVolumeScale(Main.soundVolume * 3f), npc.Center);
 
-            previousLife = npc.life;
-        }
+                        int tikiTeam = (int)npc.ai[0];
+
+                        if (tikiTeam == 1)
+                            for (int i = 0; i < 5; i++)
+                                Dust.NewDust(npc.position, npc.width, npc.height, 90);
+                        else if (tikiTeam == 3)
+                            for (int i = 0; i < 5; i++)
+                                Dust.NewDust(npc.position, npc.width, npc.height, 88);
+                    }
+                    else if (npc.type == ModContent.NPCType<StationaryBeast>())
+                        SoundEngine.PlaySound(SoundID.NPCDeath1, npc.Center);
+                }
+
+                previousLife = npc.life;
+            }
     }
 
 
     public class TikiTotem : ModNPC
     {
-        private float healFrameGap = 30;
-        private int hitCounter = 0;
+        private float healFrameGap = 45;
+        //private int hitCounter = 0;
         private float frameCount = 0;
+        private float firstFrame = 0;
         private int totemTeam = 0;
-        private int maxHP = 600;
+        private int maxHP = 450;
+
+        private float amplitude = 16f; // 1 block = 16 pixels
+        private float period = 120f;   // 2 seconds * 60 ticks
 
         private bool spawnPositionRecorded = false;
         private Vector2 spawnPosition = Vector2.Zero;
@@ -58,8 +73,8 @@ namespace CTG2.Content.Classes
         public override void SetDefaults()
         {   
             totemTeam = (int)NPC.ai[0];
-            NPC.width = 32;
-            NPC.height = 48;
+            NPC.width = 22;
+            NPC.height = 42;
             NPC.damage = 0; 
             NPC.defense = 0;
             NPC.lifeMax = maxHP;
@@ -77,6 +92,11 @@ namespace CTG2.Content.Classes
         {
             if (item.type != ModContent.ItemType<ShardstonePickaxe>())
                 NPC.immune[player.whoAmI] = 40;
+
+            int tikiTeam = (int)NPC.ai[0];
+
+            if (player.whoAmI >= 0 && player.whoAmI < Main.maxPlayers && tikiTeam == player.team)
+                modifiers.SetMaxDamage(0);
         }
 
 
@@ -86,11 +106,7 @@ namespace CTG2.Content.Classes
             {
                 NPC.immune[projectile.owner] = 40;
             }
-        }
 
-
-        public override bool? CanBeHitByProjectile(Projectile projectile)
-        {
             int tikiTeam = (int)NPC.ai[0];
 
             if (projectile.owner >= 0 && projectile.owner < Main.maxPlayers)
@@ -98,8 +114,22 @@ namespace CTG2.Content.Classes
                 Player player = Main.player[projectile.owner];
 
                 if (tikiTeam == player.team)
-                    return false;
+                    modifiers.SetMaxDamage(0);
             }
+        }
+
+
+        public override bool? CanBeHitByProjectile(Projectile projectile)
+        {
+            // int tikiTeam = (int)NPC.ai[0];
+
+            // if (projectile.owner >= 0 && projectile.owner < Main.maxPlayers)
+            // {
+            //     Player player = Main.player[projectile.owner];
+
+            //     if (tikiTeam == player.team)
+            //         return false;
+            // }
 
             return true;
         }
@@ -107,10 +137,10 @@ namespace CTG2.Content.Classes
 
         public override bool? CanBeHitByItem (Player player, Item item)
         {
-            int tikiTeam = (int)NPC.ai[0];
+            // int tikiTeam = (int)NPC.ai[0];
 
-            if (player.whoAmI >= 0 && player.whoAmI < Main.maxPlayers && tikiTeam == player.team)
-                return false;
+            // if (player.whoAmI >= 0 && player.whoAmI < Main.maxPlayers && tikiTeam == player.team)
+            //     return false;
 
             return true;
         }
@@ -120,36 +150,25 @@ namespace CTG2.Content.Classes
         {
             int tikiTeam = (int)NPC.ai[0];
 
-            if (NPC.life <= 0)
+            if (NPC.life > 0)
             {
                 if (tikiTeam == 1)
                     for (int i = 0; i < 5; i++)
                         Dust.NewDust(NPC.position, NPC.width, NPC.height, 90);
-                else if (tikiTeam == 1)
+                else if (tikiTeam == 3)
                     for (int i = 0; i < 5; i++)
                         Dust.NewDust(NPC.position, NPC.width, NPC.height, 88);
-                
-                SoundEngine.PlaySound(totemCrumble.WithVolumeScale(Main.soundVolume * 3f), NPC.Center);
-            }
-            else
-            {
-                if (tikiTeam == 1)
-                    for (int i = 0; i < 5; i++)
-                        Dust.NewDust(NPC.position, NPC.width, NPC.height, 60);
-                else if (tikiTeam == 1)
-                    for (int i = 0; i < 5; i++)
-                        Dust.NewDust(NPC.position, NPC.width, NPC.height, 59);
             }
 
-            SoundEngine.PlaySound(SoundID.NPCHit16, NPC.Center);
+            SoundEngine.PlaySound(SoundID.NPCHit42, NPC.Center);
 
-            hitCounter = 1;
+            //hitCounter = 1;
         }
 
 
         public override void AI()
         {
-            if (frameCount % 2 == 0) NPC.life--;
+            if (frameCount % 4 == 0) NPC.life--;
 
             float friction = 0f; //update this to change friction
 
@@ -172,10 +191,15 @@ namespace CTG2.Content.Classes
                 spawnPosition = NPC.Center;
                 NPC.velocity = Vector2.Zero;
                 NPC.netUpdate = true;
+                firstFrame = frameCount;
             }
+            else
+            {
+                float omega = 2f * MathF.PI / period;
 
-            NPC.Center = spawnPosition;
-            NPC.velocity = Vector2.Zero;
+                float velY = amplitude * omega * (float)Math.Cos((frameCount - firstFrame) * omega);
+                NPC.velocity = new Vector2(0, velY);
+            }
 
             foreach (Player player in Main.player)
             {
@@ -191,6 +215,15 @@ namespace CTG2.Content.Classes
                 }
             }
 
+            for (int i = 0; i < NPC.maxBuffs; i++) // Remove all debuffs
+            {
+                if (NPC.buffType[i] != 0)
+                {
+                    NPC.DelBuff(i);
+                    i--; // important: re-check index after removal
+                }
+            }
+
             frameCount++;
         }
 
@@ -202,28 +235,34 @@ namespace CTG2.Content.Classes
             Vector2 origin = new Vector2(frame.Width / 2f, frame.Height / 2f);
             Color teamColar = Color.Gray;
 
+            //float pulseTime = 48;
+
             int tikiTeam = (int)NPC.ai[0];
-            if (hitCounter > 0 && hitCounter <= 50)
-            {
-                if (tikiTeam == 1)
-                    teamColar = new Color(255, hitCounter * 5, hitCounter * 5, 155 + hitCounter * 2);
-                else if (tikiTeam == 3)
-                    teamColar = new Color(hitCounter * 5, hitCounter * 5, 255, 155 + hitCounter * 2);
-            }
-            else if (hitCounter > 50)
-            {
-                if (tikiTeam == 1)
-                    teamColar = new Color(255, 250 - (hitCounter - 50) * 5, 250 - (hitCounter - 50) * 5, 255 - (hitCounter - 50) * 2);
-                else if (tikiTeam == 3)
-                    teamColar = new Color(250 - (hitCounter - 50) * 5, 250 - (hitCounter - 50) * 5, 255, 255 - (hitCounter - 50) * 2);
-            }
-            else
-            {
-                if (tikiTeam == 1)
-                    teamColar = new Color(255, 0, 0, 155);
-                else if (tikiTeam == 3)
-                    teamColar = new Color(0, 0, 255, 155);
-            }
+            if (tikiTeam == 1)
+                teamColar = new Color(255, 0, 0, 155);
+            else if (tikiTeam == 3)
+                teamColar = new Color(0, 0, 255, 155);
+            // if (hitCounter > 0 && hitCounter <= pulseTime / 2)
+            // {
+            //     if (tikiTeam == 1)
+            //         teamColar = new Color(255, 50 * hitCounter / (pulseTime / 2), 50 * hitCounter / (pulseTime / 2), 155);
+            //     else if (tikiTeam == 3)
+            //         teamColar = new Color(50 * hitCounter / (pulseTime / 2), 50 * hitCounter / (pulseTime / 2), 255, 155);
+            // }
+            // else if (hitCounter > pulseTime / 2)
+            // {
+            //     if (tikiTeam == 1)
+            //         teamColar = new Color(255, 50 - 50 * (hitCounter - pulseTime / 2) / (pulseTime / 2), 50 - 50 * (hitCounter - pulseTime / 2) / (pulseTime / 2), 155);
+            //     else if (tikiTeam == 3)
+            //         teamColar = new Color(50 - 50 * (hitCounter - pulseTime / 2) / (pulseTime / 2), 50 - 50 * (hitCounter - pulseTime / 2) / (pulseTime / 2), 255, 155);
+            // }
+            // else
+            // {
+            //     if (tikiTeam == 1)
+            //         teamColar = new Color(255, 0, 0, 155);
+            //     else if (tikiTeam == 3)
+            //         teamColar = new Color(0, 0, 255, 155);
+            // }
 
             Vector2 drawPosition = NPC.Center - screenPos + new Vector2(0, 2.8f);
 
@@ -239,8 +278,8 @@ namespace CTG2.Content.Classes
                 0f
             );
 
-            if (hitCounter > 0 && hitCounter < 100) hitCounter++;
-            else if (hitCounter >= 100) hitCounter = 0;
+            // if (hitCounter > 0 && hitCounter < pulseTime) hitCounter++;
+            // else if (hitCounter >= pulseTime) hitCounter = 0;
         }
     }
 }
