@@ -19,6 +19,9 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint rforkDelay = 40;
         private uint rforkLastUsedCounter = 0;
 
+        private uint nagDelay = 40;
+        private uint nagLastUsedCounter = 0;
+
         private uint zapinatorDelay = 51; //lowkey i think this is off rn but i cant tell 
         private uint zapinatorLastUsedCounter = 0;
 
@@ -176,7 +179,13 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shootSpeed = 3.6f;
                     item.crit = 0;
                     break;
-
+                case 537: // cobalt naginata
+                    item.damage = 36;
+                    item.useAnimation = 22;
+                    item.useTime = 22;
+                    item.shootSpeed = 4.4f;
+                    item.crit = 0;
+                    break;
                 case 4347: //gray zapinator
                     item.damage = 35;
                     item.useAnimation = 18;
@@ -341,6 +350,17 @@ namespace CTG2.Content.Items.ModifiedWeps
                 if (Main.GameUpdateCount - rforkLastUsedCounter >= rforkDelay)
                 {
                     rforkLastUsedCounter = Main.GameUpdateCount;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (item.type == ItemID.CobaltNaginata) //rottedfork
+            {
+                if (Main.GameUpdateCount - nagLastUsedCounter >= nagDelay)
+                {
+                    nagLastUsedCounter = Main.GameUpdateCount;
 
                     return true;
                 }
