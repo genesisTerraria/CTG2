@@ -12,7 +12,7 @@ namespace CTG2.Content.Items
 			Item.damage = 8;
 			Item.useTime = 6;
 			Item.useAnimation = 12;
-			Item.scale = .75f;
+			Item.scale = .8f;
    			Item.crit = 0;
 			Item.knockBack = 0.7f;
 		}
