@@ -126,7 +126,9 @@ namespace CTG2
         SyncAbilityAttributes = 88,
         SyncClassSystemAttributes = 89,
         ArcherDash = 90,
-        SyncAddBuff = 91
+        SyncAddBuff = 91,
+        RequestHeal = 92,
+        SyncHeal = 93
     }
 
     public class CTG2 : Mod
@@ -187,7 +189,7 @@ namespace CTG2
                 }
                 catch
                 {
-                    Main.NewText("Failed to load or parse client config file.", Microsoft.Xna.Framework.Color.Red);
+                    //Main.NewText("Failed to load or parse client config file.", Microsoft.Xna.Framework.Color.Red);
                     return;
                 }
             }
@@ -1056,6 +1058,48 @@ namespace CTG2
                         Main.player[plyrindex].Heal(200);
                     }
                     break;
+                case (byte)MessageType.RequestHeal:
+                {
+                    if (Main.netMode != NetmodeID.Server)
+                        break;
+                
+                    int plyrindex = reader.ReadInt32();
+                    int amt = reader.ReadInt32();
+                
+                    Player player = Main.player[plyrindex];
+                    if (!player.active)
+                        break;
+                
+                    // Server heals
+                    player.Heal(amt);
+                
+                    // Sync to all clients (including sender)
+                    ModPacket packet = GetPacket();
+                    packet.Write((byte)MessageType.SyncHeal);
+                    packet.Write(plyrindex);
+                    packet.Write(amt);
+                    packet.Send();
+
+                    break;
+                }
+
+                case (byte)MessageType.SyncHeal:
+                {
+                    // SERVER -> CLIENTS ONLY
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                        break;
+                
+                    int playerID = reader.ReadInt32();
+                    int amount = reader.ReadInt32();
+                
+                    Player player = Main.player[playerID];
+                    if (!player.active)
+                        break;
+                
+                    player.Heal(amount);
+                    break;
+                }
+
                 // ...existing code...
                 case (byte)MessageType.RequestMute:
                     {
@@ -1324,7 +1368,7 @@ namespace CTG2
                         var val = PlayerData.NetReceive(reader);
                         PlayerDataDictionary[key] = val;
                     }
-                    Main.NewText("Received Dictionary Sync successfuly");
+                    //Main.NewText("Received Dictionary Sync successfuly");
                     break; 
 
                 case (byte)MessageType.RequestMakeMeAdmin:
