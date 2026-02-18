@@ -129,9 +129,6 @@ namespace CTG2.Content
                 if (type == TileID.WaterCandle)
                     return false;
 
-                if (type == TileID.Bubble)
-                    return false;
-
                 return base.CanKillTile(i, j, type, ref blockDamaged);
             }
         }
