@@ -16,9 +16,8 @@ namespace CTG2.Content.Items.ModifiedWeps
     public class OverloadedWeps : GlobalItem
     {
 
-        private uint rforkDelay = 40;
-        private uint rforkLastUsedCounter = 0;
-
+        private uint rForkDelay = 37;
+        private uint rForkLastUsedCounter = 0;
         private uint nagDelay = 40;
         private uint nagLastUsedCounter = 0;
 
@@ -34,13 +33,10 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint maceDelay = 60;
         private uint maceLastUsedCounter = 0;
 
-        private uint ThornChakramDelay = 30;
-        private uint ThornChakramLastUsedCounter = 0;
-
         private uint flamarangDelay = 30;
         private uint flamarangLastUsedCounter = 0;
 
-        private uint blowgunDelay = 40;
+        private uint blowgunDelay = 50;
         private uint blowgunLastUsedCounter = 0;
 
         private uint goldenShowerDelay = 58;
@@ -70,8 +66,8 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useAnimation = 1;
                     break;
                 case ItemID.GoldenShower: // Fish
-                    item.useTime = 22;
-                    item.useAnimation = 22;
+                    item.useTime = 15;
+                    item.useAnimation = 15;
                     item.shootSpeed = 6.37f;
                     item.damage = 35;
                     item.mana = 0;
@@ -83,16 +79,16 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useTime = 18;
                     item.useAnimation = 18;
                     item.shoot = 267;
-                    item.shootSpeed = 13f;
+                    item.shootSpeed = 15f;
                     item.useAmmo = AmmoID.None;
                     item.autoReuse = false;
-                    item.damage = 33;
+                    item.damage = 36;
                     item.crit = 0;
                     break;
                 case ItemID.Bananarang: // Tree
                     item.useTime = 20;
                     item.useAnimation = 20;
-                    item.shootSpeed = 11f;
+                    item.shootSpeed = 11.4f;
                     item.knockBack = 6f;
                     item.autoReuse = false;
                     item.damage = 35;
@@ -101,14 +97,14 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case ItemID.ChainKnife: // Leech
                     item.useTime = 4;
                     item.useAnimation = 4;
-                    item.shootSpeed = 15;
-                    item.damage = 31;
+                    item.shootSpeed = 28;
+                    item.damage = 29;
                     item.crit = 0;
                     break;
                 case ItemID.CursedFlames: // Leech
-                    item.useTime = 35;
-                    item.useAnimation = 35;
-                    item.shootSpeed = 12.5f;
+                    item.useTime = 43;
+                    item.useAnimation = 43;
+                    item.shootSpeed = 10;
                     item.damage = 23;
                     item.mana = 0;
                     item.scale = 0;
@@ -121,19 +117,23 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.damage = 17;
                     item.crit = 0;
                     break;
-
-                case ItemID.ThornChakram:
-                    item.damage = 37;
-                    item.useTime = 14;
-                    item.useAnimation = 14;
+                case ItemID.NebulaArcanum:
+                    item.damage = 69;
+                    break;
+                case ItemID.AmethystStaff:
+                    item.damage = 39;
+                    item.useTime = 22;
+                    item.useAnimation = 22;
                     item.crit = 0;
-                    item.shootSpeed = 13f;
-                    break; //change proj later
-
+                    item.shootSpeed = 11.58f;
+                    item.mana = 5;
+                    item.shoot = 33;
+                    item.scale = 0;
+                    break;
                 case 2586: //miner //maybe ovveride projectile to not do self damage or at least not self knockback
                     item.damage = 40;
                     item.useTime = 21;
-                    item.useAnimation = 20;
+                    item.useAnimation = 21;
                     item.crit = 0;
                     break;
 
@@ -159,12 +159,12 @@ namespace CTG2.Content.Items.ModifiedWeps
                     break;
 
                 case ItemID.IceRod:
-                    item.damage = 13;
+                    item.damage = 14;
                     break;
 
                 //psychic projectile still needs to be ovverided
                 case 272: //bmage wep
-                    item.damage = 38;
+                    item.damage = 37;
                     item.shoot = 496;
                     item.useAnimation = 18;
                     item.useTime = 18;
@@ -173,14 +173,13 @@ namespace CTG2.Content.Items.ModifiedWeps
                     break;
 
                 case 802: //rotted fork
-                    item.damage = 30;
-                    item.useAnimation = 22;
-                    item.useTime = 22;
-                    item.shootSpeed = 3.6f;
+                    item.damage = 34;
+                    item.useAnimation = 37;
+                    item.useTime = 37;
                     item.crit = 0;
                     break;
                 case 537: // cobalt naginata
-                    item.damage = 36;
+                    item.damage = 38;
                     item.useAnimation = 22;
                     item.useTime = 22;
                     item.shootSpeed = 4.4f;
@@ -227,7 +226,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     break;
 
                 case ItemID.FlowerofFire:
-                    item.damage = 33;
+                    item.damage = 32;
                     item.crit = 0;
                     break;
 
@@ -235,8 +234,11 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.damage = 35;
                     break;
 
-                case 220:
-                    item.damage = 17;
+                case ItemID.Sunfury:
+                    item.damage = 19;
+                    item.useTime = 40;
+                    item.useAnimation = 40;
+                    item.shootSpeed = 13.8f;
                     break;
                 case 4760: //Pala shield
                     item.shoot = 0;
@@ -245,14 +247,15 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useTime =1;
                     item.useAnimation=1;
                     break;
-                case 165:
+                case 165: //paladin weapon
                     item.shoot = 699;
                     item.scale = 0;
-                    item.damage = 34;
-                    item.useTime = 20;
-                    item.useAnimation = 20;
-                    item.shootSpeed = 48f;
+                    item.damage = 33;
+                    item.useTime = 14;
+                    item.useAnimation = 14;
+                    item.shootSpeed = 46f;
                     item.crit = 0;
+                    item.mana = 11;
                     break;
             }
         }
@@ -300,22 +303,22 @@ namespace CTG2.Content.Items.ModifiedWeps
                 else
                     return false;
             }
-            else if (item.type == ItemID.ThornChakram)
+            else if (item.type == ItemID.Flamarang)
             {
-                if (Main.GameUpdateCount - ThornChakramLastUsedCounter >= ThornChakramDelay)
+                if (Main.GameUpdateCount - flamarangLastUsedCounter >= flamarangDelay)
                 {
-                    ThornChakramLastUsedCounter = Main.GameUpdateCount;
+                    flamarangLastUsedCounter = Main.GameUpdateCount;
 
                     return true;
                 }
                 else
                     return false;
             }
-            else if (item.type == ItemID.Flamarang)
+            else if (item.type == ItemID.TheRottedFork)
             {
-                if (Main.GameUpdateCount - flamarangLastUsedCounter >= flamarangDelay)
+                if (Main.GameUpdateCount - rForkLastUsedCounter >= rForkDelay)
                 {
-                    flamarangLastUsedCounter = Main.GameUpdateCount;
+                    rForkLastUsedCounter = Main.GameUpdateCount;
 
                     return true;
                 }
@@ -344,19 +347,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 else
                     return false;
             }
-
-            else if (item.type == 802) //rottedfork
-            {
-                if (Main.GameUpdateCount - rforkLastUsedCounter >= rforkDelay)
-                {
-                    rforkLastUsedCounter = Main.GameUpdateCount;
-
-                    return true;
-                }
-                else
-                    return false;
-            }
-            else if (item.type == ItemID.CobaltNaginata) //rottedfork
+            else if (item.type == ItemID.CobaltNaginata)
             {
                 if (Main.GameUpdateCount - nagLastUsedCounter >= nagDelay)
                 {
