@@ -124,7 +124,7 @@ public class UIManager : ModSystem
         var blueBars = (int)Math.Clamp(Math.Round(blueGemPosition / 100f * totalBars), 0, totalBars);
         var redBars = (int)Math.Clamp(Math.Round(redGemPosition / 100f * totalBars), 0, totalBars);
         // Draw Gem Position like in CTG
-        string blueGemIndicator  = "[c/0000FF:⬢"+ new string('▮', blueBars) + "]" + "[i:1524]" + "[c/FFFFFF:"+ new string('▮', totalBars-blueBars) + "⬢]";
+        string blueGemIndicator  = "[c/0077B6:⬢"+ new string('▮', blueBars) + "]" + "[i:1524]" + "[c/FFFFFF:"+ new string('▮', totalBars-blueBars) + "⬢]";
 
         string redGemIndicator = "[c/FFFFFF:⬢"+ new string('▮', totalBars-redBars) + "]" + "[i:1526]" + "[c/FF0000:"+ new string('▮', redBars) + "⬢]";
         
@@ -134,7 +134,8 @@ public class UIManager : ModSystem
         }
         if (!string.IsNullOrEmpty(blueGemStatus))
         {
-            Utils.DrawBorderString(Main.spriteBatch, blueGemStatus, blueGemRow, Color.Blue);
+            Color blueColor = new Color(0, 119, 182);
+            Utils.DrawBorderString(Main.spriteBatch, blueGemStatus, blueGemRow, blueColor);
         }
         if (!string.IsNullOrEmpty(redGemStatus))
         {
@@ -216,12 +217,12 @@ public class UIManager : ModSystem
         //draw map name
         string mapText = $"Map: {GameInfo.mapName}";
         Vector2 mapPos = new Vector2(Main.screenWidth - 320, 400);
-        Color mapCol = Color.Pink;
+        Color mapCol = Color.White;
 
         Utils.DrawBorderString(Main.spriteBatch, mapText, mapPos, mapCol);
 
         //draw team sizes
-        string teamText = $"Team size: [c/0000FF:{GameInfo.blueTeamSize}] v [c/FF0000:{GameInfo.redTeamSize}]";
+        string teamText = $"Team size: [c/0077B6:{GameInfo.blueTeamSize}] v [c/FF0000:{GameInfo.redTeamSize}]";
         Vector2 teamTextPos = new Vector2(Main.screenWidth - 320, 325);
 
         ChatManager.DrawColorCodedStringWithShadow(
@@ -251,7 +252,7 @@ public class UIManager : ModSystem
         // );
 
         //draw cap progress counters
-        string progress = $"Furthest gem carry: [c/0000FF:{GameInfo.blueFurthest}%] v [c/FF0000:{GameInfo.redFurthest}%]";
+        string progress = $"Furthest gem carry: [c/0077B6:{GameInfo.blueFurthest}%] v [c/FF0000:{GameInfo.redFurthest}%]";
         Vector2 progressPos = new Vector2(Main.screenWidth - 320, 675);
 
         ChatManager.DrawColorCodedStringWithShadow(
@@ -279,6 +280,6 @@ public class UIManager : ModSystem
         string kdrText = $"Kills: {Main.LocalPlayer.GetModPlayer<PlayerManager>().kills}  |  Deaths: {Main.LocalPlayer.GetModPlayer<PlayerManager>().deaths}  |  Damage: {Main.LocalPlayer.GetModPlayer<PlayerManager>().damage}";
         Vector2 kdrRow = new Vector2(Main.screenWidth - 320, 725);
         if (matchStage == 2)
-            Utils.DrawBorderString(Main.spriteBatch, kdrText, kdrRow, Color.BlueViolet);
+            Utils.DrawBorderString(Main.spriteBatch, kdrText, kdrRow, Color.White);
     }
 }
