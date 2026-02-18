@@ -182,7 +182,6 @@ public class ModifyHurtModPlayer : ModPlayer
             }
         }
 
-
         if (modPlayer.currentClass.Name == "Paladin")
         {
             Player.AddBuff(BuffID.RapidHealing, 300);
@@ -194,10 +193,6 @@ public class ModifyHurtModPlayer : ModPlayer
                 Player.AddBuff(2, 180); // regeneration
                 Player.AddBuff(ModContent.BuffType<Retaliation>(), 30);
             }
-        }
-        else if (info.DamageSource.SourceProjectileType == ModContent.ProjectileType<AmalgamatedHandProjectile1>() || info.DamageSource.SourceProjectileType == ModContent.ProjectileType<AmalgamatedHandProjectile2>())
-        {
-            Player.ClearBuff(BuffID.OnFire);
         }
         else if (info.DamageSource.SourceProjectileType == 267)
         {
@@ -223,22 +218,39 @@ public class ModifyHurtModPlayer : ModPlayer
             }
             Player.ClearBuff(BuffID.Poisoned);
         }
+        else if (info.DamageSource.SourceProjectileType == 153)
+        {
+            Player attacker = Main.player[attackerIndex];
+            var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
+            if (attackerPlayer.currentClass.Name == "Mutant")
+            {
+                attacker.AddBuff(2, 60);
+                attacker.AddBuff(48, 360);
+
+                ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
+                packet.Write((byte)CTG2.MessageType.RequestAddBuff);
+                packet.Write(attacker.whoAmI);
+                packet.Write(2);
+                packet.Write(60);
+                packet.Send();
+
+                packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
+                packet.Write((byte)CTG2.MessageType.RequestAddBuff);
+                packet.Write(attacker.whoAmI);
+                packet.Write(48);
+                packet.Write(360);
+                packet.Send();
+            }
+        }
         else if (info.DamageSource.SourceProjectileType == 273)
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
             if (attackerPlayer.currentClass.Name == "Leech")
             {
-                attacker.AddBuff(2, 90);
                 attacker.AddBuff(58, 90);
 
                 ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
-                packet.Write((byte)CTG2.MessageType.RequestAddBuff);
-                packet.Write(attacker.whoAmI);
-                packet.Write(2);
-                packet.Write(90);
-                packet.Send();
-
                 packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
                 packet.Write((byte)CTG2.MessageType.RequestAddBuff);
                 packet.Write(attacker.whoAmI);
@@ -287,29 +299,36 @@ public class ModifyHurtModPlayer : ModPlayer
                 packet.Send();
             }
         }
-        else if (info.DamageSource.SourceProjectileType == ProjectileID.ThornChakram)
+        else if (info.DamageSource.SourceProjectileType == ProjectileID.Sunfury && !Player.HasBuff(BuffID.OnFire))
+        {
+            Player.ClearBuff(BuffID.OnFire);
+        }
+        else if (info.DamageSource.SourceProjectileType == ProjectileID.ThornChakram && !Player.HasBuff(BuffID.Poisoned))
         {
             Player.ClearBuff(BuffID.Poisoned);
         }
-        else if (info.DamageSource.SourceProjectileType == 480) // jman cursed inferno
+        else if (info.DamageSource.SourceProjectileType == 480 && !Player.HasBuff(BuffID.CursedInferno)) // jman cursed inferno
         {
             Player.ClearBuff(BuffID.CursedInferno);
         }
-        else if (info.DamageSource.SourceProjectileType == 19) //flamebunny flamrang
+        else if (info.DamageSource.SourceProjectileType == 19 && !Player.HasBuff(BuffID.OnFire)) //flamebunny flamrang
         {
-            Player.ClearBuff(24);
+            Player.ClearBuff(BuffID.OnFire);
         }
-        else if (info.DamageSource.SourceProjectileType == 15) //flamebunny fof
+        else if (info.DamageSource.SourceProjectileType == 15 && !Player.HasBuff(BuffID.OnFire)) //flamebunny fof
         {
-            Player.ClearBuff(24);
+            Player.ClearBuff(BuffID.OnFire);
         }
-        else if (info.DamageSource.SourceProjectileType == 280) //goldenshowerproj
+        else if (info.DamageSource.SourceProjectileType == 280 && !Player.HasBuff(BuffID.Ichor)) //goldenshowerproj
         {
             Player.ClearBuff(BuffID.Ichor);
         }
-        else if (info.DamageSource.SourceProjectileType == 267) //Poison dart
+        else if (info.DamageSource.SourceProjectileType == 267 && !Player.HasBuff(BuffID.Poisoned)) //Poison dart
         {
             Player.ClearBuff(BuffID.Poisoned);
         }
+
+        Player.ClearBuff(BuffID.Ichor);
+        Player.ClearBuff(BuffID.Poisoned);
     }
 }
