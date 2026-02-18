@@ -289,7 +289,7 @@ public class GameManager : ModSystem
             if (player.team == 0)
             {
                 SetPlayerSpectator(player.whoAmI, true);
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} is not on a team!"), Microsoft.Xna.Framework.Color.Olive);
+                //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} is not on a team!"), Microsoft.Xna.Framework.Color.Olive);
                 Console.WriteLine($"Auto-spectating player {player.name} (not on a team)");
                 continue; // Use continue instead of return to handle all players
             }
@@ -358,13 +358,13 @@ public class GameManager : ModSystem
         switch (winner)
         {
             case 0:
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0000FF:{blueFurthest}%] v [c/FF0000:{redFurthest}%]"), Microsoft.Xna.Framework.Color.Yellow);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0077B6:{blueFurthest}%] v [c/FF0000:{redFurthest}%]"), Microsoft.Xna.Framework.Color.Yellow);
                 break;
             case 1:
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0000FF:100%] v [c/FF0000:{redFurthest}%]"), Microsoft.Xna.Framework.Color.Yellow);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0077B6:100%] v [c/FF0000:{redFurthest}%]"), Microsoft.Xna.Framework.Color.Yellow);
                 break;
             case 2:
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0000FF:{blueFurthest}%] v [c/FF0000:100%]"), Microsoft.Xna.Framework.Color.Yellow);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0077B6:{blueFurthest}%] v [c/FF0000:100%]"), Microsoft.Xna.Framework.Color.Yellow);
                 break;
         }
         winner = 0;
@@ -474,7 +474,8 @@ public class GameManager : ModSystem
             statePacket.Write((byte)PlayerManager.PlayerState.None);
             statePacket.Send(toClient: player.whoAmI);
 
-            Color teamColor = (player.team == 1) ? Color.Red : Color.Blue;
+            Color blueColor = new Color(0, 119, 182);
+            Color teamColor = (player.team == 1) ? Color.Red : blueColor;
             ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name}'s stats: {PlayerManager.GetPlayerManager(player.whoAmI).kills} kills  |  {PlayerManager.GetPlayerManager(player.whoAmI).deaths} deaths  |  {PlayerManager.GetPlayerManager(player.whoAmI).damage} damage"), teamColor);
 
             PlayerManager.GetPlayerManager(player.whoAmI).kills = 0;
@@ -614,7 +615,7 @@ public class GameManager : ModSystem
         if (MatchTime == matchStartTime)
         {
             // this code will handle class selection and stuff
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"class selection is ending"), Microsoft.Xna.Framework.Color.Olive);
+            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"The match is starting!"), Microsoft.Xna.Framework.Color.Yellow);
 
             BlueTeam.SendToBase();
             RedTeam.SendToBase();
@@ -748,7 +749,7 @@ public class GameManager : ModSystem
                 packetMatchStartTime.Write(MatchTime + 300);
                 packetMatchStartTime.Send();
 
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"All players have selected classes. Starting the game in 5 seconds!"), Microsoft.Xna.Framework.Color.Olive);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"All players have selected classes. Starting the game in 5 seconds!"), Microsoft.Xna.Framework.Color.Yellow);
             }
         }
 
@@ -1469,14 +1470,15 @@ public class GameManager : ModSystem
         if (BlueGem.IsHeld && BlueGem.HeldBy == playerIndex)
         {
             BlueGem.Reset();
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} dropped the Blue Gem when changing teams"), Microsoft.Xna.Framework.Color.Blue);
+            Color blueColor = new Color(0, 119, 182);
+            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} dropped the Blue Gem!"), blueColor);
             Console.WriteLine($"Player {player.name} dropped Blue Gem when changing teams");
         }
 
         if (RedGem.IsHeld && RedGem.HeldBy == playerIndex)
         {
             RedGem.Reset();
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} dropped the Red Gem when changing teams"), Microsoft.Xna.Framework.Color.Red);
+            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} dropped the Red Gem!"), Microsoft.Xna.Framework.Color.Red);
             Console.WriteLine($"Player {player.name} dropped Red Gem when changing teams");
         }
 
@@ -1489,7 +1491,7 @@ public class GameManager : ModSystem
         {
             // Player set to no team - make them spectator
             SetPlayerSpectator(playerIndex, true);
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} has been moved to spectator (no team)"), Microsoft.Xna.Framework.Color.Olive);
+            //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} has been moved to spectator (no team)"), Microsoft.Xna.Framework.Color.Olive);
             Console.WriteLine($"Player {player.name} moved to spectator due to team change to 0");
         }
         else if (IsGameActive)
