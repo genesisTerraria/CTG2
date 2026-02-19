@@ -39,13 +39,13 @@ namespace CTG2.Content.Items
                 // Right-Click Logic (player.altFunctionUse is 2 for right-click)
                 if (player.altFunctionUse == 2)
                 {
-                    MapSave.endPoint = Main.MouseWorld;
+                    MapSave.endPoint = new Vector2(Main.MouseWorld.X / 16, Main.MouseWorld.Y / 16);
                     Main.NewText($"Point 2 set to: {MapSave.endPoint.ToPoint()}", 255, 235, 59); // Added a yellow color
                 }
                 // Left-Click Logic
                 else
                 {
-                    MapSave.startPoint = Main.MouseWorld;
+                    MapSave.startPoint = new Vector2(Main.MouseWorld.X / 16, Main.MouseWorld.Y / 16);
                     Main.NewText($"Point 1 set to: {MapSave.startPoint.ToPoint()}", 173, 216, 230); // Added a light blue color
                 }
             }
