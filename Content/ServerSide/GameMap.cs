@@ -1,10 +1,12 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using Terraria;
 using Terraria.GameContent.Achievements;
 using Terraria.ModLoader;
+using Terraria.ID;
+using Terraria.Localization;
 
 namespace CTG2.Content.ServerSide;
 
@@ -25,6 +27,10 @@ public class MapData
     public int? WallType  { get; set; }
     public int? TileColor  { get; set; }
     public int? WallColor  { get; set; }
+    public bool HalfBlock {get; set;}
+    public SlopeType Slope      {get; set;}
+    public byte LiquidAmount {get; set;}
+    public int LiquidType  {get; set;}
 }
 public class GameMap
 {   
@@ -38,7 +44,7 @@ public class GameMap
     }
     
 
-        public static Dictionary<MapTypes, List<List<MapData>>> PreloadedMaps = new();
+    public static Dictionary<MapTypes, List<List<MapData>>> PreloadedMaps = new();
 
     public static void PreloadAllMaps()
     {
@@ -62,6 +68,7 @@ public class GameMap
             }
         }
     }
+
     public List<List<MapData>> GetMap(MapTypes map)
     {
         if (PreloadedMaps.TryGetValue(map, out var cached))
@@ -83,63 +90,99 @@ public class GameMap
             }
             catch
             {
-                Main.NewText("Failed to load or parse inventory file.", Microsoft.Xna.Framework.Color.Red);
+                Main.NewText("Failed to load or parse map file.", Microsoft.Xna.Framework.Color.Red);
                 return null;
             }
         }
     }
+
     public void LoadMap(MapTypes mapPick)
     {
-        /*
-        needs to be accessed by method in GameManager loadMap
+        if (Main.netMode == NetmodeID.MultiplayerClient)
+            return; // Server must own world edits
 
-        */
         var mapData = GetMap(mapPick);
         int startX = PasteX;
         int startY = PasteY;
-        
+
         int mapWidth = mapData[0].Count;
         int mapHeight = mapData.Count;
+
+        WorldGen.noTileActions = true;
+        WorldGen.gen = true;
+
         for (int y = 0; y < mapHeight; y++)
         {
             for (int x = 0; x < mapWidth; x++)
-            {   
-                
-                int wx = x+startX;
-                int wy = y+startY;
-                Tile tile = Framing.GetTileSafely(wx, wy);
+            {
                 var mapTile = mapData[y][x];
-                
+
+                int wx = x + startX;
+                int wy = y + startY;
+
+                // Bounds safety (VERY IMPORTANT)
+                if (!WorldGen.InWorld(wx, wy))
+                    continue;
+
+                Tile tile = Main.tile[wx, wy];
+
+                // Tiles
                 if (mapTile.TileType.HasValue)
-                {   
-                    WorldGen.PlaceTile(wx, wy, (mapTile.TileType ?? 0), 
-                        mute: true, forced: true, -1, style: 0);
-                    var newTile = Framing.GetTileSafely(wx, wy);
-                    newTile.Slope = 0;
+                {
+                    tile.HasTile = true;
+                    tile.TileType = (ushort)mapTile.TileType.Value;
+                    tile.IsHalfBlock = mapTile.HalfBlock;
+                    tile.Slope = mapTile.Slope;
                 }
                 else
                 {
-                    WorldGen.KillTile(wx, wy, noItem: true);
+                    tile.ClearTile();
                 }
 
-                if (mapTile.WallType.HasValue)
-                {   
-                    WorldGen.PlaceWall(wx, wy, (mapTile.WallType ?? 0), mute: true);
-                    
-                }
-                else
-                {
-                    tile.WallType = 0;
-                }
-                tile.TileColor = (byte)(mapTile.TileColor ?? 0);
-                tile.WallColor = (byte)(mapTile.WallColor ?? 0);
-                
-                // Send tile update squares
-                if (x % 7 == 0 || y % 7 == 0)
-                {
-                    NetMessage.SendTileSquare(-1, x+startX, y+startY, 15);
-                }
+                tile.WallType = (ushort) (mapTile.WallType ?? 0);
+                tile.TileColor = (byte) (mapTile.TileColor ?? 0);
+                tile.WallColor = (byte) (mapTile.WallColor ?? 0);
             }
         }
+
+        for (int y = 0; y < mapHeight; y++)
+        {
+            for (int x = 0; x < mapWidth; x++)
+            {
+                var mapTile = mapData[y][x];
+
+                int wx = x + startX;
+                int wy = y + startY;
+
+                // Bounds safety (VERY IMPORTANT)
+                if (!WorldGen.InWorld(wx, wy))
+                    continue;
+
+                Tile tile = Main.tile[wx, wy];
+
+                // Liquids
+                tile.LiquidType = mapTile.LiquidType;
+                tile.LiquidAmount = mapTile.LiquidAmount;
+            }
+        }
+
+        const int chunk = 50;
+
+        for (int y = 0; y < mapHeight + chunk / 2; y += chunk)
+        {
+            for (int x = 0; x < mapWidth + chunk / 2; x += chunk)
+            {
+                int x1 = startX + x;
+                int y1 = startY + y;
+                int x2 = Math.Min(startX + x + chunk - 1, startX + mapWidth - 1);
+                int y2 = Math.Min(startY + y + chunk - 1, startY + mapHeight - 1);
+
+                WorldGen.RangeFrame(x1, y1, x2, y2);
+                NetMessage.SendTileSquare(-1, x1, y1, chunk);
+            }
+        }
+
+        WorldGen.noTileActions = false;
+        WorldGen.gen = false;
     }
 }
