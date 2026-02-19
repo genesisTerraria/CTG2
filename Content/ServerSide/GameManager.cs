@@ -95,7 +95,7 @@ public class GameManager : ModSystem
     private int _currentMusicChoice = 0;
 
 
-    public static void FillLavaInDesignatedArea()
+    public static void PreloadLava()
     {
         //hard coded coords for the right.wld if you are on the wrong wld it will spawn lava in wrong spot!!!
         int xMin = 13702 / 16;
@@ -109,19 +109,25 @@ public class GameManager : ModSystem
             {
                 Tile tile = Framing.GetTileSafely(x, y);
 
-
                 if (!tile.HasTile)
                 {
                     tile.LiquidAmount = 255;
                     tile.LiquidType = LiquidID.Lava;
-                    Liquid.AddWater(x, y); // Schedule a liquid update at this position
-                    WorldGen.SquareTileFrame(x, y, true);
                 }
             }
         }
 
-        Liquid.UpdateLiquid();
+        const int chunk = 50;
+
+        for (int x = xMin; x < xMax + chunk / 2; x += chunk)
+        {
+            for (int y = yMin; y < yMax + chunk / 2; y += chunk)
+            {
+                NetMessage.SendTileSquare(-1, x, y, chunk);
+            }
+        }
     }
+
     public static void FillHoneyForMap(MapTypes map)
     {
         // Define honey zones for specific maps
@@ -166,6 +172,7 @@ public class GameManager : ModSystem
 
         Liquid.UpdateLiquid();
     }
+
     public static void ClearHoneyForMap()
     {
         List<Rectangle> honeyZones = new();
@@ -303,6 +310,8 @@ public class GameManager : ModSystem
         if (isMapPicked)
         {
             ClearHoneyForMap();
+            
+            PreloadLava();
             Map.LoadMap(result);
             mapName = result.ToString();
 
@@ -315,12 +324,14 @@ public class GameManager : ModSystem
             {
                 FillHoneyForMap(result);
             }
-            FillLavaInDesignatedArea();
         }
         else
         {
             var randomMap = (MapTypes)CTG2.randomGenerator.Next(0, 7);
+
             ClearHoneyForMap();
+
+            PreloadLava();
             Map.LoadMap(randomMap);
             mapName = randomMap.ToString();
 
@@ -329,7 +340,6 @@ public class GameManager : ModSystem
             packetMapName.Write(mapName);
             packetMapName.Send();
 
-            FillLavaInDesignatedArea();
             if (randomMap == MapTypes.Kraken || randomMap == MapTypes.Stalactite)
             {
                 FillHoneyForMap(randomMap);
