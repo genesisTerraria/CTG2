@@ -95,33 +95,39 @@ namespace CTG2.Content
                     (int)(MapSave.endPoint.X / 16), (int)(MapSave.endPoint.Y / 16)
                 );
                 */
-                int width = 334;
-                int height = 57;
-                int startX = (int)(MapSave.startPoint.X / 16);
-                int startY = (int)(MapSave.startPoint.Y / 16);
+                int startX = (int)(MapSave.startPoint.X);
+                int startY = (int)(MapSave.startPoint.Y);
+                int endX = (int)(MapSave.endPoint.X);
+                int endY = (int)(MapSave.endPoint.Y);
+
+                int width = Math.Abs(endX - startX);
+                int height = Math.Abs(endY - startY);
                 
                 var rows = new List<List<MapData>>(height);
-                for (int y = 0; y < height; y++)
+                for (int y = 0; y <= height; y++)
                 {
                     var row = new List<MapData>(width);
-                    for (int x = 0; x < width; x++)
+                    for (int x = 0; x <= width; x++)
                     {
                         var tile = Framing.GetTileSafely(startX + x, startY + y);
 
                         // if your MapData uses nullable ints, they'll pick up `null` here
                         row.Add(new MapData
                         {
-                            TileType  = tile.HasTile    ? (int?)tile.TileType  : null,
-                            WallType  = tile.WallType   != 0   ? (int?)tile.WallType  : null,
+                            TileType = tile.HasTile ? (int?) tile.TileType : null,
+                            WallType = tile.WallType != 0 ? (int?) tile.WallType : null,
                             TileColor = tile.TileColor,
-                            WallColor = tile.WallColor
+                            WallColor = tile.WallColor,
+                            HalfBlock = tile.IsHalfBlock,
+                            Slope = tile.Slope,
+                            LiquidAmount = tile.LiquidAmount,   // 0–255
+                            LiquidType = tile.LiquidType        // 0=water, 1=lava, 2=honey, 3=shimmer
                         });
                     }
                     rows.Add(row);
                 }
     
                 string json = JsonConvert.SerializeObject(rows, Formatting.Indented);
-
   
                 string saveDirectory = Path.Combine(Main.SavePath, "Mods", "CTG2", "MapSaves");
                 Directory.CreateDirectory(saveDirectory); 
