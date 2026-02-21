@@ -313,6 +313,7 @@ public class GameManager : ModSystem
             
             PreloadLava();
             Map.LoadMap(result);
+            PreloadLava(); // temp fix
             mapName = result.ToString();
 
             ModPacket packetMapName = mod.GetPacket();
@@ -333,6 +334,7 @@ public class GameManager : ModSystem
 
             PreloadLava();
             Map.LoadMap(randomMap);
+            PreloadLava(); // temp fix
             mapName = randomMap.ToString();
 
             ModPacket packetMapName = mod.GetPacket();
