@@ -546,55 +546,55 @@ namespace ClassesNamespace
                 switch (playerManager.currentClass?.Name)
                 {
                     case "Archer":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "Ninja":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "Beast":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "Gladiator":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "Paladin":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "Tank":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "Black Mage":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "Psychic":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "White Mage":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "Miner":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "Fish":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "Clown":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "Flame Bunny":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "Tiki Priest":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "Tree":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "Mutant":
-                        stack = 40;
+                        stack = 50;
                         break;
                     case "Leech":
-                        stack = 40;
+                        stack = 50;
                         break;
                 }
 
