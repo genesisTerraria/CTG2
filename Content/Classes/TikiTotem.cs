@@ -86,13 +86,23 @@ namespace CTG2.Content.Classes
             NPC.friendly = false;
             NPC.chaseable = false;
         }
-        
+
+        public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
+        {
+            // 1. Force the projectile to use local immunity logic if it isn't already
+            projectile.usesLocalNPCImmunity = true;
+
+            // 2. Set the immunity buffer specifically for THIS projectile on THIS NPC
+            // This creates a unique "cooldown" just for this specific spear/bolt/arrow
+            projectile.localNPCImmunity[NPC.whoAmI] = 40;
+
+            // 3. Reset the global NPC immunity so other projectiles aren't blocked
+            NPC.immune[projectile.owner] = 0; 
+        }
+                
         
         public override void ModifyHitByItem(Player player, Item item, ref NPC.HitModifiers modifiers)
         {
-            if (item.type != ModContent.ItemType<ShardstonePickaxe>())
-                NPC.immune[player.whoAmI] = 40;
-
             int tikiTeam = (int)NPC.ai[0];
 
             if (player.whoAmI >= 0 && player.whoAmI < Main.maxPlayers && tikiTeam == player.team)
@@ -102,11 +112,6 @@ namespace CTG2.Content.Classes
 
         public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
         {
-            if (projectile.owner >= 0 && projectile.owner < Main.maxPlayers)
-            {
-                NPC.immune[projectile.owner] = 40;
-            }
-
             int tikiTeam = (int)NPC.ai[0];
 
             if (projectile.owner >= 0 && projectile.owner < Main.maxPlayers)
