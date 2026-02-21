@@ -1,4 +1,4 @@
-﻿{
+{
   "blue-class-select": [39460, 9750],
   "blue-base": [12340, 10882],
   "blue-gem": [13332, 11504],
@@ -101,7 +101,7 @@
       "icon": 693,
       "ability-cooldown": 10,
       "health-from-kills": 0,
-      "respawn-time": 4,
+      "respawn-time": 6,
       "buffs": [3, 33, 36, 46],
       "ability-id": 6,
       "upgrades": [
@@ -131,7 +131,7 @@
       "icon": 3266,
       "ability-cooldown": 35,
       "health-from-kills": 0,
-      "respawn-time": 6,
+      "respawn-time": 5,
       "buffs": [29, 146],
       "ability-id": 8,
       "upgrades": [
@@ -161,7 +161,7 @@
       "icon": 88,
       "ability-cooldown": 15,
       "health-from-kills": 0,
-      "respawn-time": 4,
+      "respawn-time": 5,
       "buffs": [6, 146, 158],
       "ability-id": 10,
       "upgrades": [
@@ -191,7 +191,7 @@
       "icon": 503,
       "ability-cooldown": 11,
       "health-from-kills": 0,
-      "respawn-time": 3,
+      "respawn-time": 4,
       "buffs": [6, 33, 48, 146, 158],
       "ability-id": 12,
       "upgrades": [
@@ -206,7 +206,7 @@
       "icon": 243,
       "ability-cooldown": 45,
       "health-from-kills": 0,
-      "respawn-time": 5,
+      "respawn-time": 4,
       "buffs": [33, 146],
       "ability-id": 13,
       "upgrades": [
