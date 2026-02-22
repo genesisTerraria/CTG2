@@ -99,86 +99,93 @@ public class GameMap
     public void LoadMap(MapTypes mapPick)
     {
         if (Main.netMode == NetmodeID.MultiplayerClient)
-            return; // Server must own world edits
+            return; 
 
         var mapData = GetMap(mapPick);
         int startX = PasteX;
         int startY = PasteY;
-
         int mapWidth = mapData[0].Count;
         int mapHeight = mapData.Count;
 
         WorldGen.noTileActions = true;
         WorldGen.gen = true;
 
+        // PASS 1: TILES AND WALLS
         for (int y = 0; y < mapHeight; y++)
         {
             for (int x = 0; x < mapWidth; x++)
             {
-                var mapTile = mapData[y][x];
-
                 int wx = x + startX;
                 int wy = y + startY;
 
-                // Bounds safety (VERY IMPORTANT)
                 if (!WorldGen.InWorld(wx, wy))
                     continue;
 
                 Tile tile = Main.tile[wx, wy];
+                var mapTile = mapData[y][x];
 
-                // Tiles
+                // Completely wipe existing state
+                tile.ClearEverything();
+
                 if (mapTile.TileType.HasValue)
                 {
                     tile.HasTile = true;
-                    tile.TileType = (ushort)mapTile.TileType.Value;
+                    tile.TileType = (ushort) (mapTile.TileType ?? 0);
                     tile.IsHalfBlock = mapTile.HalfBlock;
                     tile.Slope = mapTile.Slope;
+                    tile.WallType = (ushort) (mapTile.WallType ?? 0);
+                    tile.TileColor = (byte) mapTile.TileColor;
+                    tile.WallColor = (byte) mapTile.WallColor;
                 }
-                else
-                {
-                    tile.ClearTile();
-                }
-
-                tile.WallType = (ushort) (mapTile.WallType ?? 0);
-                tile.TileColor = (byte) (mapTile.TileColor ?? 0);
-                tile.WallColor = (byte) (mapTile.WallColor ?? 0);
             }
         }
 
+        // PASS 2: LIQUIDS
         for (int y = 0; y < mapHeight; y++)
         {
             for (int x = 0; x < mapWidth; x++)
             {
-                var mapTile = mapData[y][x];
-
                 int wx = x + startX;
                 int wy = y + startY;
 
-                // Bounds safety (VERY IMPORTANT)
                 if (!WorldGen.InWorld(wx, wy))
                     continue;
 
                 Tile tile = Main.tile[wx, wy];
+                var mapTile = mapData[y][x];
 
-                // Liquids
                 tile.LiquidType = mapTile.LiquidType;
                 tile.LiquidAmount = mapTile.LiquidAmount;
             }
         }
 
-        const int chunk = 50;
+        // PASS 3: EXPLICIT FRAMING
+        // We do this before syncing so the server knows exactly what the tiles look like
+        WorldGen.RangeFrame(startX, startY, startX + mapWidth, startY + mapHeight);
 
-        for (int y = 0; y < mapHeight + chunk / 2; y += chunk)
+        // PASS 4: Network Force-Sync
+        if (Main.netMode == NetmodeID.Server)
         {
-            for (int x = 0; x < mapWidth + chunk / 2; x += chunk)
-            {
-                int x1 = startX + x;
-                int y1 = startY + y;
-                int x2 = Math.Min(startX + x + chunk - 1, startX + mapWidth - 1);
-                int y2 = Math.Min(startY + y + chunk - 1, startY + mapHeight - 1);
+            // Calculate the 200x150 sections affected by this map load
+            int sectionX1 = startX / 200;
+            int sectionX2 = (startX + mapWidth) / 200;
+            int sectionY1 = startY / 150;
+            int sectionY2 = (startY + mapHeight) / 150;
 
-                WorldGen.RangeFrame(x1, y1, x2, y2);
-                NetMessage.SendTileSquare(-1, x1, y1, chunk);
+            for (int sx = sectionX1; sx <= sectionX2; sx++)
+            {
+                for (int sy = sectionY1; sy <= sectionY2; sy++)
+                {
+                    // 1. Mark the section as "not seen" by clients to force a refresh
+                    for (int i = 0; i < 255; i++)
+                    {
+                        if (Netplay.Clients[i].IsActive)
+                            Netplay.Clients[i].TileSections[sx, sy] = false;
+                    }
+                    
+                    // 2. Send the raw section data (This mimics the "joining world" sync)
+                    NetMessage.SendSection(-1, sx, sy);
+                }
             }
         }
 
