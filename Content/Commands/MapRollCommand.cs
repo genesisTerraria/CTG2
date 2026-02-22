@@ -23,7 +23,7 @@ namespace CTG2.Content.Commands
             Player player = caller.Player;
             Random random = new Random();
 
-            int mapNumber = random.Next(1, 9);
+            int mapNumber = random.Next(1, 16);
             string mapName = "";
 
             switch(mapNumber)
@@ -52,6 +52,27 @@ namespace CTG2.Content.Commands
                 case 8:
                     mapName = "SteppingStones";
                     break;
+                case 9:
+                    mapName = "Runes";
+                    break;
+                case 10:
+                    mapName = "Shapes";
+                    break;
+                case 11:
+                    mapName = "Drippler";
+                    break;
+                case 12:
+                    mapName = "Crown";
+                    break;
+                case 13:
+                    mapName = "Caliburn";
+                    break;
+                case 14:
+                    mapName = "Crypt";
+                    break;
+                case 15:
+                    mapName = "Cheese";
+                    break;
             }
 
             string msg = $"{player.name} generated the random map {mapName}!";
@@ -64,3 +85,4 @@ namespace CTG2.Content.Commands
         }
     }
 }
+
