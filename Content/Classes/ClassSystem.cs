@@ -291,7 +291,7 @@ namespace ClassesNamespace
                 foreach (int buffId in classData.Buffs)
                 {
                     if (!Player.HasBuff(buffId))
-                        Player.AddBuff(buffId, 54000);
+                        Player.AddBuff(buffId, 100000);
                 }
             }
         }
