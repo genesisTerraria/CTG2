@@ -164,7 +164,7 @@ namespace CTG2.Content.Items.ModifiedWeps
 
                 //psychic projectile still needs to be ovverided
                 case 272: //bmage wep
-                    item.damage = 37;
+                    item.damage = 36;
                     item.shoot = 496;
                     item.useAnimation = 18;
                     item.useTime = 18;
