@@ -14,8 +14,8 @@ namespace CTG2.Content.Items
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 18;
 			Item.height = 40;
-			Item.useTime = 22;
-			Item.useAnimation = 43;
+			Item.useTime = 26;
+			Item.useAnimation = 50;
 			Item.knockBack = 5;
 			Item.value = Item.buyPrice(silver: 1);
 			Item.rare = ItemRarityID.Red;
