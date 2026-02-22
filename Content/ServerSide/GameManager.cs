@@ -128,79 +128,6 @@ public class GameManager : ModSystem
         }
     }
 
-    public static void FillHoneyForMap(MapTypes map)
-    {
-        // Define honey zones for specific maps
-        List<Rectangle> honeyZones = new();
-
-        switch (map)
-        {
-            case MapTypes.Kraken:
-                honeyZones.Add(new Rectangle(16357 / 16, 10965 / 16, (16376 - 16357 + 1) / 16, 1));
-                honeyZones.Add(new Rectangle(1022, 685, 2, 1));
-                break;
-
-            case MapTypes.Stalactite:
-                honeyZones.Add(new Rectangle(16357 / 16, 10965 / 16, (16376 - 16357 + 1) / 16, 1));
-                honeyZones.Add(new Rectangle(1022, 685, 2, 1));
-                break;
-
-            default:
-                return;
-        }
-
-        foreach (var zone in honeyZones)
-        {
-            for (int x = zone.Left; x < zone.Right; x++)
-            {
-                for (int y = zone.Top; y < zone.Bottom; y++)
-                {
-                    Tile tile = Framing.GetTileSafely(x, y);
-
-                    if (!tile.HasTile)
-                    {
-                        tile.LiquidAmount = 255;
-                        tile.LiquidType = LiquidID.Honey;
-                        Liquid.AddWater(x, y);
-                        WorldGen.SquareTileFrame(x, y, true);
-                    }
-                }
-            }
-        }
-
-
-
-        Liquid.UpdateLiquid();
-    }
-
-    public static void ClearHoneyForMap()
-    {
-        List<Rectangle> honeyZones = new();
-
-        honeyZones.Add(new Rectangle(1022, 685, 10, 10));
-
-        foreach (var zone in honeyZones)
-        {
-            for (int x = zone.Left; x < zone.Right; x++)
-            {
-                for (int yPos = zone.Top; yPos < zone.Bottom; yPos++)
-                {
-                    Tile tile = Framing.GetTileSafely(x, yPos);
-
-                    if (tile.LiquidAmount > 0 && tile.LiquidType == LiquidID.Honey)
-                    {
-                        tile.LiquidAmount = 0;
-                        tile.LiquidType = 0;
-                        Liquid.AddWater(x, yPos);
-                        WorldGen.SquareTileFrame(x, yPos, true);
-                    }
-                }
-            }
-        }
-
-        Liquid.UpdateLiquid();
-    }
-
 
     public override void OnWorldLoad()
     {
@@ -308,44 +235,30 @@ public class GameManager : ModSystem
         }
 
         if (isMapPicked)
-        {
-            ClearHoneyForMap();
-            
+        {            
             PreloadLava();
             Map.LoadMap(result);
-            PreloadLava(); // temp fix
+ 
             mapName = result.ToString();
 
             ModPacket packetMapName = mod.GetPacket();
             packetMapName.Write((byte)MessageType.UpdateMapName);
             packetMapName.Write(mapName);
             packetMapName.Send();
-
-            if (result == MapTypes.Kraken || result == MapTypes.Stalactite)
-            {
-                FillHoneyForMap(result);
-            }
         }
         else
         {
             var randomMap = (MapTypes)CTG2.randomGenerator.Next(0, 7);
 
-            ClearHoneyForMap();
-
             PreloadLava();
             Map.LoadMap(randomMap);
-            PreloadLava(); // temp fix
+            
             mapName = randomMap.ToString();
 
             ModPacket packetMapName = mod.GetPacket();
             packetMapName.Write((byte)MessageType.UpdateMapName);
             packetMapName.Write(mapName);
             packetMapName.Send();
-
-            if (randomMap == MapTypes.Kraken || randomMap == MapTypes.Stalactite)
-            {
-                FillHoneyForMap(randomMap);
-            }
         }
     }
 
