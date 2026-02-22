@@ -18,7 +18,15 @@ public enum MapTypes
     Triangles,
     Keep,
     Classic,
-    Goblin
+    Goblin,
+    SteppingStones,
+    Runes,
+    Shapes,
+    Drippler,
+    Crown,
+    Caliburn,
+    Crypt,
+    Cheese
 }
 
 public class MapData
