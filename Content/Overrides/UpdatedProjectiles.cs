@@ -299,33 +299,17 @@ public class ModifyHurtModPlayer : ModPlayer
                 packet.Send();
             }
         }
-        else if (info.DamageSource.SourceProjectileType == ProjectileID.Sunfury && !Player.HasBuff(BuffID.OnFire))
+        else if (info.DamageSource.SourceProjectileType == ProjectileID.Sunfury && Player.HasBuff(BuffID.OnFire) && modPlayer.GetBuffTime(BuffID.OnFire) > 60)
         {
             Player.ClearBuff(BuffID.OnFire);
         }
-        else if (info.DamageSource.SourceProjectileType == ProjectileID.ThornChakram && !Player.HasBuff(BuffID.Poisoned))
-        {
-            Player.ClearBuff(BuffID.Poisoned);
-        }
-        else if (info.DamageSource.SourceProjectileType == 480 && !Player.HasBuff(BuffID.CursedInferno)) // jman cursed inferno
-        {
-            Player.ClearBuff(BuffID.CursedInferno);
-        }
-        else if (info.DamageSource.SourceProjectileType == 19 && !Player.HasBuff(BuffID.OnFire)) //flamebunny flamrang
+        else if (info.DamageSource.SourceProjectileType == 19 && Player.HasBuff(BuffID.OnFire) && modPlayer.GetBuffTime(BuffID.OnFire) > 60) //flamebunny flamrang
         {
             Player.ClearBuff(BuffID.OnFire);
         }
-        else if (info.DamageSource.SourceProjectileType == 15 && !Player.HasBuff(BuffID.OnFire)) //flamebunny fof
+        else if (info.DamageSource.SourceProjectileType == 15 && !Player.HasBuff(BuffID.OnFire) && modPlayer.GetBuffTime(BuffID.OnFire) > 60) //flamebunny fof
         {
             Player.ClearBuff(BuffID.OnFire);
-        }
-        else if (info.DamageSource.SourceProjectileType == 280 && !Player.HasBuff(BuffID.Ichor)) //goldenshowerproj
-        {
-            Player.ClearBuff(BuffID.Ichor);
-        }
-        else if (info.DamageSource.SourceProjectileType == 267 && !Player.HasBuff(BuffID.Poisoned)) //Poison dart
-        {
-            Player.ClearBuff(BuffID.Poisoned);
         }
 
         Player.ClearBuff(BuffID.Ichor);
