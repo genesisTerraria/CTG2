@@ -29,7 +29,7 @@
     {
       "Name": "Dirt Block",
       "Type": 2,
-      "Stack": 50,
+      "Stack": 100,
       "Prefix": 0,
       "Slot": 3,
       "Modded": false
