@@ -299,15 +299,15 @@ public class ModifyHurtModPlayer : ModPlayer
                 packet.Send();
             }
         }
-        else if (info.DamageSource.SourceProjectileType == ProjectileID.Sunfury && Player.HasBuff(BuffID.OnFire) && modPlayer.GetBuffTime(BuffID.OnFire) > 60)
+        else if (info.DamageSource.SourceProjectileType == ProjectileID.Sunfury && Player.HasBuff(BuffID.OnFire))
         {
             Player.ClearBuff(BuffID.OnFire);
         }
-        else if (info.DamageSource.SourceProjectileType == 19 && Player.HasBuff(BuffID.OnFire) && modPlayer.GetBuffTime(BuffID.OnFire) > 60) //flamebunny flamrang
+        else if (info.DamageSource.SourceProjectileType == 19 && Player.HasBuff(BuffID.OnFire)) //flamebunny flamrang
         {
             Player.ClearBuff(BuffID.OnFire);
         }
-        else if (info.DamageSource.SourceProjectileType == 15 && !Player.HasBuff(BuffID.OnFire) && modPlayer.GetBuffTime(BuffID.OnFire) > 60) //flamebunny fof
+        else if (info.DamageSource.SourceProjectileType == 15 && !Player.HasBuff(BuffID.OnFire)) //flamebunny fof
         {
             Player.ClearBuff(BuffID.OnFire);
         }
