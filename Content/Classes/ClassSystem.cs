@@ -404,9 +404,9 @@ namespace ClassesNamespace
         {
             var playerManager = Player.GetModPlayer<PlayerManager>();
             // THIS METHOD IS BROKEN NEED TO FIX 
-            Player.AddBuff(BuffID.Shine, 54000);
-            Player.AddBuff(BuffID.NightOwl, 54000);
-            Player.AddBuff(BuffID.Builder, 54000);
+            Player.AddBuff(BuffID.Shine, 100000);
+            Player.AddBuff(BuffID.NightOwl, 100000);
+            Player.AddBuff(BuffID.Builder, 100000);
 
 
             Player.statManaMax2 = currentMana;
