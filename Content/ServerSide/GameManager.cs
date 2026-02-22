@@ -248,7 +248,7 @@ public class GameManager : ModSystem
         }
         else
         {
-            var randomMap = (MapTypes)CTG2.randomGenerator.Next(0, 7);
+            var randomMap = (MapTypes)CTG2.randomGenerator.Next(0, 15);
 
             PreloadLava();
             Map.LoadMap(randomMap);
