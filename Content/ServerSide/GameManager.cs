@@ -279,19 +279,21 @@ public class GameManager : ModSystem
         Console.WriteLine("GameManager: Starting EndGame sequence");
 
         ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] Game has ended!"), Microsoft.Xna.Framework.Color.Yellow);
+
+        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Capture attempts: [c/0077B6:{blueAttempts}] v [c/FF0000:{redAttempts}]"), Microsoft.Xna.Framework.Color.Yellow);
         
-        switch (winner)
-        {
-            case 0:
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0077B6:{blueFurthest}%] v [c/FF0000:{redFurthest}%]"), Microsoft.Xna.Framework.Color.Yellow);
-                break;
-            case 1:
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0077B6:100%] v [c/FF0000:{redFurthest}%]"), Microsoft.Xna.Framework.Color.Yellow);
-                break;
-            case 2:
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0077B6:{blueFurthest}%] v [c/FF0000:100%]"), Microsoft.Xna.Framework.Color.Yellow);
-                break;
-        }
+        // switch (winner)
+        // {
+        //     case 0:
+        //         ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0077B6:{blueFurthest}%] v [c/FF0000:{redFurthest}%]"), Microsoft.Xna.Framework.Color.Yellow);
+        //         break;
+        //     case 1:
+        //         ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0077B6:100%] v [c/FF0000:{redFurthest}%]"), Microsoft.Xna.Framework.Color.Yellow);
+        //         break;
+        //     case 2:
+        //         ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0077B6:{blueFurthest}%] v [c/FF0000:100%]"), Microsoft.Xna.Framework.Color.Yellow);
+        //         break;
+        // }
         winner = 0;
 
         matchStage = 0;
@@ -399,9 +401,14 @@ public class GameManager : ModSystem
             statePacket.Write((byte)PlayerManager.PlayerState.None);
             statePacket.Send(toClient: player.whoAmI);
 
-            Color blueColor = new Color(0, 119, 182);
-            Color teamColor = (player.team == 1) ? Color.Red : blueColor;
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name}'s stats: {PlayerManager.GetPlayerManager(player.whoAmI).kills} kills  |  {PlayerManager.GetPlayerManager(player.whoAmI).deaths} deaths  |  {PlayerManager.GetPlayerManager(player.whoAmI).damage} damage"), teamColor);
+            if (player.team == 1)
+            {
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/FF0000:{player.name}]: {PlayerManager.GetPlayerManager(player.whoAmI).kills} Kills, {PlayerManager.GetPlayerManager(player.whoAmI).deaths} Deaths, {PlayerManager.GetPlayerManager(player.whoAmI).damage} Damage"), Color.Yellow);
+            }
+            else if (player.team == 3)
+            {
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/0077B6:{player.name}]: {PlayerManager.GetPlayerManager(player.whoAmI).kills} Kills, {PlayerManager.GetPlayerManager(player.whoAmI).deaths} Deaths, {PlayerManager.GetPlayerManager(player.whoAmI).damage} Damage"), Color.Yellow);
+            }
 
             PlayerManager.GetPlayerManager(player.whoAmI).kills = 0;
             PlayerManager.GetPlayerManager(player.whoAmI).deaths = 0;
@@ -911,6 +918,7 @@ public class GameManager : ModSystem
                 return;
             }
         }
+
         // Kill all mobs during class selection
         if (GameInfo.matchStage == 1 && killonce == true)
         {
