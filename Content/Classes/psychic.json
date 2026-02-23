@@ -1,6 +1,6 @@
 {
   "HealthPoints": 160,
-  "ManaPoints": 20,
+  "ManaPoints": 17,
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
@@ -502,7 +502,7 @@
       "Name": "Lucky Horseshoe",
       "Type": 158,
       "Stack": 1,
-      "Prefix": 64,
+      "Prefix": 0,
       "Slot": 62,
       "Modded": false
     },
@@ -510,7 +510,7 @@
       "Name": "Magnet Flower",
       "Type": 4000,
       "Stack": 1,
-      "Prefix": 76,
+      "Prefix": 0,
       "Slot": 63,
       "Modded": false
     },
