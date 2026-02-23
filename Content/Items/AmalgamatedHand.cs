@@ -19,9 +19,10 @@ namespace CTG2.Content.Items {
 	{
 		public override void SetDefaults() {
 	  		Item.CloneDefaults(ItemID.Sunfury);
-			Item.damage = 35;
-			Item.crit = 0;
-			Item.shootSpeed = 20;
+			Item.damage = 38;
+			Item.useTime = 40;
+            Item.useAnimation = 40;
+            Item.shootSpeed = 13.8f;
 			Item.rare = ItemRarityID.Red;
 		}
 
@@ -34,7 +35,7 @@ namespace CTG2.Content.Items {
 
 		public override bool AltFunctionUse(Player player)
 		{
-			return true;
+			return false; // uncomment to allow 1.3 flail
 		}
 
 
@@ -98,8 +99,8 @@ namespace CTG2.Content.Items {
 
 		public override void SetDefaults() {
 			Projectile.netImportant = true; // This ensures that the projectile is synced when other players join the world.
-			Projectile.width = 20; // The width of your projectile
-			Projectile.height = 20; // The height of your projectile
+			Projectile.width = 16; // The width of your projectile
+			Projectile.height = 16; // The height of your projectile
 			Projectile.friendly = true; // Deals damage to enemies
 			Projectile.penetrate = -1; // Infinite pierce
 			Projectile.DamageType = DamageClass.Melee; // Deals melee damage
@@ -126,8 +127,8 @@ namespace CTG2.Content.Items {
 			bool doFastThrowDust = false;
 			bool shouldOwnerHitCheck = false;
 			int launchTimeLimit = 16;  // How much time the projectile can go before retracting (speed and shootTimer will set the flail's range)
-			float launchSpeed = 16.3f; // How fast the projectile can move
-			float maxLaunchLength = 1080f; // How far the projectile's chain can stretch before being forced to retract when in launched state
+			float launchSpeed = 16f; // How fast the projectile can move
+			float maxLaunchLength = 900f; // How far the projectile's chain can stretch before being forced to retract when in launched state
 			float retractAcceleration = 2.5f; // How quickly the projectile will accelerate back towards the player while retracting
 			float maxRetractSpeed = 16f; // The max speed the projectile will have while retracting
 			float forcedRetractAcceleration = 6f; // How quickly the projectile will accelerate back towards the player while being forced to retract
