@@ -1466,11 +1466,22 @@ namespace CTG2
             packet.Send();
         }
 
-        public static void SendEnterSpectatorRequest(int playerIndex)
+        public static void SendEnterSpectatorRequest(int playerIndex) // for spectate command
         {
             var mod = ModContent.GetInstance<CTG2>();
             ModPacket packet = mod.GetPacket();
             packet.Write((byte)MessageType.RequestEnterSpectator);
+            packet.Write(playerIndex);
+            packet.Send();
+
+            packet = mod.GetPacket();
+            packet.Write((byte)MessageType.RequestTeamChange);
+            packet.Write(0);
+            packet.Write(playerIndex);
+            packet.Send();
+
+            packet = mod.GetPacket();
+            packet.Write((byte)MessageType.ClearInventory);
             packet.Write(playerIndex);
             packet.Send();
         }
