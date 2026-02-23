@@ -4,7 +4,7 @@
   "InventoryItems": [
     {
       "Name": "Upgraded Shardstone Pickaxe",
-      "Type": 5556,
+      "Type": 5557,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -19,12 +19,12 @@
       "Modded": false
     },
     {
-      "Name": "Demon Scythe",
-      "Type": 272,
+      "Name": "Tome Of The Dark Arts",
+      "Type": 5556,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 2,
-      "Modded": false
+      "Modded": true
     },
     {
       "Name": "Dirt Block",
