@@ -244,6 +244,7 @@ public class ClassUI : UIState
     private void PopulateClasses()
     {
         _classList.Clear();
+        _classList2.Clear();
         var gameManager = ModContent.GetInstance<GameManager>();
         for (int id = 1; id <= 9; id++)
         {
