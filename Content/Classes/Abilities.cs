@@ -445,11 +445,11 @@ namespace CTG2.Content
                 if (class4BuffTimer <= 0)
                 {
 
-                    Player.AddBuff(137, 180);
-                    Player.AddBuff(32, 180);
-                    Player.AddBuff(195, 180);
-                    Player.AddBuff(5, 180);
-                    Player.AddBuff(215, 180);
+                    Player.AddBuff(137, 90);
+                    Player.AddBuff(32, 90);
+                    Player.AddBuff(195, 90);
+                    Player.AddBuff(5, 90);
+                    Player.AddBuff(215, 90);
 
                     class4PendingBuffs = false;
                 }
