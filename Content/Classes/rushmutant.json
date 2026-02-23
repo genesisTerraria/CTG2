@@ -19,12 +19,12 @@
       "Modded": false
     },
     {
-      "Name": "Sunfury",
-      "Type": 220,
+      "Name": "Amalgamated Hand",
+      "Type": 5546,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 2,
-      "Modded": false
+      "Modded": true
     },
     {
       "Name": "Dirt Block",
