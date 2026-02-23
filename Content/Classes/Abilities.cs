@@ -88,12 +88,12 @@ namespace CTG2.Content
                 if (Player.inventory[b].type == ItemID.TheRottedFork && rmoot)
                 {
                     Item newItem = new Item();
-                    newItem.SetDefaults(ItemID.Sunfury);
+                    newItem.SetDefaults(GetItemIDByName("Amalgamated Hand"));
                     newItem.stack = 1;
                     Player.inventory[b] = newItem;
                     placedWeapon = true;
                 }
-                else if (Player.inventory[b].type == ItemID.Sunfury && !rmoot) //use GetItemIDByName for Amalgamated Hand
+                else if (Player.inventory[b].type == ModContent.ItemType<AmalgamatedHand>() && !rmoot) //use GetItemIDByName for Amalgamated Hand
                 {
                     Item newItem = new Item();
                     newItem.SetDefaults(ItemID.TheRottedFork);
