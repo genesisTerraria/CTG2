@@ -1,1 +1,1 @@
-Modify this file with a description of your mod.
+The official mod for Capture the Gem 2, a Terraria-based 5-versus-5 combat game.
