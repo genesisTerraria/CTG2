@@ -28,7 +28,7 @@ public class PlayerManager : ModPlayer
     public bool ShowGameUI = false;
 
     public static int previousMatchStage = 0;
-    public float customRespawnTimer = -1;
+    public int customRespawnTimer = -1;
     public bool awaitingRespawn = false;
     public bool pickedClass = false;
     public ClassConfig currentClass = new ClassConfig();
@@ -120,18 +120,20 @@ public class PlayerManager : ModPlayer
         if (GameInfo.matchStage == 2)
         {
             awaitingRespawn = true;
-            Player.ghost = true;
+            //Player.ghost = true;
             Player.dead = true;
         }
 
         // How much time has passed since match started
-        float timeElapsed = (GameInfo.matchTime - GameInfo.matchStartTime) / 60;
-        float extraSeconds = Math.Max(0, timeElapsed / 100f); // +1s for every 2 minutes
+        int timeElapsed = GameInfo.matchTime - GameInfo.matchStartTime; // ticks since game start
+        int extraTicks = (int) Math.Max(0, timeElapsed / 200f); // +1s for every 2 minutes
 
-        Player.respawnTimer = 0;
+        //Player.respawnTimer = 0;
 
         // removed switch, using config-based respawn time.
-        customRespawnTimer = (currentClass.RespawnTime + extraSeconds) * 60;
+        customRespawnTimer = currentClass.RespawnTime * 60 + extraTicks;
+
+        Player.respawnTimer = customRespawnTimer;
     }
 
     // Set Custom Spawn Points
@@ -262,7 +264,7 @@ public class PlayerManager : ModPlayer
             {
                 awaitingRespawn = false;
 
-                Player.ghost = false;
+                //Player.ghost = false;
                 Player.dead = true;
 
                 Player.statLife = Player.statLifeMax2;
