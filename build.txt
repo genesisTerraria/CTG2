@@ -1,3 +1,3 @@
-displayName = CTG 2
-author = denden
-version = 0.1
+displayName = Capture the Gem 2
+author = genesis, Prince, TheAlchemist, carlos2
+version = 1.0
