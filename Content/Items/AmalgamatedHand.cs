@@ -373,10 +373,11 @@ namespace CTG2.Content.Items {
 					impactIntensity = 1;
 				}
 
-				if (Vector2.Distance(Main.player[Projectile.owner].MountedCenter, Projectile.Center) > 0.1 || LifeTimer > 10)
-					Projectile.velocity.X = (0f - oldVelocity.X) * bounceFactor;
-				else
-					Projectile.velocity.X = 0;
+				Projectile.velocity.X = (0f - oldVelocity.X) * bounceFactor;
+				// if (Vector2.Distance(Main.player[Projectile.owner].MountedCenter, Projectile.Center) > 0.1 || LifeTimer > 10)
+				// 	Projectile.velocity.X = (0f - oldVelocity.X) * bounceFactor;
+				// else
+				// 	Projectile.velocity.X = 0;
 				CollisionCounter += 1f;
 			}
 
