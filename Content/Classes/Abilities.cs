@@ -80,7 +80,6 @@ namespace CTG2.Content
 
             List<ItemData> classItems = classData.InventoryItems;
 
-            bool placedMushrooms = false;
             bool placedWeapon = false;
 
             for (int b = 0; b < Player.inventory.Length; b++)
@@ -101,21 +100,7 @@ namespace CTG2.Content
                     Player.inventory[b] = newItem;
                     placedWeapon = true;
                 }
-                else if (Player.inventory[b].type == ItemID.None && b >= 29 && !rmoot && !placedMushrooms)
-                {
-                    Item newItem = new Item();
-                    newItem.SetDefaults(ItemID.Mushroom);
-                    newItem.stack = 9999;
-                    Player.inventory[b] = newItem;
-                    placedMushrooms = true;
-                }
-                else if (Player.inventory[b].type == ItemID.Mushroom && rmoot)
-                {
-                    Item newItem = new Item();
-                    newItem.TurnToAir();
-                    Player.inventory[b] = newItem;
-                }
-                else if (Player.inventory[b].type == ItemID.PalladiumHeadgear || Player.inventory[b].type == ItemID.PalladiumBreastplate || Player.inventory[b].type == ItemID.PalladiumLeggings ||
+                else if (Player.inventory[b].type == ItemID.CrimsonHelmet || Player.inventory[b].type == ItemID.CrimsonScalemail || Player.inventory[b].type == ItemID.CrimsonGreaves ||
                          Player.inventory[b].type == ItemID.CharmofMyths || Player.inventory[b].type == ItemID.WormScarf || Player.inventory[b].type == ItemID.FireGauntlet || Player.inventory[b].type == ItemID.FrozenTurtleShell ||
                          Player.inventory[b].type == ItemID.BlizzardinaBottle || Player.inventory[b].type == ItemID.EoCShield || Player.inventory[b].type == ItemID.Magiluminescence || Player.inventory[b].type == ItemID.DestroyerEmblem ||
                          Player.inventory[b].type == ItemID.DevilHorns || Player.inventory[b].type == ItemID.FlowerBoyShirt || Player.inventory[b].type == ItemID.FlowerBoyPants || Player.inventory[b].type == ItemID.LizardTail ||
