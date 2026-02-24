@@ -27,57 +27,57 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "The Grand Design",
+      "Type": 3611,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 3,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Actuation Rod",
+      "Type": 3620,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 4,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Actuator",
+      "Type": 849,
+      "Stack": 9999,
       "Prefix": 0,
       "Slot": 5,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Dirt Block",
+      "Type": 2,
+      "Stack": 9999,
       "Prefix": 0,
       "Slot": 6,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Garden Gnome",
+      "Type": 4609,
+      "Stack": 8,
       "Prefix": 0,
       "Slot": 7,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Heart Lantern",
+      "Type": 1859,
+      "Stack": 21,
       "Prefix": 0,
       "Slot": 8,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Echo Coating",
+      "Type": 5344,
+      "Stack": 9999,
       "Prefix": 0,
       "Slot": 9,
       "Modded": false
@@ -347,41 +347,41 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Spectre Paint Scraper",
+      "Type": 1545,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 43,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Spectre Paint Roller",
+      "Type": 1544,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 44,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Spectre Paintbrush",
+      "Type": 1543,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 45,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Deep Blue Paint",
+      "Type": 1093,
+      "Stack": 9993,
       "Prefix": 0,
       "Slot": 46,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Deep Red Paint",
+      "Type": 1085,
+      "Stack": 9999,
       "Prefix": 0,
       "Slot": 47,
       "Modded": false
@@ -435,9 +435,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Wire",
+      "Type": 530,
+      "Stack": 9999,
       "Prefix": 0,
       "Slot": 54,
       "Modded": false
@@ -507,9 +507,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Spectre Goggles",
+      "Type": 4409,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 63,
       "Modded": false
