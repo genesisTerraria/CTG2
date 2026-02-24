@@ -173,7 +173,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     break;
 
                 case 802: //rotted fork
-                    item.damage = 34;
+                    item.damage = 32;
                     item.useAnimation = 37;
                     item.useTime = 37;
                     item.crit = 0;
