@@ -235,9 +235,9 @@
       "Modded": false
     },
     {
-      "Name": "Mushroom",
-      "Type": 5,
-      "Stack": 300,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 29,
       "Modded": false
@@ -475,24 +475,24 @@
       "Modded": false
     },
     {
-      "Name": "Palladium Headgear",
-      "Type": 1207,
+      "Name": "Crimson Helmet",
+      "Type": 792,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 59,
       "Modded": false
     },
     {
-      "Name": "Palladium Breastplate",
-      "Type": 1208,
+      "Name": "Crimson Scalemail",
+      "Type": 793,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 60,
       "Modded": false
     },
     {
-      "Name": "Palladium Leggings",
-      "Type": 1209,
+      "Name": "Crimson Greaves",
+      "Type": 794,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 61,
@@ -534,7 +534,7 @@
       "Name": "Frozen Turtle Shell",
       "Type": 1253,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 63,
       "Slot": 66,
       "Modded": false
     },
