@@ -683,6 +683,7 @@ namespace CTG2.Content
         private void ClownOnUse() //not finished
         {
             Player.AddBuff(BuffID.Electrified, 60);
+			Player.AddBuff(BuffID.WitheredWeapon, 60);
 
             var mod = ModContent.GetInstance<CTG2>();
             ModPacket packet = mod.GetPacket();
