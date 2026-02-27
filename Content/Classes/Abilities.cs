@@ -683,7 +683,7 @@ namespace CTG2.Content
         private void ClownOnUse() //not finished
         {
             Player.AddBuff(BuffID.Electrified, 60);
-			Player.AddBuff(BuffID.WitheredWeapon, 60);
+            Player.AddBuff(BuffID.WitheredWeapon, 60);
 
             var mod = ModContent.GetInstance<CTG2>();
             ModPacket packet = mod.GetPacket();
@@ -692,6 +692,12 @@ namespace CTG2.Content
             packet.Write(BuffID.Electrified);
             packet.Write(60);
             packet.Send();
+
+            packet = mod.GetPacket();
+            packet.Write((byte)MessageType.RequestAddBuff);
+            packet.Write(Player.whoAmI);
+            packet.Write(BuffID.WitheredWeapon);
+            packet.Write(60);
 
             foreach (Player other in Main.player)
             {
