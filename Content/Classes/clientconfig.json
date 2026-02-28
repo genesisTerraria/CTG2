@@ -139,7 +139,7 @@
       ]
     },
     {
-      "name": "White mage",
+      "name": "White Mage",
       "summary": "Jack-of-all-trades",
       "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
       "inventory": "whitemage",
@@ -296,3 +296,4 @@
     }
   ]
 }
+
