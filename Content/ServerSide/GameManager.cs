@@ -59,8 +59,6 @@ public class GameManager : ModSystem
     public bool rngConfig = false; // same as pubs, but different classes
 
     public bool isOvertime = false;
-    private int overtimeTimer = 0;
-    private const int OVERTIME_DURATION = 60 * 2 * 60; // 2 minutes in ticks (60 ticks/sec)
 
     public GameMap Map { get; private set; }
 
@@ -68,14 +66,11 @@ public class GameManager : ModSystem
 
     private int pauseTimer = 0;
 
-    public int blueAttempts = 0;
-    public int redAttempts = 0;
+    public int blueCaptures = 0;
+    public int redCaptures = 0;
     public float blueFurthest = 0;
     public float redFurthest = 0;
     private int matchStage = 0;
-    private bool blueHoldCounted = false;
-    private bool redHoldCounted = false;
-
     private int winner = 0;
 
     private bool endGameCalled = false;
@@ -280,20 +275,8 @@ public class GameManager : ModSystem
 
         ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] Game has ended!"), Microsoft.Xna.Framework.Color.Yellow);
 
-        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Capture attempts: [c/0077B6:{blueAttempts}] v [c/FF0000:{redAttempts}]"), Microsoft.Xna.Framework.Color.Yellow);
+        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Gem captures: [c/0077B6:{blueCaptures}] v [c/FF0000:{redCaptures}]"), Microsoft.Xna.Framework.Color.Yellow);
         
-        // switch (winner)
-        // {
-        //     case 0:
-        //         ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0077B6:{blueFurthest}%] v [c/FF0000:{redFurthest}%]"), Microsoft.Xna.Framework.Color.Yellow);
-        //         break;
-        //     case 1:
-        //         ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0077B6:100%] v [c/FF0000:{redFurthest}%]"), Microsoft.Xna.Framework.Color.Yellow);
-        //         break;
-        //     case 2:
-        //         ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Furthest gem carry: [c/0077B6:{blueFurthest}%] v [c/FF0000:100%]"), Microsoft.Xna.Framework.Color.Yellow);
-        //         break;
-        // }
         winner = 0;
 
         matchStage = 0;
@@ -303,13 +286,12 @@ public class GameManager : ModSystem
         blueGemCarrier = "Waiting for new game...";
         redGemCarrier = "Waiting for new game...";
         isOvertime = false;
-        overtimeTimer = 0;
         mapName = "";
         blueTeamSize = 0;
         redTeamSize = 0;
         matchStartTime = 0;
-        blueAttempts = 0;
-        redAttempts = 0;
+        blueCaptures = 0;
+        redCaptures = 0;
         blueFurthest = 0;
         redFurthest = 0;
         blueCarrierName = "";
@@ -368,7 +350,6 @@ public class GameManager : ModSystem
         packet.Write(matchStage);
         packet.Write(MatchTime);
         packet.Write(isOvertime);
-        packet.Write(overtimeTimer);
         packet.Write(intPercentageBlue);
         packet.Write(intPercentageRed);
         packet.Write(blueGemCarrier);
@@ -377,8 +358,8 @@ public class GameManager : ModSystem
         packet.Write(blueTeamSize);
         packet.Write(redTeamSize);
         packet.Write(matchStartTime);
-        packet.Write(blueAttempts);
-        packet.Write(redAttempts);
+        packet.Write(blueCaptures);
+        packet.Write(redCaptures);
         packet.Write(blueFurthest);
         packet.Write(redFurthest);
         packet.Write(blueCarrierName);
@@ -566,17 +547,6 @@ public class GameManager : ModSystem
             if (BlueGem.IsHeld)
             {
                 blueGemFireworkTimer++;
-                if (!redHoldCounted)
-                {
-                    redAttempts++;
-
-                    ModPacket packetRedAttempts = mod.GetPacket();
-                    packetRedAttempts.Write((byte)MessageType.UpdateRedAttempts);
-                    packetRedAttempts.Write(redAttempts);
-                    packetRedAttempts.Send();
-
-                    redHoldCounted = true;
-                }
 
                 if (blueGemFireworkTimer >= FIREWORK_INTERVAL)
                 {
@@ -602,24 +572,10 @@ public class GameManager : ModSystem
             else
             {
                 blueGemFireworkTimer = 0;
-                redHoldCounted = false;
             }
 
             if (RedGem.IsHeld)
             {
-                redGemFireworkTimer++;
-                if (!blueHoldCounted)
-                {
-                    blueAttempts++;
-
-                    ModPacket packetBlueAttempts = mod.GetPacket();
-                    packetBlueAttempts.Write((byte)MessageType.UpdateBlueAttempts);
-                    packetBlueAttempts.Write(blueAttempts);
-                    packetBlueAttempts.Send();
-
-                    blueHoldCounted = true;
-                }
-
                 if (redGemFireworkTimer >= FIREWORK_INTERVAL)
                 {
                     redGemFireworkTimer = 0;
@@ -644,7 +600,6 @@ public class GameManager : ModSystem
             else
             {
                 redGemFireworkTimer = 0; // Reset
-                blueHoldCounted = false;
             }
         }
         else
@@ -838,22 +793,63 @@ public class GameManager : ModSystem
 
         if (BlueGem.IsCaptured && !endGameCalled)
         {
-            Console.WriteLine("Blue gem captured!");
-            winner = 2;
-            EndGame();
+            Console.WriteLine("Blue gem captured by {0}!", blueGemCarrier);
+
+            redCaptures++;
+
+            ModPacket packetRedCaptures = mod.GetPacket();
+            packetRedCaptures.Write((byte)MessageType.UpdateRedCaptures);
+            packetRedCaptures.Write(redCaptures);
+            packetRedCaptures.Send();
+
+            BlueGem.Reset();
+
+            if (isOvertime)
+            {
+                winner = 2;
+                EndGame();
+                return;
+            }
         }
 
         else if (RedGem.IsCaptured && !endGameCalled)
         {
-            Console.WriteLine("Red gem captured!");
-            winner = 1;
-            EndGame();
+            Console.WriteLine("Red gem captured by {0}!", redGemCarrier);
+
+            blueCaptures++;
+
+            ModPacket packetBlueCaptures = mod.GetPacket();
+            packetBlueCaptures.Write((byte)MessageType.UpdateBlueCaptures);
+            packetBlueCaptures.Write(blueCaptures);
+            packetBlueCaptures.Send();
+
+            RedGem.Reset();
+
+            if (isOvertime)
+            {
+                winner = 1;
+                EndGame();
+                return;
+            }
         }
 
-        if (!isOvertime && MatchTime >= 60 * 60 * 15 + matchStartTime)
+        if (!isOvertime && MatchTime >= 60 * 60 * 10 + matchStartTime)
         {
+            isOvertime = true;
 
-            if (BlueGem.IsHeld || RedGem.IsHeld)
+            if (blueCaptures > redCaptures)
+            {
+                winner = 1;
+                EndGame();
+                return;
+            }
+            else if (redCaptures > blueCaptures)
+            {
+                winner = 2;
+                EndGame();
+                return;
+            }
+            else
             {
                 isOvertime = true;
                 GameInfo.overtime = true;
@@ -863,59 +859,7 @@ public class GameManager : ModSystem
                 packetOvertime.Write(true);
                 packetOvertime.Send();
 
-                overtimeTimer = OVERTIME_DURATION;
-
-                ModPacket packetOvertimeTimer = mod.GetPacket();
-                packetOvertimeTimer.Write((byte)MessageType.UpdateOvertimeTimer);
-                packetOvertimeTimer.Write(OVERTIME_DURATION);
-                packetOvertimeTimer.Send();
-
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("[OVERTIME] Overtime has started! Capture the gem or the game will end in 2 minutes."), Microsoft.Xna.Framework.Color.OrangeRed);
-            }
-            else if (!endGameCalled)
-            {
-                EndGame();
-                return;
-            }
-        }
-
-        if (isOvertime)
-        {
-            overtimeTimer--;
-
-            if (MatchTime % 60 == 0)
-            {
-                ModPacket packetOvertimeTimer = mod.GetPacket();
-                packetOvertimeTimer.Write((byte)MessageType.UpdateOvertimeTimer);
-                packetOvertimeTimer.Write(overtimeTimer);
-                packetOvertimeTimer.Send();
-            }
-
-            if (BlueGem.IsCaptured && !endGameCalled)
-            {
-                EndGame();
-                winner = 2;
-                return;
-            }
-            else if (RedGem.IsCaptured && !endGameCalled)
-            {
-                EndGame();
-                winner = 1;
-                return;
-            }
-
-            if (!BlueGem.IsHeld && !RedGem.IsHeld && !endGameCalled)
-            {
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("[OVERTIME] Overtime ended: No gem is being held."), Microsoft.Xna.Framework.Color.Yellow);
-                EndGame();
-                return;
-            }
-
-            if (overtimeTimer <= 0 && !endGameCalled)
-            {
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("[OVERTIME] Overtime expired! No capture."), Microsoft.Xna.Framework.Color.Red);
-                EndGame();
-                return;
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Overtime has started! The next gem capture will win the game!"), Color.Cyan);
             }
         }
 
@@ -1217,8 +1161,8 @@ public class GameManager : ModSystem
                         packet.Write(blueTeamSize);
                         packet.Write(redTeamSize);
                         packet.Write(matchStartTime);
-                        packet.Write(blueAttempts);
-                        packet.Write(redAttempts);
+                        packet.Write(blueCaptures);
+                        packet.Write(redCaptures);
                         packet.Write(blueFurthest);
                         packet.Write(redFurthest);
                         packet.Send();
@@ -1285,7 +1229,6 @@ public class GameManager : ModSystem
                 ModPacket packet = mod.GetPacket();
                 packet.Write((byte)MessageType.SyncGameInformation);
                 packet.Write(3);
-                packet.Write(MatchTime);
                 packet.Write(false);
                 packet.Write(0);
                 packet.Write(0);
@@ -1296,8 +1239,8 @@ public class GameManager : ModSystem
                 packet.Write(blueTeamSize);
                 packet.Write(redTeamSize);
                 packet.Write(matchStartTime);
-                packet.Write(blueAttempts);
-                packet.Write(redAttempts);
+                packet.Write(blueCaptures);
+                packet.Write(redCaptures);
                 packet.Write(blueFurthest);
                 packet.Write(redFurthest);
                 packet.Send();
@@ -1552,7 +1495,6 @@ public class GameManager : ModSystem
         packet.Write(matchStage);
         packet.Write(MatchTime);
         packet.Write(isOvertime);
-        packet.Write(overtimeTimer);
         packet.Write(intPercentageBlue);
         packet.Write(intPercentageRed);
         packet.Write(blueGemCarrier);
@@ -1561,8 +1503,8 @@ public class GameManager : ModSystem
         packet.Write(blueTeamSize);
         packet.Write(redTeamSize);
         packet.Write(matchStartTime);
-        packet.Write(blueAttempts);
-        packet.Write(redAttempts);
+        packet.Write(blueCaptures);
+        packet.Write(redCaptures);
         packet.Write(blueFurthest);
         packet.Write(redFurthest);
         packet.Send(toClient: playerIndex);

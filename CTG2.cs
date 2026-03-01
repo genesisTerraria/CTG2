@@ -97,13 +97,12 @@ namespace CTG2
         UpdateBlueGemCarrier = 59,
         UpdateRedGemCarrier = 60,
         UpdateOvertime = 61,
-        UpdateOvertimeTimer = 62,
         UpdateMapName = 63,
         UpdateBlueTeamSize = 64,
         UpdateRedTeamSize = 65,
         UpdateMatchStartTime = 66,
-        UpdateBlueAttempts = 67,
-        UpdateRedAttempts = 68,
+        UpdateBlueCaptures = 67,
+        UpdateRedCaptures = 68,
         UpdateBlueFurthest = 69,
         UpdateRedFurthest = 70,
         RequestSyncGameInfo = 71,
@@ -638,9 +637,6 @@ namespace CTG2
                 case (byte)MessageType.UpdateOvertime:
                     GameInfo.overtime = reader.ReadBoolean();
                     break;
-                case (byte)MessageType.UpdateOvertimeTimer:
-                    GameInfo.overtimeTimer = reader.ReadInt32();
-                    break;
                 case (byte)MessageType.UpdateMapName:
                     GameInfo.mapName = reader.ReadString();
                     break;
@@ -653,11 +649,11 @@ namespace CTG2
                 case (byte)MessageType.UpdateMatchStartTime:
                     GameInfo.matchStartTime = reader.ReadInt32();
                     break;
-                case (byte)MessageType.UpdateBlueAttempts:
-                    GameInfo.blueAttempts = reader.ReadInt32();
+                case (byte)MessageType.UpdateBlueCaptures:
+                    GameInfo.blueCaptures = reader.ReadInt32();
                     break;
-                case (byte)MessageType.UpdateRedAttempts:
-                    GameInfo.redAttempts = reader.ReadInt32();
+                case (byte)MessageType.UpdateRedCaptures:
+                    GameInfo.redCaptures = reader.ReadInt32();
                     break;
                 case (byte)MessageType.UpdateBlueFurthest:
                     GameInfo.blueFurthest = reader.ReadSingle();
@@ -676,7 +672,6 @@ namespace CTG2
                     GameInfo.matchStage = reader.ReadInt32();
                     GameInfo.matchTime = reader.ReadInt32();
                     GameInfo.overtime = reader.ReadBoolean();
-                    GameInfo.overtimeTimer = reader.ReadInt32();
                     GameInfo.blueGemX = reader.ReadInt32();
                     GameInfo.redGemX = reader.ReadInt32();
                     GameInfo.blueGemCarrier = reader.ReadString();
@@ -685,8 +680,8 @@ namespace CTG2
                     GameInfo.blueTeamSize = reader.ReadInt32();
                     GameInfo.redTeamSize = reader.ReadInt32();
                     GameInfo.matchStartTime = reader.ReadInt32();
-                    GameInfo.blueAttempts = reader.ReadInt32();
-                    GameInfo.redAttempts = reader.ReadInt32();
+                    GameInfo.blueCaptures = reader.ReadInt32();
+                    GameInfo.redCaptures = reader.ReadInt32();
                     GameInfo.blueFurthest = reader.ReadSingle();
                     GameInfo.redFurthest = reader.ReadSingle();
                     GameInfo.blueGemCarrierName = reader.ReadString();

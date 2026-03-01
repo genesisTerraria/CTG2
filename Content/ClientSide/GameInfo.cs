@@ -13,13 +13,12 @@ public static class GameInfo
     public static string blueGemCarrierName = "";
     public static string redGemCarrierName = "";
     public static bool overtime = false;
-    public static int overtimeTimer = 0;
     public static string mapName = "";
     public static int blueTeamSize = 0;
     public static int redTeamSize = 0;
     public static int matchStartTime = 1800;
-    public static int blueAttempts = 0;
-    public static int redAttempts = 0;
+    public static int blueCaptures = 0;
+    public static int redCaptures = 0;
     public static float blueFurthest = 0;
     public static float redFurthest = 0;
 }

@@ -101,15 +101,12 @@ public class UIManager : ModSystem
         }
         else if (GameInfo.overtime)
         {
-            int secondsLeft = GameInfo.overtimeTimer / 60;
-            int minutesLeft = secondsLeft / 60;
-            int remainder = secondsLeft % 60;
-            timeText = $"Time left in match: {minutesLeft}:{remainder.ToString("D2")}";
+            timeText = $"Next capture wins the game!";
         }
         else
         {
             int secondsElapsed = matchTime / 60 - GameInfo.matchStartTime / 60;
-            int secondsLeft = 900 - secondsElapsed;
+            int secondsLeft = 60 * 10 - secondsElapsed;
             int minutesLeft = secondsLeft / 60;
             int remainder = secondsLeft % 60;
             timeText = $"Time left in match: {minutesLeft}:{remainder.ToString("D2")}";
@@ -237,14 +234,14 @@ public class UIManager : ModSystem
         );
 
         //draw cap attempt counters
-        string attempts = $"Capture attempts: [c/0077B6:{GameInfo.blueAttempts}] v [c/FF0000:{GameInfo.redAttempts}]";
-        Vector2 attemptsPos = new Vector2(Main.screenWidth - 320, 675);
+        string captures = $"Gem captures: [c/0077B6:{GameInfo.blueCaptures}] v [c/FF0000:{GameInfo.redCaptures}]";
+        Vector2 capturesPos = new Vector2(Main.screenWidth - 320, 675);
 
         ChatManager.DrawColorCodedStringWithShadow(
             Main.spriteBatch,
             FontAssets.MouseText.Value,
-            attempts,
-            attemptsPos,
+            captures,
+            capturesPos,
             Color.White,
             0,
             Vector2.Zero,
