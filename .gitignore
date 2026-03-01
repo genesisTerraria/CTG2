@@ -1,0 +1,4 @@
+obj/
+
+Content/Encryption/generate_password_hash.py
+Content/Commands/Login/generate_password_hash.py

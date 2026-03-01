@@ -1,0 +1,299 @@
+{
+  "blue-class-select": [39460, 9750],
+  "blue-base": [12340, 10882],
+  "blue-gem": [13332, 11504],
+  "red-class-select": [27350, 9800],
+  "red-base": [20381, 10882],
+  "red-gem": [19316, 11504],
+  "lobby": [10000, 10000],
+  "map-paste": [856, 682],
+  "classes": [
+    {
+      "name": "Archer",
+      "summary": "Long-Range all-rounder.",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "archer",
+      "icon": 247,
+      "ability-cooldown": 36,
+      "health-from-kills": 0,
+      "respawn-time": 4,
+      "buffs": [],
+      "ability-id": 1,
+      "upgrades": [
+        {
+          "id":    "cloudInAbottle",
+          "name":  "Cloud in a bottle"
+        },
+        {
+          "id":    "reset",
+          "name":  "Reset"
+        }
+
+
+      ]
+    },
+    {
+      "name": "Ninja",
+      "summary": "Mid-Range stealth attacker.",
+      "description": "Mac triple shot is DEAD we took it out back and KILLED it",
+      "inventory": "ninja",
+      "icon": 256,
+      "ability-cooldown": 10,
+      "health-from-kills": 0,
+      "respawn-time": 5,
+      "buffs": [6, 36, 146, 158],
+      "ability-id": 2,
+      "upgrades": []
+    },
+    {
+      "name": "Beast",
+      "summary": "Long-Range attacker with high mobility.",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "beast",
+      "icon": 3374,
+      "ability-cooldown": 35,
+      "health-from-kills": 0,
+      "respawn-time": 4,
+      "buffs": [6, 108, 146, 158],
+      "ability-id": 3,
+      "upgrades": []
+    },
+    {
+      "name": "Gladiator",
+      "summary": "Short-Range with freeform air movement.",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "gladiator",
+      "icon": 3187,
+      "ability-cooldown": 40,
+      "health-from-kills": 10,
+      "respawn-time": 5,
+      "buffs": [6, 33, 36, 146, 158],
+      "ability-id": 4,
+      "upgrades": [
+        {
+          "id":    "extra_jump",
+          "name":  "Extra Jump",
+          "icon":  89,
+          "value": 20
+        }
+      ]
+    },
+    {
+      "name": "Paladin",
+      "summary": "Low-Range supportive tank.",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "paladin",
+      "icon": 1206,
+      "ability-cooldown": 10,
+      "health-from-kills": 0,
+      "respawn-time": 4,
+      "buffs": [6, 25, 33, 114, 146, 158],
+      "ability-id": 5,
+      "upgrades": [
+
+      ]
+    },
+    {
+      "name": "Tank",
+      "summary": "Frenzy Mid-Range tank.",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "tank",
+      "icon": 693,
+      "ability-cooldown": 10,
+      "health-from-kills": 0,
+      "respawn-time": 6,
+      "buffs": [3, 33, 36, 46],
+      "ability-id": 6,
+      "upgrades": [
+
+      ]
+    },
+    {
+      "name": "Black Mage",
+      "summary": "Low-range offensive powerhouse",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "blackmage",
+      "icon": 2857,
+      "ability-cooldown": 42,
+      "health-from-kills": 0,
+      "respawn-time": 6,
+      "buffs": [6, 36, 158],
+      "ability-id": 7,
+      "upgrades": [
+
+      ]
+    },
+    {
+      "name": "Psychic",
+      "summary": "Extreme-damage hovering all-rounder",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "psychic",
+      "icon": 3266,
+      "ability-cooldown": 35,
+      "health-from-kills": 0,
+      "respawn-time": 5,
+      "buffs": [29, 146],
+      "ability-id": 8,
+      "upgrades": [
+
+      ]
+    },
+    {
+      "name": "White Mage",
+      "summary": "Jack-of-all-trades",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "whitemage",
+      "icon": 754,
+      "ability-cooldown": 30,
+      "health-from-kills": 0,
+      "respawn-time": 4,
+      "buffs": [3, 6, 7, 36, 158],
+      "ability-id": 9,
+      "upgrades": [
+
+      ]
+    },
+    {
+      "name": "Miner",
+      "summary": "Arc-shot defense crusher",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "miner",
+      "icon": 88,
+      "ability-cooldown": 15,
+      "health-from-kills": 0,
+      "respawn-time": 5,
+      "buffs": [6, 146, 158],
+      "ability-id": 10,
+      "upgrades": [
+
+      ]
+    },
+    {
+      "name": "Fish",
+      "summary": "Long-Range arc-shot lava fish",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "fish",
+      "icon": 2498,
+      "ability-cooldown": 35,
+      "health-from-kills": 0,
+      "respawn-time": 5,
+      "buffs": [6, 146, 158],
+      "ability-id": 11,
+      "upgrades": [
+
+      ]
+    },
+    {
+      "name": "Clown",
+      "summary": "Mid-Range bounce-shot high damage zoner.",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "clown",
+      "icon": 503,
+      "ability-cooldown": 11,
+      "health-from-kills": 0,
+      "respawn-time": 4,
+      "buffs": [6, 33, 48, 146, 158],
+      "ability-id": 12,
+      "upgrades": [
+
+      ]
+    },
+    {
+      "name": "Flame Bunny",
+      "summary": "Multi-Range high damage all-rounder",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "flamebunny",
+      "icon": 243,
+      "ability-cooldown": 45,
+      "health-from-kills": 0,
+      "respawn-time": 4,
+      "buffs": [33, 146],
+      "ability-id": 13,
+      "upgrades": [
+
+      ]
+    },
+    {
+      "name": "Tiki Priest",
+      "summary": "High-Range healing all-rounder",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "tikipriest",
+      "icon": 1159,
+      "ability-cooldown": 20,
+      "health-from-kills": 0,
+      "respawn-time": 4,
+      "buffs": [3, 6, 158],
+      "ability-id": 14,
+      "upgrades": [
+
+      ]
+    },
+    {
+      "name": "Tree",
+      "summary": "Mid-Range extreme mobility hook rusher",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "tree",
+      "icon": 1940,
+      "ability-cooldown": 30,
+      "health-from-kills": 0,
+      "respawn-time": 7,
+      "buffs": [],
+      "ability-id": 15,
+      "upgrades": [
+
+      ]
+    },
+    {
+      "name": "Mutant",
+      "summary": "Stance swapping Flexible min-maxer",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "rushmutant",
+      "icon": 2105,
+      "ability-cooldown": 1,
+      "health-from-kills": 0,
+      "respawn-time": 7,
+      "buffs": [3, 30, 33, 36, 146],
+      "ability-id": 16,
+      "upgrades": [
+        {
+          "id":    "simple_dash",
+          "name":  "Simple Dash",
+          "icon":  89,
+          "value": 20
+        },
+        {
+          "id":    "reset",
+          "name":  "Reset"
+        }
+
+      ]
+    },
+    {
+      "name": "Leech",
+      "summary": "Multi-Range regenerative damage dealer.",
+      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+      "inventory": "leech",
+      "icon": 5045,
+      "ability-cooldown": 35,
+      "health-from-kills": 0,
+      "respawn-time": 4,
+        "buffs": [25, 33, 36, 48, 146],
+      "ability-id": 17,
+      "upgrades": []
+    },
+    {
+        "name": "Rng Man",
+        "summary": "Gains random items every hit.",
+        "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+        "inventory": "rngman",
+        "icon": 95,
+        "ability-cooldown": 5,
+        "health-from-kills": 0,
+        "respawn-time": 4,
+        "buffs": [],
+        "ability-id": 18,
+        "upgrades": []
+    }
+  ]
+}
+

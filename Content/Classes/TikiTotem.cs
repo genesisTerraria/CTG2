@@ -1,0 +1,290 @@
+using System;
+using Terraria;
+using Terraria.ModLoader;
+using Terraria.ID;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.GameContent;
+using Microsoft.Xna.Framework.Audio;
+using Terraria.Audio;
+using CTG2.Content.Items;
+
+namespace CTG2.Content.Classes
+{
+    public class AllNpcs : GlobalNPC
+    {
+        public int team = 3;
+        private int previousLife = 0;
+
+        SoundStyle totemCrumble = new SoundStyle("CTG2/Content/Classes/TotemCrumble");
+
+        public override bool InstancePerEntity => true;
+
+            public override void AI(NPC npc)
+            {
+                if (npc.life <= 0 && previousLife > 0) //use this for future sounds to play ondeath for all npcs that decay (no death reason)
+                {
+                    if (npc.type == ModContent.NPCType<TikiTotem>())
+                    {
+                        SoundEngine.PlaySound(totemCrumble.WithVolumeScale(Main.soundVolume * 3f), npc.Center);
+
+                        int tikiTeam = (int)npc.ai[0];
+
+                        if (tikiTeam == 1)
+                            for (int i = 0; i < 5; i++)
+                                Dust.NewDust(npc.position, npc.width, npc.height, 90);
+                        else if (tikiTeam == 3)
+                            for (int i = 0; i < 5; i++)
+                                Dust.NewDust(npc.position, npc.width, npc.height, 88);
+                    }
+                    else if (npc.type == ModContent.NPCType<StationaryBeast>())
+                        SoundEngine.PlaySound(SoundID.NPCDeath1, npc.Center);
+                }
+
+                previousLife = npc.life;
+            }
+    }
+
+
+    public class TikiTotem : ModNPC
+    {
+        private float healFrameGap = 45;
+        //private int hitCounter = 0;
+        private float frameCount = 0;
+        private float firstFrame = 0;
+        private int totemTeam = 0;
+        private int maxHP = 450;
+
+        private float amplitude = 16f; // 1 block = 16 pixels
+        private float period = 120f;   // 2 seconds * 60 ticks
+
+        private bool spawnPositionRecorded = false;
+        private Vector2 spawnPosition = Vector2.Zero;
+
+        SoundStyle totemCrumble = new SoundStyle("CTG2/Content/Classes/TotemCrumble");
+
+
+        public override void SetStaticDefaults()
+        {
+            Main.npcFrameCount[NPC.type] = 1;
+        }
+
+
+        public override void SetDefaults()
+        {   
+            totemTeam = (int)NPC.ai[0];
+            NPC.width = 22;
+            NPC.height = 42;
+            NPC.damage = 0; 
+            NPC.defense = 0;
+            NPC.lifeMax = maxHP;
+            NPC.knockBackResist = 0; //make this higher for more knockback
+
+            NPC.aiStyle = -1; 
+            NPC.noGravity = true;
+            NPC.noTileCollide = false;
+            NPC.friendly = false;
+            NPC.chaseable = false;
+        }
+
+        public override void OnHitByProjectile(Projectile projectile, NPC.HitInfo hit, int damageDone)
+        {
+            // 1. Force the projectile to use local immunity logic if it isn't already
+            projectile.usesLocalNPCImmunity = true;
+
+            // 2. Set the immunity buffer specifically for THIS projectile on THIS NPC
+            // This creates a unique "cooldown" just for this specific spear/bolt/arrow
+            projectile.localNPCImmunity[NPC.whoAmI] = 40;
+
+            // 3. Reset the global NPC immunity so other projectiles aren't blocked
+            NPC.immune[projectile.owner] = 0; 
+        }
+                
+        
+        public override void ModifyHitByItem(Player player, Item item, ref NPC.HitModifiers modifiers)
+        {
+            int tikiTeam = (int)NPC.ai[0];
+
+            if (player.whoAmI >= 0 && player.whoAmI < Main.maxPlayers && tikiTeam == player.team)
+                modifiers.SetMaxDamage(0);
+        }
+
+
+        public override void ModifyHitByProjectile(Projectile projectile, ref NPC.HitModifiers modifiers)
+        {
+            int tikiTeam = (int)NPC.ai[0];
+
+            if (projectile.owner >= 0 && projectile.owner < Main.maxPlayers)
+            {
+                Player player = Main.player[projectile.owner];
+
+                if (tikiTeam == player.team)
+                    modifiers.SetMaxDamage(0);
+            }
+        }
+
+
+        public override bool? CanBeHitByProjectile(Projectile projectile)
+        {
+            // int tikiTeam = (int)NPC.ai[0];
+
+            // if (projectile.owner >= 0 && projectile.owner < Main.maxPlayers)
+            // {
+            //     Player player = Main.player[projectile.owner];
+
+            //     if (tikiTeam == player.team)
+            //         return false;
+            // }
+
+            return true;
+        }
+
+
+        public override bool? CanBeHitByItem (Player player, Item item)
+        {
+            // int tikiTeam = (int)NPC.ai[0];
+
+            // if (player.whoAmI >= 0 && player.whoAmI < Main.maxPlayers && tikiTeam == player.team)
+            //     return false;
+
+            return true;
+        }
+
+
+        public override void HitEffect(NPC.HitInfo hit)
+        {
+            int tikiTeam = (int)NPC.ai[0];
+
+            if (NPC.life > 0)
+            {
+                if (tikiTeam == 1)
+                    for (int i = 0; i < 5; i++)
+                        Dust.NewDust(NPC.position, NPC.width, NPC.height, 90);
+                else if (tikiTeam == 3)
+                    for (int i = 0; i < 5; i++)
+                        Dust.NewDust(NPC.position, NPC.width, NPC.height, 88);
+            }
+
+            SoundEngine.PlaySound(SoundID.NPCHit42, NPC.Center);
+
+            //hitCounter = 1;
+        }
+
+
+        public override void AI()
+        {
+            if (frameCount % 4 == 0) NPC.life--;
+
+            float friction = 0f; //update this to change friction
+
+            if (NPC.velocity.X > 0f)
+            {
+                NPC.velocity.X -= friction;
+                if (NPC.velocity.X < 0f)
+                    NPC.velocity.X = 0f;
+            }
+            else if (NPC.velocity.X < 0f)
+            {
+                NPC.velocity.X += friction;
+                if (NPC.velocity.X > 0f)
+                    NPC.velocity.X = 0f;
+            }
+
+            if (!spawnPositionRecorded)
+            {
+                spawnPositionRecorded = true;
+                spawnPosition = NPC.Center;
+                NPC.velocity = Vector2.Zero;
+                NPC.netUpdate = true;
+                firstFrame = frameCount;
+            }
+            else
+            {
+                float omega = 2f * MathF.PI / period;
+
+                float velY = amplitude * omega * (float)Math.Cos((frameCount - firstFrame) * omega);
+                NPC.velocity = new Vector2(0, velY);
+            }
+
+            foreach (Player player in Main.player)
+            {
+                if (!player.active || player.dead)
+                    continue;
+                // ai[0] stores tiki's team
+                if (player.team != (int)NPC.ai[0])
+                    continue;
+
+                if (Vector2.Distance(NPC.Center, player.Center) <= 14 * 16 && frameCount % healFrameGap == 0) // 14 block radius
+                {
+                    player.Heal(1);
+                }
+            }
+
+            for (int i = 0; i < NPC.maxBuffs; i++) // Remove all debuffs
+            {
+                if (NPC.buffType[i] != 0)
+                {
+                    NPC.DelBuff(i);
+                    i--; // important: re-check index after removal
+                }
+            }
+
+            frameCount++;
+        }
+
+
+        public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
+        {
+            Texture2D texture = TextureAssets.Npc[NPC.type].Value;
+            Rectangle frame = NPC.frame;
+            Vector2 origin = new Vector2(frame.Width / 2f, frame.Height / 2f);
+            Color teamColar = Color.Gray;
+
+            //float pulseTime = 48;
+
+            int tikiTeam = (int)NPC.ai[0];
+            if (tikiTeam == 1)
+                teamColar = new Color(255, 0, 0, 155);
+            else if (tikiTeam == 3)
+                teamColar = new Color(0, 0, 255, 155);
+            // if (hitCounter > 0 && hitCounter <= pulseTime / 2)
+            // {
+            //     if (tikiTeam == 1)
+            //         teamColar = new Color(255, 50 * hitCounter / (pulseTime / 2), 50 * hitCounter / (pulseTime / 2), 155);
+            //     else if (tikiTeam == 3)
+            //         teamColar = new Color(50 * hitCounter / (pulseTime / 2), 50 * hitCounter / (pulseTime / 2), 255, 155);
+            // }
+            // else if (hitCounter > pulseTime / 2)
+            // {
+            //     if (tikiTeam == 1)
+            //         teamColar = new Color(255, 50 - 50 * (hitCounter - pulseTime / 2) / (pulseTime / 2), 50 - 50 * (hitCounter - pulseTime / 2) / (pulseTime / 2), 155);
+            //     else if (tikiTeam == 3)
+            //         teamColar = new Color(50 - 50 * (hitCounter - pulseTime / 2) / (pulseTime / 2), 50 - 50 * (hitCounter - pulseTime / 2) / (pulseTime / 2), 255, 155);
+            // }
+            // else
+            // {
+            //     if (tikiTeam == 1)
+            //         teamColar = new Color(255, 0, 0, 155);
+            //     else if (tikiTeam == 3)
+            //         teamColar = new Color(0, 0, 255, 155);
+            // }
+
+            Vector2 drawPosition = NPC.Center - screenPos + new Vector2(0, 2.8f);
+
+            spriteBatch.Draw(
+                texture,
+                drawPosition,
+                frame,
+                teamColar,
+                NPC.rotation,
+                origin,
+                NPC.scale,
+                SpriteEffects.None,
+                0f
+            );
+
+            // if (hitCounter > 0 && hitCounter < pulseTime) hitCounter++;
+            // else if (hitCounter >= pulseTime) hitCounter = 0;
+        }
+    }
+}

@@ -1,0 +1,176 @@
+Keybinds: {
+	Grab.DisplayName: Grab
+	Dash.DisplayName: Dash
+}
+
+Buffs: {
+	Buff_DashCooldown: {
+		DisplayName: Dash Cooldown
+		Description: You cannot refresh your dashes
+	}
+
+	RedBubbleMountBuff: {
+		DisplayName: Red Bubble
+		Description: You are in a red bubble
+	}
+
+	RedBubbleMountCooldownBuff: {
+		DisplayName: Bubble Cooldown
+		Description: You cannot use your mount
+	}
+
+	BlueBubbleMountBuff: {
+		DisplayName: Blue Bubble
+		Description: You are in a blue bubble
+	}
+
+	BlueBubbleMountBuffDuration: {
+		DisplayName: Blue Bubble Time Left
+		Description: You only have a limited bubble time
+	}
+}
+
+Items: {
+	BlueDashStone: {
+		DisplayName: Blue Dash Stone
+		Tooltip: ""
+	}
+
+	BrightSkippingStone: {
+		DisplayName: Bright Skipping Stone
+		Tooltip: ""
+	}
+
+	DarkDashStone: {
+		DisplayName: Dark Dash Stone
+		Tooltip: ""
+	}
+
+	DarkRedDashStone: {
+		DisplayName: Dark Red Dash Stone
+		Tooltip: ""
+	}
+
+	DashCrystal: {
+		DisplayName: Dash Crystal
+		Tooltip: ""
+	}
+
+	DoubleDashCrystal: {
+		DisplayName: Double Dash Crystal
+		Tooltip: ""
+	}
+
+	GhostlyDashStone: {
+		DisplayName: Ghostly Dash Stone
+		Tooltip: ""
+	}
+
+	GreenDashStone: {
+		DisplayName: Green Dash Stone
+		Tooltip: ""
+	}
+
+	LightDashStone: {
+		DisplayName: Light Dash Stone
+		Tooltip: ""
+	}
+
+	LightGreenDashStone: {
+		DisplayName: Light Green Dash Stone
+		Tooltip: ""
+	}
+
+	OrangeDashStone: {
+		DisplayName: Orange Dash Stone
+		Tooltip: ""
+	}
+
+	PurpleDashStone: {
+		DisplayName: Purple Dash Stone
+		Tooltip: ""
+	}
+
+	QuickDashStone: {
+		DisplayName: Quick Dash Stone
+		Tooltip: ""
+	}
+
+	RedDashStone: {
+		DisplayName: Red Dash Stone
+		Tooltip: ""
+	}
+
+	SkippingStone: {
+		DisplayName: Skipping Stone
+		Tooltip: ""
+	}
+
+	TealDashStone: {
+		DisplayName: Teal Dash Stone
+		Tooltip: ""
+	}
+
+	WhiteDashStone: {
+		DisplayName: White Dash Stone
+		Tooltip: ""
+	}
+
+	YellowDashStone: {
+		DisplayName: Yellow Dash Stone
+		Tooltip: ""
+	}
+
+	DashPlayer3_DashEffect_Item: {
+		DisplayName: Dash Player3_ Dash Effect_ Item
+		Tooltip: ""
+	}
+
+	DashGemBase: {
+		DisplayName: Dash Gem Base
+		Tooltip: ""
+	}
+
+	SpaceWaterItem: {
+		DisplayName: Space Jelly
+		Tooltip: A semi-solid that can be dashed through
+	}
+
+	RealisticallySizedStrawberry: {
+		DisplayName: Realistically Sized Strawberry
+		Tooltip: ""
+	}
+
+	Strawberry: {
+		DisplayName: Strawberry
+		Tooltip: ""
+	}
+
+	SharpDashStone: {
+		DisplayName: Sharp Dash Stone
+		Tooltip: ""
+	}
+
+	SlickDashStone: {
+		DisplayName: Slick Dash Stones
+		Tooltip: ""
+	}
+
+	RedBubbleMountItem: {
+		DisplayName: Red Bubble
+		Tooltip:
+			'''
+			Mount a red bubble to carry you a long distance
+			Can be used once every 5 seconds
+			'''
+	}
+
+	BlueBubbleMountItem: {
+		DisplayName: Blue Bubble
+		Tooltip:
+			'''
+			Mount a blue bubble to carry you a short distance
+			Can be used once every 8 seconds
+			'''
+	}
+}

@@ -1,0 +1,1 @@
+D:\DirectX2010\Utilities\bin\x64\fxc.exe /Fo "DashDustEffect.fxc" /T fx_2_0 DashDustEffect.fx

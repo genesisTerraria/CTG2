@@ -1,0 +1,1 @@
+D:\DirectX2010\Utilities\bin\x64\fxc.exe /Fo "WhiteTransEffect.fxc" /T fx_2_0 WhiteTransEffect.fx

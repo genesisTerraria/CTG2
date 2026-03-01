@@ -1,0 +1,182 @@
+# This file will automatically update with entries for new content after a build and reload.
+
+Items: {
+	idk: {
+		DisplayName: idk
+		Tooltip:
+			'''
+			Template of an item
+			Replacing this tooltip is duty 
+			It's snowing on Mt.Fuji
+			'''
+	}
+
+	Zen: {
+		Tooltip: ""
+		DisplayName: Zen
+	}
+
+	ShardstonePickaxe: {
+		Tooltip: ""
+		DisplayName: Shardstone Pickaxe
+	}
+
+	Rancor: {
+		Tooltip: ""
+		DisplayName: Rancor
+	}
+
+	MapSaveWand: {
+		Tooltip: ""
+		DisplayName: Map Save Wand
+	}
+
+	FoliageTendrils: {
+		Tooltip: ""
+		DisplayName: Foliage Tendrils
+	}
+
+	ArcherDash: {
+		Tooltip: ""
+		DisplayName: Archer Dash
+	}
+
+	AmalgamatedHand1_3: {
+		DisplayName: Amalgamated Hand1_3
+		Tooltip: ""
+	}
+
+	AmalgamatedHand1_4: {
+		DisplayName: Amalgamated Hand1_4
+		Tooltip: ""
+	}
+
+	AmalgamatedHand: {
+		Tooltip: ""
+		DisplayName: Amalgamated Hand
+	}
+
+	StaffOfWinter: {
+		Tooltip: ""
+		DisplayName: Staff Of Winter
+	}
+
+	HexagonalBarrier: {
+		Tooltip: ""
+		DisplayName: Hexagonal Barrier
+	}
+
+	SpaceWaterItem: {
+		DisplayName: Space Water Item
+		Tooltip: ""
+	}
+
+	DashCrystal: {
+		DisplayName: Celeste Dash
+		Tooltip: ""
+	}
+
+	DoubleDashCrystal: {
+		DisplayName: Double Dash Crystal
+		Tooltip: ""
+	}
+
+	SkippingStone: {
+		DisplayName: Skipping Stone
+		Tooltip: ""
+	}
+
+	DashPlayer3_DashEffect_Item: {
+		DisplayName: Dash Player3_ Dash Effect_ Item
+		Tooltip: ""
+	}
+
+	UpgradedShardstonePickaxe: {
+		Tooltip: ""
+		DisplayName: Upgraded Shardstone Pickaxe
+	}
+
+	TomeOfTheDarkArts: {
+		Tooltip: ""
+		DisplayName: Tome Of The Dark Arts
+	}
+}
+
+NPCs: {
+	TimedNPC.DisplayName: Timed N P C
+	StationaryBeast.DisplayName: Stationary Slimer
+	TikiTotem.DisplayName: Tiki Totem
+	PaladinShield.DisplayName: Paladin Shield
+}
+
+Projectiles: {
+	FoliageTendrilsProjectile.DisplayName: Foliage Tendrils Projectile
+	ZenProjectile.DisplayName: Zen Projectile
+	ChargedBowProjectile.DisplayName: Charged Bow Projectile
+	AmalgamatedHandProjectile1_3.DisplayName: Amalgamated Hand Projectile1_3
+	AmalgamatedHandProjectile1_4.DisplayName: Amalgamated Hand Projectile1_4
+	AmalgamatedHandProjectile1.DisplayName: Amalgamated Hand Projectile1
+	HexagonalBarrierProjectile.DisplayName: Hexagonal Barrier Projectile
+	AmalgamatedHandProjectile2.DisplayName: Amalgamated Hand Projectile2
+}
+
+Buffs: {
+	Retaliation: {
+		Description: Mods.CTG2.Buffs.Retaliation.Description
+		DisplayName: Retaliation
+	}
+
+	Buff_DashCooldown: {
+		DisplayName: Buff_ Dash Cooldown
+		Description: Mods.CTG2.Buffs.Buff_DashCooldown.Description
+	}
+}
+
+Keybinds: {
+	"Archer Dash.DisplayName": Archer  Dash
+	"Aimbot Toggle.DisplayName": Aimbot  Toggle
+	Toggle.DisplayName: Toggle
+	Dash.DisplayName: Dash
+	Grab.DisplayName: Grab
+	"Ability 1.DisplayName": Ability 1
+	AdvancedBinoculars.DisplayName: Advanced Binoculars
+	ArcherDash.DisplayName: Archer Dash
+}
+
+Configs: {
+	CTG2Config: {
+		ClashRoyaleOTMusic: {
+			Label: Enable clash royale OT music
+			Tooltip: ""
+		}
+
+		DisplayName: CTG2 Config
+
+		EnableProjectileTeamColoring: {
+			Label: Enable projectile team coloring
+			Tooltip: ""
+		}
+
+		SelectedMusicIndex: {
+			Label: Selected Track: 0=None, 1=Clash, 2=Mystery
+			Tooltip: ""
+		}
+	}
+}
+
+Biomes: {
+	CTG2Biome: {
+		DisplayName: C T G2 Biome
+		TownNPCDialogueName: the C T G2 Biome
+	}
+
+	GameMusicBiome: {
+		DisplayName: Game Music Biome
+		TownNPCDialogueName: the Game Music Biome
+	}
+
+	DynamicMusic: {
+		DisplayName: Dynamic Music
+		TownNPCDialogueName: the Dynamic Music
+	}
+}
