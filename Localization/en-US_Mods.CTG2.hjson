@@ -90,7 +90,6 @@ Items: {
 		DisplayName: Dash Player3_ Dash Effect_ Item
 		Tooltip: ""
 	}
-<<<<<<< HEAD
 
 	UpgradedShardstonePickaxe: {
 		Tooltip: ""
@@ -101,8 +100,6 @@ Items: {
 		Tooltip: ""
 		DisplayName: Tome Of The Dark Arts
 	}
-=======
->>>>>>> f107b4659d283c95b8cc35a7809c055120d9462e
 }
 
 NPCs: {
