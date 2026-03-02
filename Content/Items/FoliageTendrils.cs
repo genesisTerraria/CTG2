@@ -23,7 +23,7 @@ namespace CTG2.Content.Items
 
 		public override void Load() { // This is called once on mod (re)load when this piece of content is being loaded.
 			//chainTexture = ModContent.Request<Texture2D>("CTG2/Content/Items/FoliageTendrilsChain");
-			chainTexture = ModContent.Request<Texture2D>("Terraria/Images/Projectile_" + ProjectileID.Web);
+			chainTexture = ModContent.Request<Texture2D>("Terraria/Images/Chain15");
 		}
 
 		public override void SetDefaults() {
