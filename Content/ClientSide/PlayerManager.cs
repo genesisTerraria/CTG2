@@ -126,12 +126,16 @@ public class PlayerManager : ModPlayer
 
         // How much time has passed since match started
         int timeElapsed = GameInfo.matchTime - GameInfo.matchStartTime; // ticks since game start
-        int extraTicks = (int) Math.Max(0, timeElapsed / 200f); // +1s for every 2 minutes
+        int timeScale = (int) Math.Max(0, timeElapsed / (60 * 2f)); // +1s for every 2 minutes
+        int overtimeScale = 0;
 
-        //Player.respawnTimer = 0;
+        if (timeElapsed > 10 * 60 * 60)
+        {
+            overtimeScale = (int) Math.Max(0, (timeElapsed - 10 * 60 * 60) / (60 / 2f));
+        }
 
         // removed switch, using config-based respawn time.
-        customRespawnTimer = currentClass.RespawnTime * 60 + extraTicks;
+        customRespawnTimer = currentClass.RespawnTime * 60 + timeScale + overtimeScale;
 
         Player.respawnTimer = customRespawnTimer;
     }

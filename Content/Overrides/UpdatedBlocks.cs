@@ -87,9 +87,6 @@ namespace CTG2.Content
                 if (type == TileID.ItemFrame)
                     return false;
 
-                if (type == TileID.Signs)
-                    return false;
-
                 if (type == TileID.RubyGemspark)
                     return false;
 

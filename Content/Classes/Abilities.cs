@@ -376,7 +376,7 @@ namespace CTG2.Content
             class1EndTimer = 360;
 
             playedSound = false;
-            SoundEngine.PlaySound(abilityStart.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
+            SoundEngine.PlaySound(abilityStart.WithVolumeScale(Main.soundVolume * 6f), Player.Center);
         }
 
 
@@ -385,7 +385,7 @@ namespace CTG2.Content
             Player.AddBuff(BuffID.Invisibility, 60 * 60);
 
             playedSound = false;
-            SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack, Player.Center);
+            SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
 
         }
 
@@ -403,7 +403,7 @@ namespace CTG2.Content
             packet.Send();
 
             playedSound = false;
-            SoundEngine.PlaySound(SoundID.DD2_BetsySummon, Player.Center);
+            SoundEngine.PlaySound(SoundID.DD2_BetsySummon.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
 
 
@@ -419,7 +419,7 @@ namespace CTG2.Content
 
             playedSound = false;
 
-            SoundEngine.PlaySound(SoundID.DD2_KoboldIgnite, Player.Center);
+            SoundEngine.PlaySound(SoundID.DD2_KoboldIgnite.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
 
 
@@ -532,7 +532,7 @@ namespace CTG2.Content
 
             playedSound = false;
 
-            SoundEngine.PlaySound(SoundID.Item104, Player.Center);
+            SoundEngine.PlaySound(SoundID.Item104.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
 
 
@@ -546,7 +546,7 @@ namespace CTG2.Content
             class8HP = Player.statLife;
 
             playedSound = false;
-            SoundEngine.PlaySound(SoundID.Item113, Player.Center);
+            SoundEngine.PlaySound(SoundID.Item113.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
         public override bool CanUseItem(Item item)
         {
@@ -578,11 +578,11 @@ namespace CTG2.Content
                 NetMessage.SendData(MessageID.SyncPlayer, -1, -1, null, Player.whoAmI); // Sync HP
             }
         }
+
         private void PsychicPostStatus()
         {
 
         }
-
 
         private void WhiteMageOnUse()
         {
@@ -664,7 +664,7 @@ namespace CTG2.Content
             }
 
             playedSound = false;
-            SoundEngine.PlaySound(SoundID.DD2_MonkStaffGroundImpact.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
+            SoundEngine.PlaySound(SoundID.DD2_MonkStaffGroundImpact.WithVolumeScale(Main.soundVolume * 6f), Player.Center);
         }
 
 
@@ -813,7 +813,7 @@ namespace CTG2.Content
             playedSound = false;
             class13EndTimer = 360;
 
-            SoundEngine.PlaySound(SoundID.Item100, Player.Center);
+            SoundEngine.PlaySound(SoundID.Item100.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
 
 
@@ -829,7 +829,7 @@ namespace CTG2.Content
             packet1.Write(0f);
             packet1.Send();
 
-            SoundEngine.PlaySound(SoundID.DD2_DefenseTowerSpawn, Player.Center);
+            SoundEngine.PlaySound(SoundID.DD2_DefenseTowerSpawn.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
 
             playedSound = false;
         }
@@ -852,7 +852,7 @@ namespace CTG2.Content
 
             playedSound = false;
 
-            SoundEngine.PlaySound(SoundID.NPCHit5, Player.Center);
+            SoundEngine.PlaySound(SoundID.NPCHit5.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
 
 
@@ -940,7 +940,7 @@ namespace CTG2.Content
             }
 
             playedSound = false;
-            SoundEngine.PlaySound(SoundID.NPCHit20, Player.Center);
+            SoundEngine.PlaySound(SoundID.NPCHit20.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
 
 
@@ -950,7 +950,7 @@ namespace CTG2.Content
 
             playedSound = false;
             class17EndTimer = 300;
-            SoundEngine.PlaySound(SoundID.Item60, Player.Center);
+            SoundEngine.PlaySound(SoundID.Item60.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
 
         private void RngManOnUse()

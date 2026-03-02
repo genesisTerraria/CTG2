@@ -58,7 +58,7 @@ namespace CTG2.Content.Commands
                     }
                     else
                     {
-                        caller.Reply("Wrong password.".Color.Red);
+                        caller.Reply("Wrong password.", Color.Red);
                     }
                 }
             }
