@@ -18,10 +18,12 @@ namespace CTG2.Content.Items
 
 	public class FoliageTendrilsProjectile : ModProjectile
 	{
+		public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.Web;
 		private static Asset<Texture2D> chainTexture;
 
 		public override void Load() { // This is called once on mod (re)load when this piece of content is being loaded.
-			chainTexture = ModContent.Request<Texture2D>("CTG2/Content/Items/FoliageTendrilsChain");
+			//chainTexture = ModContent.Request<Texture2D>("CTG2/Content/Items/FoliageTendrilsChain");
+			chainTexture = ModContent.Request<Texture2D>("Terraria/Images/Projectile_" + ProjectileID.Web);
 		}
 
 		public override void SetDefaults() {
@@ -41,7 +43,7 @@ namespace CTG2.Content.Items
 
 		// Old Web Slinger is 256, Amethyst Hook is 300
 		public override float GrappleRange() {
-			return 362f;
+			return 352f;
 		}
 
 		public override void NumGrappleHooks(Player player, ref int numHooks) {
