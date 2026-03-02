@@ -27,6 +27,10 @@ public class ClassUI : UIState
     private ClassConfig selectedClass;
     private UpgradeConfig selectedUpgrade;
     private string _lastGamemode;
+    private int _classSelectCooldown; // ticks remaining
+    private const int ClassSelectCooldownMax = 60; // 60 ticks = 1 second
+    private bool _dragging;
+    private Vector2 _dragOffset;
 
     public override void OnInitialize()
     {
@@ -51,15 +55,13 @@ public class ClassUI : UIState
             BackgroundColor = new Color(63, 82, 151, 180)
         };
 
+        _mainPanel.OnLeftMouseDown += StartDrag;
+        _mainPanel.OnLeftMouseUp += StopDrag;
 
         Append(_mainPanel);
         Append(_mainPanel2);
 
         AddClassList();
-        //AddClassInfo();
-        //AddPlayerPreview();
-        //AddStatBars();
-        //AddUpgradeList();
 
         // initialize last-known gamemode so we can detect changes and refresh UI
         _lastGamemode = GetCurrentGamemode();
@@ -68,11 +70,38 @@ public class ClassUI : UIState
         PopulateClasses();
     }
 
+    private void StartDrag(UIMouseEvent evt, UIElement listeningElement)
+    {
+        _dragging = true;
+        _dragOffset = evt.MousePosition - new Vector2(_mainPanel.Left.Pixels, _mainPanel.Top.Pixels);
+    }
+
+    private void StopDrag(UIMouseEvent evt, UIElement listeningElement)
+    {
+        _dragging = false;
+    }
+
     public override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
 
-        // Auto-refresh the class list when gamemode changes.
+        if (_dragging)
+        {
+            Vector2 mouse = Main.MouseScreen;
+
+            _mainPanel.Left.Set(mouse.X - _dragOffset.X, 0f);
+            _mainPanel.Top.Set(mouse.Y - _dragOffset.Y, 0f);
+            _mainPanel.Recalculate();
+
+            // Keep second panel positioned relative to first
+            _mainPanel2.Left.Set(_mainPanel.Left.Pixels, 0f);
+            _mainPanel2.Top.Set(_mainPanel.Top.Pixels, 0f);
+            _mainPanel2.Recalculate();
+        }
+
+        if (_classSelectCooldown > 0)
+            _classSelectCooldown--;
+
         var gm = ModContent.GetInstance<GameManager>();
         string currentMode = GetCurrentGamemode();
         if (gm != null && currentMode != _lastGamemode)
@@ -117,7 +146,6 @@ public class ClassUI : UIState
         };
         _classList.SetScrollbar(bar);
         panel.Append(_classList);
-        //panel.Append(bar);
         _mainPanel.Append(panel);
 
 
@@ -171,15 +199,6 @@ public class ClassUI : UIState
         infoPanel.Append(_classNameText);
         infoPanel.Append(_classSummaryText);
         _mainPanel.Append(infoPanel);
-    }
-
-    private void AddPlayerPreview()
-    {   /*
-        _preview = new PlayerPreviewElement(width: 100, height: 140) {
-            HAlign = 0.5f,
-            VAlign = 0.5f
-        };
-        _mainPanel.Append(_preview); */
     }
 
     private void AddStatBars()
@@ -279,24 +298,27 @@ public class ClassUI : UIState
                 }
             };
 
-            btn.OnLeftClick += (evt, el) => {
-                // clear all siblings
+            btn.OnLeftClick += (evt, el) =>
+            {
+                if (_classSelectCooldown > 0)
+                    return;
+
                 foreach (UITextPanel<string> button in _classList)
                 {
                     if (button.BackgroundColor == selected)
-                    {
                         button.BackgroundColor = normal;
-                    }
                 }
+
                 foreach (UITextPanel<string> button in _classList2)
                 {
                     if (button.BackgroundColor == selected)
-                    {
                         button.BackgroundColor = normal;
-                    }
                 }
+
                 btn.BackgroundColor = selected;
                 SelectClass(cls);
+
+                _classSelectCooldown = ClassSelectCooldownMax;
             };
             _classList.Add(btn);
         }
@@ -338,40 +360,36 @@ public class ClassUI : UIState
                 }
             };
 
-            btn.OnLeftClick += (evt, el) => {
-                // clear all siblings
+            btn.OnLeftClick += (evt, el) =>
+            {
+                if (_classSelectCooldown > 0)
+                    return;
+
                 foreach (UITextPanel<string> button in _classList)
                 {
                     if (button.BackgroundColor == selected)
-                    {
                         button.BackgroundColor = normal;
-                    }
                 }
+
                 foreach (UITextPanel<string> button in _classList2)
                 {
                     if (button.BackgroundColor == selected)
-                    {
                         button.BackgroundColor = normal;
-                    }
                 }
+
                 btn.BackgroundColor = selected;
                 SelectClass(cls);
+
+                _classSelectCooldown = ClassSelectCooldownMax;
             };
             _classList2.Add(btn);
         }
-        
-        
-
-        // default select first (removed for debugging purposes)
-        // if (CTG2.CTG2.config.Classes.Any())
-        //     SelectClass(CTG2.CTG2.config.Classes[0]);
     }
 
     private void SelectClass(ClassConfig cfg)
     {
         var playerManager = Main.LocalPlayer.GetModPlayer<PlayerManager>();
         playerManager.currentClass = cfg;
-        //playerManager.currentUpgrade = cfg.Upgrades[0]; // Not needed
         
         playerManager.pickedClass = true;
         var mod = ModContent.GetInstance<CTG2.CTG2>();
@@ -386,57 +404,5 @@ public class ClassUI : UIState
         
 
         selectedClass = cfg;
-        //_classNameText.SetText(cfg.Name);
-       //_classSummaryText.SetText(cfg.Summary);
-
-        // update stats bars
-       // _hpBar.SetProgress(cfg.HealthFromKills / 100f);        // example
-        //_mobilityBar.SetProgress(cfg.RespawnTime / 10f);        // example
-
-        // populate upgrades
-        //_upgradeList.Clear();
-        // foreach (var up in cfg.Upgrades)
-        // {
-        //     var btn = new UITextPanel<string>(up.Name)
-        //     {
-        //         Width = { Percent = 1f },
-        //         Height = { Pixels = 30 }
-        //     };
-        //     Color PanelColor = new Color(63, 82, 151, 180);
-        //     btn.BackgroundColor = PanelColor;
-        //     // store original for restoring
-        //     Color normal = PanelColor;
-        //     Color hover = normal * 1.5f;
-        //     Color selected = Color.Gold;
-
-        //     btn.OnMouseOver += (evt, el) => {
-        //         if (btn.BackgroundColor != selected)
-        //         {
-        //             btn.BackgroundColor = hover;
-        //         }
-                
-        //     };
-        //     btn.OnMouseOut += (evt, el) =>
-        //     {
-        //         if (btn.BackgroundColor != selected)
-        //         {
-        //             btn.BackgroundColor = normal;
-        //         }
-        //     };
-
-        //     btn.OnLeftClick += (evt, el) => {
-        //         // clear all siblings
-        //         foreach (UITextPanel<string> button in _upgradeList)
-        //         {
-        //             if (button.BackgroundColor == selected)
-        //             {
-        //                 button.BackgroundColor = normal;
-        //             }
-        //         }
-        //         btn.BackgroundColor = selected;
-        //         playerManager.currentUpgrade = up;
-        //     };
-        //     _upgradeList.Add(btn);
-        // }
     }
 }

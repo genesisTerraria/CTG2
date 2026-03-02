@@ -11,10 +11,10 @@
       "Modded": true
     },
     {
-      "Name": "Whoopie Cushion",
-      "Type": 215,
+      "Name": "Ice Rod",
+      "Type": 496,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 50,
       "Slot": 1,
       "Modded": false
     },
@@ -43,10 +43,10 @@
       "Modded": false
     },
     {
-      "Name": "Ice Rod",
-      "Type": 496,
-      "Stack": 1,
-      "Prefix": 50,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
       "Slot": 5,
       "Modded": false
     },

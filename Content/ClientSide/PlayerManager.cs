@@ -143,7 +143,9 @@ public class PlayerManager : ModPlayer
     // Set Custom Spawn Points
     public override void OnRespawn()
     {
-
+        Player.immune = false;
+        Player.immuneTime = 0;
+        
         int blueBaseX = CTG2.config.BlueBase[0] / 16;
         int blueBaseY = CTG2.config.BlueBase[1] / 16;
         int redBaseX = CTG2.config.RedBase[0] / 16;

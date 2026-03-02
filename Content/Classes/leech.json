@@ -11,8 +11,8 @@
       "Modded": true
     },
     {
-      "Name": "Whoopie Cushion",
-      "Type": 215,
+      "Name": "Cursed Flames",
+      "Type": 519,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 1,
@@ -35,9 +35,9 @@
       "Modded": false
     },
     {
-      "Name": "Cursed Flames",
-      "Type": 519,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 4,
       "Modded": false

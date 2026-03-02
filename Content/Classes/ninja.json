@@ -11,16 +11,16 @@
       "Modded": true
     },
     {
-      "Name": "Whoopie Cushion",
-      "Type": 215,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 1,
       "Modded": false
     },
     {
       "Name": "Zen",
-      "Type": 5557,
+      "Type": 5558,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 2,

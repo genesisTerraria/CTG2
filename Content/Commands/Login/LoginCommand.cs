@@ -16,15 +16,22 @@ namespace CTG2.Content.Commands
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
+            var modPlayer = caller.Player.GetModPlayer<AdminPlayer>();
+
             if (args.Length != 1)
             {
                 caller.Reply("Usage: /login <password>", Color.Red);
                 return;
             }
 
+            if (modPlayer.IsAdmin)
+            {
+                caller.Reply("You are already logged in!", Color.Red);
+                return;
+            }
+
             if (args[0] == Password)
             {
-                var modPlayer = caller.Player.GetModPlayer<AdminPlayer>();
                 modPlayer.IsAdmin = true;
                 if (Main.netMode == NetmodeID.MultiplayerClient) {
                 var pkt = ModContent.GetInstance<CTG2>().GetPacket();
