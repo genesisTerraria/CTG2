@@ -74,11 +74,13 @@ namespace CTG2.Content.Commands
 
         private Color GetTeamColor(int teamId)
         {
+            Color blueColor = new Color(0, 119, 182);
+
             return teamId switch
             {
                 1 => Color.Red,
                 2 => Color.Green,
-                3 => Color.Blue,
+                3 => Color.blueColor,
                 4 => Color.Yellow,
                 5 => Color.Pink,
                 _ => Color.White

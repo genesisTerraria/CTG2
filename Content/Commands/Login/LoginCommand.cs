@@ -35,32 +35,32 @@ namespace CTG2.Content.Commands
             }
             else
             {
-            string inputPassword = args[0];
-            var mod = ModContent.GetInstance<CTG2>();
-            using (var stream = mod.GetFileStream("Content/Commands/Login/password.hash"))
-            using (var reader = new StreamReader(stream))
-            {
-                string storedHash = reader.ReadToEnd().Trim();
-
-
-                if (storedHash == null)
+                string inputPassword = args[0];
+                var mod = ModContent.GetInstance<CTG2>();
+                using (var stream = mod.GetFileStream("Content/Commands/Login/password.hash"))
+                using (var reader = new StreamReader(stream))
                 {
-                    caller.Reply("Password hash not found.");
-                    return;
-                }
+                    string storedHash = reader.ReadToEnd().Trim();
 
-                string inputHash = PasswordHelper.HashPassword(inputPassword);
 
-                if (inputHash == storedHash)
-                {
-                    caller.Player.GetModPlayer<AdminPlayer>().IsAdmin = true;
-                    caller.Reply("You are now logged in as admin");
+                    if (storedHash == null)
+                    {
+                        caller.Reply("Password hash not found.");
+                        return;
+                    }
+
+                    string inputHash = PasswordHelper.HashPassword(inputPassword);
+
+                    if (inputHash == storedHash)
+                    {
+                        caller.Player.GetModPlayer<AdminPlayer>().IsAdmin = true;
+                        caller.Reply("You are now logged in as admin.", Color.Green);
+                    }
+                    else
+                    {
+                        caller.Reply("Wrong password.".Color.Red);
+                    }
                 }
-                else
-                {
-                    caller.Reply("wrong pwd");
-                }
-            }
             }
         }
     }

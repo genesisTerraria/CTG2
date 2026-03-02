@@ -70,7 +70,7 @@ namespace CTG2.Content.Commands
                 }
             }
 
-            caller.Reply(message.ToString(), Color.White);
+            caller.Reply(message.ToString(), Color.Yellow);
         }
 
         private string GetTeamName(int teamId)
