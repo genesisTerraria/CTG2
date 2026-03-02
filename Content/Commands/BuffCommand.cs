@@ -14,8 +14,8 @@ namespace CTG2.Content.Commands
     {
         public override CommandType Type => CommandType.Chat;
         public override string Command => "buff";
-        public override string Description => "Apply a buff for a specific timespan";
-        public override string Usage => "/buff <ID> <length>";
+        public override string Description => "Apply a buff for a specified timespan";
+        public override string Usage => "/buff <ID> <length (s)>";
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
@@ -29,15 +29,18 @@ namespace CTG2.Content.Commands
             {
                 Player player = caller.Player;
                 var mod = ModContent.GetInstance<CTG2>();
+
                 ModPacket packet1 = mod.GetPacket();
                 packet1.Write((byte)MessageType.RequestAddBuff);
                 packet1.Write(player.whoAmI);
                 packet1.Write(buffID);
                 packet1.Write(length * 60);
                 packet1.Send();
+
+                caller.Reply("Successfully applied buff.", Color.Green);
             }
             else
-                caller.Reply("Wrong usage. /buff <ID> <length>");
+                caller.Reply("Wrong usage. /buff <ID> <length (s)>", Color.Red);
         }
     }
 }

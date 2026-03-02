@@ -8,8 +8,8 @@ namespace CTG2.Content.Commands
     public class ViewMapQueueCommand : ModCommand
     {
         public override CommandType Type => CommandType.Chat;
-        public override string Command => "viewmapqueue";
-        public override string Usage => "/viewmapqueue";
+        public override string Command => "mapqueue";
+        public override string Usage => "/mapqueue";
         public override string Description => "Shows the current map queue.";
 
         public override void Action(CommandCaller caller, string input, string[] args)

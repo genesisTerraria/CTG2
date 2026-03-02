@@ -53,10 +53,14 @@ namespace CTG2.Content.Commands
                     packet1.Write((int)10881);
                     packet1.Send();
                 }
+                else
+                {
+                    caller.Reply("Invalid location. Valid locations: spawn, bluebase, redbase", Color.Red);
+                    return;
+                }
             }
             else if (args.Length == 2)
             {
-
                 string targetName = args[0].ToLower();
                 string targetName2 = args[1].ToLower();
 
@@ -77,16 +81,12 @@ namespace CTG2.Content.Commands
                     packet1.Write((int)tempPosition2.X);
                     packet1.Write((int)tempPosition2.Y);
                     packet1.Send();
+
+                    caller.Reply("Teleporting...", Color.Green);
                 }
-
-                
             }
-
-
-            else { Main.NewText("Wrong usage"); }
-            
-
-
+            else
+                caller.Reply("Wrong usage", Color.Red);
         }
     }
 }

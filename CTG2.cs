@@ -851,45 +851,49 @@ namespace CTG2
                     Console.WriteLine($"Server: Sent map queue ({mapArray.Length} maps) to player {playerMapView}");
                     break;
                 case (byte)MessageType.RequestTeamChat:
-                    int playerWhoTalked = reader.ReadInt32();
+                {
+                    if (Main.netMode != NetmodeID.Server)
+                        return;
+
+                    int playerWhoTalked = whoAmI; // use sender
                     string teamMessage = reader.ReadString();
 
-                    // Get the player who sent the message
-                    var senderPlayer = Main.player[playerWhoTalked];
+                    Player senderPlayer = Main.player[playerWhoTalked];
+
                     if (!senderPlayer.active)
-                    {
-                        Console.WriteLine($"Invalid player {playerWhoTalked} tried to send team chat");
-                        break;
-                    }
+                        return;
 
                     int senderTeam = senderPlayer.team;
 
-                    // Check if player is on a team
                     if (senderTeam == 0)
                     {
-                        ChatHelper.SendChatMessageToClient(NetworkText.FromLiteral("You are not on a team!"), Color.Red, playerWhoTalked);
-                        break;
+                        ChatHelper.SendChatMessageToClient(
+                            NetworkText.FromLiteral("You are not on a team!"),
+                            Color.Red,
+                            playerWhoTalked
+                        );
+                        return;
                     }
 
-                    // Get team name and color
                     string teamName = GetTeamName(senderTeam);
                     Color teamColor = GetTeamColor(senderTeam);
 
-
                     string formattedMessage = $"[{teamName}] {senderPlayer.name}: {teamMessage}";
 
-                    int messagesSent = 0;
-                    foreach (Player team_player in Main.player)
+                    foreach (Player teamPlayer in Main.player)
                     {
-                        if (team_player.active && team_player.team == senderTeam)
+                        if (teamPlayer.active && teamPlayer.team == senderTeam)
                         {
-                            ChatHelper.SendChatMessageToClient(NetworkText.FromLiteral(formattedMessage), teamColor, team_player.whoAmI);
-                            messagesSent++;
+                            ChatHelper.SendChatMessageToClient(
+                                NetworkText.FromLiteral(formattedMessage),
+                                teamColor,
+                                teamPlayer.whoAmI
+                            );
                         }
                     }
 
-                    Console.WriteLine($"Server: Sent team chat from {senderPlayer.name} to {messagesSent} players on {teamName} team");
                     break;
+                }
                 case (byte)MessageType.RequestClassSelection:
                     int playerSelecting = reader.ReadInt32();
                     string classSelected = reader.ReadString();

@@ -28,7 +28,8 @@ namespace CTG2.Content.Commands
                 caller.Reply("You must be an admin to use this command.", Color.Red);
                 return;
             }
-            if (args.Length < 1)
+
+            if (args.Length != 1)
             {
                 caller.Reply("Usage: /ban <playerName>");
                 return;
@@ -47,16 +48,13 @@ namespace CTG2.Content.Commands
                     packet.Write((byte)MessageType.RequestBanPlayer);
                     packet.Write(args[0]); 
                     packet.Send();
-                    caller.Reply($"Player '{player.name}' has been banned.");
+                    caller.Reply($"Player '{player.name}' has been banned.", Color.Green);
                     return;
                 }
 
             }
 
             caller.Reply($"No player named '{targetName}' was found.");
-
-
-        
         }
     }
 }

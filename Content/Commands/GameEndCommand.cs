@@ -20,12 +20,12 @@ using System.Security.Policy;
 
 namespace CTG2.Content
 {
-    public class EndGame : ModCommand
+    public class GameEndCommand : ModCommand
     {
         public override CommandType Type => CommandType.Chat;
-        public override string Command => "endgame";
-        public override string Usage => "/endgame";
-        public override string Description => "Ends a game instance and removes it.";
+        public override string Command => "end";
+        public override string Usage => "/end";
+        public override string Description => "Ends the current game instance.";
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
@@ -37,9 +37,10 @@ namespace CTG2.Content
                 return;
             }
             ModPacket myPacket = Mod.GetPacket();
-            myPacket.Write((byte)MessageType.RequestEndGame); // id
+            myPacket.Write((byte)MessageType.RequestEndGame);
             myPacket.Send();
 
+            caller.Reply("Ended the current game.", Color.Green);
         }
     }
 }

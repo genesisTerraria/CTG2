@@ -33,10 +33,10 @@ namespace CTG2.Content
         public override CommandType Type => CommandType.Chat;
 
 
-        public override string Command => "checkPoints";
+        public override string Command => "points";
 
 
-        public override string Usage => "/checkPoints";
+        public override string Usage => "/points";
 
         public override string Description => "Displays the currently saved start and end points.";
 
@@ -45,18 +45,18 @@ namespace CTG2.Content
 
             if (MapSave.startPoint == Vector2.Zero)
             {
-                caller.Reply("Start point is not set.");
+                caller.Reply("Start point is not set.", Color.Red);
             }
             else
             {
 
-                caller.Reply($"Start point is set to: {MapSave.startPoint.ToPoint()}");
+                caller.Reply($"Start point is set to: {MapSave.startPoint.ToPoint()}", Color.Green);
             }
 
             // Check the endPoint
             if (MapSave.endPoint == Vector2.Zero)
             {
-                caller.Reply("End point is not set.");
+                caller.Reply("End point is not set.", Color.Red);
             }
             else
             {
@@ -68,8 +68,8 @@ namespace CTG2.Content
     public class SaveWorld : ModCommand
     {
         public override CommandType Type => CommandType.Chat;
-        public override string Command => "saveMap";
-        public override string Usage => "/saveMap <name>";
+        public override string Command => "savemap";
+        public override string Usage => "/savemap <name>";
 
         public override string Description => "saves world under <name>.json";
 
@@ -77,13 +77,13 @@ namespace CTG2.Content
         {
             if (args.Length == 0)
             {
-                caller.Reply("Error: Please provide a name for the save file. Usage: " + Usage);
+                caller.Reply("Error: Please provide a name for the save file. Usage: " + Usage, Color.Red);
                 return;
             }
 
             if (MapSave.startPoint == Vector2.Zero || MapSave.endPoint == Vector2.Zero)
             {
-                caller.Reply("Error: Both a start point and an end point must be set first.");
+                caller.Reply("Error: Both a start point and an end point must be set first.", Color.Red);
                 return;
             }
 
@@ -135,12 +135,12 @@ namespace CTG2.Content
                 
                 File.WriteAllText(filePath, json);
 
-                caller.Reply($"World region saved successfully to: {args[0]}.json");
+                caller.Reply($"World region saved successfully to: {args[0]}.json", Color.Green);
             }
             catch (Exception e)
             {
-                caller.Reply("An error occurred while saving the file.");
-            
+                caller.Reply("An error occurred while saving the file.", Color.Red);
+
                 Mod.Logger.Error("File save failed: " + e.Message, e);
             }
         }

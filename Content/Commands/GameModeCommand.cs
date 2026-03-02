@@ -11,7 +11,7 @@ namespace CTG2.Content.Commands
     {
         public override CommandType Type => CommandType.Chat;
         public override string Command => "gamemode";
-        public override string Description => "Set game mode (e.g., /gamemode pubs)";
+        public override string Description => "Sets the gamemode (pubs/scrims/rng)";
         public override string Usage => "/gamemode <mode>";
 
         public override void Action(CommandCaller caller, string input, string[] args)
@@ -31,37 +31,18 @@ namespace CTG2.Content.Commands
 
             string mode = args[0].ToLowerInvariant();
 
-            if (mode == "pubs")
+            if (mode == "pubs" || mode == "scrims" || mode == "rng")
             {
                 ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
                 packet.Write((byte)MessageType.RequestGamemodeChange);
-                packet.Write("pubs");
+                packet.Write(mode);
                 packet.Send();
 
-                caller.Reply("Gamemode set to pubs.", Color.LimeGreen);
+                caller.Reply($"Gamemode set to {mode}.", Color.Green);
+                return;
             }
-            else if (mode == "scrims")
-            {
-                ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
-                packet.Write((byte)MessageType.RequestGamemodeChange);
-                packet.Write("scrims");
-                packet.Send();
-
-                caller.Reply("Gamemode set to scrims.", Color.LimeGreen);
-            }
-            else if (mode == "rng")
-            {
-                ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
-                packet.Write((byte)MessageType.RequestGamemodeChange);
-                packet.Write("rng");
-                packet.Send();
-
-                caller.Reply("Gamemode set to rng.", Color.LimeGreen);
-            }
-            else
-            {
-                caller.Reply($"Unknown gamemode: {args[0]}", Color.Red);
-            }
+            
+            caller.Reply($"Unknown gamemode: {args[0]}", Color.Red);
         }
     }
 }

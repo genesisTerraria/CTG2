@@ -24,12 +24,12 @@ namespace CTG2.Content
     public class GameStartCommand : ModCommand
     {
         public override CommandType Type => CommandType.Chat;
-        public override string Command => "startgame";
-        public override string Description => "Creates a game (equivalent to hosting a game in PG)";
+        public override string Command => "start";
+        public override string Usage => "/start";
+        public override string Description => "Starts a new game instance.";
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
-
             var modPlayer = caller.Player.GetModPlayer<AdminPlayer>();
             if (!modPlayer.IsAdmin)
             {
@@ -47,10 +47,10 @@ namespace CTG2.Content
             ModPacket myPacket = Mod.GetPacket();
             myPacket.Write((byte)MessageType.RequestStartGame); // id
             myPacket.Send();
+
+            caller.Reply("Started a new game.", Color.Green);
             
             return;
-
-            //SpawnPoints.TeleportToGameSpawn(caller.Player, game); redo this method 
         }
     }
 }

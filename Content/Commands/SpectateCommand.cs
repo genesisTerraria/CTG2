@@ -8,8 +8,10 @@ namespace CTG2.Content.Commands
     {
         public override CommandType Type => CommandType.Chat;
         public override string Command => "spectate";
-        public override string Description => "Enter spectator mode.";
+        public override string Description => "Toggles spectator mode.";
         public override string Usage => "/spectate";
+
+        private bool spectating = false;
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
@@ -19,10 +21,18 @@ namespace CTG2.Content.Commands
                 return;
             }
 
-            // Send request to server to enter spectator mode
-            CTG2.SendEnterSpectatorRequest(caller.Player.whoAmI);
-            
-            caller.Reply("Requesting to enter spectator mode!!", Color.Yellow);
+            spectating = !spectating;
+
+            if (spectating)
+            {
+                CTG2.SendEnterSpectatorRequest(caller.Player.whoAmI);
+                caller.Reply("Entering spectator mode.", Color.Green);
+            }
+            else
+            {
+                CTG2.SendExitSpectatorRequest(caller.Player.whoAmI);
+                caller.Reply("Exiting spectator mode.", Color.Green);
+            }
         }
     }
 }

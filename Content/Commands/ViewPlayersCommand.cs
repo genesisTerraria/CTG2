@@ -12,9 +12,9 @@ namespace CTG2.Content.Commands
     public class ViewPlayersCommand : ModCommand
     {
         public override CommandType Type => CommandType.Chat;
-        public override string Command => "viewplayers";
+        public override string Command => "who";
         public override string Description => "Shows all players currently in the game.";
-        public override string Usage => "/viewplayers";
+        public override string Usage => "/who";
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
@@ -37,7 +37,7 @@ namespace CTG2.Content.Commands
 
             if (totalPlayers == 0)
             {
-                caller.Reply("No players currently in the game.", Color.Gray);
+                caller.Reply("No players currently in the game.", Color.Red);
                 return;
             }
 

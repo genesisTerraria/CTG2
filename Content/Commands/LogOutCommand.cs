@@ -13,8 +13,16 @@ namespace CTG2.Content.Commands
         public override void Action(CommandCaller caller, string input, string[] args)
         {
             var modPlayer = caller.Player.GetModPlayer<AdminPlayer>();
+
+            if (!modPlayer.IsAdmin)
+            {
+                caller.Reply("You must be an admin to use this command.", Color.Red);
+                return;
+            }
+
             modPlayer.IsAdmin = false;
-            caller.Reply("You have been logged out.", Color.Yellow);
+
+            caller.Reply("You have been logged out.", Color.Green);
         }
     }
 }

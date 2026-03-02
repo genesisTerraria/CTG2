@@ -6,7 +6,7 @@ using Microsoft.Xna.Framework;
 
 namespace CTG2.Commands
 {
-    public class BreakMode : ModCommand
+    public class BreakModeCommand : ModCommand
     {
         public override CommandType Type => CommandType.Chat;
         public override string Command => "breakmode";
@@ -23,7 +23,7 @@ namespace CTG2.Commands
             UnbreakableTiles.AllowBreaking = !UnbreakableTiles.AllowBreaking;
 
             string status = UnbreakableTiles.AllowBreaking ? "enabled" : "disabled";
-            caller.Reply($"[CTG] Break mode is now {status}.");
+            caller.Reply($"[CTG] Break mode is now {status}.", Color.Green);
         }
     }
 }

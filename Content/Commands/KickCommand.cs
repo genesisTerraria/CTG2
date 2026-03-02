@@ -4,6 +4,7 @@ using Terraria.Localization;
 using Terraria.Net;
 using System;
 using Terraria.ID;
+using Microsoft.Xna.Framework;
 
 namespace CTG2.Content.Commands
 {
@@ -19,16 +20,17 @@ namespace CTG2.Content.Commands
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
+            var modPlayer = caller.Player.GetModPlayer<AdminPlayer>();
 
-            if (Main.netMode != NetmodeID.Server)
+            if (!modPlayer.IsAdmin)
             {
-                caller.Reply("This command can only be run from the server console.");
+                caller.Reply("You must be an admin to use this command.", Color.Red);
                 return;
             }
 
-            if (args.Length < 1)
+            if (args.Length != 1)
             {
-                caller.Reply("Usage: /kick <playerName>");
+                caller.Reply("Usage: /kick <playerName>", Color.Red);
                 return;
             }
 
@@ -42,13 +44,13 @@ namespace CTG2.Content.Commands
                 if (player.name.Equals(targetName, StringComparison.OrdinalIgnoreCase))
                 {
                     NetMessage.BootPlayer(player.whoAmI, NetworkText.FromLiteral("You have been kicked by an admin."));
-                    caller.Reply($"Player '{player.name}' has been kicked.");
+                    caller.Reply($"Player '{player.name}' has been kicked.", Color.Green);
                     return;
                 }
 
             }
 
-            caller.Reply($"No player named '{targetName}' was found.");
+            caller.Reply($"No player named '{targetName}' was found.", Color.Red);
         }
     }
 }

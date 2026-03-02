@@ -10,7 +10,7 @@ namespace CTG2.Content.Commands
         public override CommandType Type => CommandType.Chat;
         public override string Command => "kill";
         public override string Usage => "/kill <player_name>";
-        public override string Description => "Kill a player by name (admin only).";
+        public override string Description => "Kill a player by name.";
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
@@ -43,7 +43,7 @@ namespace CTG2.Content.Commands
             packet.Write(targetPlayerName);
             packet.Send();
 
-            caller.Reply($"Requesting to kill player '{targetPlayerName}'...", Color.Yellow);
+            caller.Reply($"Killed player '{targetPlayerName}'.", Color.Green);
 
         }
 

@@ -12,9 +12,9 @@ namespace CTG2.Content.Commands
     public class ViewTeamCommand : ModCommand
     {
         public override CommandType Type => CommandType.Chat;
-        public override string Command => "viewteam";
+        public override string Command => "team";
         public override string Description => "Shows all players on your current team.";
-        public override string Usage => "/viewteam";
+        public override string Usage => "/team";
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
@@ -42,7 +42,7 @@ namespace CTG2.Content.Commands
 
             if (teammates.Count == 0)
             {
-                caller.Reply($"No players found on {teamName} team.", Color.Gray);
+                caller.Reply($"No players found on {teamName} team.", Color.Red);
                 return;
             }
 

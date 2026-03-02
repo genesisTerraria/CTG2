@@ -16,7 +16,7 @@ namespace CTG2.Content.Commands
     {
         public override CommandType Type => CommandType.Chat;
         public override string Command => "saveinventory";
-        public override string Usage => "/saveinventory";
+        public override string Usage => "/saveinventory <name>";
         public override string Description => "Saves current inventory to a JSON file";
 
         public override void Action(CommandCaller caller, string input, string[] args)
@@ -27,6 +27,13 @@ namespace CTG2.Content.Commands
                 caller.Reply("You must be an admin to use this command.", Color.Red);
                 return;
             }
+
+            if (args.Length != 1)
+            {
+                caller.Reply("Usage: /saveinventory <name>", Color.Red);
+                return;
+            }
+
             Player player = caller.Player;
             var inventoryData = new List<ItemData>();
             int count = 0;
@@ -135,7 +142,7 @@ namespace CTG2.Content.Commands
     {
         public override CommandType Type => CommandType.Chat;
         public override string Command => "loadinventory";
-        public override string Usage => "/loadinventory";
+        public override string Usage => "/loadinventory <name>";
         public override string Description => "Loads saved inventory from a JSON file";
 
         private int GetItemIDByName(string itemName)
@@ -158,6 +165,13 @@ namespace CTG2.Content.Commands
                 caller.Reply("You must be an admin to use this command.", Color.Red);
                 return;
             }
+            
+            if (args.Length != 1)
+            {
+                caller.Reply("Usage: /loadinventory <name>", Color.Red);
+                return;
+            }
+
             string[] inputSplit = input.Split(' ');
             string modifiedInput = inputSplit[1];
 
@@ -167,7 +181,7 @@ namespace CTG2.Content.Commands
 
             if (!File.Exists(filePath))
             {
-                Main.NewText($"Inventory file not found.", Microsoft.Xna.Framework.Color.Red);
+                Main.NewText($"Inventory file not found.", Color.Red);
                 return;
             }
 
@@ -180,7 +194,7 @@ namespace CTG2.Content.Commands
             }
             catch
             {
-                Main.NewText("Failed to load or parse inventory file.", Microsoft.Xna.Framework.Color.Red);
+                Main.NewText("Failed to load or parse inventory file.", Color.Red);
                 return;
             }
 

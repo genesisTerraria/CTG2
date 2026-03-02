@@ -14,7 +14,7 @@ namespace CTG2.Content.Commands
         public override CommandType Type => CommandType.Chat;
         public override string Command => "pause";
         public override string Usage => "/pause";
-        public override string Description => "Pauses or unpauses the game (admin only, only during active match)";
+        public override string Description => "Pauses or unpauses the game";
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
@@ -28,7 +28,7 @@ namespace CTG2.Content.Commands
             // Only allow pause/unpause when game is active (not class selection or inactive)
             if (GameInfo.matchStage != 2)
             {
-                caller.Reply("You can only pause/unpause during an active match.", Color.OrangeRed);
+                caller.Reply("You can only pause/unpause during an active match.", Color.Red);
                 return;
             }
 

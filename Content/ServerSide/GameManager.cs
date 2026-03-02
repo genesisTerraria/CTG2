@@ -1115,7 +1115,7 @@ public class GameManager : ModSystem
                         var mod = ModContent.GetInstance<CTG2>();
 
                         ModPacket packet = mod.GetPacket();
-                        packet.Write((byte)MessageType.RequestAddBuff);
+                        packet.Write((byte)MessageType.SyncAddBuff);
                         packet.Write(p.whoAmI);
                         packet.Write(BuffID.Webbed);
                         packet.Write(12);
