@@ -299,19 +299,8 @@ public class ModifyHurtModPlayer : ModPlayer
                 packet.Send();
             }
         }
-        else if (info.DamageSource.SourceProjectileType == ProjectileID.Sunfury && Player.HasBuff(BuffID.OnFire))
-        {
-            Player.ClearBuff(BuffID.OnFire);
-        }
-        else if (info.DamageSource.SourceProjectileType == 19 && Player.HasBuff(BuffID.OnFire)) //flamebunny flamrang
-        {
-            Player.ClearBuff(BuffID.OnFire);
-        }
-        else if (info.DamageSource.SourceProjectileType == 15 && !Player.HasBuff(BuffID.OnFire)) //flamebunny fof
-        {
-            Player.ClearBuff(BuffID.OnFire);
-        }
 
+        Player.ClearBuff(BuffID.OnFire);
         Player.ClearBuff(BuffID.Ichor);
         Player.ClearBuff(BuffID.Poisoned);
     }

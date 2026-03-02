@@ -307,10 +307,9 @@ namespace CTG2.Content
                     case ProjectileID.HellfireArrow: // Archer ability
                         if (attacker.HasBuff(320) && attacker.team != Player.team)
                         {
-                            Player.AddBuff(24, 60);
                             Player.AddBuff(30, 60);
                             Player.AddBuff(32, 60);
-                            Player.AddBuff(323, 60);
+                            Player.AddBuff(44, 60);
                         }
                         break;
 
@@ -318,10 +317,7 @@ namespace CTG2.Content
                     case 19: // Flame Bunny ability
                         if (attacker.HasBuff(320) && attacker.HasBuff(137) && attacker.team != Player.team)
                         {
-                            Player.AddBuff(20, 30);
-                            Player.AddBuff(39, 30);
-                            Player.AddBuff(44, 30);
-                            Player.AddBuff(48, 30);
+                            Player.AddBuff(153, 40);
                         }
                         break;
 
@@ -333,31 +329,6 @@ namespace CTG2.Content
                             attacker.statLife += healAmount;
                             attacker.HealEffect(healAmount);
                         }
-                        break;
-                    case 496: // Black Mage ability
-                        // if (!attacker.HasBuff(206) && attacker.team != Player.team)
-                        // {
-                        //     attacker.GetModPlayer<Abilities>().class7HitCounter++;
-
-                        //     if (attacker.whoAmI == Main.myPlayer)
-                        //     {
-                        //         if (attacker.GetModPlayer<Abilities>().class7HitCounter < 10)
-                        //             Main.NewText($"{attacker.GetModPlayer<Abilities>().class7HitCounter}/10 hits");
-                        //         else
-                        //         {
-                        //             Main.NewText("10/10 hits. Ability ready!");
-                        //         }
-                        //     }
-                        // }
-                        break;
-                    case 153: // Regen Mutant
-                        attacker.AddBuff(2, 150);
-                        ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
-                        packet.Write((byte)MessageType.RequestAddBuff);
-                        packet.Write(attacker.whoAmI);
-                        packet.Write(2);
-                        packet.Write(150);
-                        packet.Send();
                         break;
                 }
             }
