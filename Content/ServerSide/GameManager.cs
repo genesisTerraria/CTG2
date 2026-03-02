@@ -920,14 +920,14 @@ public class GameManager : ModSystem
             if (BlueGem.IsHeld && BlueGem.HeldBy == playerIndex)
             {
                 BlueGem.Reset();
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} dropped the Blue Gem when entering spectator mode"), Microsoft.Xna.Framework.Color.Blue);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} dropped the Blue Gem!"), Microsoft.Xna.Framework.Color.Blue);
                 Console.WriteLine($"Player {player.name} dropped Blue Gem when entering spectator mode");
             }
 
             if (RedGem.IsHeld && RedGem.HeldBy == playerIndex)
             {
                 RedGem.Reset();
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} dropped the Red Gem when entering spectator mode"), Microsoft.Xna.Framework.Color.Red);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} dropped the Red Gem!"), Microsoft.Xna.Framework.Color.Red);
                 Console.WriteLine($"Player {player.name} dropped Red Gem when entering spectator mode");
             }
 

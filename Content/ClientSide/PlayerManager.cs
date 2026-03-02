@@ -333,20 +333,20 @@ public class PlayerManager : ModPlayer
     // When a player disconnects, this hook can clean up their data.
     public override void PlayerDisconnect()
     {
-        gameManager = ModContent.GetInstance<GameManager>();
+        var gameManager = ModContent.GetInstance<GameManager>();
     
-        if (gameManager.BlueGem.IsHeld && gameManager.BlueGem.HeldBy == Main.myPlayer)
+        if (gameManager.BlueGem.IsHeld && gameManager.BlueGem.HeldBy == Player.whoAmI)
         {
             gameManager.BlueGem.Reset();
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{Main.player[Main.myPlayer].name} dropped the Blue Gem when entering spectator mode"), Microsoft.Xna.Framework.Color.Blue);
-            Console.WriteLine($"Player {Main.player[Main.myPlayer].name} dropped Blue Gem when entering spectator mode");
+            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{Main.player[Player.whoAmI].name} dropped the Blue Gem!"), Microsoft.Xna.Framework.Color.Blue);
+            Console.WriteLine($"Player {Main.player[Player.whoAmI].name} dropped Blue Gem when entering spectator mode");
         }
 
-        if (gameManager.RedGem.IsHeld && gameManager.RedGem.HeldBy == Main.myPlayer)
+        if (gameManager.RedGem.IsHeld && gameManager.RedGem.HeldBy == Player.whoAmI)
         {
             gameManager.RedGem.Reset();
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{Main.player[Main.myPlayer].name} dropped the Red Gem when entering spectator mode"), Microsoft.Xna.Framework.Color.Red);
-            Console.WriteLine($"Player {Main.player[Main.myPlayer].name} dropped Red Gem when entering spectator mode");
+            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{Main.player[Player.whoAmI].name} dropped the Red Gem!"), Microsoft.Xna.Framework.Color.Red);
+            Console.WriteLine($"Player {Main.player[Player.whoAmI].name} dropped Red Gem when entering spectator mode");
         }
     }
 
