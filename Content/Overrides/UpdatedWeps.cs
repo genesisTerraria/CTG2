@@ -51,9 +51,6 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint cursedFlamesDelay = 65;
         private uint cursedFlamesLastUsedCounter = 0;
 
-        private uint sickleDelay = 147; //There should only be one ice sickle projectile on the field at once
-        private uint sickleLastUsedCounter = 0;
-
         public override bool InstancePerEntity => true;
 
 
@@ -68,7 +65,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case ItemID.GoldenShower: // Fish
                     item.useTime = 15;
                     item.useAnimation = 15;
-                    item.shootSpeed = 6.37f;
+                    item.shootSpeed = 6.8f;
                     item.damage = 35;
                     item.mana = 0;
                     item.scale = 0;
@@ -98,14 +95,14 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useTime = 4;
                     item.useAnimation = 4;
                     item.shootSpeed = 28;
-                    item.damage = 29;
+                    item.damage = 33;
                     item.crit = 0;
                     break;
                 case ItemID.CursedFlames: // Leech
                     item.useTime = 37;
                     item.useAnimation = 37;
                     item.shootSpeed = 10;
-                    item.damage = 23;
+                    item.damage = 25;
                     item.mana = 0;
                     item.scale = 0;
                     item.crit = 0;

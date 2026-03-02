@@ -48,7 +48,7 @@ namespace CTG2.Content.Classes
 
     public class TikiTotem : ModNPC
     {
-        private float healFrameGap = 45;
+        private float healFrameGap = 35;
         //private int hitCounter = 0;
         private float frameCount = 0;
         private float firstFrame = 0;
