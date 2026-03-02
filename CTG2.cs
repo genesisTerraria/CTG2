@@ -160,11 +160,13 @@ namespace CTG2
 
         private static Color GetTeamColor(int teamId)
         {
+            Color blueColor = new Color(0, 119, 182);
+
             return teamId switch
             {
                 1 => Color.Red,
                 2 => Color.Green,
-                3 => Color.Blue,
+                3 => blueColor,
                 4 => Color.Yellow,
                 5 => Color.Pink,
                 _ => Color.White
@@ -855,7 +857,7 @@ namespace CTG2
                     if (Main.netMode != NetmodeID.Server)
                         return;
 
-                    int playerWhoTalked = whoAmI; // use sender
+                    int playerWhoTalked = reader.ReadInt32(); // use sender
                     string teamMessage = reader.ReadString();
 
                     Player senderPlayer = Main.player[playerWhoTalked];
@@ -875,10 +877,9 @@ namespace CTG2
                         return;
                     }
 
-                    string teamName = GetTeamName(senderTeam);
                     Color teamColor = GetTeamColor(senderTeam);
 
-                    string formattedMessage = $"[{teamName}] {senderPlayer.name}: {teamMessage}";
+                    string formattedMessage = $"{senderPlayer.name}: {teamMessage}";
 
                     foreach (Player teamPlayer in Main.player)
                     {

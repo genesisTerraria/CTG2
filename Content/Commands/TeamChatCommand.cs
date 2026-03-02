@@ -1,4 +1,3 @@
-/* Not working rn 
 using Terraria;
 using Terraria.ModLoader;
 using Terraria.ID;
@@ -40,4 +39,3 @@ namespace CTG2.Content.Commands
         }
     }
 }
-*/
