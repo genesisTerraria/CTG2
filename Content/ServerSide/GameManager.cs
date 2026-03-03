@@ -577,7 +577,7 @@ public class GameManager : ModSystem
             if (RedGem.IsHeld)
             {
                 redGemFireworkTimer++;
-                
+
                 if (redGemFireworkTimer >= FIREWORK_INTERVAL)
                 {
                     redGemFireworkTimer = 0;
@@ -1157,7 +1157,6 @@ public class GameManager : ModSystem
                         packet.Write(false);
                         packet.Write(0);
                         packet.Write(0);
-                        packet.Write(0);
                         packet.Write("Waiting for new game...");
                         packet.Write("Waiting for new game...");
                         packet.Write(mapName);
@@ -1168,6 +1167,8 @@ public class GameManager : ModSystem
                         packet.Write(redCaptures);
                         packet.Write(blueFurthest);
                         packet.Write(redFurthest);
+                        packet.Write("Waiting for new game...");
+                        packet.Write("Waiting for new game...");
                         packet.Send();
                     }
 
@@ -1232,8 +1233,8 @@ public class GameManager : ModSystem
                 ModPacket packet = mod.GetPacket();
                 packet.Write((byte)MessageType.SyncGameInformation);
                 packet.Write(3);
+                packet.Write(newGameTimer);
                 packet.Write(false);
-                packet.Write(0);
                 packet.Write(0);
                 packet.Write(0);
                 packet.Write("Waiting for new game...");
@@ -1246,6 +1247,8 @@ public class GameManager : ModSystem
                 packet.Write(redCaptures);
                 packet.Write(blueFurthest);
                 packet.Write(redFurthest);
+                packet.Write("Waiting for new game...");
+                packet.Write("Waiting for new game...");
                 packet.Send();
 
                 resetEndGame = false;
@@ -1510,6 +1513,8 @@ public class GameManager : ModSystem
         packet.Write(redCaptures);
         packet.Write(blueFurthest);
         packet.Write(redFurthest);
+        packet.Write(blueCarrierName);
+        packet.Write(redCarrierName);
         packet.Send(toClient: playerIndex);
     }
 }
