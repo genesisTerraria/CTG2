@@ -61,7 +61,7 @@ namespace CTG2.Content.Functionality
 
                 // Get victim team and name
                 string victimName = self.team == 1 ? $"[c/FF0000:{self.name}]" : 
-                                    self.team == 3 ? $"[c/0000FF:{self.name}]" :
+                                    self.team == 3 ? $"[c/0077B6:{self.name}]" :
                                     self.name;
 
                 // Check if killer is a player and if so get name and team
@@ -70,7 +70,7 @@ namespace CTG2.Content.Functionality
                     string killerName = "???";
                     Player killer = Main.player[killerIndex];
                     killerName = killer.team == 1 ? $"[c/FF0000:{killer.name}]" : //Red team color (color is a little off rn)
-                                killer.team == 3 ? $"[c/0000FF:{killer.name}]" :  //Blue team color (off as well)
+                                killer.team == 3 ? $"[c/0077B6:{killer.name}]" :  //Blue team color (off as well)
                                 killer.name;
 
                     // Try to get damage source wep ID if null (most cases for some reason) just use held item like vanilla

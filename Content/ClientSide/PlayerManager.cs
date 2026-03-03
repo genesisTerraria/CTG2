@@ -339,15 +339,16 @@ public class PlayerManager : ModPlayer
     
         if (gameManager.BlueGem.IsHeld && gameManager.BlueGem.HeldBy == Player.whoAmI)
         {
+            Color blueColor = new Color(0, 119, 182);
             gameManager.BlueGem.Reset();
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{Main.player[Player.whoAmI].name} dropped the Blue Gem!"), Microsoft.Xna.Framework.Color.Blue);
+            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{Player.name} has dropped the blue team's gem!"), blueColor);
             Console.WriteLine($"Player {Main.player[Player.whoAmI].name} dropped Blue Gem when entering spectator mode");
         }
 
         if (gameManager.RedGem.IsHeld && gameManager.RedGem.HeldBy == Player.whoAmI)
         {
             gameManager.RedGem.Reset();
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{Main.player[Player.whoAmI].name} dropped the Red Gem!"), Microsoft.Xna.Framework.Color.Red);
+            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{Player.name} has dropped the red team's gem!"), Color.Red);
             Console.WriteLine($"Player {Main.player[Player.whoAmI].name} dropped Red Gem when entering spectator mode");
         }
     }
