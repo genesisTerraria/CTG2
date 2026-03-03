@@ -23,7 +23,7 @@ namespace CTG2.Content.Configs
         [Tooltip("How long it takes for binocular camera to reach full offset.")]
         [DefaultValue(0.5f)]
         [Range(0f, 5f)]
-        [Increment(0.1f)]
+        [Increment(0.05f)]
         public float CameraLerpSeconds;
     }
 }

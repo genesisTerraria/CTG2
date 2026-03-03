@@ -67,16 +67,16 @@
       "Modded": false
     },
     {
-      "Name": "Slimy Saddle",
-      "Type": 2430,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 8,
       "Modded": false
     },
     {
-      "Name": "Binoculars",
-      "Type": 1299,
+      "Name": "Slimy Saddle",
+      "Type": 2430,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 9,
