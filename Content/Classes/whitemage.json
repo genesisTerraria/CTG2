@@ -35,12 +35,12 @@
       "Modded": false
     },
     {
-      "Name": "Ice Sickle",
-      "Type": 1306,
+      "Name": "Hexagonal Barrier",
+      "Type": 5551,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 4,
-      "Modded": false
+      "Modded": true
     },
     {
       "Name": "",

@@ -25,7 +25,7 @@ namespace CTG2.Content.Items {
 			Item.noMelee = true;
 			Item.noUseGraphic = true;
 			Item.UseSound = SoundID.Item29;
-			Item.mana = 5;
+			Item.mana = 10;
 			Item.useTime = 10;
 			Item.useAnimation = 10;
 			Item.autoReuse = true;
