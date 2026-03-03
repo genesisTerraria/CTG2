@@ -25,9 +25,9 @@ namespace CTG2.Content.Items {
 			Item.noMelee = true;
 			Item.noUseGraphic = true;
 			Item.UseSound = SoundID.Item29;
-			Item.mana = 10;
-			Item.useTime = 10;
-			Item.useAnimation = 10;
+			Item.mana = 12;
+			Item.useTime = 20;
+			Item.useAnimation = 20;
 			Item.autoReuse = true;
 
 			Item.shoot = ModContent.ProjectileType<HexagonalBarrierProjectile>();
