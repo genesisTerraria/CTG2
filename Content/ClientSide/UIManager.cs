@@ -92,7 +92,7 @@ public class UIManager : ModSystem
         
         int matchTime = GameInfo.matchTime;
         int secondsElapsed = matchTime / 60 - GameInfo.matchStartTime / 60;
-        int secondsLeft = 60 * 1 - secondsElapsed;
+        int secondsLeft = 60 * 10 - secondsElapsed;
         int minutesLeft = secondsLeft / 60;
         int remainder = secondsLeft % 60;
 
