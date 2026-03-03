@@ -33,6 +33,22 @@ namespace CTG2.Content.Items {
 			Item.shoot = ModContent.ProjectileType<HexagonalBarrierProjectile>();
 		}
 
+		public override bool Shoot(Player player, Terraria.DataStructures.EntitySource_ItemUse_WithAmmo source,
+        Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+		{
+			// Shift projectile spawn when facing right
+			if (player.direction == 1)
+			{
+				position.X -= 2f; // tweak this (8 = half tile)
+			}
+            else
+            {
+                position.X += 1f;
+            }
+
+			Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
+			return false; // prevent vanilla spawn
+		}
 	}
 
 
