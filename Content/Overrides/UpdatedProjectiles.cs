@@ -13,6 +13,8 @@ public class ProjectileOverrides : GlobalProjectile
 {
     public override bool InstancePerEntity => true;
 
+    private bool playedSoundBoomerangs = false;
+
 
     public override bool PreKill(Projectile projectile, int timeLeft)
     {
@@ -29,6 +31,11 @@ public class ProjectileOverrides : GlobalProjectile
 
     public override void AI(Projectile projectile)
     {
+        if (!playedSoundBoomerangs && (projectile.type == ProjectileID.ThornChakram || projectile.type == ProjectileID.Flamarang))
+        {
+            SoundEngine.PlaySound(SoundID.Item1, projectile.Center);
+            playedSoundBoomerangs = true;
+        }
         if (projectile.type == 167 || projectile.type == 169)
             projectile.timeLeft = 0;
         if (projectile.type == 511)

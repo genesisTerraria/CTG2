@@ -126,6 +126,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.mana = 5;
                     item.shoot = 33;
                     item.scale = 0;
+                    item.UseSound = null;
                     break;
                 case 2586: //miner //maybe ovveride projectile to not do self damage or at least not self knockback
                     item.damage = 40;
@@ -220,6 +221,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case ItemID.Flamarang:
                     item.damage = 33;
                     item.crit = 0;
+                    item.UseSound = null;
                     break;
 
                 case ItemID.FlowerofFire:
