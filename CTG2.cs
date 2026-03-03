@@ -127,7 +127,8 @@ namespace CTG2
         ArcherDash = 90,
         SyncAddBuff = 91,
         RequestHeal = 92,
-        SyncHeal = 93
+        SyncHeal = 93,
+        UpdateRespawnTime = 94
     }
 
     public class CTG2 : Mod
@@ -831,6 +832,17 @@ namespace CTG2
                         playerManager.damage = newDamage;
                     }
                     break;
+                case (byte)MessageType.UpdateRespawnTime:
+                {
+                    int playerIndexRespawn = reader.ReadInt32();
+                    int respawnTime = reader.ReadInt32();
+
+                    if (playerIndexRespawn == Main.myPlayer)
+                    {
+                        Main.player[playerIndexRespawn].respawnTimer = respawnTime;
+                    }
+                    break;
+                }
                 case (byte)MessageType.RequestViewMap:
                     int playerMapView = reader.ReadInt32();
 

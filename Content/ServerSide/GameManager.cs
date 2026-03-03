@@ -382,6 +382,14 @@ public class GameManager : ModSystem
             statePacket.Write((byte)PlayerManager.PlayerState.None);
             statePacket.Send(toClient: player.whoAmI);
 
+            player.respawnTimer = 0;
+
+            ModPacket respawnPacket = mod.GetPacket();
+            respawnPacket.Write((byte)MessageType.UpdateRespawnTime);
+            respawnPacket.Write(player.whoAmI);
+            respawnPacket.Write(player.respawnTimer);
+            respawnPacket.Send();
+
             if (player.team == 1)
             {
                 ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/FF0000:{player.name}]: {PlayerManager.GetPlayerManager(player.whoAmI).kills} Kills, {PlayerManager.GetPlayerManager(player.whoAmI).deaths} Deaths, {PlayerManager.GetPlayerManager(player.whoAmI).damage} Damage"), Color.Yellow);
