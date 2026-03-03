@@ -91,6 +91,11 @@ public class UIManager : ModSystem
         if (matchStage == 0) return;
         
         int matchTime = GameInfo.matchTime;
+        int secondsElapsed = matchTime / 60 - GameInfo.matchStartTime / 60;
+        int secondsLeft = 60 * 1 - secondsElapsed;
+        int minutesLeft = secondsLeft / 60;
+        int remainder = secondsLeft % 60;
+
         if (matchTime < GameInfo.matchStartTime)
         {
             timeText = $"Class selection ends in: {(int) (GameInfo.matchStartTime / 60) - matchTime / 60}s";
@@ -103,12 +108,12 @@ public class UIManager : ModSystem
         {
             timeText = $"Next capture wins the game!";
         }
+        else if (secondsLeft < 0)
+        {
+            timeText = $"The gem holder must die to end the game!";
+        }
         else
         {
-            int secondsElapsed = matchTime / 60 - GameInfo.matchStartTime / 60;
-            int secondsLeft = 60 * 10 - secondsElapsed;
-            int minutesLeft = secondsLeft / 60;
-            int remainder = secondsLeft % 60;
             timeText = $"Time left in match: {minutesLeft}:{remainder.ToString("D2")}";
         }
         /*GameInfo.blueGemCarrier;*/
