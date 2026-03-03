@@ -143,6 +143,7 @@ public class GemFunctionality : ModPlayer
 
         if (player.team == 3 && player.Hitbox.Intersects(redGem.GemHitbox) && !redGem.IsHeld && !player.dead && !player.ghost) //red gem pickup code
         {
+            
             redGem.IsHeld = true;
             redGem.HeldBy = player.whoAmI;
 
@@ -163,7 +164,7 @@ public class GemFunctionality : ModPlayer
             ModPacket packetText = mod.GetPacket();
             packetText.Write((byte)MessageType.RequestChatColored);
             packetText.Write($"{player.name} has picked up the red team's gem!");
-            packetText.Write(Color.Aqua.PackedValue);
+            packetText.Write(Color.Red.PackedValue);
             packetText.Send(); //send chat pickup text
 
             ModPacket packetAudio = mod.GetPacket();
@@ -175,6 +176,7 @@ public class GemFunctionality : ModPlayer
         {
             blueGem.IsHeld = true;
             blueGem.HeldBy = player.whoAmI;
+            Color blueColor = new Color(0, 119, 182);
             
             //need packets to update gem state from client->server side here
 
@@ -193,7 +195,7 @@ public class GemFunctionality : ModPlayer
             ModPacket packetText = mod.GetPacket();
             packetText.Write((byte)MessageType.RequestChatColored);
             packetText.Write($"{player.name} has picked up the blue team's gem!");
-            packetText.Write(Color.Aqua.PackedValue);
+            packetText.Write(blueColor.PackedValue);
             packetText.Send(); //send chat pickup text
 
             ModPacket packetAudio = mod.GetPacket();
@@ -215,7 +217,7 @@ public class GemFunctionality : ModPlayer
             ModPacket packetText = mod.GetPacket();
             packetText.Write((byte)MessageType.RequestChatColored);
             packetText.Write($"{player.name} has dropped the red team's gem!");
-            packetText.Write(Color.Aqua.PackedValue);
+            packetText.Write(Color.Red.PackedValue);
             packetText.Send();
 
             ModPacket packet = mod.GetPacket();
@@ -226,6 +228,7 @@ public class GemFunctionality : ModPlayer
         else if (blueGem.IsHeld && blueGem.HeldBy == player.whoAmI && ((player.dead && player.team == 1) || player.ghost))
         {
             blueGem.IsHeld = false;
+            Color blueColor = new Color(0, 119, 182);
 
             ModPacket packetIsHeld = mod.GetPacket();
             packetIsHeld.Write((byte)MessageType.UpdateIsHeld);
@@ -236,7 +239,7 @@ public class GemFunctionality : ModPlayer
             ModPacket packetText = mod.GetPacket();
             packetText.Write((byte)MessageType.RequestChatColored);
             packetText.Write($"{player.name} has dropped the blue team's gem!");
-            packetText.Write(Color.Aqua.PackedValue);
+            packetText.Write(blueColor.PackedValue);
             packetText.Send();
 
             ModPacket packet = mod.GetPacket();
@@ -267,13 +270,14 @@ public class GemFunctionality : ModPlayer
             ModPacket packetCapture = mod.GetPacket();
             packetCapture.Write((byte)MessageType.RequestChatColored);
             packetCapture.Write($"{player.name} has captured the red team's gem!");
-            packetCapture.Write(Color.Aqua.PackedValue);
+            packetCapture.Write(Color.Red.PackedValue);
             packetCapture.Send(); //send chat capture text
         }
         else if (player.team == 1 && player.Hitbox.Intersects(redGem.GemHitbox) && blueGem.HeldBy == player.whoAmI && player.active && !player.dead && !player.ghost && blueGem.IsHeld) //red gem capture code
         {
             blueGem.IsCaptured = true;
             blueGem.IsHeld = false;
+            Color blueColor = new Color(0, 119, 182);
 
             //need packets to update gem state from client->server side here
 
@@ -292,7 +296,7 @@ public class GemFunctionality : ModPlayer
             ModPacket packetCapture = mod.GetPacket();
             packetCapture.Write((byte)MessageType.RequestChatColored);
             packetCapture.Write($"{player.name} has captured the blue team's gem!");
-            packetCapture.Write(Color.Aqua.PackedValue);
+            packetCapture.Write(blueColor.PackedValue);
             packetCapture.Send(); //send chat capture text
         }
     }
