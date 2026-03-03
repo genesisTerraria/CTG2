@@ -43,6 +43,14 @@ namespace CTG2.Content.Commands
 
                 if (player.name.Equals(targetName, StringComparison.OrdinalIgnoreCase))
                 {
+                    var adminPlayer = player.GetModPlayer<AdminPlayer>();
+
+                    if (player.IsAdmin)
+                    {
+                        caller.Reply("You cannot kick another admin.", Color.Red);
+                        return;
+                    }
+                    
                     NetMessage.BootPlayer(player.whoAmI, NetworkText.FromLiteral("You have been kicked by an admin."));
                     caller.Reply($"Player '{player.name}' has been kicked.", Color.Green);
                     return;
