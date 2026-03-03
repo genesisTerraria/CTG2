@@ -625,7 +625,7 @@ public class GameManager : ModSystem
                         ModPacket selPacket = modCTG.GetPacket();
                         selPacket.Write((byte)MessageType.SetClassSelectionTime);
                         selPacket.Write(pp.whoAmI);
-                        selPacket.Write(300); // class selection time
+                        selPacket.Write((double) 300.0); // class selection time
                         selPacket.Send(toClient: pp.whoAmI);
                     }
                 }
@@ -1012,7 +1012,7 @@ public class GameManager : ModSystem
         ModPacket timePacket = mod.GetPacket();
         timePacket.Write((byte)MessageType.SetClassSelectionTime);
         timePacket.Write(playerIndex);
-        timePacket.Write(1800.0); // class selection time
+        timePacket.Write((double) 1800.0); // class selection time
         timePacket.Send(toClient: playerIndex);
         Console.WriteLine($"GameManager: Sent SetClassSelectionTime packet to player {playerIndex}");
 

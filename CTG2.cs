@@ -204,8 +204,10 @@ namespace CTG2
         {
             // GameManager
             var manager = ModContent.GetInstance<GameManager>();
+            var mod = ModContent.GetInstance<CTG2>();
 
             byte msgType = reader.ReadByte();
+            mod.Logger.Info($"Received packet: {msgType}");
             switch (msgType)
             {
                 // Client -> Server Packets (these cases will run on the Server)
@@ -511,7 +513,6 @@ namespace CTG2
                     ply.Teleport(new Vector2(tpX2, tpY2));
                     Console.WriteLine("Server Received Teleport!");
                     // then tell all clients they were teleported
-                    var mod = ModContent.GetInstance<CTG2>();
                     ModPacket packet2 = mod.GetPacket();
                     packet2.Write((byte)MessageType.ServerTeleport);
                     packet2.Write(ply.whoAmI);
