@@ -99,6 +99,41 @@ public class Gem
             NetworkText captureText = NetworkText.FromLiteral($"{carrier.name} has captured the gem!");
             // Broadcast to everyone
             ChatHelper.BroadcastChatMessage(captureText, Color.Aqua);
+
+            if (carrier.team == 1)
+            {
+                int projectileIndex = Projectile.NewProjectile(
+                    Entity.GetSource_NaturalSpawn(),
+                    carrier.Center,
+                    new Vector2(0f, -8f),
+                    ProjectileID.RocketFireworkBlue,
+                    0,
+                    0f,
+                    carrier.whoAmI
+                );
+
+                if (projectileIndex >= 0 && projectileIndex < Main.maxProjectiles)
+                {
+                    NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectileIndex);
+                }
+            }
+            else if (carrier.team == 3)
+            {
+                int projectileIndex = Projectile.NewProjectile(
+                    Entity.GetSource_NaturalSpawn(),
+                    carrier.Center,
+                    new Vector2(0f, -8f),
+                    ProjectileID.RocketFireworkRed,
+                    0,
+                    0f,
+                    carrier.whoAmI
+                );
+
+                if (projectileIndex >= 0 && projectileIndex < Main.maxProjectiles)
+                {
+                    NetMessage.SendData(MessageID.SyncProjectile, -1, -1, null, projectileIndex);
+                }
+            }
         }
     }
 
@@ -272,6 +307,19 @@ public class GemFunctionality : ModPlayer
             packetCapture.Write($"{player.name} has captured the red team's gem!");
             packetCapture.Write(Color.Red.PackedValue);
             packetCapture.Send(); //send chat capture text
+
+            if (player.team == 3)
+            {
+                int projectileIndex = Projectile.NewProjectile(
+                    player.GetSource_FromThis(),
+                    player.Center,
+                    new Vector2(0f, -8f),
+                    ProjectileID.RocketFireworkRed,
+                    0,
+                    0f,
+                    player.whoAmI
+                );
+            }
         }
         else if (player.team == 1 && player.Hitbox.Intersects(redGem.GemHitbox) && blueGem.HeldBy == player.whoAmI && player.active && !player.dead && !player.ghost && blueGem.IsHeld) //red gem capture code
         {
@@ -298,6 +346,19 @@ public class GemFunctionality : ModPlayer
             packetCapture.Write($"{player.name} has captured the blue team's gem!");
             packetCapture.Write(blueColor.PackedValue);
             packetCapture.Send(); //send chat capture text
+
+            if (player.team == 1)
+            {
+                int projectileIndex = Projectile.NewProjectile(
+                    player.GetSource_FromThis(),
+                    player.Center,
+                    new Vector2(0f, -8f),
+                    ProjectileID.RocketFireworkBlue,
+                    0,
+                    0f,
+                    player.whoAmI
+                );
+            }
         }
     }
 }
