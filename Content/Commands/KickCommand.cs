@@ -45,12 +45,12 @@ namespace CTG2.Content.Commands
                 {
                     var adminPlayer = player.GetModPlayer<AdminPlayer>();
 
-                    if (player.IsAdmin)
+                    if (adminPlayer.IsAdmin)
                     {
                         caller.Reply("You cannot kick another admin.", Color.Red);
                         return;
                     }
-                    
+
                     NetMessage.BootPlayer(player.whoAmI, NetworkText.FromLiteral("You have been kicked by an admin."));
                     caller.Reply($"Player '{player.name}' has been kicked.", Color.Green);
                     return;
