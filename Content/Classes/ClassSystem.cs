@@ -670,7 +670,7 @@ namespace ClassesNamespace
         {
             ModPacket packet = ModContent.GetInstance<global::CTG2.CTG2>().GetPacket(); ;
             packet.Write((byte)MessageType.RequestSyncStats);
-            packet.Write((byte)Player.whoAmI);
+            packet.Write(Player.whoAmI);
             packet.Write(currentHP);
             packet.Write(currentMana);
             packet.Write(bonusHP);
@@ -688,8 +688,8 @@ namespace ClassesNamespace
             bonusRegen = reader.ReadInt32();
             bonusDef = reader.ReadInt32();
             bonusMoveSpeed = reader.ReadSingle();
-            var playerManager = Player.GetModPlayer<PlayerManager>();
-            playerManager.playerState = (PlayerManager.PlayerState)reader.ReadInt32(); // new
+            // var playerManager = Player.GetModPlayer<PlayerManager>();
+            // playerManager.playerState = (PlayerManager.PlayerState)reader.ReadInt32(); // new
         }
         public override void SendClientChanges(ModPlayer clientPlayer)
         {

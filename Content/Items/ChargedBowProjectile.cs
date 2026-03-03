@@ -176,16 +176,6 @@ public class ChargedBowProjectile : ModProjectile
 			{
 				charge = Math.Min(charge + 1f, 40f);
 
-				// Start charging sound once
-				if (!start)
-				{
-					sound = SoundEngine.PlaySound(
-						bowSound.WithVolumeScale(Main.soundVolume * 1.25f),
-						player.Center
-					);
-					start = true;
-				}
-
 				// Fully charged transition
 				if (charge >= 40f && c1 == 0f)
 				{
@@ -214,6 +204,19 @@ public class ChargedBowProjectile : ModProjectile
 			// Sync charging state periodically
 			if (++syncTimer % 3 == 0)
 				Projectile.netUpdate = true;
+		}
+
+		if (player.channel && !released)
+		{
+			// Start charging sound once
+			if (!start)
+			{
+				sound = SoundEngine.PlaySound(
+					bowSound.WithVolumeScale(Main.soundVolume * 1.25f),
+					player.Center
+				);
+				start = true;
+			}
 		}
 
 		// ===============================
@@ -245,7 +248,10 @@ public class ChargedBowProjectile : ModProjectile
 
 			arrow.extraUpdates = 1;
 			arrow.netUpdate = true;
+		}
 
+		if (released && !recentlyFired)
+		{
 			SoundEngine.PlaySound(
 				bowSound2.WithVolumeScale(Main.soundVolume * 2.5f),
 				Projectile.position

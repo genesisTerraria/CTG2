@@ -1037,18 +1037,18 @@ namespace CTG2
                     break;
 
                 case (byte)MessageType.RequestSyncStats:
-                    {
-                        var fromWho = reader.ReadByte();
-                        var modPlayer = Main.player[fromWho].GetModPlayer<ClassSystem>();
-                        modPlayer.ReceiveSync(reader);
+                {
+                    int fromWho = reader.ReadInt32();
+                    var modPlayer = Main.player[fromWho].GetModPlayer<ClassSystem>();
+                    modPlayer.ReceiveSync(reader);
 
-                        if (Main.netMode == NetmodeID.Server)
-                        {
-                            modPlayer.SyncPlayer(-1, fromWho);
-                        }
-                        //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"sync called once"), Color.Orange);
-                        break;
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        modPlayer.SyncPlayer(-1, fromWho);
                     }
+                    //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"sync called once"), Color.Orange);
+                    break;
+                }
                 case (byte)MessageType.SyncPlayerArmor:
                     byte playerIDd = reader.ReadByte();
                     Player targetd = Main.player[playerIDd];
