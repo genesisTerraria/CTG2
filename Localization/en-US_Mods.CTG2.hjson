@@ -161,6 +161,11 @@ Configs: {
 			Label: Selected Track: 0=None, 1=Clash, 2=Mystery
 			Tooltip: ""
 		}
+
+		CameraLerpSeconds: {
+			Label: Advanced Binoculars Zoom Speed (Seconds)
+			Tooltip: How long it takes for binocular camera to reach full offset.
+		}
 	}
 }
 
