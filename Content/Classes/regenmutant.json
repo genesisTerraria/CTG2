@@ -555,33 +555,33 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Lizard Ears",
+      "Type": 4772,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 69,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Space Creature Shirt",
+      "Type": 1839,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 70,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Creeper Pants",
+      "Type": 1748,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 71,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Lizard Tail",
+      "Type": 4773,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 72,
       "Modded": false
