@@ -843,7 +843,10 @@ public class GameManager : ModSystem
             }
         }
 
-        if (!isOvertime && MatchTime >= 60 * 60 * 10 + matchStartTime)
+        int capDifference = blueCaptures - redCaptures;
+        bool shouldContinue = (capDifference == 1 && BlueGem.IsHeld) || (capDifference == -1 && RedGem.IsHeld);
+
+        if (!isOvertime && MatchTime >= 60 * 60 * 1 + matchStartTime && !shouldContinue)
         {
             isOvertime = true;
 
