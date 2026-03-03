@@ -44,6 +44,14 @@ namespace CTG2.Content.Commands
 
                 if (player.name.Equals(targetName, StringComparison.OrdinalIgnoreCase))
                 {
+                    var adminPlayer = player.GetModPlayer<AdminPlayer>();
+
+                    if (adminPlayer.IsAdmin)
+                    {
+                        caller.Reply("You cannot ban another admin.", Color.Red);
+                        return;
+                    }
+
                     ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
                     packet.Write((byte)MessageType.RequestBanPlayer);
                     packet.Write(args[0]); 
@@ -51,7 +59,6 @@ namespace CTG2.Content.Commands
                     caller.Reply($"Player '{player.name}' has been banned.", Color.Green);
                     return;
                 }
-
             }
 
             caller.Reply($"No player named '{targetName}' was found.");
