@@ -38,7 +38,6 @@ namespace CTG2.Content.Commands
                 packet.Write(mode);
                 packet.Send();
 
-                caller.Reply($"Gamemode set to {mode}.", Color.Green);
                 return;
             }
             

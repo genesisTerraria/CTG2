@@ -273,9 +273,9 @@ public class GameManager : ModSystem
 
         Console.WriteLine("GameManager: Starting EndGame sequence");
 
-        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] Game has ended!"), Microsoft.Xna.Framework.Color.Yellow);
+        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Game has ended!"), Color.Cyan);
 
-        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Gem captures: [c/0077B6:{blueCaptures}] v [c/FF0000:{redCaptures}]"), Microsoft.Xna.Framework.Color.Yellow);
+        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Gem captures: [c/0077B6:{blueCaptures}] v [c/FF0000:{redCaptures}]"), Color.Yellow);
         
         winner = 0;
 
@@ -528,7 +528,7 @@ public class GameManager : ModSystem
         if (MatchTime == matchStartTime)
         {
             // this code will handle class selection and stuff
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"The match is starting!"), Microsoft.Xna.Framework.Color.Yellow);
+            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"The match is starting!"), Color.Cyan);
 
             BlueTeam.SendToBase();
             RedTeam.SendToBase();
@@ -636,7 +636,7 @@ public class GameManager : ModSystem
                 packetMatchStartTime.Write(MatchTime + 300);
                 packetMatchStartTime.Send();
 
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"All players have selected classes. Starting the game in 5 seconds!"), Microsoft.Xna.Framework.Color.Yellow);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"All players have selected classes. Starting the game in 5 seconds!"), Color.Cyan);
             }
         }
 
@@ -919,15 +919,16 @@ public class GameManager : ModSystem
             // drop gem if they have it 
             if (BlueGem.IsHeld && BlueGem.HeldBy == playerIndex)
             {
+                Color blueColor = new Color(0, 119, 182);
                 BlueGem.Reset();
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} dropped the Blue Gem!"), Microsoft.Xna.Framework.Color.Blue);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} dropped the Blue Gem!"), blueColor);
                 Console.WriteLine($"Player {player.name} dropped Blue Gem when entering spectator mode");
             }
 
             if (RedGem.IsHeld && RedGem.HeldBy == playerIndex)
             {
                 RedGem.Reset();
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} dropped the Red Gem!"), Microsoft.Xna.Framework.Color.Red);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} dropped the Red Gem!"), Color.Red);
                 Console.WriteLine($"Player {player.name} dropped Red Gem when entering spectator mode");
             }
 
@@ -1015,7 +1016,7 @@ public class GameManager : ModSystem
 
         if (!intToTeam.ContainsKey(team))
         {
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[ERROR] Invalid team {team} for player {playerIndex}"), Color.Red);
+            //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[ERROR] Invalid team {team} for player {playerIndex}"), Color.Red);
             return;
         }
 
@@ -1183,23 +1184,23 @@ public class GameManager : ModSystem
                     // Countdown announcements
                     if (newGameTimer == 10 * 60) // 10 seconds left
                     {
-                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] New game starting in 10 seconds..."), Microsoft.Xna.Framework.Color.Orange);
+                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"New game starting in 10 seconds..."), Color.Cyan);
                     }
                     else if (newGameTimer == 5 * 60) // 5 seconds left
                     {
-                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] New game starting in 5 seconds..."), Microsoft.Xna.Framework.Color.Red);
+                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] New game starting in 5 seconds..."), Color.Cyan);
                     }
                     else if (newGameTimer == 3 * 60) // 3 seconds left
                     {
-                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] 3..."), Microsoft.Xna.Framework.Color.Red);
+                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] 3..."), Color.Cyan);
                     }
                     else if (newGameTimer == 2 * 60) // 2 seconds left
                     {
-                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] 2..."), Microsoft.Xna.Framework.Color.Red);
+                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] 2..."), Color.Cyan);
                     }
                     else if (newGameTimer == 1 * 60) // 1 second left
                     {
-                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] 1..."), Microsoft.Xna.Framework.Color.Red);
+                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] 1..."), Color.Cyan);
                     }
                     
                     return; // Don't run game logic while waiting for new game
@@ -1210,7 +1211,7 @@ public class GameManager : ModSystem
                     isWaitingForNewGame = false;
                     newGameTimer = 0;
                     
-                    ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] Starting new game now!"), Microsoft.Xna.Framework.Color.LimeGreen);
+                    ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Starting a new game!"), Color.Cyan);
                     Console.WriteLine("GameManager: Starting new game after 15-second delay");
                     
                     StartGame();
@@ -1354,7 +1355,7 @@ public class GameManager : ModSystem
         if (RedGem.IsHeld && RedGem.HeldBy == playerIndex)
         {
             RedGem.Reset();
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} dropped the Red Gem!"), Microsoft.Xna.Framework.Color.Red);
+            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} dropped the Red Gem!"), Color.Red);
             Console.WriteLine($"Player {player.name} dropped Red Gem when changing teams");
         }
 
@@ -1393,13 +1394,13 @@ public class GameManager : ModSystem
             // Force sync stats after team change
             //ForcePlayerStatSync(playerIndex);
 
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} has been moved to team {newTeam} and entered class selection"), Microsoft.Xna.Framework.Color.Green);
+            //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} has been moved to team {newTeam} and entered class selection"), Microsoft.Xna.Framework.Color.Green);
             Console.WriteLine($"Player {player.name} moved to team {newTeam} and started class selection");
         }
         else
         {
             // No game active - just update team assignment
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} has been assigned to team {newTeam}"), Microsoft.Xna.Framework.Color.Yellow);
+            //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} has been assigned to team {newTeam}"), Microsoft.Xna.Framework.Color.Yellow);
             Console.WriteLine($"Player {player.name} assigned to team {newTeam} (no active game)");
         }
     }

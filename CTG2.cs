@@ -1210,7 +1210,7 @@ namespace CTG2
                                 managerForServer.rngConfig = false;
                             }
 
-                            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[GAME] Gamemode set to {mode}."), Color.Orange);
+                            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Gamemode set to {mode}."), Color.Green);
 
                             ModPacket syncPacket = GetPacket();
                             syncPacket.Write((byte)MessageType.UpdateGamemode);
@@ -1243,7 +1243,6 @@ namespace CTG2
                             gmClient.rngConfig = true;
                             gmClient.pubsConfig = true;
 
-                        Main.NewText($"Gamemode synced: {mode}", Color.Orange);
                         break;
                     }
                 case (byte)MessageType.RequestBanPlayer:
