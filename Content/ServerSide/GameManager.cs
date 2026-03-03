@@ -576,6 +576,8 @@ public class GameManager : ModSystem
 
             if (RedGem.IsHeld)
             {
+                redGemFireworkTimer++;
+                
                 if (redGemFireworkTimer >= FIREWORK_INTERVAL)
                 {
                     redGemFireworkTimer = 0;
