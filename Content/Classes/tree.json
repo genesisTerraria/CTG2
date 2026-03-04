@@ -11,9 +11,9 @@
       "Modded": true
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "White String",
+      "Type": 3306,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 1,
       "Modded": false
