@@ -317,7 +317,8 @@ namespace CTG2.Content
                     case 19: // Flame Bunny ability
                         if (attacker.HasBuff(320) && attacker.HasBuff(137) && attacker.team != Player.team)
                         {
-                            Player.AddBuff(153, 40);
+                            Player.AddBuff(39, 20);
+                            Player.AddBuff(70, 20);
                         }
                         break;
 
