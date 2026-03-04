@@ -518,7 +518,7 @@ namespace ClassesNamespace
                     if (player.team != Player.team)
                         continue;
 
-                    if (Vector2.Distance(Player.Center, player.Center) <= 8 * 16 && gameTime % 60 == 0 && gameTime > 0) // 8 block radius
+                    if (Vector2.Distance(Player.Center, player.Center) <= 8 * 16 && gameTime % 60 == 0 && gameTime > 0 && GameInfo.matchStage != 0 && GameInfo.matchStage != 3) // 8 block radius
                     {
                         var mod = ModContent.GetInstance<CTG2.CTG2>();
 

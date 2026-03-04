@@ -402,7 +402,6 @@ public class ClassUI : UIState
         var classPlayer = Main.LocalPlayer.GetModPlayer<ClassSystem>();
         classPlayer.setClass();
         
-
         selectedClass = cfg;
     }
 }

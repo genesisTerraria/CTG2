@@ -112,6 +112,10 @@ public class UIManager : ModSystem
         {
             timeText = $"The gem holder must die to end the game!";
         }
+        else if (GameInfo.matchStage == 0 || GameInfo.matchStage == 3)
+        {
+            timeText = "";
+        }
         else
         {
             timeText = $"Time left in match: {minutesLeft}:{remainder.ToString("D2")}";

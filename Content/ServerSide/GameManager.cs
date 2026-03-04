@@ -374,7 +374,8 @@ public class GameManager : ModSystem
             Console.WriteLine($"GameManager: Processing player {player.whoAmI} ({player.name}) for game end");
 
             // Reset player state to None
-            PlayerManager.GetPlayerManager(player.whoAmI).playerState = PlayerManager.PlayerState.None;
+            var playerManager = PlayerManager.GetPlayerManager(player.whoAmI);
+            playerManager.playerState = PlayerManager.PlayerState.None;
 
             ModPacket statePacket = mod.GetPacket();
             statePacket.Write((byte)MessageType.UpdatePlayerState);
@@ -514,7 +515,8 @@ public class GameManager : ModSystem
 
         // Start the 15-second timer for new game
         isWaitingForNewGame = true;
-        newGameTimer = 15 * 60; // 15 seconds * 60 ticks per second
+        if (pubsConfig)
+            newGameTimer = 15 * 60; // 15 seconds * 60 ticks per second
     }
 
     // Runs every frame while game running. Runs all gem checks, draws timer and gem status.
