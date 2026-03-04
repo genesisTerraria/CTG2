@@ -57,6 +57,8 @@ public class ClassUI : UIState
 
         _mainPanel.OnLeftMouseDown += StartDrag;
         _mainPanel.OnLeftMouseUp += StopDrag;
+        _mainPanel2.OnLeftMouseDown += StartDrag;
+        _mainPanel2.OnLeftMouseUp += StopDrag;
 
         Append(_mainPanel);
         Append(_mainPanel2);
