@@ -931,10 +931,12 @@ namespace CTG2
                     }
                     break;
                 case (byte)MessageType.RequestAudio:
+                {
                     string filepath = reader.ReadString();
                     SoundStyle sound = new SoundStyle(filepath);
                     SoundEngine.PlaySound(sound);
                     break;
+                }
                 case (byte)MessageType.RequestAudioClientSide:
                     string filepathh = reader.ReadString();
                     var audoMod = ModContent.GetInstance<CTG2>();

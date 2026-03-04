@@ -55,8 +55,6 @@ namespace CTG2.Content
         public int mutantState = 1;
 
         SoundStyle abilityReady = new SoundStyle("CTG2/Content/Classes/AbilityReady");
-        SoundStyle abilityStart = new SoundStyle("CTG2/Content/Classes/AbilityStart");
-	    SoundStyle abilityEnd = new SoundStyle("CTG2/Content/Classes/AbilityEnd");
         SoundStyle whiteMageHeal = new SoundStyle("CTG2/Content/Classes/WhiteMageHeal");
         SoundStyle clownSwap = new SoundStyle("CTG2/Content/Classes/ClownSwap");
 
@@ -349,7 +347,8 @@ namespace CTG2.Content
             class1EndTimer = 360;
 
             playedSound = false;
-            SoundEngine.PlaySound(abilityStart.WithVolumeScale(Main.soundVolume * 6f), Player.Center);
+
+            SoundEngine.PlaySound(SoundID.DD2_PhantomPhoenixShot.WithVolumeScale(Main.soundVolume * 6f), Player.Center);
         }
 
 
@@ -358,8 +357,8 @@ namespace CTG2.Content
             Player.AddBuff(BuffID.Invisibility, 60 * 60);
 
             playedSound = false;
-            SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
 
+            SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
 
 
@@ -958,7 +957,7 @@ namespace CTG2.Content
             {
                 case 1:
                     if (Player.dead || Player.ghost || (!playedSound && class1EndTimer == 0))
-                        SoundEngine.PlaySound(abilityEnd.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
+                        SoundEngine.PlaySound(SoundID.DD2_SonicBoomBladeSlash.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
 
                     break;
 
