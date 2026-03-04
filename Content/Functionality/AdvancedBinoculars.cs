@@ -30,51 +30,68 @@ namespace CTG2.Content.Functionality
 
         public void AdvancedBinocularsAI(Player player)
         {
-            switch(state)
+            bool pressedOnce = CTG2.AdvancedBinocularsKeybind.JustPressed && !recentlyPressed;
+            bool isHoldingKey = CTG2.AdvancedBinocularsKeybind.Current;
+
+            switch (state)
             {
                 case 0:
-                    if (CTG2.AdvancedBinocularsKeybind.JustPressed && !recentlyPressed)
+                    if (pressedOnce)
                     {
-                        state = 1;
                         SoundEngine.PlaySound(SoundID.MenuTick);
-                    }
+                        
+                        float seconds = ModContent.GetInstance<CTG2Config>().CameraLerpSeconds;
+                        lerpDurationTicks = (int)(seconds * 60f);
+                        lerpTimer = 0;
 
+                        state = 1;
+                    }
                     break;
-                
+
                 case 1:
                     mouseOffset = Main.MouseWorld - player.Center;
-
-                    float seconds = ModContent.GetInstance<CTG2Config>().CameraLerpSeconds;
-                    lerpDurationTicks = (int)(seconds * 60f);
-                    lerpTimer = 0;
-
-                    state = 2;
-                    break;
-                
-                case 2:
+                    
                     offset = 0.9f * mouseOffset;
                     targetPosition = player.Center - new Vector2(Main.screenWidth, Main.screenHeight) / 2f + offset;
 
-                    if (lerpDurationTicks <= 0)
-                    {
-                        Main.screenPosition = targetPosition;
-                    }
-                    else
-                    {
-                        lerpTimer++;
-                        float progress = MathHelper.Clamp((float)lerpTimer / lerpDurationTicks, 0f, 1f);
-                        Main.screenPosition = Vector2.Lerp(Main.screenPosition, targetPosition, progress);
-                    }
+                    ApplyCameraLerp();
 
-                    if (CTG2.AdvancedBinocularsKeybind.JustPressed && !recentlyPressed)
+                    if (!isHoldingKey)
                     {
-                        state = 0;
+                        state = 2; 
+                    }
+                    break;
+
+                case 2:
+                    targetPosition = player.Center - new Vector2(Main.screenWidth, Main.screenHeight) / 2f + offset;
+                    
+                    ApplyCameraLerp();
+
+                    if (pressedOnce)
+                    {
                         SoundEngine.PlaySound(SoundID.MenuTick);
+                        state = 0;
                     }
                     break;
             }
 
-            recentlyPressed = CTG2.AdvancedBinocularsKeybind.JustPressed;
+            recentlyPressed = isHoldingKey;
+        }
+
+
+        private void ApplyCameraLerp()
+        {
+            if (lerpDurationTicks <= 0)
+            {
+                Main.screenPosition = targetPosition;
+            }
+            else
+            {
+                lerpTimer++;
+                // Use a simple Lerp for smoothness, or just snap if timer finishes
+                float progress = MathHelper.Clamp((float)lerpTimer / lerpDurationTicks, 0f, 1f);
+                Main.screenPosition = Vector2.Lerp(Main.screenPosition, targetPosition, progress);
+            }
         }
     }
 }
