@@ -128,7 +128,11 @@ namespace CTG2
         SyncAddBuff = 91,
         RequestHeal = 92,
         SyncHeal = 93,
-        UpdateRespawnTime = 94
+        UpdateRespawnTime = 94,
+        RequestPlayerPing = 95,
+        PingProbe = 96,
+        PingProbeReturn = 97,
+        PingResult = 98
     }
 
     public class CTG2 : Mod
@@ -138,6 +142,7 @@ namespace CTG2
         public static ClientConfig config = new ClientConfig();
         public Dictionary<string, PlayerData> PlayerDataDictionary= new Dictionary<string, PlayerData>();
         public static readonly Dictionary<int, string> UuidByWhoAmI = new(); //for mapping
+        private static Dictionary<int, (int requester, long startTime)> pendingPings = new();
 
         public static ModKeybind ArcherDashKeybind;
         public static ModKeybind AdvancedBinocularsKeybind;
@@ -1446,6 +1451,78 @@ namespace CTG2
                     int idx = reader.ReadInt32();
                     string uuid5 = reader.ReadString();
                     UuidByWhoAmI[idx] = uuid5;
+                    break;
+                }
+                
+                case (byte)MessageType.RequestPlayerPing:
+                {
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        int targetIndex = reader.ReadInt32();
+
+                        long now = DateTime.UtcNow.Ticks;
+
+                        pendingPings[targetIndex] = (whoAmI, now);
+
+                        ModPacket probe = mod.GetPacket();
+                        probe.Write((byte)MessageType.PingProbe);
+                        probe.Send(targetIndex);
+                    }
+                    break;
+                }
+
+                // Target client receives probe → echoes back
+                case (byte)MessageType.PingProbe:
+                {
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                        ModPacket returnPacket = mod.GetPacket();
+                        returnPacket.Write((byte)MessageType.PingProbeReturn);
+                        returnPacket.Send();
+                    }
+                    break;
+                }
+
+                // Server receives echo → computes RTT
+                case (byte)MessageType.PingProbeReturn:
+                {
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        if (!pendingPings.TryGetValue(whoAmI, out var data))
+                            break;
+
+                        long startTime = data.startTime;
+                        int requester = data.requester;
+
+                        long now = DateTime.UtcNow.Ticks;
+
+                        double pingMs =
+                            (now - startTime) / (double)TimeSpan.TicksPerMillisecond;
+
+                        pendingPings.Remove(whoAmI);
+
+                        ModPacket result = mod.GetPacket();
+                        result.Write((byte)MessageType.PingResult);
+                        result.Write(Main.player[whoAmI].name);
+                        result.Write((int)pingMs);
+                        result.Send(requester);
+                    }
+                    break;
+                }
+
+                // Requesting client receives final result
+                case (byte)MessageType.PingResult:
+                {
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                        string name = reader.ReadString();
+                        int ping = reader.ReadInt32();
+
+                        Main.NewText($"{name}'s ping: {ping} ms",
+                            ping < 80 ? Color.Green :
+                            ping < 150 ? Color.Yellow :
+                            Color.Red);
+                    }
                     break;
                 }
 
