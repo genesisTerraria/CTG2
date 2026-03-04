@@ -15,14 +15,21 @@ namespace CTG2.Content.Commands
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
-            if (args.Length == 0)
+            string rawInput = Main.chatText; 
+
+            if (string.IsNullOrWhiteSpace(rawInput)) return;
+
+            string message = "";
+            if (rawInput.Length > 3) 
             {
-                caller.Reply("Usage: /p <message>", Color.Red);
-                return;
+                message = rawInput.Substring(3).Trim();
             }
 
-            // Join all arguments back into a single message
-            string message = string.Join(" ", args);
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                caller.Reply("Message cannot be empty!", Color.Red);
+                return;
+            }
             
             if (string.IsNullOrWhiteSpace(message))
             {
