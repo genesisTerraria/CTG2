@@ -28,9 +28,9 @@ namespace CTG2.Content.Commands
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
-            if (args.Length != 1)
+            if (args.Length == 0)
             {
-                caller.Reply("Usage: /ping <playerName>", Color.Red);
+                caller.Reply("Usage: /ping \"<playerName>\"", Color.Red);
                 return;
             }
 
