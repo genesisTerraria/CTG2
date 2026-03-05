@@ -201,8 +201,8 @@ namespace CTG2
                 }
             }
 
-            BlessingOfTheDragonsKeybind = KeybindLoader.RegisterKeybind(this, "Dragonbreather dash", "LeftShift");
-            AdvancedBinocularsKeybind = KeybindLoader.RegisterKeybind(this, "Advanced Binoculars", "MouseRight");
+            BlessingOfTheDragonsKeybind = KeybindLoader.RegisterKeybind(this, "PhoenixDash", "LeftShift");
+            AdvancedBinocularsKeybind = KeybindLoader.RegisterKeybind(this, "AdvancedBinoculars", "MouseRight");
             Ability1Keybind = KeybindLoader.RegisterKeybind(this, "Ability 1", "R");
         }
 

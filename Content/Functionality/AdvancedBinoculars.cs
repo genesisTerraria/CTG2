@@ -18,6 +18,7 @@ namespace CTG2.Content.Functionality
         Vector2 targetPosition;
         private int lerpTimer;
         private int lerpDurationTicks;
+        private Vector2 finalPosition;
 
 
         public override void ModifyScreenPosition()
@@ -36,11 +37,20 @@ namespace CTG2.Content.Functionality
             switch (state)
             {
                 case 0:
+                    ApplyCameraLerpInward();
+
                     if (pressedOnce)
                     {
                         SoundEngine.PlaySound(SoundID.MenuTick);
                         
-                        float seconds = ModContent.GetInstance<CTG2Config>().CameraLerpSeconds;
+                        finalPosition = Main.screenPosition;
+
+                        float actualDistance = finalPosition.Length();
+                        float totalDistance = targetPosition.Length();
+
+                        float ratio = (totalDistance > 0) ? (actualDistance / totalDistance) : 0;
+
+                        float seconds = ModContent.GetInstance<CTG2Config>().CameraLerpSecondsOutward * ratio;
                         lerpDurationTicks = (int)(seconds * 60f);
                         lerpTimer = 0;
 
@@ -54,7 +64,7 @@ namespace CTG2.Content.Functionality
                     offset = 0.9f * mouseOffset;
                     targetPosition = player.Center - new Vector2(Main.screenWidth, Main.screenHeight) / 2f + offset;
 
-                    ApplyCameraLerp();
+                    ApplyCameraLerpOutward();
 
                     if (!isHoldingKey)
                     {
@@ -63,21 +73,30 @@ namespace CTG2.Content.Functionality
                     break;
 
                 case 2:
-
-                    if (!ModContent.GetInstance<CTG2Config>().EnabledCameraLock)
-                    {
-                        state = 0;
-                    }
-
                     targetPosition = player.Center - new Vector2(Main.screenWidth, Main.screenHeight) / 2f + offset;
-                    
-                    ApplyCameraLerp();
 
-                    if (pressedOnce)
+                    ApplyCameraLerpOutward();
+
+                    if (pressedOnce || !ModContent.GetInstance<CTG2Config>().EnabledCameraLock)
                     {
                         SoundEngine.PlaySound(SoundID.MenuTick);
+
+                        finalPosition = Main.screenPosition;
+
+                        float actualDistance = finalPosition.Length();
+                        float totalDistance = targetPosition.Length();
+
+                        float ratio = (totalDistance > 0) ? (actualDistance / totalDistance) : 0;
+
+                        float seconds = ModContent.GetInstance<CTG2Config>().CameraLerpSecondsInward * ratio;
+                        lerpDurationTicks = (int)(seconds * 60f);
+                        lerpTimer = 0;
+
                         state = 0;
+
+                        break;
                     }
+
                     break;
             }
 
@@ -85,7 +104,7 @@ namespace CTG2.Content.Functionality
         }
 
 
-        private void ApplyCameraLerp()
+        private void ApplyCameraLerpOutward()
         {
             if (lerpDurationTicks <= 0)
             {
@@ -96,7 +115,18 @@ namespace CTG2.Content.Functionality
                 lerpTimer++;
                 // Use a simple Lerp for smoothness, or just snap if timer finishes
                 float progress = MathHelper.Clamp((float)lerpTimer / lerpDurationTicks, 0f, 1f);
-                Main.screenPosition = Vector2.Lerp(Main.screenPosition, targetPosition, progress);
+                Main.screenPosition = Vector2.Lerp(finalPosition, targetPosition, progress);
+            }
+        }
+
+        private void ApplyCameraLerpInward()
+        {
+            if (lerpDurationTicks > 0)
+            {
+                lerpTimer++;
+                // Use a simple Lerp for smoothness, or just snap if timer finishes
+                float progress = MathHelper.Clamp((float)lerpTimer / lerpDurationTicks, 0f, 1f);
+                Main.screenPosition = Vector2.Lerp(finalPosition, Main.screenPosition, progress);
             }
         }
     }

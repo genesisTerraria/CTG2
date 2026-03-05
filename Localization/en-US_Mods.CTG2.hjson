@@ -153,6 +153,7 @@ Keybinds: {
 	ArcherDash.DisplayName: Archer Dash
 	"Advanced Binoculars.DisplayName": Advanced  Binoculars
 	"Dragonbreather dash.DisplayName": Dragonbreather dash
+	PhoenixDash.DisplayName: Phoenix Dash
 }
 
 Configs: {
@@ -182,6 +183,16 @@ Configs: {
 		EnabledCameraLock: {
 			Tooltip: If enabled, the first Advanced Binoculars press locks the camera angle in place.
 			Label: Advanced Binoculars Camera Lock
+		}
+
+		CameraLerpSecondsOutward: {
+			Label: Advanced Binoculars Outward Zoom Speed (Seconds)
+			Tooltip: How long it takes for binocular camera to reach full offset.
+		}
+
+		CameraLerpSecondsInward: {
+			Label: Advanced Binoculars Inward Zoom Speed (Seconds)
+			Tooltip: How long it takes for binocular camera to return to centered position.
 		}
 	}
 }

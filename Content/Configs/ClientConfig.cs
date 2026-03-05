@@ -19,13 +19,19 @@ namespace CTG2.Content.Configs
         // [Label("Selected Track: 0=None, 1=Clash, 2=Mystery")]
         // public int SelectedMusicIndex { get; set; } = 0;
 
-        [Label("Advanced Binoculars Zoom Speed (Seconds)")]
+        [Label("Advanced Binoculars Outward Zoom Speed (Seconds)")]
         [Tooltip("How long it takes for binocular camera to reach full offset.")]
         [DefaultValue(0.5f)]
         [Range(0f, 5f)]
         [Increment(0.05f)]
-        public float CameraLerpSeconds;
-        
+        public float CameraLerpSecondsOutward;
+
+        [Label("Advanced Binoculars Inward Zoom Speed (Seconds)")]
+        [Tooltip("How long it takes for binocular camera to return to centered position.")]
+        [DefaultValue(0.5f)]
+        [Range(0f, 5f)]
+        [Increment(0.05f)]
+        public float CameraLerpSecondsInward;
 
         [Label("Advanced Binoculars Camera Lock")]
         [Tooltip("If enabled, the first Advanced Binoculars press locks the camera angle in place.")]
