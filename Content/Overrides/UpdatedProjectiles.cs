@@ -50,7 +50,6 @@ public class ProjectileOverrides : GlobalProjectile
         {
             projectile.extraUpdates = 1; // determines how quickly the projectile falls and velocity magnitude
         }
-
         if (projectile.type == ProjectileID.ThornChakram)
         {
             for (int i = 0; i < Main.maxProjectiles; i++)
@@ -192,7 +191,6 @@ public class ModifyHurtModPlayer : ModPlayer
         if (modPlayer.currentClass.Name == "Paladin")
         {
             Player.AddBuff(BuffID.RapidHealing, 300);
-            Player.AddBuff(BuffID.Lovestruck, 300);
 
             if (Player.HeldItem.type == 4760 && Main.mouseRight) // Paladin buffs when hit
             {
@@ -224,6 +222,10 @@ public class ModifyHurtModPlayer : ModPlayer
                 }
             }
             Player.ClearBuff(BuffID.Poisoned);
+        }
+        else if (info.DamageSource.SourceProjectileType == 507)
+        {
+            Player.AddBuff(160, 60);
         }
         else if (info.DamageSource.SourceProjectileType == 153)
         {

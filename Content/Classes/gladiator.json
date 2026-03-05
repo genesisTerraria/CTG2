@@ -1,6 +1,6 @@
 {
   "HealthPoints": 140,
-  "ManaPoints": 0,
+  "ManaPoints": 16,
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
@@ -11,8 +11,8 @@
       "Modded": true
     },
     {
-      "Name": "White String",
-      "Type": 3306,
+      "Name": "Gungnir",
+      "Type": 550,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 1,
@@ -502,7 +502,7 @@
       "Name": "Lucky Horseshoe",
       "Type": 158,
       "Stack": 1,
-      "Prefix": 65,
+      "Prefix": 0,
       "Slot": 62,
       "Modded": false
     },
@@ -510,7 +510,7 @@
       "Name": "Anklet of the Wind",
       "Type": 212,
       "Stack": 1,
-      "Prefix": 65,
+      "Prefix": 0,
       "Slot": 63,
       "Modded": false
     },

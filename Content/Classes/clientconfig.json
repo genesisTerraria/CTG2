@@ -67,7 +67,7 @@
       "ability-cooldown": 40,
       "health-from-kills": 10,
       "respawn-time": 5,
-      "buffs": [6, 33, 36, 146, 158],
+      "buffs": [33, 36, 146, 158],
       "ability-id": 4,
       "upgrades": [
         {

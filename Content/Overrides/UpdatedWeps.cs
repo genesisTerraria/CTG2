@@ -192,8 +192,19 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.damage = 38;
                     item.useAnimation = 22;
                     item.useTime = 22;
-                    item.shootSpeed = 4.4f;
+                    item.shootSpeed = 4.6f;
                     item.crit = 0;
+                    break;
+                case ItemID.Gungnir:
+                    item.damage = 35;
+                    item.useAnimation = 18;
+                    item.useTime = 18;
+                    item.crit = 0;
+                    item.shootSpeed = 14f;
+                    item.mana = 16;
+                    item.knockBack = 10;
+                    item.shoot = 507;
+                    item.UseSound = SoundID.DD2_DarkMageAttack;
                     break;
                 case 4347: //gray zapinator
                     item.damage = 35;
