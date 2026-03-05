@@ -506,7 +506,13 @@ namespace ClassesNamespace
             }
 
             var playerManager = Player.GetModPlayer<PlayerManager>();
+            var abilitiesManager = Player.GetModPlayer<Abilities>();
             int gameTime = GameInfo.matchTime - GameInfo.matchStartTime;
+
+            if (abilitiesManager.mutantState == 1 && playerManager.currentClass?.Name == "Mutant")
+            {
+                Player.AddBuff(21, 10 * 60);
+            }
 
             if (playerManager.currentClass?.Name == "Tiki Priest")
             {

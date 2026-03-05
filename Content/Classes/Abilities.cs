@@ -79,6 +79,7 @@ namespace CTG2.Content
             List<ItemData> classItems = classData.InventoryItems;
 
             bool placedWeapon = false;
+            bool placedMushrooms = false;
 
             for (int b = 0; b < Player.inventory.Length; b++)
             {
@@ -98,13 +99,20 @@ namespace CTG2.Content
                     Player.inventory[b] = newItem;
                     placedWeapon = true;
                 }
+                else if (b > 29 && b < 50 && Player.inventory[b].type == ItemID.None && !placedMushrooms && !rmoot)
+                {
+                    Item newItem = new Item();
+                    newItem.SetDefaults(ItemID.Mushroom);
+                    newItem.stack = 99;
+                    Player.inventory[b] = newItem;
+                    placedMushrooms = true;
+                }
                 else if (Player.inventory[b].type == ItemID.CrimsonHelmet || Player.inventory[b].type == ItemID.CrimsonScalemail || Player.inventory[b].type == ItemID.CrimsonGreaves ||
                          Player.inventory[b].type == ItemID.CharmofMyths || Player.inventory[b].type == ItemID.WormScarf || Player.inventory[b].type == ItemID.FireGauntlet || Player.inventory[b].type == ItemID.FrozenTurtleShell ||
                          Player.inventory[b].type == ItemID.BlizzardinaBottle || Player.inventory[b].type == ItemID.EoCShield || Player.inventory[b].type == ItemID.Magiluminescence || Player.inventory[b].type == ItemID.DestroyerEmblem ||
                          Player.inventory[b].type == ItemID.DevilHorns || Player.inventory[b].type == ItemID.FlowerBoyShirt || Player.inventory[b].type == ItemID.FlowerBoyPants || Player.inventory[b].type == ItemID.LizardTail ||
                          Player.inventory[b].type == ItemID.ApprenticeScarf || Player.inventory[b].type == ItemID.Yoraiz0rDarkness || Player.inventory[b].type == 5558 || Player.inventory[b].type == 4772 || 
-                         Player.inventory[b].type == 1839 || Player.inventory[b].type == 1748)
-
+                         Player.inventory[b].type == 1839 || Player.inventory[b].type == 1748 || Player.inventory[b].type == ItemID.Mushroom)
                 {
                     Item newItem = new Item();
                     newItem.TurnToAir();
@@ -896,6 +904,7 @@ namespace CTG2.Content
         private void MutantOnUse()
         {
             Player.AddBuff(149, 45);
+            Player.AddBuff(21, 20 * 60);
 
             switch (mutantState)
             {

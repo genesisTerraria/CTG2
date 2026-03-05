@@ -539,10 +539,10 @@
       "Modded": false
     },
     {
-      "Name": "Lucky Coin",
-      "Type": 855,
+      "Name": "Flesh Knuckles",
+      "Type": 3016,
       "Stack": 1,
-      "Prefix": 76,
+      "Prefix": 0,
       "Slot": 67,
       "Modded": false
     },
