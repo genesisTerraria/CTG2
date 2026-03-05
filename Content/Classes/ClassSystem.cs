@@ -46,7 +46,7 @@ namespace ClassesNamespace
         Miner,
         Fish,
         Clown,
-        FlameBunny,
+        Phoenix,
         TikiPriest,
         Tree,
         RushMutant,
@@ -587,7 +587,7 @@ namespace ClassesNamespace
                     case "Clown":
                         stack = 50;
                         break;
-                    case "Flame Bunny":
+                    case "Phoenix":
                         stack = 50;
                         break;
                     case "Tiki Priest":

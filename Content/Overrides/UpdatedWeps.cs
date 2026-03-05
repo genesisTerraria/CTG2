@@ -36,9 +36,6 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint flamarangDelay = 30;
         private uint flamarangLastUsedCounter = 0;
 
-        private uint blowgunDelay = 50;
-        private uint blowgunLastUsedCounter = 0;
-
         private uint goldenShowerDelay = 58;
         private uint goldenShowerLastUsedCounter = 0;
 
@@ -50,6 +47,9 @@ namespace CTG2.Content.Items.ModifiedWeps
 
         private uint cursedFlamesDelay = 65;
         private uint cursedFlamesLastUsedCounter = 0;
+
+        private uint flamelashDelay = 70;
+        private uint flamelashLastUsedCounter = 0;
 
         public override bool InstancePerEntity => true;
 
@@ -73,19 +73,20 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.UseSound = SoundID.Item109;
                     break;
                 case ItemID.Blowgun: // Tiki Priest
-                    item.useTime = 25;
-                    item.useAnimation = 25;
+                    item.useTime = 28;
+                    item.useAnimation = 28;
                     item.shoot = 267;
                     item.shootSpeed = 15f;
                     item.useAmmo = AmmoID.None;
                     item.autoReuse = false;
                     item.damage = 34;
                     item.crit = 0;
+                    item.mana = 8;
                     break;
                 case 1296: // Tiki Priest: Staff of Earth
-                    item.useTime = 31;
-                    item.useAnimation = 31;
-                    item.mana = 10;
+                    item.useTime = 25;
+                    item.useAnimation = 25;
+                    item.mana = 8;
                     item.shootSpeed = 10f;
                     item.autoReuse = false;
                     item.damage = 32;
@@ -196,7 +197,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     break;
                 case ItemID.Gungnir:
-                    item.damage = 35;
+                    item.damage = 37;
                     item.useAnimation = 18;
                     item.useTime = 18;
                     item.crit = 0;
@@ -229,15 +230,37 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useAnimation = 33;
                     break;
 
-                case 218:
+                case 218: // dragonbreather fireball
                     item.crit = 0;
-                    item.damage = 34;
-                    item.shootSpeed = 10f;
+                    item.damage = 33;
+                    item.shootSpeed = 10.3f;
                     item.shoot = 666;
                     item.scale = 0;
-                    item.mana = 8;
+                    item.mana = 0;
                     item.useTime = 28;
                     item.useAnimation = 28;
+                    break;
+
+                case 3858: // dragonbreather phoenix
+                    item.crit = 0;
+                    item.damage = 28;
+                    item.shootSpeed = 7f;
+                    item.shoot = 706;
+                    item.mana = 15;
+                    item.scale = 0;
+                    item.useTime = 30;
+                    item.useAnimation = 30;
+                    break;
+
+                case 3543: // dragonbreather aerial bane
+                    item.crit = 0;
+                    item.damage = 20;
+                    item.shootSpeed = 8.7f;
+                    item.shoot = 710;
+                    item.mana = 10;
+                    item.scale = 0;
+                    item.useTime = 20;
+                    item.useAnimation = 20;
                     break;
 
                 //drone damage 31
@@ -402,17 +425,6 @@ namespace CTG2.Content.Items.ModifiedWeps
                 else
                     return false;
             }
-            else if (item.type == ItemID.Blowgun)
-            {
-                if (Main.GameUpdateCount - blowgunLastUsedCounter >= blowgunDelay)
-                {
-                    blowgunLastUsedCounter = Main.GameUpdateCount;
-
-                    return true;
-                }
-                else
-                    return false;
-            }
             else if (item.type == ItemID.GoldenShower)
             {
                 if (Main.GameUpdateCount - goldenShowerLastUsedCounter >= goldenShowerDelay)
@@ -429,6 +441,17 @@ namespace CTG2.Content.Items.ModifiedWeps
                 if (Main.GameUpdateCount - chainKnifeLastUsedCounter >= chainKnifeDelay)
                 {
                     chainKnifeLastUsedCounter = Main.GameUpdateCount;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (item.type == ItemID.Flamelash)
+            {
+                if (Main.GameUpdateCount - flamelashLastUsedCounter >= flamelashDelay)
+                {
+                    flamelashLastUsedCounter = Main.GameUpdateCount;
 
                     return true;
                 }

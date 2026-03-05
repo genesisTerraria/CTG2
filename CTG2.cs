@@ -124,7 +124,7 @@ namespace CTG2
         ClearInventory = 87,
         SyncAbilityAttributes = 88,
         SyncClassSystemAttributes = 89,
-        ArcherDash = 90,
+        BlessingOfTheDragons = 90,
         SyncAddBuff = 91,
         RequestHeal = 92,
         SyncHeal = 93,
@@ -144,7 +144,7 @@ namespace CTG2
         public static readonly Dictionary<int, string> UuidByWhoAmI = new(); //for mapping
         private static Dictionary<int, (int requester, long startTime)> pendingPings = new();
 
-        public static ModKeybind ArcherDashKeybind;
+        public static ModKeybind BlessingOfTheDragonsKeybind;
         public static ModKeybind AdvancedBinocularsKeybind;
         public static ModKeybind Ability1Keybind;
         //public static int BiomeMusicId = 0; // client side 
@@ -201,8 +201,8 @@ namespace CTG2
                 }
             }
 
-            ArcherDashKeybind = KeybindLoader.RegisterKeybind(this, "ArcherDash", "LeftShift");
-            AdvancedBinocularsKeybind = KeybindLoader.RegisterKeybind(this, "AdvancedBinoculars", "MouseRight");
+            BlessingOfTheDragonsKeybind = KeybindLoader.RegisterKeybind(this, "Dragonbreather dash", "LeftShift");
+            AdvancedBinocularsKeybind = KeybindLoader.RegisterKeybind(this, "Advanced Binoculars", "MouseRight");
             Ability1Keybind = KeybindLoader.RegisterKeybind(this, "Ability 1", "R");
         }
 
@@ -1269,10 +1269,10 @@ namespace CTG2
                     ProcessRequestBanPlayer(ref reader, whoAmI);
                     break;
 
-                case (byte)MessageType.ArcherDash:
+                case (byte)MessageType.BlessingOfTheDragons:
                         byte plyNum = reader.ReadByte();
                         Player plyy = Main.player[plyNum];
-                        ArcherDashPlayer dashPly = plyy.GetModPlayer<ArcherDashPlayer>();
+                        BlessingOfTheDragonsPlayer dashPly = plyy.GetModPlayer<BlessingOfTheDragonsPlayer>();
 
                         dashPly.RecieveDash(plyy, reader);
 

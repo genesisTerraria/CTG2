@@ -199,15 +199,15 @@
       ]
     },
     {
-      "name": "Flame Bunny",
+      "name": "Phoenix",
       "summary": "Multi-Range high damage all-rounder",
       "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
-      "inventory": "flamebunny",
+      "inventory": "phoenix",
       "icon": 243,
       "ability-cooldown": 45,
       "health-from-kills": 0,
       "respawn-time": 4,
-      "buffs": [33, 146],
+      "buffs": [6, 158],
       "ability-id": 13,
       "upgrades": [
 

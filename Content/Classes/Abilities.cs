@@ -786,7 +786,7 @@ namespace CTG2.Content
 
 
 
-        private void FlameBunnyOnUse()
+        private void DragonbreatherOnUse()
         {
             Player.AddBuff(137, 6 * 60);
             Player.AddBuff(320, 6 * 60);
@@ -1083,7 +1083,7 @@ namespace CTG2.Content
 
                     case 13: //not finished
                         SetCooldown(41);
-                        FlameBunnyOnUse();
+                        DragonbreatherOnUse();
 
                         break;
 

@@ -100,6 +100,16 @@ Items: {
 		Tooltip: ""
 		DisplayName: Tome Of The Dark Arts
 	}
+
+	BlessingoftheDragons: {
+		DisplayName: Blessingofthe Dragons
+		Tooltip: ""
+	}
+
+	BlessingOfTheDragons: {
+		DisplayName: Blessing Of The Dragons
+		Tooltip: ""
+	}
 }
 
 NPCs: {
@@ -141,6 +151,8 @@ Keybinds: {
 	"Ability 1.DisplayName": Ability 1
 	AdvancedBinoculars.DisplayName: Advanced Binoculars
 	ArcherDash.DisplayName: Archer Dash
+	"Advanced Binoculars.DisplayName": Advanced  Binoculars
+	"Dragonbreather dash.DisplayName": Dragonbreather dash
 }
 
 Configs: {

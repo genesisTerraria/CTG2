@@ -9,7 +9,7 @@ using System.IO;
 namespace CTG2.Content.Items
 {
 	[AutoloadEquip(EquipType.Shield)] // Load the spritesheet you create as a shield for the player when it is equipped.
-	public class ArcherDash : ModItem
+	public class BlessingOfTheDragons : ModItem
 	{
 		public override void SetDefaults() {
 			Item.width = 30;
@@ -19,15 +19,15 @@ namespace CTG2.Content.Items
 		}
 
 		public override void UpdateAccessory(Player player, bool hideVisual) {
-			player.GetModPlayer<ArcherDashPlayer>().DashAccessoryEquipped = true;
+			player.GetModPlayer<BlessingOfTheDragonsPlayer>().DashAccessoryEquipped = true;
 		}
 	}
 
-	public class ArcherDashPlayer : ModPlayer {
-		public const int DashCooldown = 150; // Time (frames) between starting dashes. If this is shorter than DashDuration you can start a new dash before an old one has finished
-		public const int DashDuration = 18; // Duration of the dash afterimage effect in frames
+	public class BlessingOfTheDragonsPlayer : ModPlayer {
+		public const int DashCooldown = 80; // Time (frames) between starting dashes. If this is shorter than DashDuration you can start a new dash before an old one has finished
+		public const int DashDuration = 10; // Duration of the dash afterimage effect in frames
 
-		public float DashVelocity = 14f; // The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
+		public float DashVelocity = 11.5f; // The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
 
 		public bool dashKeybindActive = false; // Uses the hook keybind as the dash keybind
 
@@ -43,7 +43,7 @@ namespace CTG2.Content.Items
 		public void SendDash(Vector2 velocity, int toWho = -1, int fromWho = -1)
 		{
 			ModPacket packet = Mod.GetPacket();
-			packet.Write((byte)MessageType.ArcherDash);
+			packet.Write((byte)MessageType.BlessingOfTheDragons);
 			packet.Write((byte)Player.whoAmI);
 			packet.WriteVector2(velocity);
 			packet.Write(DashTimer);
@@ -73,21 +73,21 @@ namespace CTG2.Content.Items
 				DashAccessoryEquipped = false;
 
 				if (recentlyEnded && DashTimer == 0) {
-					Vector2 newVelocity = Player.velocity;
-					if (newVelocity != Vector2.Zero) {
-						newVelocity.Normalize();
-						newVelocity *= 4f;
-						Player.gravity = 0.4f;
-						Player.velocity = newVelocity;
-					}
+					//Vector2 newVelocity = Player.velocity;
+					//if (newVelocity != Vector2.Zero) {
+						//newVelocity.Normalize();
+						//newVelocity *= 4f;
+					Player.gravity = 0.4f;
+						//Player.velocity = newVelocity;
+					//}
 					recentlyEnded = false;
-					DashVelocity = 14f;
+					//DashVelocity = 14f;
 				}
 
 
-				dashKeybindActive = CTG2.ArcherDashKeybind.JustPressed;
+				dashKeybindActive = CTG2.BlessingOfTheDragonsKeybind.JustPressed;
 
-				if (DashDelay == 0 && lastDashDelay != 0) SoundEngine.PlaySound(SoundID.Item35, Player.Center);
+				//if (DashDelay == 0 && lastDashDelay != 0) SoundEngine.PlaySound(SoundID.Item35, Player.Center);
 
 				lastDashDelay = DashDelay;
 			}
@@ -107,8 +107,11 @@ namespace CTG2.Content.Items
 						return;
 
 					direction.Normalize();
-					Vector2 dashVelocity = direction * DashVelocity;
+					float horizontalReduction = Math.Abs(direction.X) * 0.35f; 
+					float speedMultiplier = 1f - horizontalReduction;
 
+					// Apply the multiplier to the base DashVelocity
+					Vector2 dashVelocity = direction * (DashVelocity * speedMultiplier);
 					Player.velocity = dashVelocity;
 					Player.gravity = 0f;
 					DashDelay = DashCooldown;
@@ -122,15 +125,15 @@ namespace CTG2.Content.Items
 
 				if (DashTimer > 0) // If dash is active
 				{
-					if (DashTimer < 10) {
-						DashVelocity -= 1f;
-						if (Player.velocity != Vector2.Zero) {
-							Vector2 decVelocity = Player.velocity;
-							decVelocity.Normalize();
-							decVelocity *= DashVelocity;
-							Player.velocity = decVelocity;
-						}
-					}
+					// if (DashTimer < 10) {
+					// 	DashVelocity -= 1f;
+					// 	if (Player.velocity != Vector2.Zero) {
+					// 		Vector2 decVelocity = Player.velocity;
+					// 		decVelocity.Normalize();
+					// 		decVelocity *= DashVelocity;
+					// 		Player.velocity = decVelocity;
+					// 	}
+					// }
 
 					// Afterimage effect
 					Player.armorEffectDrawShadowEOCShield = true;
