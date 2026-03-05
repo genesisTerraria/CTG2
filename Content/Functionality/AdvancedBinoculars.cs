@@ -63,6 +63,12 @@ namespace CTG2.Content.Functionality
                     break;
 
                 case 2:
+
+                    if (!ModContent.GetInstance<CTG2Config>().EnabledCameraLock)
+                    {
+                        state = 0;
+                    }
+
                     targetPosition = player.Center - new Vector2(Main.screenWidth, Main.screenHeight) / 2f + offset;
                     
                     ApplyCameraLerp();

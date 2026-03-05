@@ -178,6 +178,11 @@ Configs: {
 			Label: Advanced Binoculars Zoom Speed (Seconds)
 			Tooltip: How long it takes for binocular camera to reach full offset.
 		}
+
+		EnabledCameraLock: {
+			Tooltip: If enabled, the first Advanced Binoculars press locks the camera angle in place.
+			Label: Advanced Binoculars Camera Lock
+		}
 	}
 }
 

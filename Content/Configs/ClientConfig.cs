@@ -25,5 +25,11 @@ namespace CTG2.Content.Configs
         [Range(0f, 5f)]
         [Increment(0.05f)]
         public float CameraLerpSeconds;
+        
+
+        [Label("Advanced Binoculars Camera Lock")]
+        [Tooltip("If enabled, the first Advanced Binoculars press locks the camera angle in place.")]
+        [DefaultValue(false)]
+        public bool EnabledCameraLock;
     }
 }
