@@ -202,7 +202,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useTime = 18;
                     item.crit = 0;
                     item.shootSpeed = 14f;
-                    item.mana = 16;
+                    item.mana = 25;
                     item.knockBack = 10;
                     item.shoot = 507;
                     item.UseSound = SoundID.DD2_DarkMageAttack;
