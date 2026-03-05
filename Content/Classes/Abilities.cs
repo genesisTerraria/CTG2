@@ -786,13 +786,13 @@ namespace CTG2.Content
 
 
 
-        private void DragonbreatherOnUse()
+        private void PhoenixOnUse()
         {
-            Player.AddBuff(137, 6 * 60);
-            Player.AddBuff(320, 6 * 60);
+            Player.AddBuff(176, 2 * 60);
+            Player.AddBuff(67, 80);
 
             playedSound = false;
-            class13EndTimer = 360;
+            class13EndTimer = 120;
 
             SoundEngine.PlaySound(SoundID.Item100.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
@@ -967,37 +967,55 @@ namespace CTG2.Content
             {
                 case 1:
                     if (Player.dead || Player.ghost || (!playedSound && class1EndTimer == 0))
+                    {
                         SoundEngine.PlaySound(SoundID.DD2_SonicBoomBladeSlash.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
+                        playedSound = true;
+                    }
 
                     break;
 
                 case 4:
                     if (Player.dead || Player.ghost || (!playedSound && class4BuffTimer == 0))
+                    {
                         SoundEngine.PlaySound(SoundID.DD2_BookStaffCast, Player.Center);
+                        playedSound = true;
+                    }
 
                     break;
 
                 case 7:
                     if (Player.dead || Player.ghost || (!playedSound && class7EndTimer == 0))
+                    {
                         SoundEngine.PlaySound(SoundID.DD2_DarkMageSummonSkeleton, Player.Center);
+                        playedSound = true;
+                    }
 
                     break;
 
                 case 11:
                     if (Player.dead || Player.ghost || (!playedSound && class11EndTimer == 0))
+                    {
                         SoundEngine.PlaySound(SoundID.Item77, Player.Center);
+                        playedSound = true;
+                    }
 
                     break;
 
                 case 13:
                     if (Player.dead || Player.ghost || (!playedSound && class13EndTimer == 0))
+                    {
                         SoundEngine.PlaySound(SoundID.Item88, Player.Center);
+                        playedSound = true;
+                    }
 
                     break;
 
                 case 17:
                     if (Player.dead || Player.ghost || (!playedSound && class17EndTimer == 0))
+                    {
                         SoundEngine.PlaySound(SoundID.Item90, Player.Center);
+                        playedSound = true;
+                    }
 
                     break;
             }
@@ -1082,8 +1100,8 @@ namespace CTG2.Content
                         break;
 
                     case 13: //not finished
-                        SetCooldown(41);
-                        DragonbreatherOnUse();
+                        SetCooldown(10);
+                        PhoenixOnUse();
 
                         break;
 
