@@ -190,7 +190,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     break;
                 case 537: // cobalt naginata
-                    item.damage = 38;
+                    item.damage = 36;
                     item.useAnimation = 22;
                     item.useTime = 22;
                     item.shootSpeed = 4.6f;
