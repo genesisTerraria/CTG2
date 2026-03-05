@@ -193,7 +193,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.damage = 36;
                     item.useAnimation = 22;
                     item.useTime = 22;
-                    item.shootSpeed = 4.6f;
+                    item.shootSpeed = 4.2f;
                     item.crit = 0;
                     break;
                 case ItemID.Gungnir:
