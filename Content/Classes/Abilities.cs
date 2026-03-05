@@ -588,7 +588,7 @@ namespace CTG2.Content
                     ModPacket packet2 = mod.GetPacket();
                     packet2.Write((byte)MessageType.RequestAddBuff);
                     packet2.Write(other.whoAmI);
-                    packet2.Write(26);
+                    packet2.Write(206);
                     packet2.Write(480);
                     packet2.Send();
 
