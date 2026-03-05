@@ -9,7 +9,7 @@ namespace CTG2.Content.Items
 		public override void SetDefaults()
 		{
 			Item.CloneDefaults(ItemID.TitaniumPickaxe);
-			Item.damage = 8;
+			Item.damage = 4;
 			Item.useTime = 7;
 			Item.useAnimation = 14;
 			Item.scale = .8f;

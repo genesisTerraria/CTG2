@@ -27,7 +27,7 @@ namespace CTG2.Content.Items
 		public const int DashCooldown = 80; // Time (frames) between starting dashes. If this is shorter than DashDuration you can start a new dash before an old one has finished
 		public const int DashDuration = 10; // Duration of the dash afterimage effect in frames
 
-		public float DashVelocity = 11.5f; // The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
+		public float DashVelocity = 10f; // The initial velocity.  10 velocity is about 37.5 tiles/second or 50 mph
 
 		public bool dashKeybindActive = false; // Uses the hook keybind as the dash keybind
 
@@ -107,7 +107,7 @@ namespace CTG2.Content.Items
 						return;
 
 					direction.Normalize();
-					float horizontalReduction = Math.Abs(direction.X) * 0.35f; 
+					float horizontalReduction = Math.Abs(direction.X) * 0.3f; 
 					float speedMultiplier = 1f - horizontalReduction;
 
 					// Apply the multiplier to the base DashVelocity

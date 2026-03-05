@@ -18,7 +18,7 @@ public class ProjectileOverrides : GlobalProjectile
 
     public override bool PreKill(Projectile projectile, int timeLeft)
     {
-        if (projectile.type == ProjectileID.NebulaArcanum)
+        if (projectile.type == ProjectileID.NebulaArcanum || projectile.type == 706 || projectile.type == 666)
         {
             projectile.damage = 0;
 

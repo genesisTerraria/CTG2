@@ -230,7 +230,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useAnimation = 33;
                     break;
 
-                case 218: // dragonbreather fireball
+                case 218: // phoenix fireball
                     item.crit = 0;
                     item.damage = 33;
                     item.shootSpeed = 10.3f;
@@ -241,7 +241,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useAnimation = 28;
                     break;
 
-                case 3858: // dragonbreather phoenix
+                case 3835: // phoenix phantom
                     item.crit = 0;
                     item.damage = 28;
                     item.shootSpeed = 7f;
@@ -252,10 +252,10 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useAnimation = 30;
                     break;
 
-                case 3543: // dragonbreather aerial bane
+                case 3543: // phoenix aerial bane
                     item.crit = 0;
-                    item.damage = 20;
-                    item.shootSpeed = 8.7f;
+                    item.damage = 24;
+                    item.shootSpeed = 9f;
                     item.shoot = 710;
                     item.mana = 10;
                     item.scale = 0;
