@@ -507,7 +507,7 @@
       "Modded": false
     },
     {
-      "Name": "Blessing of the Dragons",
+      "Name": "Blessing Of The Dragons",
       "Type": 5549,
       "Stack": 1,
       "Prefix": 63,
@@ -579,19 +579,11 @@
       "Modded": false
     },
     {
-      "Name": "Royal Scepter",
-      "Type": 5076,
-      "Stack": 1,
-      "Prefix": 0,
-      "Slot": 72,
-      "Modded": false
-    },
-    {
       "Name": "Moon Stone",
       "Type": 900,
       "Stack": 1,
       "Prefix": 0,
-      "Slot": 73,
+      "Slot": 72,
       "Modded": false
     },
     {
@@ -599,13 +591,21 @@
       "Type": 3812,
       "Stack": 1,
       "Prefix": 0,
-      "Slot": 74,
+      "Slot": 73,
       "Modded": false
     },
     {
       "Name": "Flame Waker Boots",
       "Type": 4822,
       "Stack": 1,
+      "Prefix": 0,
+      "Slot": 74,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 75,
       "Modded": false
