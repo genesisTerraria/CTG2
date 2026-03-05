@@ -122,7 +122,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useTime = 22;
                     item.useAnimation = 22;
                     item.crit = 0;
-                    item.shootSpeed = 11.58f;
+                    item.shootSpeed = 11f;
                     item.mana = 5;
                     item.shoot = 33;
                     item.scale = 0;
@@ -204,6 +204,17 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.scale = 0;
                     item.useTime = 33;
                     item.useAnimation = 33;
+                    break;
+
+                case 218:
+                    item.crit = 0;
+                    item.damage = 34;
+                    item.shootSpeed = 10f;
+                    item.shoot = 666;
+                    item.scale = 0;
+                    item.mana = 8;
+                    item.useTime = 28;
+                    item.useAnimation = 28;
                     break;
 
                 //drone damage 31
