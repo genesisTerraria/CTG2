@@ -48,7 +48,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint cursedFlamesDelay = 65;
         private uint cursedFlamesLastUsedCounter = 0;
 
-        private uint flamelashDelay = 70;
+        private uint flamelashDelay = 60;
         private uint flamelashLastUsedCounter = 0;
 
         public override bool InstancePerEntity => true;
@@ -237,8 +237,8 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shoot = 666;
                     item.scale = 0;
                     item.mana = 0;
-                    item.useTime = 28;
-                    item.useAnimation = 28;
+                    item.useTime = 20;
+                    item.useAnimation = 20;
                     break;
 
                 case 3835: // phoenix phantom
@@ -248,8 +248,8 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shoot = 706;
                     item.mana = 15;
                     item.scale = 0;
-                    item.useTime = 30;
-                    item.useAnimation = 30;
+                    item.useTime = 23;
+                    item.useAnimation = 23;
                     break;
 
                 case 3543: // phoenix aerial bane
