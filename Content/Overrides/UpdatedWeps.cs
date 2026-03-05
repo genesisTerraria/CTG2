@@ -73,14 +73,26 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.UseSound = SoundID.Item109;
                     break;
                 case ItemID.Blowgun: // Tiki Priest
-                    item.useTime = 18;
-                    item.useAnimation = 18;
+                    item.useTime = 25;
+                    item.useAnimation = 25;
                     item.shoot = 267;
                     item.shootSpeed = 15f;
                     item.useAmmo = AmmoID.None;
                     item.autoReuse = false;
-                    item.damage = 36;
+                    item.damage = 34;
                     item.crit = 0;
+                    break;
+                case 1296: // Tiki Priest: Staff of Earth
+                    item.useTime = 31;
+                    item.useAnimation = 31;
+                    item.mana = 10;
+                    item.shootSpeed = 10f;
+                    item.autoReuse = false;
+                    item.damage = 32;
+                    item.crit = 0;
+                    item.shoot = 229;
+                    item.scale = 0;
+                    item.UseSound = SoundID.Item8;
                     break;
                 case ItemID.Bananarang: // Tree
                     item.useTime = 20;

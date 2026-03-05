@@ -53,7 +53,7 @@ namespace CTG2.Content.Classes
         private float frameCount = 0;
         private float firstFrame = 0;
         private int totemTeam = 0;
-        private int maxHP = 450;
+        private int maxHP = 500;
 
         private float amplitude = 16f; // 1 block = 16 pixels
         private float period = 120f;   // 2 seconds * 60 ticks
@@ -173,7 +173,7 @@ namespace CTG2.Content.Classes
 
         public override void AI()
         {
-            if (frameCount % 4 == 0) NPC.life--;
+            if (frameCount % 3 == 0) NPC.life--;
 
             float friction = 0f; //update this to change friction
 

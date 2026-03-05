@@ -1,6 +1,6 @@
 {
   "HealthPoints": 140,
-  "ManaPoints": 0,
+  "ManaPoints": 10,
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
@@ -11,8 +11,8 @@
       "Modded": true
     },
     {
-      "Name": "White String",
-      "Type": 3306,
+      "Name": "Staff of Earth",
+      "Type": 1296,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 1,
