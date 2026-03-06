@@ -182,7 +182,7 @@ public class ModifyHurtModPlayer : ModPlayer
         if (projIndex >= 0 && projIndex < Main.maxProjectiles)
         {
             Projectile proj = Main.projectile[projIndex];
-            if (proj.active && (proj.type == 263 || proj.type == 513))
+            if (proj.active && (proj.type == 263 || proj.type == 513 || proj.type == 229))
             {
                 proj.Kill();
             }
@@ -199,7 +199,7 @@ public class ModifyHurtModPlayer : ModPlayer
                 Player.AddBuff(ModContent.BuffType<Retaliation>(), 30);
             }
         }
-        else if (info.DamageSource.SourceProjectileType == 267)
+        else if (info.DamageSource.SourceProjectileType == 267 || info.DamageSource.SourceProjectileType == 229)
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
@@ -225,7 +225,7 @@ public class ModifyHurtModPlayer : ModPlayer
         }
         else if (info.DamageSource.SourceProjectileType == 507)
         {
-            Player.AddBuff(160, 60);
+            Player.AddBuff(160, 90);
         }
         else if (info.DamageSource.SourceProjectileType == 153)
         {
@@ -233,14 +233,15 @@ public class ModifyHurtModPlayer : ModPlayer
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
             if (attackerPlayer.currentClass.Name == "Mutant")
             {
-                attacker.AddBuff(2, 60);
+                attacker.AddBuff(2, 180);
                 attacker.AddBuff(48, 360);
+                attacker.AddBuff(58, 120);
 
                 ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
                 packet.Write((byte)CTG2.MessageType.RequestAddBuff);
                 packet.Write(attacker.whoAmI);
                 packet.Write(2);
-                packet.Write(60);
+                packet.Write(180);
                 packet.Send();
 
                 packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
@@ -248,6 +249,13 @@ public class ModifyHurtModPlayer : ModPlayer
                 packet.Write(attacker.whoAmI);
                 packet.Write(48);
                 packet.Write(360);
+                packet.Send();
+
+                packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
+                packet.Write((byte)CTG2.MessageType.RequestAddBuff);
+                packet.Write(attacker.whoAmI);
+                packet.Write(58);
+                packet.Write(120);
                 packet.Send();
             }
         }

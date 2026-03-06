@@ -510,7 +510,7 @@
       "Name": "Charm of Myths",
       "Type": 860,
       "Stack": 1,
-      "Prefix": 64,
+      "Prefix": 0,
       "Slot": 63,
       "Modded": false
     },
@@ -531,10 +531,10 @@
       "Modded": false
     },
     {
-      "Name": "White String",
-      "Type": 3306,
+      "Name": "Flesh Knuckles",
+      "Type": 3016,
       "Stack": 1,
-      "Prefix": 63,
+      "Prefix": 0,
       "Slot": 66,
       "Modded": false
     },

@@ -92,9 +92,8 @@ public class UIManager : ModSystem
         
         int matchTime = GameInfo.matchTime;
         int secondsElapsed = matchTime / 60 - GameInfo.matchStartTime / 60;
-        int secondsLeft = 60 * 10 - secondsElapsed;
-        int minutesLeft = secondsLeft / 60;
-        int remainder = secondsLeft % 60;
+        int minutesElapsed = secondsElapsed / 60;
+        int remainder = secondsElapsed % 60;
 
         if (matchTime < GameInfo.matchStartTime)
         {
@@ -104,11 +103,7 @@ public class UIManager : ModSystem
         {
             timeText = $"Class selection ends in: {(int) (Main.LocalPlayer.GetModPlayer<PlayerManager>().classSelectionTimer) / 60}s";
         }
-        else if (GameInfo.overtime)
-        {
-            timeText = $"Next capture wins the game!";
-        }
-        else if (secondsLeft < 0)
+        else if (secondsElapsed > 600)
         {
             timeText = $"The gem holder must die to end the game!";
         }
@@ -118,7 +113,7 @@ public class UIManager : ModSystem
         }
         else
         {
-            timeText = $"Time left in match: {minutesLeft}:{remainder.ToString("D2")}";
+            timeText = $"Match length: {minutesElapsed}:{remainder.ToString("D2")}";
         }
         /*GameInfo.blueGemCarrier;*/
         string blueGemStatus = GameInfo.blueGemCarrier;

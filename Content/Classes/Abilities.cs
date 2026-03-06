@@ -789,7 +789,7 @@ namespace CTG2.Content
         private void PhoenixOnUse()
         {
             Player.AddBuff(176, 2 * 60);
-            Player.AddBuff(67, 80);
+            Player.AddBuff(67, 40);
 
             playedSound = false;
             class13EndTimer = 120;
@@ -1106,7 +1106,7 @@ namespace CTG2.Content
                         break;
 
                     case 14: //not finished
-                        SetCooldown(30); //20
+                        SetCooldown(25); //20
                         TikiPriestOnUse();
 
                         break;

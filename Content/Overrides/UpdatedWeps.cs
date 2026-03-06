@@ -36,7 +36,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint flamarangDelay = 30;
         private uint flamarangLastUsedCounter = 0;
 
-        private uint goldenShowerDelay = 58;
+        private uint goldenShowerDelay = 65;
         private uint goldenShowerLastUsedCounter = 0;
 
         private uint ghastlyglaiveDelay = 45;
@@ -45,7 +45,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint chainKnifeDelay = 55;
         private uint chainKnifeLastUsedCounter = 0;
 
-        private uint cursedFlamesDelay = 65;
+        private uint cursedFlamesDelay = 67;
         private uint cursedFlamesLastUsedCounter = 0;
 
         private uint flamelashDelay = 60;
@@ -63,8 +63,8 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useAnimation = 1;
                     break;
                 case ItemID.GoldenShower: // Fish
-                    item.useTime = 15;
-                    item.useAnimation = 15;
+                    item.useTime = 20;
+                    item.useAnimation = 20;
                     item.shootSpeed = 6.8f;
                     item.damage = 35;
                     item.mana = 0;
@@ -89,7 +89,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.mana = 8;
                     item.shootSpeed = 10f;
                     item.autoReuse = false;
-                    item.damage = 32;
+                    item.damage = 31;
                     item.crit = 0;
                     item.shoot = 229;
                     item.scale = 0;
@@ -108,14 +108,14 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useTime = 4;
                     item.useAnimation = 4;
                     item.shootSpeed = 28;
-                    item.damage = 33;
+                    item.damage = 29;
                     item.crit = 0;
                     break;
                 case ItemID.CursedFlames: // Leech
                     item.useTime = 37;
                     item.useAnimation = 37;
                     item.shootSpeed = 10;
-                    item.damage = 25;
+                    item.damage = 23;
                     item.mana = 0;
                     item.scale = 0;
                     item.crit = 0;
@@ -198,8 +198,8 @@ namespace CTG2.Content.Items.ModifiedWeps
                     break;
                 case ItemID.Gungnir:
                     item.damage = 35;
-                    item.useAnimation = 18;
-                    item.useTime = 18;
+                    item.useAnimation = 22;
+                    item.useTime = 22;
                     item.crit = 0;
                     item.shootSpeed = 14f;
                     item.mana = 25;
@@ -306,7 +306,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case 165: //paladin weapon
                     item.shoot = 699;
                     item.scale = 0;
-                    item.damage = 33;
+                    item.damage = 30;
                     item.useTime = 14;
                     item.useAnimation = 14;
                     item.shootSpeed = 46f;
