@@ -1134,7 +1134,7 @@ public class GameManager : ModSystem
                         packet.Write((byte)MessageType.SyncAddBuff);
                         packet.Write(p.whoAmI);
                         packet.Write(BuffID.Webbed);
-                        packet.Write(12);
+                        packet.Write(60);
                         packet.Send();
                     }
                 }
