@@ -213,7 +213,7 @@ namespace CTG2
             var mod = ModContent.GetInstance<CTG2>();
 
             byte msgType = reader.ReadByte();
-            mod.Logger.Info($"Received packet: {msgType}");
+            //mod.Logger.Info($"Received packet: {msgType}");
             switch (msgType)
             {
                 // Client -> Server Packets (these cases will run on the Server)
