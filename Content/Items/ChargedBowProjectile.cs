@@ -241,7 +241,7 @@ public class ChargedBowProjectile : ModProjectile
 				spawnPos,
 				speed,
 				(int)Projectile.ai[1],
-				(int)(item.damage * (0.5 + charge / 80f)),
+				(int)player.GetDamage(item.DamageType).ApplyTo(item.damage * (0.5f + charge / 80f)),
 				item.knockBack,
 				Projectile.owner
 			);
