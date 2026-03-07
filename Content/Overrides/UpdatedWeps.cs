@@ -306,7 +306,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case 165: //paladin weapon
                     item.shoot = 699;
                     item.scale = 0;
-                    item.damage = 30;
+                    item.damage = 32;
                     item.useTime = 14;
                     item.useAnimation = 14;
                     item.shootSpeed = 46f;
