@@ -21,7 +21,7 @@ namespace CTG2.Content
 
         public override bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
         {
-            if (AllowBreaking)
+            if (AllowBreaking || type == TileID.Dirt || type == TileID.Bubble || type == TileID.Mud)
             {
                 return base.CanKillTile(i, j, type, ref blockDamaged);
             }
