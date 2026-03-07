@@ -625,7 +625,7 @@ namespace CTG2.Content
 
                 for (int offsetX = -13; offsetX <= 13; offsetX++)
                 {
-                    for (int offsetY = -4; offsetY <= 1; offsetY++)
+                    for (int offsetY = -5; offsetY <= 1; offsetY++)
                     {
                         int x = playerTile.X + offsetX;
                         int y = playerTile.Y + offsetY;
