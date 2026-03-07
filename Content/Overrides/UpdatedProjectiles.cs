@@ -204,8 +204,6 @@ public class ModifyHurtModPlayer : ModPlayer
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
             if (attackerPlayer.currentClass.Name == "Tiki Priest")
             {
-                attacker.Heal(4);
-
                 foreach (Player player in Main.player)
                 {
                     if (!player.active || player.dead)
@@ -216,7 +214,7 @@ public class ModifyHurtModPlayer : ModPlayer
 
                     if (Vector2.Distance(attacker.Center, player.Center) <= 14 * 16) // 14 block radius
                     {
-                        player.Heal(4);
+                        player.Heal(5);
                     }
                 }
             }

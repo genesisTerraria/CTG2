@@ -48,12 +48,12 @@ namespace CTG2.Content.Classes
 
     public class TikiTotem : ModNPC
     {
-        private float healFrameGap = 35;
+        private float healFrameGap = 30;
         //private int hitCounter = 0;
         private float frameCount = 0;
         private float firstFrame = 0;
         private int totemTeam = 0;
-        private int maxHP = 500;
+        private int maxHP = 200;
 
         private float amplitude = 16f; // 1 block = 16 pixels
         private float period = 120f;   // 2 seconds * 60 ticks
@@ -173,7 +173,7 @@ namespace CTG2.Content.Classes
 
         public override void AI()
         {
-            if (frameCount % 3 == 0) NPC.life--;
+            if (frameCount % 6 == 0) NPC.life--;
 
             float friction = 0f; //update this to change friction
 

@@ -1106,7 +1106,7 @@ namespace CTG2.Content
                         break;
 
                     case 14: //not finished
-                        SetCooldown(25); //20
+                        SetCooldown(20);
                         TikiPriestOnUse();
 
                         break;

@@ -514,28 +514,32 @@ namespace ClassesNamespace
                 Player.AddBuff(21, 10 * 60);
             }
 
-            if (playerManager.currentClass?.Name == "Tiki Priest")
-            {
-                foreach (Player player in Main.player)
-                {
-                    if (!player.active || player.dead)
-                        continue;
-                    // ai[0] stores tiki's team
-                    if (player.team != Player.team)
-                        continue;
+            // clear banned buffs
+            Player.ClearBuff(BuffID.Ichor);
+            Player.ClearBuff(BuffID.Poisoned);
 
-                    if (Vector2.Distance(Player.Center, player.Center) <= 8 * 16 && gameTime % 60 == 0 && gameTime > 0 && GameInfo.matchStage != 0 && GameInfo.matchStage != 3) // 8 block radius
-                    {
-                        var mod = ModContent.GetInstance<CTG2.CTG2>();
+            // if (playerManager.currentClass?.Name == "Tiki Priest")
+            // {
+            //     foreach (Player player in Main.player)
+            //     {
+            //         if (!player.active || player.dead)
+            //             continue;
+            //         // ai[0] stores tiki's team
+            //         if (player.team != Player.team)
+            //             continue;
 
-                        ModPacket healpacket = mod.GetPacket();
-                        healpacket.Write((byte)MessageType.RequestHeal);
-                        healpacket.Write(player.whoAmI);
-                        healpacket.Write(1);
-                        healpacket.Send();
-                    }
-                }
-            }
+            //         if (Vector2.Distance(Player.Center, player.Center) <= 8 * 16 && gameTime % 60 == 0 && gameTime > 0 && GameInfo.matchStage != 0 && GameInfo.matchStage != 3) // 8 block radius
+            //         {
+            //             var mod = ModContent.GetInstance<CTG2.CTG2>();
+
+            //             ModPacket healpacket = mod.GetPacket();
+            //             healpacket.Write((byte)MessageType.RequestHeal);
+            //             healpacket.Write(player.whoAmI);
+            //             healpacket.Write(1);
+            //             healpacket.Send();
+            //         }
+            //     }
+            // }
             
             if (gameTime >= bombCounter && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0) // miner bombs over time
             {
