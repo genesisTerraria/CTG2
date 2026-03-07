@@ -33,8 +33,8 @@ namespace CTG2.Content.Commands
                 {
                     packet1.Write((byte)MessageType.RequestTeleport);
                     packet1.Write(player.whoAmI);
-                    packet1.Write((int)13317);
-                    packet1.Write((int)10855);
+                    packet1.Write((int)8976);
+                    packet1.Write((int)11120);
                     packet1.Send();
                 }
                 else if (args[0] == "bluebase")
