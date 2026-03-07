@@ -1274,7 +1274,7 @@ namespace CTG2
                         Player plyy = Main.player[plyNum];
                         BlessingOfTheDragonsPlayer dashPly = plyy.GetModPlayer<BlessingOfTheDragonsPlayer>();
 
-                        dashPly.RecieveDash(plyy, reader);
+                        dashPly.ReceiveDash(plyy, reader);
 
                         if (Main.netMode == NetmodeID.Server)
                             dashPly.SendDash(plyy.velocity, -1, whoAmI);

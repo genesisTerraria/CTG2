@@ -46,20 +46,17 @@ namespace CTG2.Content.Items
 			packet.Write((byte)MessageType.BlessingOfTheDragons);
 			packet.Write((byte)Player.whoAmI);
 			packet.WriteVector2(velocity);
-			packet.Write(DashTimer);
 			packet.Write(DashDelay);
 			packet.Send(toWho, fromWho);
 		}
 
 
-		public void RecieveDash(Player player, BinaryReader reader)
+		public void ReceiveDash(Player player, BinaryReader reader)
         {
             Vector2 velocity = reader.ReadVector2();
-            int DashTimer = reader.ReadInt32();
             int DashDelay = reader.ReadInt32();
 
             player.velocity = velocity;
-            player.gravity = 0f;
 
             // ensures afterimage + animation
             player.eocDash = DashTimer;
@@ -72,22 +69,13 @@ namespace CTG2.Content.Items
 			{
 				DashAccessoryEquipped = false;
 
-				if (recentlyEnded && DashTimer == 0) {
-					//Vector2 newVelocity = Player.velocity;
-					//if (newVelocity != Vector2.Zero) {
-						//newVelocity.Normalize();
-						//newVelocity *= 4f;
-					Player.gravity = 0.4f;
-						//Player.velocity = newVelocity;
-					//}
+				if (recentlyEnded && DashTimer == 0)
+				{
 					recentlyEnded = false;
-					//DashVelocity = 14f;
 				}
 
 
 				dashKeybindActive = CTG2.BlessingOfTheDragonsKeybind.JustPressed;
-
-				//if (DashDelay == 0 && lastDashDelay != 0) SoundEngine.PlaySound(SoundID.Item35, Player.Center);
 
 				lastDashDelay = DashDelay;
 			}
@@ -113,7 +101,6 @@ namespace CTG2.Content.Items
 					// Apply the multiplier to the base DashVelocity
 					Vector2 dashVelocity = direction * (DashVelocity * speedMultiplier);
 					Player.velocity = dashVelocity;
-					Player.gravity = 0f;
 					DashDelay = DashCooldown;
 					DashTimer = DashDuration;
 					recentlyEnded = true;
@@ -125,16 +112,6 @@ namespace CTG2.Content.Items
 
 				if (DashTimer > 0) // If dash is active
 				{
-					// if (DashTimer < 10) {
-					// 	DashVelocity -= 1f;
-					// 	if (Player.velocity != Vector2.Zero) {
-					// 		Vector2 decVelocity = Player.velocity;
-					// 		decVelocity.Normalize();
-					// 		decVelocity *= DashVelocity;
-					// 		Player.velocity = decVelocity;
-					// 	}
-					// }
-
 					// Afterimage effect
 					Player.armorEffectDrawShadowEOCShield = true;
 					DashTimer--;
@@ -143,14 +120,14 @@ namespace CTG2.Content.Items
 					if (Main.netMode == NetmodeID.MultiplayerClient)
 					{
 						Vector2 velo = Player.velocity;
-						velo.Normalize();
-						velo *= DashVelocity;
 
 						SendDash(velo);
 					}
 				}
 				else
+				{
 					Player.armorEffectDrawShadowEOCShield = false;
+				}
 			}
 		}
 	}
