@@ -95,6 +95,8 @@ public class UIManager : ModSystem
         int minutesElapsed = secondsElapsed / 60;
         int remainder = secondsElapsed % 60;
 
+        int capDifference = GameInfo.blueCaptures - GameInfo.redCaptures;
+
         if (matchTime < GameInfo.matchStartTime)
         {
             timeText = $"Class selection ends in: {(int) (GameInfo.matchStartTime / 60) - matchTime / 60}s";
@@ -103,7 +105,7 @@ public class UIManager : ModSystem
         {
             timeText = $"Class selection ends in: {(int) (Main.LocalPlayer.GetModPlayer<PlayerManager>().classSelectionTimer) / 60}s";
         }
-        else if (secondsElapsed > 600)
+        else if (secondsElapsed > 600 && capDifference != 0)
         {
             timeText = $"The gem holder must die to end the game!";
         }
