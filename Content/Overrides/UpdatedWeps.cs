@@ -175,14 +175,12 @@ namespace CTG2.Content.Items.ModifiedWeps
 
                 //psychic projectile still needs to be ovverided
                 case 272: //bmage wep
-                    item.damage = 36;
-                    item.shoot = 496;
+                    item.damage = 31;
                     item.useAnimation = 18;
                     item.useTime = 18;
-                    item.shootSpeed = 4.7f;
                     item.crit = 0;
+                    item.mana = 25;
                     break;
-
                 case 802: //rotted fork
                     item.damage = 32;
                     item.useAnimation = 37;

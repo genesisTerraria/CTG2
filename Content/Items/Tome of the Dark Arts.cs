@@ -7,7 +7,7 @@ namespace CTG2.Content.Items
 {
 	public class TomeOfTheDarkArts : ModItem // Archer bow
 	{
-		public override string Texture => "Terraria/Images/Item_" + ItemID.DemonScythe;
+		public override string Texture => "Terraria/Images/Item_" + ItemID.ShadowFlameHexDoll;
 		public override void SetDefaults()
 		{
 	  		Item.CloneDefaults(ItemID.DemonScythe);
@@ -18,6 +18,7 @@ namespace CTG2.Content.Items
             Item.useTime = 18;
             Item.shootSpeed = 4.7f;
             Item.crit = 0;
+			Item.mana = 14;
 		}
 
 		public override bool Shoot(Player player, Terraria.DataStructures.EntitySource_ItemUse_WithAmmo source,

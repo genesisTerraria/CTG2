@@ -182,7 +182,7 @@ public class ModifyHurtModPlayer : ModPlayer
         if (projIndex >= 0 && projIndex < Main.maxProjectiles)
         {
             Projectile proj = Main.projectile[projIndex];
-            if (proj.active && (proj.type == 263 || proj.type == 513 || proj.type == 229))
+            if (proj.active && (proj.type == 263 || proj.type == 513 || proj.type == 229 || proj.type == 45))
             {
                 proj.Kill();
             }
