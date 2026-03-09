@@ -19,6 +19,7 @@ namespace CTG2.Content.Items
             Item.shootSpeed = 4.7f;
             Item.crit = 0;
 			Item.mana = 14;
+			Item.scale = 0;
 		}
 
 		public override bool Shoot(Player player, Terraria.DataStructures.EntitySource_ItemUse_WithAmmo source,
