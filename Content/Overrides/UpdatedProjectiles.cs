@@ -214,7 +214,12 @@ public class ModifyHurtModPlayer : ModPlayer
 
                     if (Vector2.Distance(attacker.Center, player.Center) <= 14 * 16) // 14 block radius
                     {
-                        player.Heal(5);
+                        ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
+                        packet.Write((byte)CTG2.MessageType.RequestAddBuff);
+                        packet.Write(player.whoAmI);
+                        packet.Write(173);
+                        packet.Write(60);
+                        packet.Send();
                     }
                 }
             }
