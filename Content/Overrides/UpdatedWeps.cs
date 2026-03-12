@@ -158,10 +158,10 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     break;
 
-                case 1306: //ice sickle (ovveride projectile to last longere later)
+                case 726: //ice sickle (ovveride projectile to last longere later)
                     item.shoot = 263;
                     item.shootSpeed = 4f;
-                    item.damage = 37;
+                    item.damage = 30;
                     item.useTime = 28;
                     item.useAnimation = 28;
                     item.scale = 0f;

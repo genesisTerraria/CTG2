@@ -29,14 +29,14 @@
     {
       "Name": "Dirt Block",
       "Type": 2,
-      "Stack": 100,
+      "Stack": 150,
       "Prefix": 0,
       "Slot": 3,
       "Modded": false
     },
     {
-      "Name": "Ice Sickle",
-      "Type": 1306,
+      "Name": "Frost Staff",
+      "Type": 726,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 4,
