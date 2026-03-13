@@ -129,6 +129,12 @@ namespace ClassesNamespace
 
             Player.trashItem = new Item();
             Main.mouseItem = new Item();
+
+            Player.usedAegisFruit = false;
+            Player.usedGalaxyPearl = false;
+            Player.usedGummyWorm = false;
+            Player.usedAmbrosia = false;
+            Player.ateArtisanBread = false;
         }
 
         private int GetItemIDByName(string itemName)
