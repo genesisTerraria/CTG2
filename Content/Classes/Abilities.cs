@@ -521,7 +521,6 @@ namespace CTG2.Content
         {
             Player.AddBuff(196, 54000);
             Player.AddBuff(178, 54000);
-            Player.AddBuff(181, 54000);
 
             psychicActive = true;
             class8HP = Player.statLife;
