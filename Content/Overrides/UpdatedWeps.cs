@@ -24,7 +24,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint zapinatorDelay = 51; //lowkey i think this is off rn but i cant tell 
         private uint zapinatorLastUsedCounter = 0;
 
-        private uint grenadeDelay = 50;
+        private uint grenadeDelay = 60;
         private uint grenadeLastUsedCounter = 0;
 
         private uint bananarangDelay = 55;
