@@ -112,6 +112,9 @@ namespace ClassesNamespace
         
         public void ClearInventory()
         {
+            Player.extraAccessory = false;
+            Player.extraAccessorySlots = 0;
+            
             for (int i = 0; i < Player.inventory.Length; i++)
             Player.inventory[i] = new Item();
 
