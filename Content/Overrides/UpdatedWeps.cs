@@ -179,7 +179,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useAnimation = 18;
                     item.useTime = 18;
                     item.crit = 0;
-                    item.mana = 25;
+                    item.mana = 18;
                     break;
                 case 802: //rotted fork
                     item.damage = 32;
@@ -216,18 +216,6 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     break;
 
-                //all done except jman
-
-                case 742: //jman emerald staff
-                    item.crit = 0;
-                    item.shoot = 480;
-                    item.damage = 34;
-                    item.shootSpeed = 8f;
-                    item.scale = 0;
-                    item.useTime = 33;
-                    item.useAnimation = 33;
-                    break;
-
                 case 218: // phoenix fireball
                     item.crit = 0;
                     item.damage = 33;
@@ -261,38 +249,8 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useAnimation = 18;
                     break;
 
-                //drone damage 31
-                case 5451: //jman drone
-                    item.crit = 0;
-                    item.shoot = 513;
-                    item.damage = 0;
-                    item.shootSpeed = 2f;
-                    item.useAnimation = 37;
-                    item.useTime = 37;
-                    item.knockBack = 4;
-                    item.scale = 0;
-                    break;
-
-                case ItemID.Flamarang:
-                    item.damage = 33;
-                    item.crit = 0;
-                    item.UseSound = null;
-                    break;
-
-                case ItemID.FlowerofFire:
-                    item.damage = 32;
-                    item.crit = 0;
-                    break;
-
                 case 3836: //ghastly glaive
                     item.damage = 35;
-                    break;
-
-                case ItemID.Sunfury:
-                    item.damage = 19;
-                    item.useTime = 40;
-                    item.useAnimation = 40;
-                    item.shootSpeed = 13.8f;
                     break;
                 case 4760: //Pala shield
                     item.shoot = 0;
