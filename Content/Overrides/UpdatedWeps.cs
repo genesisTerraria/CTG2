@@ -48,7 +48,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint cursedFlamesDelay = 67;
         private uint cursedFlamesLastUsedCounter = 0;
 
-        private uint flamelashDelay = 50;
+        private uint flamelashDelay = 55;
         private uint flamelashLastUsedCounter = 0;
 
         public override bool InstancePerEntity => true;
