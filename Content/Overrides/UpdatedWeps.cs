@@ -127,7 +127,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.damage = 17;
                     item.crit = 0;
                     break;
-                case ItemID.NebulaArcanum:
+                case ItemID.NebulaArcanum: //psy
                     item.damage = 69;
                     break;
                 case ItemID.AmethystStaff:
@@ -148,7 +148,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     break;
 
-                case 1446: //spectre staf
+                case 1446: //spectre staff
                     item.shoot = 126;
                     item.shootSpeed = 13f;
                     item.scale = 0.86f;
@@ -174,12 +174,12 @@ namespace CTG2.Content.Items.ModifiedWeps
                     break;
 
                 //psychic projectile still needs to be ovverided
-                case 272: //bmage wep
+                case 272: //bmage wep (demon scythe)
                     item.damage = 31;
                     item.useAnimation = 18;
                     item.useTime = 18;
                     item.crit = 0;
-                    item.mana = 18;
+                    item.mana = 21;
                     break;
                 case 802: //rotted fork
                     item.damage = 32;
