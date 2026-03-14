@@ -101,7 +101,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shootSpeed = 11.4f;
                     item.knockBack = 6f;
                     item.autoReuse = false;
-                    item.damage = 35;
+                    item.damage = 33;
                     item.crit = 0;
                     break;
                 case ItemID.ChainKnife: // Leech
@@ -269,6 +269,16 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     item.mana = 11;
                     break;
+                case ItemID.Vilethorn:
+                    item.scale = 0;
+                    item.shoot = 206;
+                    item.damage = 25;
+                    item.useTime = 12;
+                    item.useAnimation = 24;
+                    item.shootSpeed = 6f;
+                    item.crit = 0;
+                    item.mana = 25;
+                    break;
             }
         }
 
@@ -304,7 +314,18 @@ namespace CTG2.Content.Items.ModifiedWeps
                 else
                     return false;
             }
-            if (item.type == ItemID.Bananarang)
+            else if (item.type == ItemID.Bananarang)
+            {
+                if (Main.GameUpdateCount - bananarangLastUsedCounter >= bananarangDelay)
+                {
+                    bananarangLastUsedCounter = Main.GameUpdateCount;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (item.type == ItemID.Vilethorn)
             {
                 if (Main.GameUpdateCount - bananarangLastUsedCounter >= bananarangDelay)
                 {
@@ -457,6 +478,12 @@ namespace CTG2.Content.Items.ModifiedWeps
                     break;
                 case ItemID.RainCoat: // Rain Coat
                     player.statDefense -= 2;
+                    break;
+                case ItemID.PearlwoodHelmet:
+                    player.statDefense -= 2;
+                    break;
+                case ItemID.PearlwoodGreaves:
+                    player.statDefense -=2;
                     break;
             }
         }
