@@ -1,6 +1,6 @@
 {
-  "HealthPoints": 140,
-  "ManaPoints": 25,
+  "HealthPoints": 160,
+  "ManaPoints": 0,
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
@@ -11,8 +11,8 @@
       "Modded": true
     },
     {
-      "Name": "Vilethorn",
-      "Type": 64,
+      "Name": "Whoopie Cushion",
+      "Type": 215,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 1,

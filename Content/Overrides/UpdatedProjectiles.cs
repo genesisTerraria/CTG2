@@ -36,6 +36,8 @@ public class ProjectileOverrides : GlobalProjectile
             SoundEngine.PlaySound(SoundID.Item1, projectile.Center);
             playedSoundBoomerangs = true;
         }
+        if (projectile.type == 706)
+            projectile.scale = 1.2f;
         if (projectile.type == 167 || projectile.type == 169)
             projectile.timeLeft = 0;
         if (projectile.type == 511)
@@ -131,7 +133,6 @@ public class ProjectileOverrides : GlobalProjectile
 
     public override void OnSpawn(Projectile projectile, IEntitySource source)
     {
-
         if (projectile.type == 700) // Ghast
         {
             projectile.scale = 0f;

@@ -101,7 +101,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shootSpeed = 11.4f;
                     item.knockBack = 6f;
                     item.autoReuse = false;
-                    item.damage = 33;
+                    item.damage = 35;
                     item.crit = 0;
                     break;
                 case ItemID.ChainKnife: // Leech
@@ -230,7 +230,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case 3835: // phoenix phantom
                     item.crit = 0;
                     item.damage = 28;
-                    item.shootSpeed = 8f;
+                    item.shootSpeed = 6f;
                     item.shoot = 706;
                     item.mana = 15;
                     item.scale = 0;
@@ -269,16 +269,6 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     item.mana = 11;
                     break;
-                case ItemID.Vilethorn:
-                    item.scale = 0;
-                    item.shoot = 206;
-                    item.damage = 25;
-                    item.useTime = 12;
-                    item.useAnimation = 24;
-                    item.shootSpeed = 6f;
-                    item.crit = 0;
-                    item.mana = 25;
-                    break;
             }
         }
 
@@ -315,17 +305,6 @@ namespace CTG2.Content.Items.ModifiedWeps
                     return false;
             }
             else if (item.type == ItemID.Bananarang)
-            {
-                if (Main.GameUpdateCount - bananarangLastUsedCounter >= bananarangDelay)
-                {
-                    bananarangLastUsedCounter = Main.GameUpdateCount;
-
-                    return true;
-                }
-                else
-                    return false;
-            }
-            else if (item.type == ItemID.Vilethorn)
             {
                 if (Main.GameUpdateCount - bananarangLastUsedCounter >= bananarangDelay)
                 {
@@ -478,12 +457,6 @@ namespace CTG2.Content.Items.ModifiedWeps
                     break;
                 case ItemID.RainCoat: // Rain Coat
                     player.statDefense -= 2;
-                    break;
-                case ItemID.PearlwoodHelmet:
-                    player.statDefense -= 2;
-                    break;
-                case ItemID.PearlwoodGreaves:
-                    player.statDefense -=2;
                     break;
             }
         }
