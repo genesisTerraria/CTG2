@@ -60,7 +60,7 @@ namespace CTG2.Content
             }
             else
             {
-                caller.Reply($"End point is set to: {MapSave.endPoint.ToPoint()}");
+                caller.Reply($"End point is set to: {MapSave.endPoint.ToPoint()}", Color.Green);
             }
         }
     }
