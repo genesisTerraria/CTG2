@@ -455,6 +455,9 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case ItemID.ChlorophyteHeadgear:
                     player.statManaMax2 -= 80;
                     break;
+                case ItemID.RainCoat: // Rain Coat
+                    player.statDefense -= 2;
+                    break;
             }
         }
     }
