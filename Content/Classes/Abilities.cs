@@ -722,7 +722,7 @@ namespace CTG2.Content
                     if (!other.active || other.dead || other.whoAmI == Player.whoAmI || other.ghost || other.team == 0)
                         continue;
 
-                    if (Vector2.Distance(Player.Center, other.Center) <= 22 * 16 && Vector2.Distance(Player.Center, other.Center) < class12ClosestDist && Player.team != other.team) // 22 block radius
+                    if (Vector2.Distance(Player.Center, other.Center) <= 20 * 16 && Vector2.Distance(Player.Center, other.Center) < class12ClosestDist && Player.team != other.team) // 22 block radius
                     {
                         class12ClosestDist = (int)Vector2.Distance(Player.Center, other.Center);
                         class12ClosestPlayer = other;
