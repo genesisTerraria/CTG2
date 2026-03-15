@@ -261,14 +261,14 @@ public class ModifyHurtModPlayer : ModPlayer
                 packet.Send();
             }
         }
-        else if (info.DamageSource.SourceProjectileType == 706)
-        {
-            Player.AddBuff(BuffID.OnFire, 4 * 60);
-        }
-        else if (info.DamageSource.SourceProjectileType == 710) // hellfire
-        {
-            Player.AddBuff(323, 4 * 60);
-        }
+        // else if (info.DamageSource.SourceProjectileType == 706)
+        // {
+        //     Player.AddBuff(BuffID.OnFire, 4 * 60);
+        // }
+        // else if (info.DamageSource.SourceProjectileType == 710) // hellfire
+        // {
+        //     Player.AddBuff(323, 4 * 60);
+        // }
         else if (info.DamageSource.SourceProjectileType == 273)
         {
             Player attacker = Main.player[attackerIndex];

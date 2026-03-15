@@ -229,7 +229,7 @@ namespace CTG2.Content.Items.ModifiedWeps
 
                 case 3835: // phoenix phantom
                     item.crit = 0;
-                    item.damage = 28;
+                    item.damage = 34;
                     item.shootSpeed = 6f;
                     item.shoot = 706;
                     item.mana = 15;
@@ -240,7 +240,7 @@ namespace CTG2.Content.Items.ModifiedWeps
 
                 case 3543: // phoenix aerial bane
                     item.crit = 0;
-                    item.damage = 24;
+                    item.damage = 30;
                     item.shootSpeed = 9f;
                     item.shoot = 710;
                     item.mana = 10;
