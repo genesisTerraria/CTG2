@@ -81,12 +81,12 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.autoReuse = false;
                     item.damage = 34;
                     item.crit = 0;
-                    item.mana = 8;
+                    item.mana = 7;
                     break;
                 case 1296: // Tiki Priest: Staff of Earth
-                    item.useTime = 25;
-                    item.useAnimation = 25;
-                    item.mana = 8;
+                    item.useTime = 24;
+                    item.useAnimation = 24;
+                    item.mana = 7;
                     item.shootSpeed = 10f;
                     item.autoReuse = false;
                     item.damage = 31;
