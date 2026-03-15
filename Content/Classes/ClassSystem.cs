@@ -140,6 +140,10 @@ namespace ClassesNamespace
             Player.usedAmbrosia = false;
             Player.ateArtisanBread = false;
             Player.usedArcaneCrystal = false;
+
+            Player.armor[9] = new Item();
+            Player.armor[19] = new Item();
+            Player.dye[9] = new Item();
         }
 
         private int GetItemIDByName(string itemName)

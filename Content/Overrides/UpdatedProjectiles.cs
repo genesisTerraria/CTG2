@@ -43,9 +43,9 @@ public class ProjectileOverrides : GlobalProjectile
         if (projectile.type == 511)
         {
             // Force a new timeLeft value (e.g., 120 ticks = 2 seconds)
-            if (projectile.timeLeft > 120)
+            if (projectile.timeLeft > 180)
             {
-                projectile.timeLeft = 120;
+                projectile.timeLeft = 180;
             }
         }
         if (projectile.type == 41)
