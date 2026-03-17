@@ -16,7 +16,7 @@ namespace CTG2.Content.Items {
 			Item.useTime = 10;
 			Item.shootSpeed = 10f;
 			Item.crit = 0;
-			Item.damage = 29;
+			Item.damage = 27;
 			Item.mana = 8;
 		}
 
