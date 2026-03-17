@@ -180,6 +180,14 @@ namespace CTG2
         }
         // overrides
 
+       private static int BlockSignRead(On_Sign.orig_ReadSign orig, int x, int y, bool fromNet)
+        {
+            int result = orig(x, y, fromNet);
+            // Prevent the edit box from opening
+            Main.editSign = false;
+            Main.npcChatText = "";
+            return result;
+        }
         public override void Load()
         {
 
@@ -204,6 +212,13 @@ namespace CTG2
             BlessingOfTheDragonsKeybind = KeybindLoader.RegisterKeybind(this, "PhoenixDash", "LeftShift");
             AdvancedBinocularsKeybind = KeybindLoader.RegisterKeybind(this, "AdvancedBinoculars", "MouseRight");
             Ability1Keybind = KeybindLoader.RegisterKeybind(this, "Ability 1", "R");
+
+            On_Sign.ReadSign += BlockSignRead;
+        }
+
+        public override void Unload()
+        {
+            On_Sign.ReadSign -= BlockSignRead;
         }
 
         public override void HandlePacket(BinaryReader reader, int whoAmI)
