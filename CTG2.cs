@@ -149,6 +149,10 @@ namespace CTG2
         public static ModKeybind Ability1Keybind;
         //public static int BiomeMusicId = 0; // client side 
 
+        private static string _savedText = "";
+        private static int _savedIndex = -1;
+
+
         // static methods
         private static string GetTeamName(int teamId)
         {
@@ -180,14 +184,33 @@ namespace CTG2
         }
         // overrides
 
-       private static int BlockSignRead(On_Sign.orig_ReadSign orig, int x, int y, bool fromNet)
+        private static int CaptureSignText(On_Sign.orig_ReadSign orig, int x, int y, bool fromNet)
         {
-            int result = orig(x, y, fromNet);
-            // Prevent the edit box from opening
+            int index = orig(x, y, fromNet);
+
+            // Save the current text and index before the player can edit
+            if (index >= 0 && Main.sign[index] != null)
+            {
+                _savedIndex = index;
+                _savedText = Main.sign[index].text ?? "";
+            }
+
             Main.editSign = false;
-            Main.npcChatText = "";
-            return result;
+            return index;
         }
+
+        private static void RestoreSignText(On_Sign.orig_TextSign orig, int i, string text)
+        {
+            // Let vanilla run so it doesn't crash or null the sign
+            orig(i, text);
+
+            // Then immediately restore the original text
+            if (i >= 0 && i == _savedIndex && Main.sign[i] != null)
+            {
+                Main.sign[i].text = _savedText;
+            }
+        }
+
         public override void Load()
         {
 
@@ -213,12 +236,14 @@ namespace CTG2
             AdvancedBinocularsKeybind = KeybindLoader.RegisterKeybind(this, "AdvancedBinoculars", "MouseRight");
             Ability1Keybind = KeybindLoader.RegisterKeybind(this, "Ability 1", "R");
 
-            On_Sign.ReadSign += BlockSignRead;
+            On_Sign.ReadSign += CaptureSignText;
+            On_Sign.TextSign += RestoreSignText;
         }
 
         public override void Unload()
         {
-            On_Sign.ReadSign -= BlockSignRead;
+            On_Sign.ReadSign -= CaptureSignText;
+            On_Sign.TextSign -= RestoreSignText;
         }
 
         public override void HandlePacket(BinaryReader reader, int whoAmI)
