@@ -554,11 +554,9 @@ namespace CTG2
                 case (byte)MessageType.GiveLobbyMobility:
                 {
                     int mobilityPlayerIndex = reader.ReadInt32();
-                    Item blizzard = new Item(987, 1);
-                    Main.player[mobilityPlayerIndex].armor[3] = blizzard;
-
-                    Item shield = new Item(3097, 1);
-                    Main.player[mobilityPlayerIndex].armor[4] = shield;
+                    Main.player[mobilityPlayerIndex].armor[3] = new Item(158, 1);
+                    Main.player[mobilityPlayerIndex].armor[4] = new Item(987, 1);
+                    Main.player[mobilityPlayerIndex].armor[5] = new Item(3097, 1);
 
                     if (Main.netMode == NetmodeID.Server)
                     {

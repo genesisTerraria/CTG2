@@ -113,8 +113,9 @@ namespace ClassesNamespace
 
         public void GiveLobbyMobility()
         {
-            Player.armor[3] = new Item(987, 1);
-            Player.armor[4] = new Item(3097, 1);
+            Player.armor[3] = new Item(158, 1);
+            Player.armor[4] = new Item(987, 1);
+            Player.armor[5] = new Item(3097, 1);
         }
         
         public void ClearInventory()
