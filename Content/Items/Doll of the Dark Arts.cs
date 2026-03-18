@@ -5,7 +5,7 @@ using Microsoft.Xna.Framework;
 
 namespace CTG2.Content.Items
 {
-	public class TomeOfTheDarkArts : ModItem // Archer bow
+	public class DollOfTheDarkArts : ModItem
 	{
 		public override string Texture => "Terraria/Images/Item_" + ItemID.ShadowFlameHexDoll;
 		public override void SetDefaults()

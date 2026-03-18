@@ -12,17 +12,17 @@ Items: {
 	}
 
 	Zen: {
-		Tooltip: ""
+		Tooltip: The typical kunai of the Ninja master.
 		DisplayName: Zen
 	}
 
 	ShardstonePickaxe: {
-		Tooltip: ""
+		Tooltip: The preferred mining tool of the residents of the Arena.
 		DisplayName: Shardstone Pickaxe
 	}
 
 	Rancor: {
-		Tooltip: ""
+		Tooltip: The preferred longbow of the Archer.
 		DisplayName: Rancor
 	}
 
@@ -32,13 +32,8 @@ Items: {
 	}
 
 	FoliageTendrils: {
-		Tooltip: ""
+		Tooltip: The ever-growing roots of the Tree.
 		DisplayName: Foliage Tendrils
-	}
-
-	ArcherDash: {
-		Tooltip: ""
-		DisplayName: Archer Dash
 	}
 
 	AmalgamatedHand1_3: {
@@ -52,12 +47,12 @@ Items: {
 	}
 
 	AmalgamatedHand: {
-		Tooltip: ""
+		Tooltip: The malformed hand of the Mutant.
 		DisplayName: Amalgamated Hand
 	}
 
 	StaffOfWinter: {
-		Tooltip: ""
+		Tooltip: The frozen staff of the White Mage.
 		DisplayName: Staff Of Winter
 	}
 
@@ -92,23 +87,18 @@ Items: {
 	}
 
 	UpgradedShardstonePickaxe: {
-		Tooltip: ""
+		Tooltip: The preferred mining tool of the residents of the Arena.
 		DisplayName: Upgraded Shardstone Pickaxe
 	}
 
-	TomeOfTheDarkArts: {
-		Tooltip: ""
-		DisplayName: Tome Of The Dark Arts
-	}
-
-	BlessingoftheDragons: {
-		DisplayName: Blessingofthe Dragons
-		Tooltip: ""
-	}
-
 	BlessingOfTheDragons: {
-		DisplayName: Blessing Of The Dragons
-		Tooltip: ""
+		DisplayName: Blessing of The Dragons
+		Tooltip: A mythical tool that allows one to partially replicate the flight of dragons.
+	}
+
+	DollOfTheDarkArts: {
+		Tooltip: A cursed doll imbued with pure darkness used as the primary weapon of the Black Mage.
+		DisplayName: Doll Of The Dark Arts
 	}
 }
 
@@ -132,13 +122,18 @@ Projectiles: {
 
 Buffs: {
 	Retaliation: {
-		Description: Mods.CTG2.Buffs.Retaliation.Description
+		Description: A feeling of strength rushes through you!
 		DisplayName: Retaliation
 	}
 
+	GemBlessing: {
+		DisplayName: Gem Blessing
+		Description: Your gem makes your wounds regenerate more quickly!
+	}
+
 	Buff_DashCooldown: {
-		DisplayName: Buff_ Dash Cooldown
 		Description: Mods.CTG2.Buffs.Buff_DashCooldown.Description
+		DisplayName: Buff_ Dash Cooldown
 	}
 }
 

@@ -1144,7 +1144,7 @@ public class GameManager : ModSystem
             return;
         }
 
-        if (Main.GameUpdateCount % 30 == 0)
+        if (Main.GameUpdateCount % 1 == 0)
         {
             foreach (Player p in Main.player)
             {

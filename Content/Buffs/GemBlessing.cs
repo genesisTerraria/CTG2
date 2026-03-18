@@ -4,11 +4,11 @@ using Terraria.ModLoader;
 
 namespace CTG2.Content.Buffs
 {
-    public class Retaliation : ModBuff
+    public class GemBlessing : ModBuff
     {
         public override void Update(Player player, ref int buffIndex)
         {
-            player.GetDamage(DamageClass.Generic) += 0.20f;
+            player.lifeRegen += 1;
         }
     }
 }

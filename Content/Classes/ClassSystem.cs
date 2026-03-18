@@ -16,6 +16,7 @@ using Terraria.Localization;
 using Terraria.Chat;
 using CTG2.Content;
 using CTG2.Content.ServerSide;
+using CTG2.Content.Buffs;
 
 
 namespace ClassesNamespace
@@ -418,7 +419,7 @@ namespace ClassesNamespace
             Player.AddBuff(BuffID.Shine, 100000);
             Player.AddBuff(BuffID.NightOwl, 100000);
             Player.AddBuff(BuffID.Builder, 100000);
-
+            Player.AddBuff(ModContent.BuffType<GemBlessing>(), 100000);
 
             Player.statManaMax2 = currentMana;
             // Set base stats first
