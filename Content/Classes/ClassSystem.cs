@@ -68,7 +68,6 @@ namespace ClassesNamespace
     public class ClassSystem : ModPlayer
     {
         public GameClass playerClass = GameClass.None;
-        public bool clearonce= true;
         public bool simpleDashSelected = false;
         public bool applyHPonce = true;
         private string lastPlayerClass = "";
@@ -109,6 +108,13 @@ namespace ClassesNamespace
             //Moved to seperate function
             //Maybe makes this check if the Player is in the current game before doing this in case of disconnects 
             ClearInventory();
+            GiveLobbyMobility();
+        }
+
+        public void GiveLobbyMobility()
+        {
+            Player.armor[3] = new Item(987, 1);
+            Player.armor[4] = new Item(3097, 1);
         }
         
         public void ClearInventory()
@@ -506,17 +512,6 @@ namespace ClassesNamespace
 
         public override void PostUpdate()
         {
-            //clear inventory logic for matchend
-            if (GameInfo.matchStage == 0 && clearonce== true)
-            {
-                ClearInventory();
-                clearonce = false;
-            }
-            if (GameInfo.matchStage != 0 && clearonce == false)
-            {
-                clearonce = true;
-            }
-
             var playerManager = Player.GetModPlayer<PlayerManager>();
             var abilitiesManager = Player.GetModPlayer<Abilities>();
             int gameTime = GameInfo.matchTime - GameInfo.matchStartTime;

@@ -215,6 +215,11 @@ public class GameManager : ModSystem
             packet.Write((byte)MessageType.ServerGameStart);
             packet.Send(toClient: player.whoAmI);
 
+            ModPacket clearInvPacket = mod.GetPacket();
+            clearInvPacket.Write((byte)MessageType.ClearInventory);
+            clearInvPacket.Write(player.whoAmI);
+            clearInvPacket.Send();
+
             if (player.team == 0)
             {
                 SetPlayerSpectator(player.whoAmI, true);
@@ -488,6 +493,11 @@ public class GameManager : ModSystem
             clearInvPacket.Write((byte)MessageType.ClearInventory);
             clearInvPacket.Write(player.whoAmI);
             clearInvPacket.Send();
+
+            ModPacket mobilityPacket = mod.GetPacket();
+            mobilityPacket.Write((byte)MessageType.GiveLobbyMobility);
+            mobilityPacket.Write(player.whoAmI);
+            mobilityPacket.Send();
 
             Console.WriteLine($"GameManager: Reset player {player.whoAmI} state and teleported to spectator area");
         }

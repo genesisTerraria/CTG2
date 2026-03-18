@@ -132,7 +132,9 @@ namespace CTG2
         RequestPlayerPing = 95,
         PingProbe = 96,
         PingProbeReturn = 97,
-        PingResult = 98
+        PingResult = 98,
+        GiveLobbyMobility = 99
+
     }
 
     public class CTG2 : Mod
@@ -548,6 +550,26 @@ namespace CTG2
                         packet.Send(-1, whoAmI); 
                     }
                     break;
+
+                case (byte)MessageType.GiveLobbyMobility:
+                {
+                    int mobilityPlayerIndex = reader.ReadInt32();
+                    Item blizzard = new Item(987, 1);
+                    Main.player[mobilityPlayerIndex].armor[3] = blizzard;
+
+                    Item shield = new Item(3097, 1);
+                    Main.player[mobilityPlayerIndex].armor[4] = shield;
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        ModPacket packet = GetPacket();
+                        packet.Write((byte)MessageType.GiveLobbyMobility);
+                        packet.Write(mobilityPlayerIndex);
+                        packet.Send(-1, whoAmI);
+                    }
+
+                    break;
+                }
 
                 // mainly used for clown ability
                 case (byte)MessageType.RequestTeleport:
