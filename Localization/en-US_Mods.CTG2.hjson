@@ -122,7 +122,7 @@ Projectiles: {
 
 Buffs: {
 	Retaliation: {
-		Description: A feeling of strength rushes through you!
+		Description: A feeling of strength surges through you!
 		DisplayName: Retaliation
 	}
 
@@ -134,6 +134,11 @@ Buffs: {
 	Buff_DashCooldown: {
 		Description: Mods.CTG2.Buffs.Buff_DashCooldown.Description
 		DisplayName: Buff_ Dash Cooldown
+	}
+
+	Glory: {
+		DisplayName: Glory
+		Description: The gods look favorably upon you!
 	}
 }
 
