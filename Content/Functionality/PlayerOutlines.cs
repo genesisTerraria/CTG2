@@ -7,7 +7,7 @@ using Terraria.Enums;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
 
-namespace YourMod.Systems
+namespace CTG2.Content.Functionality
 {
     [Autoload(Side = ModSide.Client)]
     public class PlayerOutlines : ModSystem
@@ -48,9 +48,11 @@ namespace YourMod.Systems
                 if (drawInfo.shadow != 0f) return;
                 if (drawInfo.headOnlyRender) return;
                 if (!player.active || player.dead) return;
+                if (player == Main.LocalPlayer) return;
 
                 // Only outline players on a team
                 if (player.team == 0) return;
+                //if (player == Main.LocalPlayer) return;
 
                 // Skip off-screen players (perf)
                 Rectangle screen = new Rectangle(
