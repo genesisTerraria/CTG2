@@ -172,7 +172,7 @@
       "name": "Fish",
       "summary": "Long-Range arc-shot lava fish",
       "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
-      "inventory": "fish",
+      "inventory": "fishnew",
       "icon": 2498,
       "ability-cooldown": 35,
       "health-from-kills": 0,
