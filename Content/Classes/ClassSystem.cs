@@ -209,9 +209,23 @@ namespace ClassesNamespace
                 Player.armor[c] = newItem;
             }
 
+            for (int cc = 0; cc < Player.dye.Length; cc++)
+            {
+                var itemData = classItems[Player.inventory.Length + Player.armor.Length + cc];
+                Item newItem = new Item();
+                if (itemData.Modded)
+                    newItem.SetDefaults(GetItemIDByName(itemData.Name));
+                else
+                    newItem.SetDefaults(itemData.Type);
+                newItem.stack = itemData.Stack;
+                newItem.Prefix(itemData.Prefix);
+
+                Player.dye[cc] = newItem;
+            }
+
             for (int d = 0; d < Player.miscEquips.Length; d++)
             {
-                var itemData = classItems[Player.inventory.Length + Player.armor.Length + d];
+                var itemData = classItems[Player.inventory.Length + Player.armor.Length + Player.dye.Length + d];
                 Item newItem = new Item();
                 if (itemData.Modded)
                     newItem.SetDefaults(GetItemIDByName(itemData.Name));
@@ -225,7 +239,7 @@ namespace ClassesNamespace
 
             for (int e = 0; e < Player.miscDyes.Length; e++)
             {
-                var itemData = classItems[Player.inventory.Length + Player.armor.Length + Player.miscEquips.Length + e];
+                var itemData = classItems[Player.inventory.Length + Player.armor.Length + Player.dye.Length + Player.miscEquips.Length + e];
                 Item newItem = new Item();
                 if (itemData.Modded)
                     newItem.SetDefaults(GetItemIDByName(itemData.Name));
@@ -621,29 +635,30 @@ namespace ClassesNamespace
                 blockCounter += 1800;
             }
             
-            if (Main.GameUpdateCount % 60 != 0) //replace dye after removal every second
-                return;
-            //this is where dyes are set and forced on 
-            int redDyeType = 1063;
-            int blueDyeType = 1065;
+            return;
+            // if (Main.GameUpdateCount % 60 != 0) //replace dye after removal every second
+            //     return;
+            // //this is where dyes are set and forced on 
+            // int redDyeType = 1063;
+            // int blueDyeType = 1065;
             
-            // Check if Player has a class selected and is on a team
-            if (playerManager.currentClass != null && !string.IsNullOrEmpty(playerManager.currentClass.Name) && Player.team != 0)
-            {
-                int dyeID = Player.team switch
-                {
-                    1 => redDyeType,
-                    3 => blueDyeType,
-                    _ => 0
-                };
-                for (int i = 0; i <= 9; i++) //i<=3 just sets the armor for not can switch to i<=9 for all accessory slots later
-                {
-                    if (Player.dye[i] == null || Player.dye[i].type != dyeID)
-                    {
-                        Player.dye[i] = dyeID == 0 ? new Item() : new Item(dyeID);
-                    }
-                }
-            }
+            // // Check if Player has a class selected and is on a team
+            // if (playerManager.currentClass != null && !string.IsNullOrEmpty(playerManager.currentClass.Name) && Player.team != 0)
+            // {
+            //     int dyeID = Player.team switch
+            //     {
+            //         1 => redDyeType,
+            //         3 => blueDyeType,
+            //         _ => 0
+            //     };
+            //     for (int i = 0; i <= 9; i++) //i<=3 just sets the armor for not can switch to i<=9 for all accessory slots later
+            //     {
+            //         if (Player.dye[i] == null || Player.dye[i].type != dyeID)
+            //         {
+            //             Player.dye[i] = dyeID == 0 ? new Item() : new Item(dyeID);
+            //         }
+            //     }
+            // }
         }
 
         public void SyncPlayerStats(int toWho, int fromWho)

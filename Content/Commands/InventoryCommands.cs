@@ -79,6 +79,26 @@ namespace CTG2.Content.Commands
                 count++;
             }
 
+            foreach (Item item in player.dye)
+            {
+                if (item != null)
+                {
+                    modded = item.type >= 5546;
+
+                    inventoryData.Add(new ItemData
+                    {
+                        Name = item.Name,
+                        Type = item.type,
+                        Stack = item.stack,
+                        Prefix = item.prefix,
+                        Slot = count,
+                        Modded = modded
+                    });
+                }
+
+                count++;
+            }
+
             foreach (Item item in player.miscEquips)
             {
                 if (item != null)
@@ -228,9 +248,23 @@ namespace CTG2.Content.Commands
                 player.armor[c] = newItem;
             }
 
+            for (int cc = 0; cc < player.dye.Length; cc++)
+            {
+                var itemData = allItemData[player.inventory.Length + player.armor.Length + cc];
+                Item newItem = new Item();
+                if (itemData.Modded)
+                    newItem.SetDefaults(GetItemIDByName(itemData.Name));
+                else
+                    newItem.SetDefaults(itemData.Type);
+                newItem.stack = itemData.Stack;
+                newItem.Prefix(itemData.Prefix);
+
+                player.dye[cc] = newItem;
+            }
+
             for (int d = 0; d < player.miscEquips.Length; d++)
             {
-                var itemData = allItemData[player.inventory.Length + player.armor.Length + d];
+                var itemData = allItemData[player.inventory.Length + player.armor.Length + player.dye.Length + d];
                 Item newItem = new Item();
                 if (itemData.Modded)
                     newItem.SetDefaults(GetItemIDByName(itemData.Name));
@@ -244,7 +278,7 @@ namespace CTG2.Content.Commands
 
             for (int e = 0; e < player.miscDyes.Length; e++)
             {
-                var itemData = allItemData[player.inventory.Length + player.armor.Length + player.miscEquips.Length + e];
+                var itemData = allItemData[player.inventory.Length + player.armor.Length + player.dye.Length + player.miscEquips.Length + e];
                 Item newItem = new Item();
                 if (itemData.Modded)
                     newItem.SetDefaults(GetItemIDByName(itemData.Name));

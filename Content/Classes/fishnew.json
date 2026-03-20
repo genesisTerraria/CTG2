@@ -1,5 +1,5 @@
 {
-  "HealthPoints": 100,
+  "HealthPoints": 150,
   "ManaPoints": 0,
   "InventoryItems": [
     {
@@ -19,12 +19,12 @@
       "Modded": false
     },
     {
-      "Name": "Amalgamated Hand",
-      "Type": 5546,
+      "Name": "Golden Shower",
+      "Type": 1336,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 2,
-      "Modded": true
+      "Modded": false
     },
     {
       "Name": "Dirt Block",
@@ -227,17 +227,17 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Seashell Hairpin",
+      "Type": 2417,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 28,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Lesser Healing Potion",
+      "Type": 28,
+      "Stack": 99,
       "Prefix": 0,
       "Slot": 29,
       "Modded": false
@@ -307,9 +307,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Mermaid Adornment",
+      "Type": 2418,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 38,
       "Modded": false
@@ -387,9 +387,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Mermaid Tail",
+      "Type": 2419,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 48,
       "Modded": false
@@ -475,25 +475,25 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Fish Costume Mask",
+      "Type": 2498,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 59,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Fish Costume Shirt",
+      "Type": 2499,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 60,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Fish Costume Finskirt",
+      "Type": 2500,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 61,
       "Modded": false
@@ -502,48 +502,56 @@
       "Name": "Lucky Horseshoe",
       "Type": 158,
       "Stack": 1,
-      "Prefix": 80,
+      "Prefix": 76,
       "Slot": 62,
+      "Modded": false
+    },
+    {
+      "Name": "Lava Charm",
+      "Type": 906,
+      "Stack": 1,
+      "Prefix": 76,
+      "Slot": 63,
+      "Modded": false
+    },
+    {
+      "Name": "Obsidian Rose",
+      "Type": 1323,
+      "Stack": 1,
+      "Prefix": 76,
+      "Slot": 64,
+      "Modded": false
+    },
+    {
+      "Name": "Nature\u0027s Gift",
+      "Type": 223,
+      "Stack": 1,
+      "Prefix": 65,
+      "Slot": 65,
+      "Modded": false
+    },
+    {
+      "Name": "Mana Regeneration Band",
+      "Type": 982,
+      "Stack": 1,
+      "Prefix": 65,
+      "Slot": 66,
       "Modded": false
     },
     {
       "Name": "Toolbox",
       "Type": 1923,
       "Stack": 1,
-      "Prefix": 80,
-      "Slot": 63,
-      "Modded": false
-    },
-    {
-      "Name": "Blizzard in a Bottle",
-      "Type": 987,
-      "Stack": 1,
-      "Prefix": 80,
-      "Slot": 64,
-      "Modded": false
-    },
-    {
-      "Name": "Shield of Cthulhu",
-      "Type": 3097,
-      "Stack": 1,
-      "Prefix": 80,
-      "Slot": 65,
-      "Modded": false
-    },
-    {
-      "Name": "Magiluminescence",
-      "Type": 5107,
-      "Stack": 1,
-      "Prefix": 76,
-      "Slot": 66,
-      "Modded": false
-    },
-    {
-      "Name": "Flesh Knuckles",
-      "Type": 3016,
-      "Stack": 1,
       "Prefix": 0,
       "Slot": 67,
+      "Modded": false
+    },
+    {
+      "Name": "White String",
+      "Type": 3306,
+      "Stack": 1,
+      "Prefix": 73,
+      "Slot": 68,
       "Modded": false
     },
     {
@@ -551,53 +559,45 @@
       "Type": 0,
       "Stack": 0,
       "Prefix": 0,
-      "Slot": 68,
-      "Modded": false
-    },
-    {
-      "Name": "Devil Horns",
-      "Type": 4561,
-      "Stack": 1,
-      "Prefix": 0,
       "Slot": 69,
       "Modded": false
     },
     {
-      "Name": "Silly Sunflower Tops",
-      "Type": 3734,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 70,
       "Modded": false
     },
     {
-      "Name": "Silly Sunflower Bottoms",
-      "Type": 3735,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 71,
       "Modded": false
     },
     {
-      "Name": "Lizard Tail",
-      "Type": 4773,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 72,
       "Modded": false
     },
     {
-      "Name": "Apprentice\u0027s Scarf",
-      "Type": 3809,
-      "Stack": 1,
-      "Prefix": 74,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
       "Slot": 73,
       "Modded": false
     },
     {
-      "Name": "Yoraiz0r\u0027s Scowl",
-      "Type": 3581,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 74,
       "Modded": false
@@ -659,51 +659,59 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Blue Dye",
+      "Type": 1015,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 82,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Sky Blue Dye",
+      "Type": 1014,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 83,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Sky Blue Dye",
+      "Type": 1014,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 84,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Sky Blue Dye",
+      "Type": 1014,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 85,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Sky Blue Dye",
+      "Type": 1014,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 86,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Blue Dye",
+      "Type": 1015,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 87,
+      "Modded": false
+    },
+    {
+      "Name": "Blue Dye",
+      "Type": 1015,
+      "Stack": 1,
+      "Prefix": 0,
+      "Slot": 88,
       "Modded": false
     },
     {
@@ -711,7 +719,79 @@
       "Type": 0,
       "Stack": 0,
       "Prefix": 0,
-      "Slot": 88,
+      "Slot": 89,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 90,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 91,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 92,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 93,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 94,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 95,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 96,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 97,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 98,
       "Modded": false
     }
   ]

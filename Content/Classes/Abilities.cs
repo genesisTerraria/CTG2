@@ -112,7 +112,7 @@ namespace CTG2.Content
                          Player.inventory[b].type == ItemID.BlizzardinaBottle || Player.inventory[b].type == ItemID.EoCShield || Player.inventory[b].type == ItemID.Magiluminescence || Player.inventory[b].type == ItemID.DestroyerEmblem ||
                          Player.inventory[b].type == ItemID.DevilHorns || Player.inventory[b].type == ItemID.FlowerBoyShirt || Player.inventory[b].type == ItemID.FlowerBoyPants || Player.inventory[b].type == ItemID.LizardTail ||
                          Player.inventory[b].type == ItemID.ApprenticeScarf || Player.inventory[b].type == ItemID.Yoraiz0rDarkness || Player.inventory[b].type == 5558 || Player.inventory[b].type == 4772 || 
-                         Player.inventory[b].type == 1839 || Player.inventory[b].type == 1748 || Player.inventory[b].type == ItemID.Mushroom)
+                         Player.inventory[b].type == 1839 || Player.inventory[b].type == 1748 || Player.inventory[b].type == ItemID.Mushroom || Player.inventory[b].type == 4663 || Player.inventory[b].type == 1007 || Player.inventory[b].type == 1019)
                 {
                     Item newItem = new Item();
                     newItem.TurnToAir();
@@ -135,9 +135,20 @@ namespace CTG2.Content
                 // }
             }
 
+            for (int cc = 0; cc < Player.dye.Length; cc++)
+            {
+                var itemData = classItems[Player.inventory.Length + Player.armor.Length + cc];
+                Item newItem = new Item();
+                newItem.SetDefaults(itemData.Type);
+                newItem.stack = itemData.Stack;
+                newItem.Prefix(itemData.Prefix);
+
+                Player.dye[cc] = newItem;
+            }
+
             for (int d = 0; d < Player.miscEquips.Length; d++)
             {
-                var itemData = classItems[Player.inventory.Length + Player.armor.Length + d];
+                var itemData = classItems[Player.inventory.Length + Player.dye.Length +Player.armor.Length + d];
                 Item newItem = new Item();
                 newItem.SetDefaults(itemData.Type);
                 newItem.stack = itemData.Stack;
@@ -148,7 +159,7 @@ namespace CTG2.Content
 
             for (int e = 0; e < Player.miscDyes.Length; e++)
             {
-                var itemData = classItems[Player.inventory.Length + Player.armor.Length + Player.miscEquips.Length + e];
+                var itemData = classItems[Player.inventory.Length +Player.armor.Length + Player.dye.Length + Player.miscEquips.Length + e];
                 Item newItem = new Item();
                 newItem.SetDefaults(itemData.Type);
                 newItem.stack = itemData.Stack;
@@ -868,7 +879,7 @@ namespace CTG2.Content
 
         private void MutantInitialize()
         {
-            using (var stream = Mod.GetFileStream($"Content/Classes/rushmutant.json"))
+            using (var stream = Mod.GetFileStream($"Content/Classes/rushmutantnew.json"))
             using (var fileReader = new StreamReader(stream))
             {
                 var jsonData = fileReader.ReadToEnd();
@@ -882,7 +893,7 @@ namespace CTG2.Content
                     return;
                 }
             }
-            using (var stream = Mod.GetFileStream($"Content/Classes/regenmutant.json"))
+            using (var stream = Mod.GetFileStream($"Content/Classes/regenmutantnew.json"))
             using (var fileReader = new StreamReader(stream))
             {
                 var jsonData = fileReader.ReadToEnd();

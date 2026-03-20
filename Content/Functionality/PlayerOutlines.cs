@@ -67,9 +67,10 @@ namespace YourMod.Systems
                 Color teamColor = Main.teamColor[player.team];
 
                 // Apply lighting so it matches world brightness
-                Color litColor = teamColor.MultiplyRGBA(
-                    Lighting.GetColor(drawInfo.Center.ToTileCoordinates())
-                );
+                // Color litColor = teamColor.MultiplyRGBA(
+                //     Lighting.GetColor(drawInfo.Center.ToTileCoordinates())
+                // );
+                Color litColor = Main.teamColor[player.team];
 
                 // Respect stealth (like vanilla does)
                 float alpha = player.stealth;
