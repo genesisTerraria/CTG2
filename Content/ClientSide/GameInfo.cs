@@ -21,4 +21,5 @@ public static class GameInfo
     public static int redCaptures = 0;
     public static float blueFurthest = 0;
     public static float redFurthest = 0;
+    public static bool paused = false;
 }

@@ -11,6 +11,7 @@ using System.Text.Json;
 using System.Runtime.CompilerServices;
 using ClassesNamespace;
 using CTG2.Content.ClientSide;
+using CTG2.Content.ServerSide;
 using CTG2.Content.Classes;
 using CTG2.Content.Items;
 using Terraria.Audio;
@@ -1192,32 +1193,34 @@ namespace CTG2.Content
             ClownPostStatus();
             TreePostStatus();
 
-            if (cooldown > 0)
-                cooldown--;
+            if (!GameInfo.paused)
+            {
+                if (cooldown > 0)
+                    cooldown--;
 
-            if (class1EndTimer >= 0)
-                class1EndTimer--;
+                if (class1EndTimer >= 0)
+                    class1EndTimer--;
 
-            if (class3SpawnTimer >= 0)
-                class3SpawnTimer--;
+                if (class3SpawnTimer >= 0)
+                    class3SpawnTimer--;
 
-            if (class4BuffTimer >= 0)
-                class4BuffTimer--;
+                if (class4BuffTimer >= 0)
+                    class4BuffTimer--;
 
-            if (class7EndTimer >= 0)
-                class7EndTimer--;
+                if (class7EndTimer >= 0)
+                    class7EndTimer--;
 
-            if (class11EndTimer >= 0)
-                class11EndTimer--;
+                if (class11EndTimer >= 0)
+                    class11EndTimer--;
 
-            if (class13EndTimer >= 0)
-                class13EndTimer--;
-            
-            if (class17EndTimer >= 0)
-                class17EndTimer--;
-
-
+                if (class13EndTimer >= 0)
+                    class13EndTimer--;
+                
+                if (class17EndTimer >= 0)
+                    class17EndTimer--;
+            }
         }
+        
         public override void UpdateLifeRegen()
         {
             if (Player.HasBuff(BuffID.Electrified))

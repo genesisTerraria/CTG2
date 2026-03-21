@@ -133,7 +133,8 @@ namespace CTG2
         PingProbe = 96,
         PingProbeReturn = 97,
         PingResult = 98,
-        GiveLobbyMobility = 99
+        GiveLobbyMobility = 99,
+        UpdatePaused = 100
 
     }
 
@@ -731,6 +732,9 @@ namespace CTG2
                 case (byte)MessageType.UpdateRedFurthest:
                     GameInfo.redFurthest = reader.ReadSingle();
                     break;
+                case (byte)MessageType.UpdatePaused:
+                    GameInfo.paused = reader.ReadBoolean();
+                    break;
                 case (byte)MessageType.RequestMatchTime:
                     GameInfo.matchTime = reader.ReadInt32();
                     break;
@@ -754,6 +758,7 @@ namespace CTG2
                     GameInfo.redCaptures = reader.ReadInt32();
                     GameInfo.blueFurthest = reader.ReadSingle();
                     GameInfo.redFurthest = reader.ReadSingle();
+                    GameInfo.paused = reader.ReadBoolean();
                     GameInfo.blueGemCarrierName = reader.ReadString();
                     GameInfo.redGemCarrierName = reader.ReadString();
 

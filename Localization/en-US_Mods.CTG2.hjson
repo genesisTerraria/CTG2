@@ -131,14 +131,19 @@ Buffs: {
 		Description: Your gem makes your wounds regenerate more quickly!
 	}
 
-	Buff_DashCooldown: {
-		Description: Mods.CTG2.Buffs.Buff_DashCooldown.Description
-		DisplayName: Buff_ Dash Cooldown
-	}
-
 	Glory: {
 		DisplayName: Glory
 		Description: The gods look favorably upon you!
+	}
+
+	FreezeStats: {
+		DisplayName: Freeze Stats
+		Description: Your stats are frozen during a pause.
+	}
+
+	Buff_DashCooldown: {
+		DisplayName: Buff_ Dash Cooldown
+		Description: Mods.CTG2.Buffs.Buff_DashCooldown.Description
 	}
 }
 

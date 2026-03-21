@@ -10,6 +10,7 @@ using Terraria.ID;
 using Terraria.Chat;
 using Terraria.Localization;
 using CTG2.Content.ClientSide;
+using CTG2.Content.Buffs;
 using Terraria.Enums;
 using ClassesNamespace;
 
@@ -266,10 +267,22 @@ public class GameManager : ModSystem
     public void PauseGame()
     {
         pause = true;
+
+        var mod = ModContent.GetInstance<CTG2>();
+        ModPacket pausedPacket = mod.GetPacket();
+        pausedPacket.Write((byte)MessageType.UpdatePaused);
+        pausedPacket.Write(pause);
+        pausedPacket.Send();
     }
     public void UnpauseGame()
     {
         pause = false;
+
+        var mod = ModContent.GetInstance<CTG2>();
+        ModPacket pausedPacket = mod.GetPacket();
+        pausedPacket.Write((byte)MessageType.UpdatePaused);
+        pausedPacket.Write(pause);
+        pausedPacket.Send();
     }
 
     public void EndGame()
@@ -299,6 +312,7 @@ public class GameManager : ModSystem
         redCaptures = 0;
         blueFurthest = 0;
         redFurthest = 0;
+        pause = false;
         blueCarrierName = "";
         redCarrierName = "";
 
@@ -367,6 +381,7 @@ public class GameManager : ModSystem
         packet.Write(redCaptures);
         packet.Write(blueFurthest);
         packet.Write(redFurthest);
+        packet.Write(pause);
         packet.Write(blueCarrierName);
         packet.Write(redCarrierName);
         packet.Send();
@@ -1146,6 +1161,13 @@ public class GameManager : ModSystem
                         packet.Write(BuffID.Webbed);
                         packet.Write(60);
                         packet.Send();
+
+                        packet = mod.GetPacket();
+                        packet.Write((byte)MessageType.SyncAddBuff);
+                        packet.Write(p.whoAmI);
+                        packet.Write(ModContent.BuffType<FreezeStats>());
+                        packet.Write(60);
+                        packet.Send();
                     }
                 }
             }
@@ -1190,6 +1212,7 @@ public class GameManager : ModSystem
                         packet.Write(redCaptures);
                         packet.Write(blueFurthest);
                         packet.Write(redFurthest);
+                        packet.Write(pause);
                         packet.Write("Waiting for new game...");
                         packet.Write("Waiting for new game...");
                         packet.Send();
@@ -1270,6 +1293,7 @@ public class GameManager : ModSystem
                 packet.Write(redCaptures);
                 packet.Write(blueFurthest);
                 packet.Write(redFurthest);
+                packet.Write(pause);
                 packet.Write("Waiting for new game...");
                 packet.Write("Waiting for new game...");
                 packet.Send();
@@ -1536,6 +1560,7 @@ public class GameManager : ModSystem
         packet.Write(redCaptures);
         packet.Write(blueFurthest);
         packet.Write(redFurthest);
+        packet.Write(pause);
         packet.Write(blueCarrierName);
         packet.Write(redCarrierName);
         packet.Send(toClient: playerIndex);
