@@ -37,5 +37,10 @@ namespace CTG2.Content.Configs
         [Tooltip("If enabled, the first Advanced Binoculars press locks the camera angle in place.")]
         [DefaultValue(false)]
         public bool EnabledCameraLock;
+
+        [Label("Local Player Team Outline")]
+        [Tooltip("If enabled, the local player will have a team outline.")]
+        [DefaultValue(true)]
+        public bool EnabledLocalPlayerTeamOutline;
     }
 }

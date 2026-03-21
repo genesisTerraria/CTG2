@@ -19,6 +19,7 @@ namespace CTG2.Content.Functionality
         private int lerpTimer;
         private int lerpDurationTicks;
         private Vector2 finalPosition;
+        private float maxDistance = 750f;
 
 
         public override void ModifyScreenPosition()
@@ -62,6 +63,12 @@ namespace CTG2.Content.Functionality
                     mouseOffset = Main.MouseWorld - player.Center;
                     
                     offset = 0.9f * mouseOffset;
+
+                    if (offset.Length() > maxDistance)
+                    {
+                        offset = Vector2.Normalize(offset) * maxDistance;
+                    }
+
                     targetPosition = player.Center - new Vector2(Main.screenWidth, Main.screenHeight) / 2f + offset;
 
                     ApplyCameraLerpOutward();

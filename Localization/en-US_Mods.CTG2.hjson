@@ -194,6 +194,11 @@ Configs: {
 			Label: Advanced Binoculars Inward Zoom Speed (Seconds)
 			Tooltip: How long it takes for binocular camera to return to centered position.
 		}
+
+		EnabledLocalPlayerTeamOutline: {
+			Label: Local Player Team Outline
+			Tooltip: If enabled, the local player will have a team outline.
+		}
 	}
 }
 

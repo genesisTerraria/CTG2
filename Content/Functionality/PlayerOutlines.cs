@@ -6,6 +6,7 @@ using Terraria.DataStructures;
 using Terraria.Enums;
 using Terraria.Graphics.Renderers;
 using Terraria.ModLoader;
+using CTG2.Content.Configs;
 
 namespace CTG2.Content.Functionality
 {
@@ -48,7 +49,7 @@ namespace CTG2.Content.Functionality
                 if (drawInfo.shadow != 0f) return;
                 if (drawInfo.headOnlyRender) return;
                 if (!player.active || player.dead) return;
-                if (player == Main.LocalPlayer) return;
+                if (player == Main.LocalPlayer && !ModContent.GetInstance<CTG2Config>().EnabledLocalPlayerTeamOutline) return;
 
                 // Only outline players on a team
                 if (player.team == 0) return;
