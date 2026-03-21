@@ -389,17 +389,17 @@ namespace CTG2.Content
         {
             playedSound = false;
 
-            Player.AddBuff(BuffID.Electrified, 60);
+            Player.AddBuff(BuffID.Electrified, 30);
 
             var mod = ModContent.GetInstance<CTG2>();
             ModPacket packet = mod.GetPacket();
             packet.Write((byte)MessageType.RequestAddBuff);
             packet.Write(Player.whoAmI);
             packet.Write(BuffID.Electrified);
-            packet.Write(60);
+            packet.Write(30);
             packet.Send();
 
-            class3SpawnTimer = 60;
+            class3SpawnTimer = 30;
             class3PendingSpawn = true;
 
             SoundEngine.PlaySound(SoundID.DD2_BetsySummon.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
