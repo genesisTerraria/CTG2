@@ -170,19 +170,20 @@ namespace CTG2
         }
 
 
-        private static Color GetTeamColor(int teamId)
+        private static Color GetTeamColor(int senderID)
         {
-            Color blueColor = new Color(0, 119, 182);
+            return Main.teamColor[Main.player[senderID].team];
+            // Color blueColor = new Color(0, 119, 182);
 
-            return teamId switch
-            {
-                1 => Color.Red,
-                2 => Color.Green,
-                3 => blueColor,
-                4 => Color.Yellow,
-                5 => Color.Pink,
-                _ => Color.White
-            };
+            // return teamId switch
+            // {
+            //     1 => Color.Red,
+            //     2 => Color.Green,
+            //     3 => blueColor,
+            //     4 => Color.Yellow,
+            //     5 => Color.Pink,
+            //     _ => Color.White
+            // };
         }
         // overrides
 
@@ -955,9 +956,11 @@ namespace CTG2
                         return;
                     }
 
-                    Color teamColor = GetTeamColor(senderTeam);
+                    int senderID = senderPlayer.whoAmI;
 
-                    string formattedMessage = $"{senderPlayer.name}: {teamMessage}";
+                    Color teamColor = GetTeamColor(senderID);
+
+                    string formattedMessage = $"[TEAM CHAT] {senderPlayer.name}: {teamMessage}";
 
                     foreach (Player teamPlayer in Main.player)
                     {

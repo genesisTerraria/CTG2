@@ -24,8 +24,8 @@ namespace CTG2.Content.Functionality
 
                 else
                 {
-                    if (Main.player[messageAuthor].team == 3) { color = Color.PowderBlue; }
-                    if (Main.player[messageAuthor].team == 1) { color = Color.OrangeRed; }
+                    if (Main.player[messageAuthor].team == 3) { color = Main.teamColor[Main.player[messageAuthor].team]; }
+                    if (Main.player[messageAuthor].team == 1) { color = Main.teamColor[Main.player[messageAuthor].team]; }
                 }
                 
                 orig(text, color, messageAuthor);
