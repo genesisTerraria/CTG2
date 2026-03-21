@@ -1,73 +1,28 @@
-// using Terraria;
-// using Terraria.ID;
-// using Terraria.ModLoader;
+using Terraria;
+using Terraria.ModLoader;
+using Microsoft.Xna.Framework;
 
-// namespace CTG2.Content.ServerSide
-// {
-//     public enum MusicStage
-//     {
-//         NoGame,
-//         OngoingGame,
-//         LastTwoMinutes,
-//         Overtime
-//     }
+namespace CTG2.Content.Music
+{
+    public class AreaMusicScene : ModSceneEffect
+    {
+        // Define your bounds in world coordinates (pixels)
+        // Note: 1 tile = 16 pixels
+        private static readonly Rectangle ArenaArea = new Rectangle(12208, 10704, 8304, 1312);
+        private static readonly Rectangle BlueSelectionArea = new Rectangle(38640, 9344, 1712, 752);
+        private static readonly Rectangle RedSelectionArea = new Rectangle(26608, 9424, 1712, 752);
 
-//     public class MusicManager : ModSystem
-//     {
-//         private MusicStage _lastStage = MusicStage.NoGame;
+        public override bool IsSceneEffectActive(Player player)
+        {
+            // Returns true if the player's center is inside the rectangle
+            return ArenaArea.Contains(player.Center.ToPoint())
+                || BlueSelectionArea.Contains(player.Center.ToPoint())
+                || RedSelectionArea.Contains(player.Center.ToPoint());
+        }
 
-//         public override void PostUpdateWorld()
-//         {
-//             if (Main.netMode != NetmodeID.Server)
-//                 return;
+        public override int Music => MusicLoader.GetMusicSlot(Mod, "Content/Music/First Star");
 
-//             MusicStage currentStage = GetCurrentStage();
-
-//             if (currentStage != _lastStage)
-//             {
-//                 string musicPathToPlay = GetMusicPathForStage(currentStage);
-
-//                 var packet = Mod.GetPacket();
-//                 packet.Write((byte)MessageType.UpdateMusic);
-//                 packet.Write(musicPathToPlay);
-//                 packet.Send();
-
-//                 _lastStage = currentStage;
-//             }
-//         }
-
-//         private MusicStage GetCurrentStage()
-//         {
-//             var gameManager = ModContent.GetInstance<GameManager>();
-//             if (gameManager == null || !gameManager.IsGameActive)
-//                 return MusicStage.NoGame;
-
-//             if (gameManager.isOvertime)
-//                 return MusicStage.Overtime;
-
-//             int totalMatchDurationInTicks = 15 * 60 * 60;
-//             int twoMinutesInTicks = 2 * 60 * 60;
-//             if (gameManager.MatchTime >= gameManager.matchStartTime + totalMatchDurationInTicks - twoMinutesInTicks)
-//                 return MusicStage.LastTwoMinutes;
-
-//             return MusicStage.OngoingGame;
-//         }
-
-//         private string GetMusicPathForStage(MusicStage stage)
-//         {
-//             switch (stage)
-//             {
-//                 case MusicStage.OngoingGame:
-//                     return "CTG2/Assets/Music/clashroyaleOT"; // Replace with your file
-//                 case MusicStage.LastTwoMinutes:
-//                     return "CTG2/Assets/Music/clashroyaleOT"; // Replace with your file
-//                 case MusicStage.Overtime:
-//                     return "CTG2/Assets/Music/clashroyaleOT";
-//                 case MusicStage.NoGame:
-//                 return "CTG2/Assets/Music/MysteriousMystery";
-//                 default:
-//                     return ""; // Empty string tells clients to stop custom music
-//             }
-//         }
-//     }
-// }
+        // Optional: Give this music priority over standard biomes
+        public override SceneEffectPriority Priority => SceneEffectPriority.BossHigh;
+    }
+}
