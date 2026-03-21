@@ -909,7 +909,7 @@ namespace CTG2.Content
 
         private void MutantInitialize()
         {
-            using (var stream = Mod.GetFileStream($"Content/Classes/rushmutantnew.json"))
+            using (var stream = Mod.GetFileStream($"Content/Classes/rushmutant.json"))
             using (var fileReader = new StreamReader(stream))
             {
                 var jsonData = fileReader.ReadToEnd();
@@ -923,7 +923,7 @@ namespace CTG2.Content
                     return;
                 }
             }
-            using (var stream = Mod.GetFileStream($"Content/Classes/regenmutantnew.json"))
+            using (var stream = Mod.GetFileStream($"Content/Classes/regenmutant.json"))
             using (var fileReader = new StreamReader(stream))
             {
                 var jsonData = fileReader.ReadToEnd();

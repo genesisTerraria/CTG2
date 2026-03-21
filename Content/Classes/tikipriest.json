@@ -4,7 +4,7 @@
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
-      "Type": 5554,
+      "Type": 5555,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -235,9 +235,9 @@
       "Modded": false
     },
     {
-      "Name": "Lesser Healing Potion",
-      "Type": 28,
-      "Stack": 99,
+      "Name": "Familiar Wig",
+      "Type": 271,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 29,
       "Modded": false
@@ -315,9 +315,9 @@
       "Modded": false
     },
     {
-      "Name": "Familiar Wig",
-      "Type": 271,
-      "Stack": 1,
+      "Name": "Lesser Healing Potion",
+      "Type": 28,
+      "Stack": 99,
       "Prefix": 0,
       "Slot": 39,
       "Modded": false
@@ -387,9 +387,9 @@
       "Modded": false
     },
     {
-      "Name": "Rain Coat",
-      "Type": 1136,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 48,
       "Modded": false
@@ -643,17 +643,17 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Green and Silver Dye",
+      "Type": 1055,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 80,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Green and Silver Dye",
+      "Type": 1055,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 81,
       "Modded": false
@@ -675,9 +675,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Green and Silver Dye",
+      "Type": 1055,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 84,
       "Modded": false
@@ -712,6 +712,86 @@
       "Stack": 0,
       "Prefix": 0,
       "Slot": 88,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 89,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 90,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 91,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 92,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 93,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 94,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 95,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 96,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 97,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 98,
       "Modded": false
     }
   ]

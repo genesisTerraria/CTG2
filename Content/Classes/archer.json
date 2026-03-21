@@ -4,7 +4,7 @@
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
-      "Type": 5554,
+      "Type": 5555,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -20,7 +20,7 @@
     },
     {
       "Name": "Rancor",
-      "Type": 5553,
+      "Type": 5554,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 2,
@@ -227,9 +227,9 @@
       "Modded": false
     },
     {
-      "Name": "Peddler\u0027s Hat",
-      "Type": 2222,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 28,
       "Modded": false
@@ -307,16 +307,16 @@
       "Modded": false
     },
     {
-      "Name": "Cowboy Jacket",
-      "Type": 874,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 38,
       "Modded": false
     },
     {
-      "Name": "Familiar Wig",
-      "Type": 271,
+      "Name": "Cowboy Jacket",
+      "Type": 874,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 39,
@@ -387,9 +387,9 @@
       "Modded": false
     },
     {
-      "Name": "Cowboy Pants",
-      "Type": 875,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 48,
       "Modded": false
@@ -475,8 +475,8 @@
       "Modded": false
     },
     {
-      "Name": "Vulkelf Ears",
-      "Type": 5136,
+      "Name": "Familiar Wig",
+      "Type": 271,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 59,
@@ -555,9 +555,9 @@
       "Modded": false
     },
     {
-      "Name": "Hero\u0027s Hat",
-      "Type": 247,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 69,
       "Modded": false
@@ -571,8 +571,8 @@
       "Modded": false
     },
     {
-      "Name": "Hero\u0027s Pants",
-      "Type": 249,
+      "Name": "Cowboy Pants",
+      "Type": 875,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 71,
@@ -643,9 +643,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Green and Black Dye",
+      "Type": 1023,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 80,
       "Modded": false
@@ -667,9 +667,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Brown Dye",
+      "Type": 2874,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 83,
       "Modded": false
@@ -712,6 +712,86 @@
       "Stack": 0,
       "Prefix": 0,
       "Slot": 88,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 89,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 90,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 91,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 92,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 93,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 94,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 95,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 96,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 97,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 98,
       "Modded": false
     }
   ]

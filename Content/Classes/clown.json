@@ -4,7 +4,7 @@
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
-      "Type": 5554,
+      "Type": 5555,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -667,17 +667,17 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Yellow Dye",
+      "Type": 1009,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 83,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Green Dye",
+      "Type": 1011,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 84,
       "Modded": false
@@ -712,6 +712,86 @@
       "Stack": 0,
       "Prefix": 0,
       "Slot": 88,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 89,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 90,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 91,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 92,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 93,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 94,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 95,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 96,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 97,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 98,
       "Modded": false
     }
   ]

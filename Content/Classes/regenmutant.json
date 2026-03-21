@@ -4,7 +4,7 @@
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
-      "Type": 5554,
+      "Type": 5555,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -235,17 +235,17 @@
       "Modded": false
     },
     {
-      "Name": "Mushroom",
-      "Type": 5,
-      "Stack": 99,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 29,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Mushroom",
+      "Type": 5,
+      "Stack": 99,
       "Prefix": 0,
       "Slot": 30,
       "Modded": false
@@ -635,65 +635,65 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Bloodbath Dye",
+      "Type": 4663,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 79,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Red and Black Dye",
+      "Type": 1019,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 80,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Red and Black Dye",
+      "Type": 1019,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 81,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Red and Black Dye",
+      "Type": 1019,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 82,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Red and Black Dye",
+      "Type": 1019,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 83,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Red and Black Dye",
+      "Type": 1019,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 84,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Bloodbath Dye",
+      "Type": 4663,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 85,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Red Dye",
+      "Type": 1007,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 86,
       "Modded": false
@@ -712,6 +712,86 @@
       "Stack": 0,
       "Prefix": 0,
       "Slot": 88,
+      "Modded": false
+    },
+    {
+      "Name": "Green and Black Dye",
+      "Type": 1023,
+      "Stack": 1,
+      "Prefix": 0,
+      "Slot": 89,
+      "Modded": false
+    },
+    {
+      "Name": "Green and Black Dye",
+      "Type": 1023,
+      "Stack": 1,
+      "Prefix": 0,
+      "Slot": 90,
+      "Modded": false
+    },
+    {
+      "Name": "Black Dye",
+      "Type": 1050,
+      "Stack": 1,
+      "Prefix": 0,
+      "Slot": 91,
+      "Modded": false
+    },
+    {
+      "Name": "Green and Black Dye",
+      "Type": 1023,
+      "Stack": 1,
+      "Prefix": 0,
+      "Slot": 92,
+      "Modded": false
+    },
+    {
+      "Name": "Black Dye",
+      "Type": 1050,
+      "Stack": 1,
+      "Prefix": 0,
+      "Slot": 93,
+      "Modded": false
+    },
+    {
+      "Name": "Green and Black Dye",
+      "Type": 1023,
+      "Stack": 1,
+      "Prefix": 0,
+      "Slot": 94,
+      "Modded": false
+    },
+    {
+      "Name": "Green and Black Dye",
+      "Type": 1023,
+      "Stack": 1,
+      "Prefix": 0,
+      "Slot": 95,
+      "Modded": false
+    },
+    {
+      "Name": "Green and Black Dye",
+      "Type": 1023,
+      "Stack": 1,
+      "Prefix": 0,
+      "Slot": 96,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 97,
+      "Modded": false
+    },
+    {
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
+      "Slot": 98,
       "Modded": false
     }
   ]
