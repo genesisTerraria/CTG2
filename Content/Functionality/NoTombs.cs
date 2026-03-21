@@ -95,13 +95,19 @@ namespace CTG2.Content.Functionality
                 {
                     string msg = $"[i:207] {victimName}";
                     if (Main.netMode == NetmodeID.Server)
-                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(msg), Color.White);
+                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(msg), Color.Gray);
                 }
                 else if (damageSource.SourceNPCIndex >= 0 && damageSource.SourceNPCIndex < Main.maxNPCs) // Killed by an NPC (slimer)
                 {
                     string msg = $"[i:5091] {victimName}";
                     if (Main.netMode == NetmodeID.Server)
-                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(msg), Color.White);
+                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(msg), Color.Gray);
+                }
+                else
+                {
+                    string msg = $"[i:321] {victimName}";
+                    if (Main.netMode == NetmodeID.Server)
+                        ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(msg), Color.Gray);
                 }
 
                 //This makes sure death is still processed normally 
