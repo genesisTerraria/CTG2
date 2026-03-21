@@ -15,7 +15,7 @@ namespace CTG2.Content.Functionality
     {
         public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
         {
-            modifiers.FinalDamage *= 2f;
+            modifiers.FinalDamage *= 1.5f;
         }
     }
     
@@ -24,13 +24,13 @@ namespace CTG2.Content.Functionality
         public override void ModifyHitByItem(NPC npc, Player player, Item item, ref NPC.HitModifiers modifiers)
         {
             if (npc.aiStyle == NPCAIStyleID.Slime)
-                modifiers.FinalDamage *= 0.5f;
+                modifiers.FinalDamage *= 0.6f;
         }
 
         public override void ModifyHitByProjectile(NPC npc, Projectile proj, ref NPC.HitModifiers modifiers)
         {
             if (npc.aiStyle == NPCAIStyleID.Slime)
-                modifiers.FinalDamage *= 0.5f;
+                modifiers.FinalDamage *= 0.6f;
         }
     }
 }

@@ -26,6 +26,8 @@ namespace CTG2.Content
         public int class1EndTimer = -1;
 
         public bool playedSound = false;
+        public int class3SpawnTimer = -1;
+        public bool class3PendingSpawn = false;
 
         public int class4BuffTimer = -1;
         public bool class4PendingBuffs = false;
@@ -384,18 +386,46 @@ namespace CTG2.Content
 
         private void BeastOnUse()
         {
+            playedSound = false;
+
+            Player.AddBuff(BuffID.Electrified, 60);
+
             var mod = ModContent.GetInstance<CTG2>();
             ModPacket packet = mod.GetPacket();
-            packet.Write((byte)MessageType.RequestSpawnNpc);
-            packet.Write((int)Player.Center.X);
-            packet.Write((int)Player.Center.Y);
-            packet.Write(-2);
-            packet.Write(Player.team);
-            packet.Write(0f);
+            packet.Write((byte)MessageType.RequestAddBuff);
+            packet.Write(Player.whoAmI);
+            packet.Write(BuffID.Electrified);
+            packet.Write(60);
             packet.Send();
 
-            playedSound = false;
-            SoundEngine.PlaySound(SoundID.DD2_BetsySummon.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+            class3SpawnTimer = 60;
+            class3PendingSpawn = true;
+
+            SoundEngine.PlaySound(SoundID.DD2_BetsySummon.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
+        }
+
+
+        private void BeastPostStatus()
+        {
+            if (class3PendingSpawn)
+            {
+                if (class3SpawnTimer <= 0)
+                {
+                    var mod = ModContent.GetInstance<CTG2>();
+                    ModPacket packet = mod.GetPacket();
+                    packet.Write((byte)MessageType.RequestSpawnNpc);
+                    packet.Write((int)Player.Center.X);
+                    packet.Write((int)Player.Center.Y);
+                    packet.Write(-2);
+                    packet.Write(Player.team);
+                    packet.Write(0f);
+                    packet.Send();
+
+                    SoundEngine.PlaySound(SoundID.DD2_BetsyScream.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
+
+                    class3PendingSpawn = false;
+                }
+            }
         }
 
 
@@ -1156,6 +1186,7 @@ namespace CTG2.Content
        
         public override void PostUpdate()
         {
+            BeastPostStatus();
             GladiatorPostStatus();
             PsychicPostStatus();
             ClownPostStatus();
@@ -1166,6 +1197,9 @@ namespace CTG2.Content
 
             if (class1EndTimer >= 0)
                 class1EndTimer--;
+
+            if (class3SpawnTimer >= 0)
+                class3SpawnTimer--;
 
             if (class4BuffTimer >= 0)
                 class4BuffTimer--;
