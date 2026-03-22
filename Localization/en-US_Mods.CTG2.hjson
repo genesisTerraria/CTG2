@@ -153,7 +153,7 @@ Buffs: {
 
 	Immortality: {
 		DisplayName: Immortality
-		Description: Mods.CTG2.Buffs.Immortality.Description
+		Description: You cannot be killed while in this state!
 	}
 }
 

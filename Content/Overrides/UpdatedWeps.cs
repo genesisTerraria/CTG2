@@ -485,6 +485,10 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case ItemID.RainCoat: // Rain Coat
                     player.statDefense -= 2;
                     break;
+                case 888:
+                    player.statDefense -= 100;
+                    player.GetDamage(DamageClass.Generic) -= 0.99f;
+                    break;
             }
         }
     }
