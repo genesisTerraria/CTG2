@@ -3,8 +3,8 @@
   "ManaPoints": 0,
   "InventoryItems": [
     {
-      "Name": "Shardstone Pickaxe",
-      "Type": 5555,
+      "Name": "Upgraded Shardstone Pickaxe",
+      "Type": 5557,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -502,7 +502,7 @@
       "Name": "Lucky Horseshoe",
       "Type": 158,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 65,
       "Slot": 62,
       "Modded": false
     },

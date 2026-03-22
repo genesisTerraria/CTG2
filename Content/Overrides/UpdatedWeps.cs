@@ -27,7 +27,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint grenadeDelay = 60;
         private uint grenadeLastUsedCounter = 0;
 
-        private uint bananarangDelay = 55;
+        private uint bananarangDelay = 50;
         private uint bananarangLastUsedCounter = 0;
 
         private uint maceDelay = 60;
@@ -51,10 +51,10 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint flamelashDelay = 55;
         private uint flamelashLastUsedCounter = 0;
 
-        private uint blowgunDelay = 55;
+        private uint blowgunDelay = 70;
         private uint blowgunLastUsedCounter = 0;
 
-        private uint orbDelay = 47;
+        private uint orbDelay = 65;
         private uint orbLastUsedCounter = 0;
 
         public override bool InstancePerEntity => true;
@@ -113,14 +113,14 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useTime = 4;
                     item.useAnimation = 4;
                     item.shootSpeed = 28;
-                    item.damage = 29;
+                    item.damage = 31;
                     item.crit = 0;
                     break;
                 case ItemID.CursedFlames: // Leech
                     item.useTime = 37;
                     item.useAnimation = 37;
                     item.shootSpeed = 10;
-                    item.damage = 23;
+                    item.damage = 25;
                     item.mana = 0;
                     item.scale = 0;
                     item.crit = 0;
@@ -200,7 +200,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     break;
                 case ItemID.Gungnir:
-                    item.damage = 35;
+                    item.damage = 20;
                     item.useAnimation = 22;
                     item.useTime = 22;
                     item.crit = 0;
@@ -215,7 +215,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useAnimation = 18;
                     item.useTime = 18;
                     item.knockBack = 10;
-                    item.shoot = 285;
+                    item.shoot = 36;
                     item.shootSpeed = 10f;
                     item.mana = 0;
                     item.crit = 0;

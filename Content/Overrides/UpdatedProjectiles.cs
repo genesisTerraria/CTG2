@@ -141,6 +141,19 @@ public class ProjectileOverrides : GlobalProjectile
             projectile.tileCollide = false;
             projectile.timeLeft = 1; // dies almost instantly
         }
+        if (projectile.type == 280)
+        {
+            float scale = 0.5f;
+
+            Vector2 center = projectile.Center;
+
+            projectile.scale = scale;
+
+            projectile.width = (int)(projectile.width * scale);
+            projectile.height = (int)(projectile.height * scale);
+
+            projectile.Center = center;
+        }
         if (projectile.type == ProjectileID.NebulaArcanumExplosionShot)
         {
             projectile.damage = 0; //second check in case first fails for nebula epxlosion
@@ -183,7 +196,7 @@ public class ModifyHurtModPlayer : ModPlayer
         if (projIndex >= 0 && projIndex < Main.maxProjectiles)
         {
             Projectile proj = Main.projectile[projIndex];
-            if (proj.active && (proj.type == 263 || proj.type == 513 || proj.type == 229 || proj.type == 45))
+            if (proj.active && (proj.type == 263 || proj.type == 513 || proj.type == 229 || proj.type == 45 || proj.type == 280))
             {
                 proj.Kill();
             }

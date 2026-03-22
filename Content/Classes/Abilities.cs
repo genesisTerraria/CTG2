@@ -472,9 +472,7 @@ namespace CTG2.Content
         {
             var mod = ModContent.GetInstance<CTG2>();
 
-            Player.AddBuff(23, 180); // Cursed
             Player.AddBuff(46, 180); // Chilled
-            Player.AddBuff(32, 180); // Slow
             Player.AddBuff(ModContent.BuffType<Immortality>(), 180); // Immortality
 
             playedSound = false;

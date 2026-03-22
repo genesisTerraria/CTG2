@@ -26,6 +26,8 @@ namespace CTG2.Content.Buffs
 
             Main.dust[dust].noGravity = true;
             Main.dust[dust].velocity *= 0.5f;
+
+            player.GetDamage(DamageClass.Generic) -= 0.99f;
         }
     }
 }
