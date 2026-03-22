@@ -51,6 +51,12 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint flamelashDelay = 55;
         private uint flamelashLastUsedCounter = 0;
 
+        private uint blowgunDelay = 55;
+        private uint blowgunLastUsedCounter = 0;
+
+        private uint orbDelay = 47;
+        private uint orbLastUsedCounter = 0;
+
         public override bool InstancePerEntity => true;
 
 
@@ -73,15 +79,14 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.UseSound = SoundID.Item109;
                     break;
                 case ItemID.Blowgun: // Tiki Priest
-                    item.useTime = 28;
-                    item.useAnimation = 28;
+                    item.useTime = 25;
+                    item.useAnimation = 25;
                     item.shoot = 267;
                     item.shootSpeed = 15f;
                     item.useAmmo = AmmoID.None;
                     item.autoReuse = false;
-                    item.damage = 34;
+                    item.damage = 33;
                     item.crit = 0;
-                    item.mana = 7;
                     break;
                 case 1296: // Tiki Priest: Staff of Earth
                     item.useTime = 24;
@@ -397,6 +402,28 @@ namespace CTG2.Content.Items.ModifiedWeps
                 if (Main.GameUpdateCount - chainKnifeLastUsedCounter >= chainKnifeDelay)
                 {
                     chainKnifeLastUsedCounter = Main.GameUpdateCount;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (item.type == ItemID.Blowgun)
+            {
+                if (Main.GameUpdateCount - blowgunLastUsedCounter >= blowgunDelay)
+                {
+                    blowgunLastUsedCounter = Main.GameUpdateCount;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (item.type == 1296)
+            {
+                if (Main.GameUpdateCount - orbLastUsedCounter >= orbDelay)
+                {
+                    orbLastUsedCounter = Main.GameUpdateCount;
 
                     return true;
                 }

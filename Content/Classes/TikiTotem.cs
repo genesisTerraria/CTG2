@@ -8,6 +8,7 @@ using Terraria.GameContent;
 using Microsoft.Xna.Framework.Audio;
 using Terraria.Audio;
 using CTG2.Content.Items;
+using CTG2.Content.Buffs;
 
 namespace CTG2.Content.Classes
 {
@@ -48,7 +49,7 @@ namespace CTG2.Content.Classes
 
     public class TikiTotem : ModNPC
     {
-        private float healFrameGap = 30;
+        private float healFrameGap = 120;
         //private int hitCounter = 0;
         private float frameCount = 0;
         private float firstFrame = 0;
@@ -214,9 +215,19 @@ namespace CTG2.Content.Classes
                 if (player.team != (int)NPC.ai[0])
                     continue;
 
-                if (Vector2.Distance(NPC.Center, player.Center) <= 14 * 16 && frameCount % healFrameGap == 0) // 14 block radius
+                if (Vector2.Distance(NPC.Center, player.Center) <= 8 * 16 && frameCount % healFrameGap == 0) // 14 block radius
                 {
                     player.Heal(1);
+                }
+                if (Vector2.Distance(NPC.Center, player.Center) <= 8 * 16)
+                {
+                    var mod = ModContent.GetInstance<CTG2>();
+                    ModPacket packet = mod.GetPacket();
+                    packet.Write((byte)MessageType.RequestAddBuff);
+                    packet.Write(player.whoAmI);
+                    packet.Write(ModContent.BuffType<NaturesBlessing>());
+                    packet.Write(10);
+                    packet.Send();
                 }
             }
 

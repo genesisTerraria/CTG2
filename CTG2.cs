@@ -311,8 +311,8 @@ namespace CTG2
                 case (byte)MessageType.RequestAddBuff:
                 {
                     // CLIENT -> SERVER ONLY
-                    if (Main.netMode != NetmodeID.Server)
-                        break;
+                    // if (Main.netMode != NetmodeID.Server)
+                    //     break;
                 
                     int playerID = reader.ReadInt32();
                     int buffType = reader.ReadInt32();

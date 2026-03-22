@@ -145,6 +145,11 @@ Buffs: {
 		DisplayName: Buff_ Dash Cooldown
 		Description: Mods.CTG2.Buffs.Buff_DashCooldown.Description
 	}
+
+	NaturesBlessing: {
+		DisplayName: Nature's Blessing
+		Description: The powers of the Tiki Priest increase your body's durability!
+	}
 }
 
 Keybinds: {
