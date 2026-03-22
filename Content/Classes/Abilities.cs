@@ -12,6 +12,7 @@ using System.Runtime.CompilerServices;
 using ClassesNamespace;
 using CTG2.Content.ClientSide;
 using CTG2.Content.ServerSide;
+using CTG2.Content.Buffs;
 using CTG2.Content.Classes;
 using CTG2.Content.Items;
 using Terraria.Audio;
@@ -32,6 +33,8 @@ namespace CTG2.Content
 
         public int class4BuffTimer = -1;
         public bool class4PendingBuffs = false;
+
+        public int class5EndTimer = -1;
 
         public int class7HitCounter = 0;
         public int class7EndTimer = -1;
@@ -469,53 +472,47 @@ namespace CTG2.Content
         {
             var mod = ModContent.GetInstance<CTG2>();
 
-            foreach (Player other in Main.player)
+            Player.AddBuff(23, 180); // Cursed
+            Player.AddBuff(46, 180); // Chilled
+            Player.AddBuff(32, 180); // Slow
+            Player.AddBuff(ModContent.BuffType<Immortality>(), 180); // Immortality
+
+            playedSound = false;
+            class5EndTimer = 180;
+
+            SoundEngine.PlaySound(SoundID.DD2_MonkStaffGroundImpact.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+
+            for (int i = 3; i < Player.armor.Length - 3; i++)
             {
-                if (!other.active || other.dead || other.whoAmI == Player.whoAmI)
-                    continue;
-
-                if (Vector2.Distance(Player.Center, other.Center) <= 20 * 16 && Player.team == other.team) // 20 block radius
+                if (Player.armor[i].type == ItemID.None)
                 {
-                    ModPacket packet1 = mod.GetPacket();
-                    packet1.Write((byte)MessageType.RequestAddBuff);
-                    packet1.Write(other.whoAmI);
-                    packet1.Write(58);
-                    packet1.Write(120);
-                    packet1.Send();
+                    Player.armor[i].SetDefaults(ItemID.CobaltShield);
+                    break;
+                }
+            }
+        }
 
-                    ModPacket packet2 = mod.GetPacket();
-                    packet2.Write((byte)MessageType.RequestAddBuff);
-                    packet2.Write(other.whoAmI);
-                    packet2.Write(119);
-                    packet2.Write(120);
-                    packet2.Send();
 
-                    ModPacket packet3 = mod.GetPacket();
-                    packet3.Write((byte)MessageType.RequestAddBuff);
-                    packet3.Write(other.whoAmI);
-                    packet3.Write(2);
-                    packet3.Write(120);
-                    packet3.Send();
-
-                    ModPacket audioPacket = mod.GetPacket();
-                    audioPacket.Write((byte)MessageType.RequestAudioToClient);
-                    audioPacket.Write("CTG2/Content/Classes/WhiteMageHeal");
-                    audioPacket.Write(other.whoAmI);
-                    audioPacket.Send();
+        private void PaladinClear()
+        {
+            for (int i = 0; i < Player.inventory.Length; i++)
+            {
+                if (Player.inventory[i].type == ItemID.CobaltShield)
+                {
+                    Player.inventory[i] = new Item();
                 }
             }
 
-            Player.AddBuff(58, 120);
-            Player.AddBuff(119, 120);
-            Player.AddBuff(2, 120);
+            for (int i = 0; i < Player.armor.Length; i++)
+            {
+                if (Player.armor[i].type == ItemID.CobaltShield)
+                {
+                    Player.armor[i] = new Item();
+                }
+            }
 
-            ModPacket audioPacketSelf = mod.GetPacket();
-            audioPacketSelf.Write((byte)MessageType.RequestAudioToClient);
-            audioPacketSelf.Write("CTG2/Content/Classes/WhiteMageHeal");
-            audioPacketSelf.Write(Player.whoAmI);
-            audioPacketSelf.Send();
-
-            playedSound = false;
+            Player.trashItem = new Item();
+            Main.mouseItem = new Item();
         }
 
 
@@ -1023,6 +1020,17 @@ namespace CTG2.Content
                     }
 
                     break;
+                
+                case 5:
+                    if (Player.dead || Player.ghost || (!playedSound && class5EndTimer == 0))
+                    {
+                        SoundEngine.PlaySound(SoundID.DD2_DarkMageSummonSkeleton.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+                        playedSound = true;
+
+                        PaladinClear();
+                    }
+
+                    break;
 
                 case 7:
                     if (Player.dead || Player.ghost || (!playedSound && class7EndTimer == 0))
@@ -1093,7 +1101,7 @@ namespace CTG2.Content
                         break;
 
                     case 5:
-                        SetCooldown(15);
+                        SetCooldown(20);
                         PaladinOnUse();
 
                         break;
@@ -1206,6 +1214,9 @@ namespace CTG2.Content
 
                 if (class4BuffTimer >= 0)
                     class4BuffTimer--;
+
+                if (class5EndTimer >= 0)
+                    class5EndTimer--;
 
                 if (class7EndTimer >= 0)
                     class7EndTimer--;

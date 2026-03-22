@@ -15,7 +15,7 @@ namespace CTG2.Content.Functionality
     {
         public override void ModifyHitByNPC(NPC npc, ref Player.HurtModifiers modifiers)
         {
-            modifiers.FinalDamage *= 1.5f;
+            modifiers.FinalDamage *= 2f;
         }
     }
     
