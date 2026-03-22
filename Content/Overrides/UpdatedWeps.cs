@@ -85,7 +85,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shootSpeed = 15f;
                     item.useAmmo = AmmoID.None;
                     item.autoReuse = false;
-                    item.damage = 33;
+                    item.damage = 31;
                     item.crit = 0;
                     break;
                 case 1296: // Tiki Priest: Staff of Earth
@@ -94,7 +94,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.mana = 7;
                     item.shootSpeed = 10f;
                     item.autoReuse = false;
-                    item.damage = 31;
+                    item.damage = 29;
                     item.crit = 0;
                     item.shoot = 229;
                     item.scale = 0;
