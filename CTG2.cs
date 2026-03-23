@@ -2,6 +2,7 @@ using System;
 using Terraria.ModLoader;
 using System.IO;
 using System.Text.Json;
+using System.Linq;
 using ClassesNamespace;
 using Terraria;
 using CTG2.Content;
@@ -134,7 +135,9 @@ namespace CTG2
         PingProbeReturn = 97,
         PingResult = 98,
         GiveLobbyMobility = 99,
-        UpdatePaused = 100
+        UpdatePaused = 100,
+        RequestKickPlayer = 101,
+        SyncModList = 102
 
     }
 
@@ -1336,6 +1339,9 @@ namespace CTG2
                 case (byte)MessageType.RequestBanPlayer:
                     ProcessRequestBanPlayer(ref reader, whoAmI);
                     break;
+                case (byte)MessageType.RequestKickPlayer:
+                    ProcessRequestKickPlayer(ref reader, whoAmI);
+                    break;
 
                 case (byte)MessageType.BlessingOfTheDragons:
                         byte plyNum = reader.ReadByte();
@@ -1594,6 +1600,26 @@ namespace CTG2
                     break;
                 }
 
+                case (byte)MessageType.SyncModList:
+                {
+                    string clientModsRaw = reader.ReadString();
+                    string[] clientMods = clientModsRaw.Split(',');
+
+                    string[] allowedMods = { "CTG2", "OptimizedCursor", "HighFPSSupport", "TeamSpectate", "ModLoader", "Terraria" };
+
+                    foreach (string modName in clientMods)
+                    {
+                        if (!allowedMods.Contains(modName))
+                        {
+                            // THE SERVER KICKS HERE
+                            NetMessage.BootPlayer(whoAmI, NetworkText.FromLiteral($"Unallowed mod detected: {modName}"));
+                            return; 
+                        }
+                    }
+
+                    break;
+                }
+
                 default:
                     Logger.WarnFormat("CTG2: Unknown Message type: {0}", msgType);
                     break;
@@ -1605,16 +1631,25 @@ namespace CTG2
             string playertoban = reader.ReadString();
             for (int k = 0; k < 255; k++)
             {
-                if (Main.player[k].active && Main.player[k].name.ToLower() == playertoban)
+                if (Main.player[k].active && Main.player[k].name == playertoban)
                 {
                     Netplay.AddBan(k);
                     NetMessage.SendData(2, k, -1, NetworkText.FromKey("CLI.BanMessage", new object[0]), 0, 0f, 0f, 0f, 0, 0, 0);
                 }
             }
-
         }
 
-
+        private static void ProcessRequestKickPlayer(ref BinaryReader reader, int playerNumber)
+        {
+            string playerToKick = reader.ReadString();
+            for (int k = 0; k < 255; k++)
+            {
+                if (Main.player[k].active && Main.player[k].name == playerToKick)
+                {
+                    NetMessage.BootPlayer(Main.player[k].whoAmI, NetworkText.FromLiteral("You have been kicked by an admin."));
+                }
+            }
+        }
         public void setRequestedNpcIndex(int index)
         {
             CTG2.requestedNpcIndex = index;
