@@ -27,7 +27,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint grenadeDelay = 60;
         private uint grenadeLastUsedCounter = 0;
 
-        private uint bananarangDelay = 50;
+        private uint bananarangDelay = 55;
         private uint bananarangLastUsedCounter = 0;
 
         private uint maceDelay = 60;
@@ -36,7 +36,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint flamarangDelay = 30;
         private uint flamarangLastUsedCounter = 0;
 
-        private uint goldenShowerDelay = 65;
+        private uint goldenShowerDelay = 60;
         private uint goldenShowerLastUsedCounter = 0;
 
         private uint ghastlyglaiveDelay = 45;
