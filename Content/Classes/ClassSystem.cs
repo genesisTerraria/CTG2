@@ -323,8 +323,7 @@ namespace ClassesNamespace
             {
                 foreach (int buffId in classData.Buffs)
                 {
-                    if (!Player.HasBuff(buffId))
-                        Player.AddBuff(buffId, 100000);
+                    Player.AddBuff(buffId, 600);
                 }
             }
         }
@@ -437,9 +436,10 @@ namespace ClassesNamespace
         {
             var playerManager = Player.GetModPlayer<PlayerManager>();
             // THIS METHOD IS BROKEN NEED TO FIX 
-            Player.AddBuff(BuffID.Shine, 100000);
-            Player.AddBuff(BuffID.NightOwl, 100000);
-            //Player.AddBuff(ModContent.BuffType<GemBlessing>(), 100000);
+            Player.AddBuff(BuffID.Shine, 600);
+            Player.AddBuff(BuffID.NightOwl, 600);
+            
+            ApplyPermBuffs();
 
             Player.statManaMax2 = currentMana;
             // Set base stats first
