@@ -212,7 +212,7 @@ public class ModifyHurtModPlayer : ModPlayer
                 Player.AddBuff(ModContent.BuffType<Retaliation>(), 30);
             }
         }
-        else if (info.DamageSource.SourceProjectileType == 267 || info.DamageSource.SourceProjectileType == 229)
+        else if (info.DamageSource.SourceProjectileType == 229)
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
