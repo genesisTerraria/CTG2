@@ -1128,7 +1128,7 @@ namespace CTG2.Content
 
                         break;
 
-                    case 10: //not finished
+                    case 10:
                         SetCooldown(15);
                         MinerOnUse();
 
