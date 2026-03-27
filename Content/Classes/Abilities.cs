@@ -472,7 +472,7 @@ namespace CTG2.Content
         {
             var mod = ModContent.GetInstance<CTG2>();
 
-            Player.AddBuff(46, 270); // Chilled
+            Player.AddBuff(32, 270); // Chilled
             Player.AddBuff(ModContent.BuffType<Immortality>(), 270); // Immortality
 
             playedSound = false;
@@ -825,7 +825,6 @@ namespace CTG2.Content
         private void PhoenixOnUse()
         {
             Player.AddBuff(176, 2 * 60);
-            Player.AddBuff(67, 40);
 
             playedSound = false;
             class13EndTimer = 120;
@@ -1147,7 +1146,7 @@ namespace CTG2.Content
                         break;
 
                     case 13: //not finished
-                        SetCooldown(10);
+                        SetCooldown(15);
                         PhoenixOnUse();
 
                         break;
