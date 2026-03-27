@@ -483,8 +483,8 @@
       "Modded": false
     },
     {
-      "Name": "Topaz Robe",
-      "Type": 1283,
+      "Name": "Ninja Shirt",
+      "Type": 257,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 60,
@@ -510,7 +510,7 @@
       "Name": "Step Stool",
       "Type": 4341,
       "Stack": 1,
-      "Prefix": 65,
+      "Prefix": 0,
       "Slot": 63,
       "Modded": false
     },
@@ -563,9 +563,9 @@
       "Modded": false
     },
     {
-      "Name": "Ninja Shirt",
-      "Type": 257,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 70,
       "Modded": false
