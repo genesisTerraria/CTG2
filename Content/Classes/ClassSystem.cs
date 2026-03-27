@@ -438,6 +438,7 @@ namespace ClassesNamespace
             // THIS METHOD IS BROKEN NEED TO FIX 
             Player.AddBuff(BuffID.Shine, 600);
             Player.AddBuff(BuffID.NightOwl, 600);
+            Player.AddBuff(BuffID.Gills, 600);
             
             ApplyPermBuffs();
 
