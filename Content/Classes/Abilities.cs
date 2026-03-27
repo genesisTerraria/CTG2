@@ -1146,7 +1146,7 @@ namespace CTG2.Content
                         break;
 
                     case 13: //not finished
-                        SetCooldown(15);
+                        SetCooldown(40);
                         PhoenixOnUse();
 
                         break;
