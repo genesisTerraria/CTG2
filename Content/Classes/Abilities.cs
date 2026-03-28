@@ -669,7 +669,7 @@ namespace CTG2.Content
                         if (WorldGen.InWorld(x, y))
                         {
                             Tile tile = Main.tile[x, y];
-                            if (tile.HasTile && tile.TileType == TileID.Dirt)
+                            if (tile.HasTile && (tile.TileType == TileID.Dirt || tile.TileType == TileID.Bubble || tile.TileType == TileID.Mud || tile.TileType == TileID.Grass || tile.TileType == 127))
                             {
                                 WorldGen.KillTile(x, y, false, false, true);
                                 NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, x, y);
