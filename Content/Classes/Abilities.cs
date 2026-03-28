@@ -472,11 +472,11 @@ namespace CTG2.Content
         {
             var mod = ModContent.GetInstance<CTG2>();
 
-            Player.AddBuff(32, 270); // Chilled
-            Player.AddBuff(ModContent.BuffType<Immortality>(), 270); // Immortality
+            Player.AddBuff(32, 180); // Chilled
+            Player.AddBuff(ModContent.BuffType<Immortality>(), 180); // Immortality
 
             playedSound = false;
-            class5EndTimer = 270;
+            class5EndTimer = 180;
 
             SoundEngine.PlaySound(SoundID.DD2_MonkStaffGroundImpact.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
 
@@ -1098,7 +1098,7 @@ namespace CTG2.Content
                         break;
 
                     case 5:
-                        SetCooldown(20);
+                        SetCooldown(38);
                         PaladinOnUse();
 
                         break;
