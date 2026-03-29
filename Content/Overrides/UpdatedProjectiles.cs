@@ -248,8 +248,8 @@ public class ModifyHurtModPlayer : ModPlayer
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
             if (attackerPlayer.currentClass.Name == "Mutant")
             {
-                attacker.AddBuff(2, 120);
-                attacker.AddBuff(48, 240);
+                attacker.AddBuff(2, 90);
+                attacker.AddBuff(356, 240);
                 attacker.AddBuff(58, 120);
 
                 ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
