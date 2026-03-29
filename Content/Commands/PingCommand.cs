@@ -25,12 +25,23 @@ namespace CTG2.Content.Commands
         public override string Command => "ping";
         public override string Usage => "/ping <playerName>";
         public override string Description => "Shows a player's current ping.";
+        public Player lastPlayer = null;
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
             if (args.Length == 0)
             {
-                caller.Reply("Usage: /ping \"<playerName>\"", Color.Red);
+                if (lastPlayer == null)
+                {
+                    lastPlayer = caller.Player;
+                }
+                
+                var mod = ModContent.GetInstance<CTG2>();
+                var packet = mod.GetPacket();
+                packet.Write((byte)MessageType.RequestPlayerPing);
+                packet.Write(lastPlayer.whoAmI);
+                packet.Write(true);
+                packet.Send();
                 return;
             }
 
@@ -73,10 +84,13 @@ namespace CTG2.Content.Commands
 
                 if (player.name.Equals(targetName, StringComparison.OrdinalIgnoreCase))
                 {
+                    lastPlayer = player;
+
                     var mod = ModContent.GetInstance<CTG2>();
                     var packet = mod.GetPacket();
                     packet.Write((byte)MessageType.RequestPlayerPing);
                     packet.Write(player.whoAmI);
+                    packet.Write(true);
                     packet.Send();
                     return;
                 }

@@ -67,14 +67,6 @@ public class Charged : GlobalItem
         {
             if (player.ownedProjectileCounts[ModContent.ProjectileType<ChargedBowProjectile>()] == 0)
             {
-                if (player.GetModPlayer<TestPlayer>().playerAttribute)
-                {
-                    bool x = player.GetModPlayer<TestPlayer>().TryGetAimedVelocity(player, position, velocity, out Vector2 outvelocity);
-                    if (x)
-                    {
-                        velocity = outvelocity;
-                    }
-                }
                 Projectile.NewProjectile(
                     source,
                     position,

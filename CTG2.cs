@@ -1533,6 +1533,7 @@ namespace CTG2
                     if (Main.netMode == NetmodeID.Server)
                     {
                         int targetIndex = reader.ReadInt32();
+                        bool print = reader.ReadBoolean();
 
                         long now = DateTime.UtcNow.Ticks;
 
@@ -1540,6 +1541,7 @@ namespace CTG2
 
                         ModPacket probe = mod.GetPacket();
                         probe.Write((byte)MessageType.PingProbe);
+                        probe.Write(print);
                         probe.Send(targetIndex);
                     }
                     break;
@@ -1550,8 +1552,11 @@ namespace CTG2
                 {
                     if (Main.netMode == NetmodeID.MultiplayerClient)
                     {
+                        bool print = reader.ReadBoolean();
+
                         ModPacket returnPacket = mod.GetPacket();
                         returnPacket.Write((byte)MessageType.PingProbeReturn);
+                        returnPacket.Write(print);
                         returnPacket.Send();
                     }
                     break;
@@ -1562,6 +1567,8 @@ namespace CTG2
                 {
                     if (Main.netMode == NetmodeID.Server)
                     {
+                        bool print = reader.ReadBoolean();
+
                         if (!pendingPings.TryGetValue(whoAmI, out var data))
                             break;
 
@@ -1579,6 +1586,7 @@ namespace CTG2
                         result.Write((byte)MessageType.PingResult);
                         result.Write(Main.player[whoAmI].name);
                         result.Write((int)pingMs);
+                        result.Write(print);
                         result.Send(requester);
                     }
                     break;
@@ -1591,11 +1599,23 @@ namespace CTG2
                     {
                         string name = reader.ReadString();
                         int ping = reader.ReadInt32();
+                        bool print = reader.ReadBoolean();
 
-                        Main.NewText($"{name}'s ping: {ping} ms",
-                            ping < 80 ? Color.Green :
-                            ping < 150 ? Color.Yellow :
-                            Color.Red);
+                        if (print)
+                        {
+                            Main.NewText($"{name}'s ping: {ping} ms",
+                                ping < 80 ? Color.Green :
+                                ping < 150 ? Color.Yellow :
+                                Color.Red);
+                        }
+
+                        for (int i = 0; i < Main.maxPlayers; i++)
+                        {
+                            if (Main.player[i].active && Main.player[i].name == name)
+                            {
+                                Main.player[i].GetModPlayer<AutoPingFreezer>().ping = ping;
+                            }
+                        }
                     }
                     break;
                 }

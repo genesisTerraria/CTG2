@@ -280,10 +280,6 @@ namespace CTG2.Content.Items.ModifiedWeps
 
         public override bool Shoot(Item item, Player player, Terraria.DataStructures.EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if (player.GetModPlayer<TestPlayer>().playerAttribute && player.GetModPlayer<TestPlayer>().TryGetAimedVelocity(player, position, velocity, out Vector2 aimedVelocity))
-            {
-                return false;
-            }
             if (item.type == ItemID.NebulaArcanum)
             {
                 Vector2 finalVelocity = velocity;
