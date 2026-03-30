@@ -21,7 +21,6 @@ using CTG2.Content.Buffs;
 public class AutoPingFreezer : ModPlayer
 {
     public int ping = 0;
-    public int lastPing = 0;
     public int count = 0;
     
     bool messageSent = false;
@@ -29,7 +28,6 @@ public class AutoPingFreezer : ModPlayer
     {
         if (count % 60 == 0)
         {
-            lastPing = ping;
             messageSent = false;
 
             var mod = ModContent.GetInstance<CTG2.CTG2>();
@@ -40,7 +38,7 @@ public class AutoPingFreezer : ModPlayer
             packet.Send();
         }
 
-        if (ping > 750 && lastPing > 750)
+        if (ping > 750)
         {
             Player.AddBuff(149, 180);
 

@@ -115,16 +115,18 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shootSpeed = 28;
                     item.damage = 31;
                     item.crit = 0;
+                    item.DamageType = DamageClass.Magic;
                     break;
                 case ItemID.CursedFlames: // Leech
                     item.useTime = 37;
                     item.useAnimation = 37;
                     item.shootSpeed = 10;
-                    item.damage = 25;
+                    item.damage = 24;
                     item.mana = 0;
                     item.scale = 0;
                     item.crit = 0;
                     item.shoot = ProjectileID.VampireKnife;
+                    item.DamageType = DamageClass.Melee;
                     break;
                 case ItemID.Mace: // Tank
                     item.useTime = 19;
