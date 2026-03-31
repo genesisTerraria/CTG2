@@ -462,17 +462,17 @@ namespace CTG2.Content
         {
             Player.ClearBuff(BuffID.Invisibility);
 
-            Player.AddBuff(BuffID.Invisibility, 15 * 60);
-            Player.AddBuff(BuffID.Swiftness, 15 * 60);
-            Player.AddBuff(BuffID.Tipsy, 15 * 60);
-            Player.AddBuff(BuffID.WitheredArmor, 15 * 60);
-            Player.AddBuff(BuffID.Weak, 15 * 60);
-            Player.AddBuff(BuffID.Silenced, 15 * 60);
+            Player.AddBuff(BuffID.Invisibility, 6 * 60);
+            Player.AddBuff(BuffID.Swiftness, 6 * 60);
+            Player.AddBuff(BuffID.Tipsy, 6 * 60);
+            Player.AddBuff(BuffID.WitheredArmor, 6 * 60);
+            Player.AddBuff(BuffID.Weak, 6 * 60);
+            Player.AddBuff(BuffID.Silenced, 6 * 60);
 
             NinjaAbilityEquip();
 
             playedSound = false;
-            class2AbilityTimer = 15 * 60;
+            class2AbilityTimer = 6 * 60;
 
             SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
