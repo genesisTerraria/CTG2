@@ -479,7 +479,7 @@ namespace ClassesNamespace
         public override void OnRespawn()
         {
             ApplyPermBuffs();
-            Player.Heal(600);
+            Player.statLife = Player.statLifeMax2;
             Player.GetModPlayer<Abilities>().psychicActive = false;
         }
 

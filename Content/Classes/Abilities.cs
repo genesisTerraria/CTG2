@@ -1088,10 +1088,12 @@ namespace CTG2.Content
             var playerManager = Player.GetModPlayer<PlayerManager>();
             int selectedClass = playerManager.currentClass.AbilityID;
 
+            bool endedEarly = (Player.dead || Player.ghost) && class1EndTimer > 0;
+
             switch (selectedClass)
             {
                 case 1:
-                    if (Player.dead || Player.ghost || (!playedSound && class1EndTimer == 0))
+                    if (endedEarly || (!playedSound && class1EndTimer == 0))
                     {
                         SoundEngine.PlaySound(SoundID.DD2_SonicBoomBladeSlash.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
                         playedSound = true;
@@ -1105,7 +1107,7 @@ namespace CTG2.Content
                     {
                         NinjaPassive();
                     }
-                    if (Player.dead || Player.ghost || (!playedSound && class2AbilityTimer == 0))
+                    if (endedEarly || (!playedSound && class2AbilityTimer == 0))
                     {
                         playedSound = true;
                         class2AbilityTimer = -1;
@@ -1116,7 +1118,7 @@ namespace CTG2.Content
                     break;
 
                 case 4:
-                    if (Player.dead || Player.ghost || (!playedSound && class4BuffTimer == 0))
+                    if (endedEarly || (!playedSound && class4BuffTimer == 0))
                     {
                         SoundEngine.PlaySound(SoundID.DD2_BookStaffCast, Player.Center);
                         playedSound = true;
@@ -1126,7 +1128,7 @@ namespace CTG2.Content
                     break;
                 
                 case 5:
-                    if (Player.dead || Player.ghost || (!playedSound && class5EndTimer == 0))
+                    if (endedEarly || (!playedSound && class5EndTimer == 0))
                     {
                         SoundEngine.PlaySound(SoundID.DD2_DarkMageSummonSkeleton.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
                         playedSound = true;
@@ -1138,7 +1140,7 @@ namespace CTG2.Content
                     break;
 
                 case 7:
-                    if (Player.dead || Player.ghost || (!playedSound && class7EndTimer == 0))
+                    if (endedEarly || (!playedSound && class7EndTimer == 0))
                     {
                         SoundEngine.PlaySound(SoundID.DD2_DarkMageSummonSkeleton, Player.Center);
                         playedSound = true;
@@ -1148,7 +1150,7 @@ namespace CTG2.Content
                     break;
 
                 case 11:
-                    if (Player.dead || Player.ghost || (!playedSound && class11EndTimer == 0))
+                    if (endedEarly || (!playedSound && class11EndTimer == 0))
                     {
                         SoundEngine.PlaySound(SoundID.Item77, Player.Center);
                         playedSound = true;
@@ -1158,7 +1160,7 @@ namespace CTG2.Content
                     break;
 
                 case 13:
-                    if (Player.dead || Player.ghost || (!playedSound && class13EndTimer == 0))
+                    if (endedEarly || (!playedSound && class13EndTimer == 0))
                     {
                         SoundEngine.PlaySound(SoundID.Item88, Player.Center);
                         playedSound = true;
@@ -1168,7 +1170,7 @@ namespace CTG2.Content
                     break;
 
                 case 17:
-                    if (Player.dead || Player.ghost || (!playedSound && class17EndTimer == 0))
+                    if (endedEarly || (!playedSound && class17EndTimer == 0))
                     {
                         SoundEngine.PlaySound(SoundID.Item90, Player.Center);
                         playedSound = true;

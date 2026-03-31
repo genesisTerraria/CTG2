@@ -275,12 +275,7 @@ public class PlayerManager : ModPlayer
             if (customRespawnTimer <= 0)
             {
                 awaitingRespawn = false;
-
-                //Player.ghost = false;
                 Player.dead = true;
-
-                Player.statLife = Player.statLifeMax2;
-                Player.HealEffect(Player.statLifeMax2);
             }
         }
 
