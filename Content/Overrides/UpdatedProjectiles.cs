@@ -31,13 +31,15 @@ public class ProjectileOverrides : GlobalProjectile
 
     public override void AI(Projectile projectile)
     {
+        if (projectile.type == 706)
+        {
+            projectile.scale = 1.1f;
+        }
         if (!playedSoundBoomerangs && (projectile.type == ProjectileID.ThornChakram || projectile.type == ProjectileID.Flamarang))
         {
             SoundEngine.PlaySound(SoundID.Item1, projectile.Center);
             playedSoundBoomerangs = true;
         }
-        if (projectile.type == 706)
-            projectile.scale = 1.2f;
         if (projectile.type == 167 || projectile.type == 169)
             projectile.timeLeft = 0;
         if (projectile.type == 511)
@@ -144,6 +146,19 @@ public class ProjectileOverrides : GlobalProjectile
         if (projectile.type == 280)
         {
             float scale = 0.5f;
+
+            Vector2 center = projectile.Center;
+
+            projectile.scale = scale;
+
+            projectile.width = (int)(projectile.width * scale);
+            projectile.height = (int)(projectile.height * scale);
+
+            projectile.Center = center;
+        }
+        if (projectile.type == 706)
+        {
+            float scale = 0.75f;
 
             Vector2 center = projectile.Center;
 
