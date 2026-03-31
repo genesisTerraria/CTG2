@@ -1,6 +1,6 @@
 {
   "HealthPoints": 160,
-  "ManaPoints": 17,
+  "ManaPoints": 37,
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
@@ -502,7 +502,7 @@
       "Name": "Lucky Horseshoe",
       "Type": 158,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 76,
       "Slot": 62,
       "Modded": false
     },
@@ -510,7 +510,7 @@
       "Name": "Magnet Flower",
       "Type": 4000,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 76,
       "Slot": 63,
       "Modded": false
     },
@@ -518,14 +518,14 @@
       "Name": "Flying Carpet",
       "Type": 934,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 76,
       "Slot": 64,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Toolbox",
+      "Type": 1923,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 65,
       "Modded": false
