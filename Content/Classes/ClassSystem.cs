@@ -124,7 +124,7 @@ namespace ClassesNamespace
             Player.extraAccessorySlots = 0;
             
             for (int i = 0; i < Player.inventory.Length; i++)
-            Player.inventory[i] = new Item();
+                Player.inventory[i] = new Item();
 
             for (int i = 0; i < Player.armor.Length; i++)
                 Player.armor[i] = new Item();

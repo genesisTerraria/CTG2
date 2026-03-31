@@ -26,6 +26,8 @@ namespace CTG2.Content
         public int cooldown = 0;
 
         public int class1EndTimer = -1;
+        public int class2PassiveCounter = 0;
+        public int class2AbilityTimer = -1;
 
         public bool playedSound = false;
         public int class3SpawnTimer = -1;
@@ -305,6 +307,18 @@ namespace CTG2.Content
         {
             int projectileType = info.DamageSource.SourceProjectileType;
             int attackerIndex = info.DamageSource.SourcePlayerIndex;
+            var selectedClassPlayer = Player.GetModPlayer<PlayerManager>();
+
+            if (selectedClassPlayer.currentClass.AbilityID == 2 && Player.HasBuff(BuffID.Swiftness))
+            {
+                Player.ClearBuff(BuffID.Swiftness);
+                Player.ClearBuff(BuffID.Tipsy);
+                Player.ClearBuff(BuffID.WitheredArmor);
+                Player.ClearBuff(BuffID.Weak);
+                Player.ClearBuff(BuffID.Silenced);
+
+                NinjaAbilityDeequip();
+            }
 
             if (attackerIndex >= 0 && attackerIndex < Main.maxPlayers)
             {
@@ -378,11 +392,87 @@ namespace CTG2.Content
         }
 
 
+        private void NinjaPassive()
+        {
+            if (Player.velocity == Vector2.Zero && !Player.HasBuff(BuffID.Invisibility))
+            {
+                class2PassiveCounter++;
+            }
+            else
+            {
+                class2PassiveCounter= 0;
+            }
+
+            if (class2PassiveCounter>= 3 * 60)
+            {
+                Player.AddBuff(BuffID.Invisibility, 60 * 60);
+
+                playedSound = false;
+
+                SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+            }
+        }
+
+
+        private void NinjaAbilityEquip()
+        {
+            bool placedInsig = false;
+            bool placedMag = false;
+
+            for (int i = 3; i < Player.armor.Length; i++)
+            {
+                if (Player.armor[i].type == ItemID.None && !placedInsig && !placedMag)
+                {
+                    Player.armor[i].SetDefaults(4989);
+                    placedInsig = true;
+                }
+                else if (Player.armor[i].type == ItemID.None && !placedMag)
+                {
+                    Player.armor[i].SetDefaults(ItemID.Magiluminescence);
+                    placedMag = true;
+                    break;
+                }
+            }
+        }
+
+
+        private void NinjaAbilityDeequip()
+        {
+            for (int i = 0; i < Player.inventory.Length; i++)
+            {
+                if (Player.inventory[i].type == 4989 || Player.inventory[i].type == ItemID.Magiluminescence)
+                {
+                    Player.inventory[i].SetDefaults(ItemID.None);
+                }
+            }
+            for (int i = 0; i < Player.armor.Length; i++)
+            {
+                if (Player.armor[i].type == 4989 || Player.armor[i].type == ItemID.Magiluminescence)
+                {
+                    Player.armor[i].SetDefaults(ItemID.None);
+                }
+            }
+
+            Player.trashItem = new Item();
+            Main.mouseItem = new Item();
+        }
+
+
         private void NinjaOnUse()
         {
-            Player.AddBuff(BuffID.Invisibility, 60 * 60);
+            Player.ClearBuff(BuffID.Invisibility);
+
+            Player.AddBuff(BuffID.Invisibility, 15 * 60);
+            Player.AddBuff(BuffID.Swiftness, 15 * 60);
+            Player.AddBuff(BuffID.Tipsy, 15 * 60);
+            Player.AddBuff(BuffID.WitheredArmor, 15 * 60);
+            Player.AddBuff(BuffID.Weak, 15 * 60);
+            Player.AddBuff(BuffID.Silenced, 15 * 60);
+
+            NinjaAbilityEquip();
 
             playedSound = false;
+            class2AbilityTimer = 15 * 60;
 
             SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
@@ -1005,6 +1095,22 @@ namespace CTG2.Content
                     {
                         SoundEngine.PlaySound(SoundID.DD2_SonicBoomBladeSlash.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
                         playedSound = true;
+                        class1EndTimer = -1;
+                    }
+
+                    break;
+
+                case 2:
+                    if (!Player.dead && !Player.ghost && playerManager.playerState == PlayerManager.PlayerState.Active)
+                    {
+                        NinjaPassive();
+                    }
+                    if (Player.dead || Player.ghost || (!playedSound && class2AbilityTimer == 0))
+                    {
+                        playedSound = true;
+                        class2AbilityTimer = -1;
+
+                        NinjaAbilityDeequip();
                     }
 
                     break;
@@ -1014,6 +1120,7 @@ namespace CTG2.Content
                     {
                         SoundEngine.PlaySound(SoundID.DD2_BookStaffCast, Player.Center);
                         playedSound = true;
+                        class4BuffTimer = -1;
                     }
 
                     break;
@@ -1023,6 +1130,7 @@ namespace CTG2.Content
                     {
                         SoundEngine.PlaySound(SoundID.DD2_DarkMageSummonSkeleton.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
                         playedSound = true;
+                        class5EndTimer = -1;
 
                         PaladinClear();
                     }
@@ -1034,6 +1142,7 @@ namespace CTG2.Content
                     {
                         SoundEngine.PlaySound(SoundID.DD2_DarkMageSummonSkeleton, Player.Center);
                         playedSound = true;
+                        class7EndTimer = -1;
                     }
 
                     break;
@@ -1043,6 +1152,7 @@ namespace CTG2.Content
                     {
                         SoundEngine.PlaySound(SoundID.Item77, Player.Center);
                         playedSound = true;
+                        class11EndTimer = -1;
                     }
 
                     break;
@@ -1052,6 +1162,7 @@ namespace CTG2.Content
                     {
                         SoundEngine.PlaySound(SoundID.Item88, Player.Center);
                         playedSound = true;
+                        class13EndTimer = -1;
                     }
 
                     break;
@@ -1061,6 +1172,7 @@ namespace CTG2.Content
                     {
                         SoundEngine.PlaySound(SoundID.Item90, Player.Center);
                         playedSound = true;
+                        class17EndTimer = -1;
                     }
 
                     break;
@@ -1068,6 +1180,18 @@ namespace CTG2.Content
 
             if (cooldown == 1)
                 SoundEngine.PlaySound(abilityReady.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+
+            if (selectedClass == 2 && !Player.dead && !Player.ghost && playerManager.playerState == PlayerManager.PlayerState.Active && Player.HasBuff(BuffID.Swiftness) && CTG2.Ability1Keybind.JustPressed)
+            {
+                Player.ClearBuff(BuffID.Swiftness);
+                Player.ClearBuff(BuffID.Tipsy);
+                Player.ClearBuff(BuffID.WitheredArmor);
+                Player.ClearBuff(BuffID.Weak);
+                Player.ClearBuff(BuffID.Silenced);
+                Player.ClearBuff(BuffID.Invisibility);
+
+                NinjaAbilityDeequip();
+            }
 
             if (((Player.HeldItem.type == ItemID.WhoopieCushion && Player.controlUseItem && Player.itemTime == 0) || CTG2.Ability1Keybind.JustPressed) && cooldown == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && !Player.HasBuff(BuffID.Webbed)) // Only activate if not on cooldown
             {
@@ -1080,7 +1204,7 @@ namespace CTG2.Content
                         break;
 
                     case 2:
-                        SetCooldown(10);
+                        SetCooldown(30);
                         NinjaOnUse();
 
                         break;
@@ -1183,12 +1307,6 @@ namespace CTG2.Content
                 }
             }
         }
-
-        public override void PreUpdate()
-        {
-            if (GameInfo.matchStage == 3)
-                return; 
-        }
        
         public override void PostUpdate()
         {
@@ -1205,6 +1323,9 @@ namespace CTG2.Content
 
                 if (class1EndTimer >= 0)
                     class1EndTimer--;
+
+                if (class2AbilityTimer >= 0)
+                    class2AbilityTimer--;
 
                 if (class3SpawnTimer >= 0)
                     class3SpawnTimer--;
