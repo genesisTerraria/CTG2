@@ -202,7 +202,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     break;
                 case ItemID.Gungnir:
-                    item.damage = 20;
+                    item.damage = 22;
                     item.useAnimation = 22;
                     item.useTime = 22;
                     item.crit = 0;
