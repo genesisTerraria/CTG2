@@ -30,7 +30,7 @@ public class ProtectedRegionTile : GlobalTile
     }
     public override bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
     {
-        if (IsInProtectedRegion(i, j))
+        if (IsInProtectedRegion(i, j) && type != 127)
             return false;
 
         return base.CanKillTile(i, j, type, ref blockDamaged);
