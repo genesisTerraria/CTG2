@@ -1609,12 +1609,14 @@ namespace CTG2
                                 ping < 150 ? Color.Yellow :
                                 Color.Red);
                         }
-
-                        for (int i = 0; i < Main.maxPlayers; i++)
+                        else
                         {
-                            if (Main.player[i].active && Main.player[i].name == name)
+                            for (int i = 0; i < Main.maxPlayers; i++)
                             {
-                                Main.player[i].GetModPlayer<AutoPingFreezer>().ping = ping;
+                                if (Main.player[i].active && Main.player[i].name == name)
+                                {
+                                    Main.player[i].GetModPlayer<AutoPingFreezer>().ping = ping;
+                                }
                             }
                         }
                     }
