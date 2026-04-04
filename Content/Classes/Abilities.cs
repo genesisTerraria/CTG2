@@ -460,19 +460,35 @@ namespace CTG2.Content
 
         private void NinjaOnUse()
         {
-            Player.ClearBuff(BuffID.Invisibility);
-
-            Player.AddBuff(BuffID.Invisibility, 6 * 60);
             Player.AddBuff(BuffID.Swiftness, 6 * 60);
             Player.AddBuff(BuffID.Tipsy, 6 * 60);
             Player.AddBuff(BuffID.WitheredArmor, 6 * 60);
             Player.AddBuff(BuffID.Weak, 6 * 60);
             Player.AddBuff(BuffID.Silenced, 6 * 60);
 
+            for (int i = 0; i < Player.MaxBuffs; i++)
+            {
+                if (Player.buffType[i] == BuffID.Invisibility)
+                {
+                    if (Player.buffTime[i] < 6 * 60)
+                    {
+                        Player.buffTime[i] = 6 * 60;
+                    }
+                    break;
+                }
+            }
+
+            if (!Player.HasBuff(BuffID.Invisibility))
+            {
+                Player.AddBuff(BuffID.Invisibility, 6 * 60);
+            }
+
             NinjaAbilityEquip();
 
             playedSound = false;
             class2AbilityTimer = 6 * 60;
+        
+            Player.AddBuff(BuffID.Invisibility, 6 * 60);
 
             SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
@@ -1190,7 +1206,6 @@ namespace CTG2.Content
                 Player.ClearBuff(BuffID.WitheredArmor);
                 Player.ClearBuff(BuffID.Weak);
                 Player.ClearBuff(BuffID.Silenced);
-                Player.ClearBuff(BuffID.Invisibility);
 
                 NinjaAbilityDeequip();
             }
