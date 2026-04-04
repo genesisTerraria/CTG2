@@ -219,7 +219,7 @@ namespace CTG2.Content.Classes
                 // {
                 //     player.Heal(1);
                 // }
-                if (Vector2.Distance(NPC.Center, player.Center) <= 8 * 16)
+                if (Vector2.Distance(NPC.Center, player.Center) <= 14 * 16)
                 {
                     var mod = ModContent.GetInstance<CTG2>();
                     ModPacket packet = mod.GetPacket();
