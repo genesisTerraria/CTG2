@@ -403,7 +403,7 @@ namespace CTG2.Content
                 class2PassiveCounter= 0;
             }
 
-            if (class2PassiveCounter>= 3 * 60)
+            if (class2PassiveCounter >= 2 * 60)
             {
                 Player.AddBuff(BuffID.Invisibility, 60 * 60);
 
@@ -562,11 +562,11 @@ namespace CTG2.Content
         {
             var mod = ModContent.GetInstance<CTG2>();
 
-            Player.AddBuff(32, 180); // Chilled
-            Player.AddBuff(ModContent.BuffType<Immortality>(), 180); // Immortality
+            Player.AddBuff(32, 150); // Slow
+            Player.AddBuff(ModContent.BuffType<Immortality>(), 150); // Immortality
 
             playedSound = false;
-            class5EndTimer = 180;
+            class5EndTimer = 150;
 
             SoundEngine.PlaySound(SoundID.DD2_MonkStaffGroundImpact.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
 
@@ -759,7 +759,7 @@ namespace CTG2.Content
                         if (WorldGen.InWorld(x, y))
                         {
                             Tile tile = Main.tile[x, y];
-                            if (tile.HasTile && (tile.TileType == TileID.Dirt || tile.TileType == TileID.Bubble || tile.TileType == TileID.Mud || tile.TileType == TileID.Grass || tile.TileType == 127))
+                            if (tile.HasTile && (tile.TileType == TileID.Dirt || tile.TileType == TileID.Mud || tile.TileType == TileID.Grass || tile.TileType == 127))
                             {
                                 WorldGen.KillTile(x, y, false, false, true);
                                 NetMessage.SendData(MessageID.TileManipulation, -1, -1, null, 0, x, y);

@@ -215,10 +215,10 @@ namespace CTG2.Content.Classes
                 if (player.team != (int)NPC.ai[0])
                     continue;
 
-                if (Vector2.Distance(NPC.Center, player.Center) <= 8 * 16 && frameCount % healFrameGap == 0) // 14 block radius
-                {
-                    player.Heal(1);
-                }
+                // if (Vector2.Distance(NPC.Center, player.Center) <= 8 * 16 && frameCount % healFrameGap == 0) // 14 block radius
+                // {
+                //     player.Heal(1);
+                // }
                 if (Vector2.Distance(NPC.Center, player.Center) <= 8 * 16)
                 {
                     var mod = ModContent.GetInstance<CTG2>();
@@ -226,6 +226,13 @@ namespace CTG2.Content.Classes
                     packet.Write((byte)MessageType.RequestAddBuff);
                     packet.Write(player.whoAmI);
                     packet.Write(ModContent.BuffType<NaturesBlessing>());
+                    packet.Write(10);
+                    packet.Send();
+
+                    packet = mod.GetPacket();
+                    packet.Write((byte)MessageType.RequestAddBuff);
+                    packet.Write(player.whoAmI);
+                    packet.Write(BuffID.Wrath);
                     packet.Write(10);
                     packet.Send();
                 }

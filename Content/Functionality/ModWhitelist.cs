@@ -3,7 +3,7 @@ using Terraria.ModLoader;
 using System.Linq;
 using System.IO;
 
-namespace CTG2
+namespace CTG2.Content.Functionality
 {
     public class ModWhitelist : ModPlayer
     {

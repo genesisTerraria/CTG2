@@ -51,10 +51,10 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint flamelashDelay = 55;
         private uint flamelashLastUsedCounter = 0;
 
-        private uint blowgunDelay = 70;
+        private uint blowgunDelay = 65;
         private uint blowgunLastUsedCounter = 0;
 
-        private uint orbDelay = 65;
+        private uint orbDelay = 60;
         private uint orbLastUsedCounter = 0;
 
         public override bool InstancePerEntity => true;
@@ -85,7 +85,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shootSpeed = 15f;
                     item.useAmmo = AmmoID.None;
                     item.autoReuse = false;
-                    item.damage = 31;
+                    item.damage = 28;
                     item.crit = 0;
                     break;
                 case 1296: // Tiki Priest: Staff of Earth
@@ -94,7 +94,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.mana = 7;
                     item.shootSpeed = 10f;
                     item.autoReuse = false;
-                    item.damage = 29;
+                    item.damage = 22;
                     item.crit = 0;
                     item.shoot = 229;
                     item.scale = 0;
@@ -225,7 +225,7 @@ namespace CTG2.Content.Items.ModifiedWeps
 
                 case 218: // phoenix fireball
                     item.crit = 0;
-                    item.damage = 33;
+                    item.damage = 34;
                     item.shootSpeed = 13f;
                     item.shoot = 666;
                     item.scale = 0;
@@ -247,7 +247,7 @@ namespace CTG2.Content.Items.ModifiedWeps
 
                 case 3543: // phoenix aerial bane
                     item.crit = 0;
-                    item.damage = 30;
+                    item.damage = 32;
                     item.shootSpeed = 9f;
                     item.shoot = 710;
                     item.mana = 10;

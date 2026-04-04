@@ -227,7 +227,7 @@ public class ModifyHurtModPlayer : ModPlayer
                 Player.AddBuff(ModContent.BuffType<Retaliation>(), 30);
             }
         }
-        else if (info.DamageSource.SourceProjectileType == 229)
+        if (info.DamageSource.SourceProjectileType == 229)
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
@@ -253,11 +253,11 @@ public class ModifyHurtModPlayer : ModPlayer
             }
             Player.ClearBuff(BuffID.Poisoned);
         }
-        else if (info.DamageSource.SourceProjectileType == 507)
+        if (info.DamageSource.SourceProjectileType == 507)
         {
             Player.AddBuff(160, 90);
         }
-        else if (info.DamageSource.SourceProjectileType == 153)
+        if (info.DamageSource.SourceProjectileType == 153)
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
@@ -297,7 +297,7 @@ public class ModifyHurtModPlayer : ModPlayer
         // {
         //     Player.AddBuff(323, 4 * 60);
         // }
-        else if (info.DamageSource.SourceProjectileType == 273)
+        if (info.DamageSource.SourceProjectileType == 273)
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
@@ -314,7 +314,7 @@ public class ModifyHurtModPlayer : ModPlayer
                 packet.Send();
             }
         }
-        else if (info.DamageSource.SourceProjectileType == 304)
+        if (info.DamageSource.SourceProjectileType == 304)
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();

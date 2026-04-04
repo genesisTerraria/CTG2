@@ -137,7 +137,8 @@ namespace CTG2
         GiveLobbyMobility = 99,
         UpdatePaused = 100,
         RequestKickPlayer = 101,
-        SyncModList = 102
+        SyncModList = 102,
+        KickPlayerDifficulty = 103
 
     }
 
@@ -1636,6 +1637,19 @@ namespace CTG2
                             return; 
                         }
                     }
+
+                    break;
+                }
+
+                case (byte)MessageType.KickPlayerDifficulty:
+                {
+                    int playerIndexKick = reader.ReadInt32();
+                    Player player = Main.player[playerIndexKick];
+                    if (player.active && player.difficulty != 0)
+                    {
+                        NetMessage.BootPlayer(playerIndexKick, NetworkText.FromLiteral("This server only allows softcore characters."));
+                        return;
+                    } 
 
                     break;
                 }

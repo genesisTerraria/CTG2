@@ -1,5 +1,5 @@
 {
-  "HealthPoints": 160,
+  "HealthPoints": 140,
   "ManaPoints": 7,
   "InventoryItems": [
     {
@@ -523,18 +523,18 @@
       "Modded": false
     },
     {
-      "Name": "Step Stool",
-      "Type": 4341,
+      "Name": "Tsunami in a Bottle",
+      "Type": 3201,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 65,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
-      "Prefix": 0,
+      "Name": "Anklet of the Wind",
+      "Type": 212,
+      "Stack": 1,
+      "Prefix": 75,
       "Slot": 66,
       "Modded": false
     },
@@ -683,9 +683,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Green and Silver Dye",
+      "Type": 1055,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 85,
       "Modded": false
