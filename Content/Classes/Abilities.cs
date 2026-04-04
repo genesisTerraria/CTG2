@@ -761,13 +761,55 @@ namespace CTG2.Content
 
         private void MinerOnUse() //not finished
         {
+            int offsetXLow = 0;
+            int offsetXHigh = 0;
+            int offsetYLow = 0;
+            int offsetYHigh = 0;
+
             if (Main.netMode == NetmodeID.MultiplayerClient)
             {
+                Vector2 mouseOffset = Main.MouseWorld - Player.Center;
+
+                if (Math.Abs(mouseOffset.X) >= Math.Abs(mouseOffset.Y))
+                {
+                    if (mouseOffset.X > 0)
+                    {
+                        offsetXLow = 0;
+                        offsetXHigh = 13;
+                        offsetYLow = -5;
+                        offsetYHigh = 1;
+                    }
+                    else
+                    {
+                        offsetXLow = -13;
+                        offsetXHigh = 0;
+                        offsetYLow = -5;
+                        offsetYHigh = 1;
+                    }
+                }
+                else
+                {
+                    if (mouseOffset.Y > 0)
+                    {
+                        offsetXLow = -3;
+                        offsetXHigh = 3;
+                        offsetYLow = 0;
+                        offsetYHigh = 13;
+                    }
+                    else
+                    {
+                        offsetXLow = -3;
+                        offsetXHigh = 3;
+                        offsetYLow = -13;
+                        offsetYHigh = 0;
+                    }
+                }
+
                 Point playerTile = Player.Center.ToTileCoordinates();
 
-                for (int offsetX = -13; offsetX <= 13; offsetX++)
+                for (int offsetX = offsetXLow; offsetX <= offsetXHigh; offsetX++)
                 {
-                    for (int offsetY = -5; offsetY <= 1; offsetY++)
+                    for (int offsetY = offsetYLow; offsetY <= offsetYHigh; offsetY++)
                     {
                         int x = playerTile.X + offsetX;
                         int y = playerTile.Y + offsetY;
@@ -1293,7 +1335,7 @@ namespace CTG2.Content
                         break;
 
                     case 14: //not finished
-                        SetCooldown(20);
+                        SetCooldown(27);
                         TikiPriestOnUse();
 
                         break;

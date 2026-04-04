@@ -174,7 +174,7 @@ namespace CTG2.Content.Classes
 
         public override void AI()
         {
-            if (frameCount % 6 == 0) NPC.life--;
+            if (frameCount % 8 == 0) NPC.life--;
 
             float friction = 0f; //update this to change friction
 

@@ -531,10 +531,10 @@
       "Modded": false
     },
     {
-      "Name": "Anklet of the Wind",
-      "Type": 212,
+      "Name": "Aglet",
+      "Type": 285,
       "Stack": 1,
-      "Prefix": 75,
+      "Prefix": 0,
       "Slot": 66,
       "Modded": false
     },
