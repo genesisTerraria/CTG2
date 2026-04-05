@@ -1,5 +1,5 @@
 {
-  "HealthPoints": 160,
+  "HealthPoints": 170,
   "ManaPoints": 0,
   "InventoryItems": [
     {
@@ -502,7 +502,7 @@
       "Name": "Lucky Horseshoe",
       "Type": 158,
       "Stack": 1,
-      "Prefix": 65,
+      "Prefix": 0,
       "Slot": 62,
       "Modded": false
     },
