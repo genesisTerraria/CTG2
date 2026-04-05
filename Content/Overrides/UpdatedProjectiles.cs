@@ -219,10 +219,9 @@ public class ModifyHurtModPlayer : ModPlayer
 
         if (modPlayer.currentClass.Name == "Paladin")
         {
-            Player.AddBuff(BuffID.Honey, 300);
-
             if (Player.HeldItem.type == 4760 && Main.mouseRight) // Paladin buffs when hit
             {
+                Player.AddBuff(BuffID.Honey, 300);
                 Player.AddBuff(BuffID.Regeneration, 300); //check if honey buff even works later
                 Player.AddBuff(ModContent.BuffType<Retaliation>(), 30);
             }
