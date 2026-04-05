@@ -36,7 +36,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint flamarangDelay = 30;
         private uint flamarangLastUsedCounter = 0;
 
-        private uint goldenShowerDelay = 60;
+        private uint goldenShowerDelay = 55;
         private uint goldenShowerLastUsedCounter = 0;
 
         private uint ghastlyglaiveDelay = 45;

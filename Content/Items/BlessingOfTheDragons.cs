@@ -95,7 +95,7 @@ namespace CTG2.Content.Items
 						return;
 
 					direction.Normalize();
-					float horizontalReduction = Math.Abs(direction.X) * 0.3f; 
+					float horizontalReduction = Math.Abs(direction.X) * 0.25f; 
 					float speedMultiplier = 1f - horizontalReduction;
 
 					// Apply the multiplier to the base DashVelocity

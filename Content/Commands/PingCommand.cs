@@ -54,7 +54,7 @@ namespace CTG2.Content.Commands
                     var packet = mod.GetPacket();
                     packet.Write((byte)MessageType.RequestPlayerPing);
                     packet.Write(lastPlayer.whoAmI);
-                    packet.Write(true);
+                    //packet.Write(true);
                     packet.Send();
                     return;
                 }
@@ -110,7 +110,7 @@ namespace CTG2.Content.Commands
                     var packet = mod.GetPacket();
                     packet.Write((byte)MessageType.RequestPlayerPing);
                     packet.Write(player.whoAmI);
-                    packet.Write(true);
+                    //packet.Write(true);
                     packet.Send();
                     return;
                 }
