@@ -502,7 +502,7 @@
       "Name": "Lucky Horseshoe",
       "Type": 158,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 65,
       "Slot": 62,
       "Modded": false
     },
@@ -539,9 +539,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Toolbox",
+      "Type": 1923,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 67,
       "Modded": false
