@@ -37,7 +37,7 @@ public class ProtectedRegionTile : GlobalTile
     }
 
 
-    private bool IsInProtectedRegion(int i, int j)
+    public static bool IsInProtectedRegion(int i, int j)
     {
         foreach (var region in ProtectedRegions)
         {

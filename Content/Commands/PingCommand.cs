@@ -35,14 +35,34 @@ namespace CTG2.Content.Commands
                 {
                     lastPlayer = caller.Player;
                 }
-                
-                var mod = ModContent.GetInstance<CTG2>();
-                var packet = mod.GetPacket();
-                packet.Write((byte)MessageType.RequestPlayerPing);
-                packet.Write(lastPlayer.whoAmI);
-                packet.Write(true);
-                packet.Send();
-                return;
+
+                bool found = false;
+
+                for (int player = 0; player < Main.maxPlayers; player++)
+                {
+                    if (Main.player[player].active && Main.player[player].name == lastPlayer.name)
+                    {
+                        found = true;
+                        lastPlayer = Main.player[player];
+                        break;
+                    }
+                }
+
+                if (found)
+                {
+                    var mod = ModContent.GetInstance<CTG2>();
+                    var packet = mod.GetPacket();
+                    packet.Write((byte)MessageType.RequestPlayerPing);
+                    packet.Write(lastPlayer.whoAmI);
+                    packet.Write(true);
+                    packet.Send();
+                    return;
+                }
+                else
+                {
+                    caller.Reply("Last player no longer valid.", Color.Red);
+                    return;
+                }
             }
 
             string targetName = "";

@@ -33,9 +33,13 @@ namespace CTG2.Content
 
         public override bool CanExplode(int i, int j, int type)
         {
-            if (AllowBreaking || type == TileID.Dirt || type == TileID.Bubble || type == TileID.Mud || type == TileID.Grass || type == 127)
+            if (AllowBreaking || type == TileID.Dirt || type == TileID.Mud || type == TileID.Grass || type == 127)
             {
                 return base.CanExplode(i, j, type);
+            }
+            else if (type == TileID.Bubble)
+            {
+                return !ProtectedRegionTile.IsInProtectedRegion(i, j);
             }
             else
             {
