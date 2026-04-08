@@ -31,6 +31,7 @@ namespace CTG2.Content.Commands.Auth
             packet.Write((byte)MessageType.SyncAuthPlayer);
             packet.Write((byte)Player.whoAmI);
             packet.Write(IsLoggedIn);
+            packet.Write(Username ?? "");
             packet.Send(toWho, fromWho);
         }
 

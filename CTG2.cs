@@ -1567,10 +1567,17 @@ namespace CTG2
 
                 case (byte)MessageType.SyncAuthPlayer:
                 {
-                    byte playerIndexxx = reader.ReadByte();
+                   byte playerIndexxx = reader.ReadByte();
                     bool isLoggedIn = reader.ReadBoolean();
+                    string username = reader.ReadString();
 
-                    Main.player[playerIndexxx].GetModPlayer<AuthPlayer>().IsLoggedIn = isLoggedIn;
+                    var authPlayer = Main.player[playerIndexxx].GetModPlayer<AuthPlayer>();
+                    authPlayer.IsLoggedIn = isLoggedIn;
+                    authPlayer.Username = username;
+
+                    // Apply name on all clients
+                    if (!string.IsNullOrEmpty(username))
+                        Main.player[playerIndexxx].name = username;
 
                     // If server, forward to all other clients
                     if (Main.netMode == NetmodeID.Server)
@@ -1579,6 +1586,7 @@ namespace CTG2
                         packet.Write((byte)msgType);
                         packet.Write(playerIndexxx);
                         packet.Write(isLoggedIn);
+                        packet.Write(username);
                         packet.Send(-1, whoAmI);
                     }
                     break;

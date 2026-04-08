@@ -49,7 +49,8 @@ namespace CTG2.Content.Commands
                         modPlayer.IsLoggedIn = true;
                         modPlayer.Username = username;
                         caller.Player.name = username;
-
+                        modPlayer.SyncPlayer(-1, caller.Player.whoAmI, false);
+                        
                         if (AuthPlayer.Admins.Contains(username))
                         {
                             modPlayer.IsAdmin = true;
