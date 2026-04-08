@@ -6,6 +6,8 @@ using Terraria.ID;
 using System.Collections;
 using System.Collections.Generic;
 using System;
+using CTG2.Content.Commands.Auth;
+using System.Threading.Tasks;
 
 namespace CTG2.Content.Commands
 {
@@ -16,50 +18,50 @@ namespace CTG2.Content.Commands
         public override string Description => "Log in as admin.";
         public override string Usage => "/login <password>";
 
-        public override void Action(CommandCaller caller, string input, string[] args)
-        {
-            var modPlayer = caller.Player.GetModPlayer<AdminPlayer>();
+//         public override void Action(CommandCaller caller, string input, string[] args)
+//         {
+//             var modPlayer = caller.Player.GetModPlayer<AdminPlayer>();
 
-            if (args.Length != 1)
-            {
-                caller.Reply("Usage: /login <password>", Color.Red);
-                return;
-            }
+//             if (args.Length != 1)
+//             {
+//                 caller.Reply("Usage: /login <password>", Color.Red);
+//                 return;
+//             }
 
-            if (modPlayer.IsAdmin)
-            {
-                caller.Reply("You are already logged in!", Color.Red);
-                return;
-            }
+//             if (modPlayer.IsAdmin)
+//             {
+//                 caller.Reply("You are already logged in!", Color.Red);
+//                 return;
+//             }
 
-            string inputPassword = args[0];
-            var mod = ModContent.GetInstance<CTG2>();
-            using (var stream = mod.GetFileStream("Content/Commands/Login/password.hash"))
-            using (var reader = new StreamReader(stream))
-            {
-                string storedHash = reader.ReadToEnd().Trim();
+//             string inputPassword = args[0];
+//             var mod = ModContent.GetInstance<CTG2>();
+//             using (var stream = mod.GetFileStream("Content/Commands/Login/password.hash"))
+//             using (var reader = new StreamReader(stream))
+//             {
+//                 string storedHash = reader.ReadToEnd().Trim();
 
-                if (storedHash == null)
-                {
-                    caller.Reply("Password hash not found.");
-                    return;
-                }
+//                 if (storedHash == null)
+//                 {
+//                     caller.Reply("Password hash not found.");
+//                     return;
+//                 }
 
-                string inputHash = PasswordHelper.HashPassword(inputPassword);
+//                 string inputHash = PasswordHelper.HashPassword(inputPassword);
 
-                if (inputHash == storedHash)
-                {
-                    caller.Player.GetModPlayer<AdminPlayer>().IsAdmin = true;
-                    caller.Reply("You are now logged in as admin.", Color.Green);
-                }
-                else
-                {
-                    caller.Reply("Wrong password.", Color.Red);
-                }
-            }
-        }
-    }
-}
+//                 if (inputHash == storedHash)
+//                 {
+//                     caller.Player.GetModPlayer<AdminPlayer>().IsAdmin = true;
+//                     caller.Reply("You are now logged in as admin.", Color.Green);
+//                 }
+//                 else
+//                 {
+//                     caller.Reply("Wrong password.", Color.Red);
+//                 }
+//             }
+//         }
+//     }
+// }
 
 public override void Action(CommandCaller caller, string input, string[] args)
 {
@@ -100,4 +102,6 @@ public override void Action(CommandCaller caller, string input, string[] args)
             }
         });
     });
+}
+    }
 }

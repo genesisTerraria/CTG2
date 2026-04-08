@@ -9,7 +9,7 @@ namespace CTG2.Content.Commands.Auth
     public static class AuthAPI
     {
         private static readonly HttpClient client = new();
-        private const string BaseUrl = "https://ctg2-auth.railway.app"; // your URL here
+        private const string BaseUrl = "https://ctg2.onrender.com"; // your URL here
 
         public class AuthResult
         {
