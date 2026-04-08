@@ -11,7 +11,7 @@ namespace CTG2.Content.Commands.Auth
         public string Username = "";
         public static readonly System.Collections.Generic.HashSet<string> Admins = new()
         {
-            "genesis", "Crono", "fearghal", "Brud", "tig"
+            "genesis", "crono", "fearghal", "brud", "tig"
         };
 
         public override void Initialize()
