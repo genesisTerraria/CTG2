@@ -6,8 +6,8 @@ const app = express();
 app.use(express.json());
 
 const supabase = createClient(
-    'https://xxxx.supabase.co', // your project URL
-    'your-anon-key'             // your anon public key
+    process.env.SUPABASE_URL,
+    process.env.SUPABASE_ANON_KEY
 );
 
 function hash(input) {
