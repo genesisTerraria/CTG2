@@ -60,3 +60,44 @@ namespace CTG2.Content.Commands
         }
     }
 }
+
+public override void Action(CommandCaller caller, string input, string[] args)
+{
+    if (args.Length != 2)
+    {
+        caller.Reply("Usage: /login <username> <password>", Color.Red);
+        return;
+    }
+
+    string username = args[0];
+    string password = args[1];
+    var modPlayer = caller.Player.GetModPlayer<AuthPlayer>();
+
+    if (modPlayer.IsLoggedIn)
+    {
+        caller.Reply("You are already logged in!", Color.Red);
+        return;
+    }
+
+    caller.Reply("Logging in...", Color.Yellow);
+
+    Task.Run(async () =>
+    {
+        var result = await AuthAPI.Login(username, password);
+
+        Main.QueueMainThreadAction(() =>
+        {
+            if (result.Success)
+            {
+                modPlayer.IsLoggedIn = true;
+                modPlayer.Username = username;
+                caller.Player.name = username;
+                caller.Reply("Logged in successfully.", Color.Green);
+            }
+            else
+            {
+                caller.Reply(result.Message, Color.Red);
+            }
+        });
+    });
+}
