@@ -6,6 +6,7 @@ using System.Linq;
 using Microsoft.Xna.Framework;
 using System.Text;
 using System.Collections.Generic;
+using CTG2.Content.Commands.Auth;
 
 
 namespace CTG2.Content.Commands
@@ -19,7 +20,7 @@ namespace CTG2.Content.Commands
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
-            var modPlayer = caller.Player.GetModPlayer<AdminPlayer>();
+            var modPlayer = caller.Player.GetModPlayer<AuthPlayer>();
             if (!modPlayer.IsAdmin)
             {
                 caller.Reply("You must be an admin to use this command.", Color.Red);

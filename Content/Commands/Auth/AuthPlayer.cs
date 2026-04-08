@@ -7,11 +7,17 @@ namespace CTG2.Content.Commands.Auth
     public class AuthPlayer : ModPlayer
     {
         public bool IsLoggedIn = false;
+        public bool IsAdmin = false;
         public string Username = "";
+        public static readonly System.Collections.Generic.HashSet<string> Admins = new()
+        {
+            "genesis", "Crono", "fearghal", "Brud", "tig"
+        };
 
         public override void Initialize()
         {
             IsLoggedIn = false;
+            IsAdmin = false;
             Username = "";
         }
 

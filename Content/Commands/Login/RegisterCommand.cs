@@ -39,6 +39,11 @@ namespace CTG2.Content.Commands
                         modPlayer.Username = username;
                         caller.Player.name = username;
                         caller.Reply("Registered and logged in!", Color.Green);
+
+                        if (AuthPlayer.Admins.Contains(username))
+                        {
+                            modPlayer.IsAdmin = true;
+                        }
                     }
                     else
                     {

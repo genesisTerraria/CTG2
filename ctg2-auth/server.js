@@ -60,4 +60,58 @@ app.post('/login', async (req, res) => {
     res.json({ success: true });
 });
 
+// Change password
+app.post('/changepassword', async (req, res) => {
+    const { username, oldPassword, newPassword } = req.body;
+
+    const { data: user } = await supabase
+        .from('users')
+        .select('password_hash')
+        .eq('username', hash(username))
+        .single();
+
+    if (!user)
+        return res.json({ success: false, message: 'No account found.' });
+
+    if (user.password_hash !== hash(oldPassword))
+        return res.json({ success: false, message: 'Wrong password.' });
+
+    const { error } = await supabase
+        .from('users')
+        .update({ password_hash: hash(newPassword) })
+        .eq('username', hash(username));
+
+    if (error)
+        return res.json({ success: false, message: 'Database error.' });
+
+    res.json({ success: true });
+});
+
+// Delete account
+app.post('/deleteaccount', async (req, res) => {
+    const { username, password } = req.body;
+
+    const { data: user } = await supabase
+        .from('users')
+        .select('password_hash')
+        .eq('username', hash(username))
+        .single();
+
+    if (!user)
+        return res.json({ success: false, message: 'No account found.' });
+
+    if (user.password_hash !== hash(password))
+        return res.json({ success: false, message: 'Wrong password.' });
+
+    const { error } = await supabase
+        .from('users')
+        .delete()
+        .eq('username', hash(username));
+
+    if (error)
+        return res.json({ success: false, message: 'Database error.' });
+
+    res.json({ success: true });
+});
+
 app.listen(3000, () => console.log('Auth server running on port 3000'));

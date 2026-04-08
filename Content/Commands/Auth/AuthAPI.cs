@@ -48,5 +48,37 @@ namespace CTG2.Content.Commands.Auth
                 return new AuthResult { Success = false, Message = $"Connection failed: {e.Message}" };
             }
         }
+
+        public static async Task<AuthResult> ChangePassword(string username, string oldPassword, string newPassword)
+        {
+            try
+            {
+                var body = JsonConvert.SerializeObject(new { username, oldPassword, newPassword });
+                var content = new StringContent(body, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync($"{BaseUrl}/changepassword", content);
+                var json = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<AuthResult>(json) ?? new AuthResult { Success = false, Message = "No response." };
+            }
+            catch (Exception e)
+            {
+                return new AuthResult { Success = false, Message = $"Connection failed: {e.Message}" };
+            }
+        }
+
+        public static async Task<AuthResult> DeleteAccount(string username, string password)
+        {
+            try
+            {
+                var body = JsonConvert.SerializeObject(new { username, password });
+                var content = new StringContent(body, Encoding.UTF8, "application/json");
+                var response = await client.PostAsync($"{BaseUrl}/deleteaccount", content);
+                var json = await response.Content.ReadAsStringAsync();
+                return JsonConvert.DeserializeObject<AuthResult>(json) ?? new AuthResult { Success = false, Message = "No response." };
+            }
+            catch (Exception e)
+            {
+                return new AuthResult { Success = false, Message = $"Connection failed: {e.Message}" };
+            }
+        }
     }
 }
