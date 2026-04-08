@@ -1,6 +1,8 @@
 using Terraria;
 using Terraria.ModLoader;
+using Terraria.ModLoader.IO;
 using Terraria.ID;
+using System.Collections.Generic;
 
 namespace CTG2.Content.Commands.Auth
 {
@@ -9,7 +11,8 @@ namespace CTG2.Content.Commands.Auth
         public bool IsLoggedIn = false;
         public bool IsAdmin = false;
         public string Username = "";
-        public static readonly System.Collections.Generic.HashSet<string> Admins = new()
+
+        public static readonly HashSet<string> Admins = new()
         {
             "genesis", "crono", "fearghal", "brud", "tig"
         };
@@ -21,16 +24,24 @@ namespace CTG2.Content.Commands.Auth
             Username = "";
         }
 
+        // Sync IsLoggedIn to all clients
+        public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
+        {
+            ModPacket packet = Mod.GetPacket();
+            packet.Write((byte)MessageType.SyncAuthPlayer);
+            packet.Write((byte)Player.whoAmI);
+            packet.Write(IsLoggedIn);
+            packet.Send(toWho, fromWho);
+        }
+
         public override void PostUpdate()
         {
-            // Continuously enforce the name so Terraria can't overwrite it
             if (IsLoggedIn && Username != "")
                 Player.name = Username;
 
-            if (!IsLoggedIn)
-            {
+            // Only apply webbed on the server/local — synced to other clients via packet
+            if (!IsLoggedIn && (Main.netMode != NetmodeID.MultiplayerClient || Player.whoAmI == Main.myPlayer))
                 Player.AddBuff(BuffID.Webbed, 60);
-            }
         }
     }
 }

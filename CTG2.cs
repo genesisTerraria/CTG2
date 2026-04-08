@@ -11,6 +11,7 @@ using CTG2.Content.ClientSide;
 using CTG2.Content.ServerSide;
 using CTG2.Content.Commands;
 using CTG2.Content.Items;
+using CTG2.Content.Commands.Auth;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
 using System.Collections.Generic;
@@ -138,7 +139,8 @@ namespace CTG2
         UpdatePaused = 100,
         RequestKickPlayer = 101,
         SyncModList = 102,
-        KickPlayerDifficulty = 103
+        KickPlayerDifficulty = 103,
+        SyncAuthPlayer = 104
 
     }
 
@@ -1559,6 +1561,25 @@ namespace CTG2
                         returnPacket.Write((byte)MessageType.PingProbeReturn);
                         //returnPacket.Write(print);
                         returnPacket.Send();
+                    }
+                    break;
+                }
+
+                case (byte)MessageType.SyncAuthPlayer:
+                {
+                    byte playerIndexxx = reader.ReadByte();
+                    bool isLoggedIn = reader.ReadBoolean();
+
+                    Main.player[playerIndexxx].GetModPlayer<AuthPlayer>().IsLoggedIn = isLoggedIn;
+
+                    // If server, forward to all other clients
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        ModPacket packet = GetPacket();
+                        packet.Write((byte)msgType);
+                        packet.Write(playerIndexxx);
+                        packet.Write(isLoggedIn);
+                        packet.Send(-1, whoAmI);
                     }
                     break;
                 }
