@@ -42,7 +42,7 @@ public class ChargedBowDrawer : PlayerDrawLayer
 
         // Access the fields from the projectile instance
         float rot = bow.GetRotation();
-        float charge = bow.GetCharge();
+        float charge = Math.Min(bow.GetCharge(), 40f);
         bool released = bow.GetReleased();
         float td = bow.GetTD();
 
@@ -128,7 +128,7 @@ public class ChargedBowProjectile : ModProjectile
     SoundStyle bowSound2 = new SoundStyle("CTG2/Content/Items/BowSound2");
 
     public override void SendExtraAI(BinaryWriter writer) {
-        writer.Write(charge);
+        writer.Write(Math.Min(charge, 40f));
         writer.Write(Rotation);
         writer.Write(released);
     }
@@ -169,7 +169,7 @@ public class ChargedBowProjectile : ModProjectile
             player.direction = Math.Cos(Rotation) >= 0 ? 1 : -1;
 
             if (player.channel && !released) {
-                charge = Math.Min(charge + 1f, 40f);
+                charge = charge + 1f;
                 if (charge >= 40f && c1 == 0f) {
                     c1 = 1f;
                     if (SoundEngine.TryGetActiveSound(sound, out var s)) s.Stop();
@@ -192,7 +192,7 @@ public class ChargedBowProjectile : ModProjectile
 
         if (released && Projectile.owner == Main.myPlayer && !recentlyFired) {
             Item item = player.HeldItem;
-            Vector2 speed = new Vector2(item.shootSpeed, 0f).RotatedBy(Rotation) * (0.5f + (charge / 40f) * 0.5f) * 1.8f;
+            Vector2 speed = new Vector2(item.shootSpeed, 0f).RotatedBy(Rotation) * (0.5f + (Math.Min(charge, 40f) / 40f) * 0.5f) * 1.8f;
             Vector2 spawnPos = player.MountedCenter + Vector2.One.RotatedBy(Rotation - MathHelper.PiOver4) * 2f;
 
             Projectile arrow = Projectile.NewProjectileDirect(
@@ -200,7 +200,7 @@ public class ChargedBowProjectile : ModProjectile
                 spawnPos,
                 speed,
                 (int)Projectile.ai[1],
-                (int)player.GetDamage(item.DamageType).ApplyTo(item.damage * (0.5f + charge / 80f)),
+                (int)player.GetDamage(item.DamageType).ApplyTo(item.damage * (0.5f + Math.Min(charge, 40f) / 80f)),
                 item.knockBack,
                 Projectile.owner
             );
@@ -217,32 +217,26 @@ public class ChargedBowProjectile : ModProjectile
             t++;
             if (t >= player.HeldItem.useTime) Projectile.Kill();
         }
-
-        if (charge >= 40f) {
-            player.moveSpeed *= 0.5f;
-            player.maxRunSpeed *= 0.5f;
-            player.runAcceleration *= 0.5f;
-        }
     }
 }
 
 
-// public class ChargedBowPlayer : ModPlayer
-// {
-//     public override void ResetEffects()
-//     {
-//         for (int i = 0; i < Main.maxProjectiles; i++)
-//         {
-//             Projectile p = Main.projectile[i];
-//             if (p.active && p.owner == Player.whoAmI && p.ModProjectile is ChargedBowProjectile bow)
-//             {
-//                 if (bow.charge >= 40f)
-//                 {
-//                     Player.moveSpeed *= 0.4f;
-//                     Player.maxRunSpeed *= 0.4f;
-//                 }
-//                 break;
-//             }
-//         }
-//     }
-// }
+public class ChargedBowPlayer : ModPlayer
+{
+    public override void ResetEffects()
+    {
+        for (int i = 0; i < Main.maxProjectiles; i++)
+        {
+            Projectile p = Main.projectile[i];
+            if (p.active && p.owner == Player.whoAmI && p.ModProjectile is ChargedBowProjectile bow)
+            {
+                if (bow.charge >= 40f)
+                {
+                    Player.moveSpeed *= 0.6f;
+                    Player.maxRunSpeed *= 0.6f;
+                }
+                break;
+            }
+        }
+    }
+}
