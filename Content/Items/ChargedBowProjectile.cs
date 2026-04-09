@@ -173,7 +173,7 @@ public class ChargedBowProjectile : ModProjectile
                 if (charge >= 40f && c1 == 0f) {
                     c1 = 1f;
                     if (SoundEngine.TryGetActiveSound(sound, out var s)) s.Stop();
-                    SoundEngine.PlaySound(SoundID.MaxMana, player.Center);
+                    SoundEngine.PlaySound(SoundID.MaxMana.WithVolumeScale(Main.soundVolume * 2f), player.Center);
                 }
             }
             else if (!released) {
