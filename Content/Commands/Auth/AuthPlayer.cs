@@ -14,7 +14,7 @@ namespace CTG2.Content.Commands.Auth
 
         public static readonly HashSet<string> Admins = new()
         {
-            "genesis", "crono", "fearghal", "brud", "tig"
+            "genesis", "crono", "fearghal", "brud", "tig", "chara"
         };
 
         public override void Initialize()
@@ -41,8 +41,9 @@ namespace CTG2.Content.Commands.Auth
                 Player.name = Username;
 
             // Only apply webbed on the server/local — synced to other clients via packet
-            if (!IsLoggedIn && (Main.netMode != NetmodeID.MultiplayerClient || Player.whoAmI == Main.myPlayer))
-                Player.AddBuff(BuffID.Webbed, 60);
+            // if (!IsLoggedIn && (Main.netMode != NetmodeID.MultiplayerClient || Player.whoAmI == Main.myPlayer))
+            //     Player.AddBuff(BuffID.BrokenArmor, 60);
+            //     Player.AddBuff(BuffID.WitheredWeapon, 60);
         }
     }
 }
