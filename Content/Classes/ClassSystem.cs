@@ -146,7 +146,7 @@ namespace ClassesNamespace
             Player.usedGalaxyPearl = false;
             Player.usedGummyWorm = false;
             Player.usedAmbrosia = false;
-            Player.ateArtisanBread = false;
+            Player.ateArtisanBread = true;
             Player.usedArcaneCrystal = false;
         }
 
