@@ -227,22 +227,22 @@ public class ChargedBowProjectile : ModProjectile
 }
 
 
-public class ChargedBowPlayer : ModPlayer
-{
-    public override void ResetEffects()
-    {
-        for (int i = 0; i < Main.maxProjectiles; i++)
-        {
-            Projectile p = Main.projectile[i];
-            if (p.active && p.owner == Player.whoAmI && p.ModProjectile is ChargedBowProjectile bow)
-            {
-                if (bow.charge >= 40f)
-                {
-                    Player.moveSpeed *= 0.4f;
-                    Player.maxRunSpeed *= 0.4f;
-                }
-                break;
-            }
-        }
-    }
-}
+// public class ChargedBowPlayer : ModPlayer
+// {
+//     public override void ResetEffects()
+//     {
+//         for (int i = 0; i < Main.maxProjectiles; i++)
+//         {
+//             Projectile p = Main.projectile[i];
+//             if (p.active && p.owner == Player.whoAmI && p.ModProjectile is ChargedBowProjectile bow)
+//             {
+//                 if (bow.charge >= 40f)
+//                 {
+//                     Player.moveSpeed *= 0.4f;
+//                     Player.maxRunSpeed *= 0.4f;
+//                 }
+//                 break;
+//             }
+//         }
+//     }
+// }
