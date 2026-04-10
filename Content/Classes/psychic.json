@@ -1,6 +1,6 @@
 {
   "HealthPoints": 160,
-  "ManaPoints": 17,
+  "ManaPoints": 37,
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
@@ -531,9 +531,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Step Stool",
+      "Type": 4341,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 66,
       "Modded": false

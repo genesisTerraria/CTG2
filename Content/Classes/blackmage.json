@@ -531,9 +531,9 @@
       "Modded": false
     },
     {
-      "Name": "Flesh Knuckles",
-      "Type": 3016,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 66,
       "Modded": false

@@ -37,6 +37,7 @@ namespace CTG2.Content
         public bool class4PendingBuffs = false;
 
         public int class5EndTimer = -1;
+        public bool class5PendingBuffs = false;
 
         public int class7HitCounter = 0;
         public int class7EndTimer = -1;
@@ -584,6 +585,7 @@ namespace CTG2.Content
 
             playedSound = false;
             class5EndTimer = 150;
+            class5PendingBuffs = true;
 
             SoundEngine.PlaySound(SoundID.DD2_MonkStaffGroundImpact.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
 
@@ -618,6 +620,19 @@ namespace CTG2.Content
 
             Player.trashItem = new Item();
             Main.mouseItem = new Item();
+        }
+
+        private void PaladinPostStatus()
+        {
+            if (class5PendingBuffs) // runs 5 second interval
+            {
+                if (class5EndTimer <= 0)
+                {
+                    Player.AddBuff(160, 60);
+
+                    class5PendingBuffs = false;
+                }
+            }
         }
 
 
@@ -1372,6 +1387,7 @@ namespace CTG2.Content
         {
             BeastPostStatus();
             GladiatorPostStatus();
+            PaladinPostStatus();
             PsychicPostStatus();
             ClownPostStatus();
             TreePostStatus();
