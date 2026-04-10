@@ -99,8 +99,8 @@ namespace CTG2.Content.Items {
 
 		public override void SetDefaults() {
 			Projectile.netImportant = true; // This ensures that the projectile is synced when other players join the world.
-			Projectile.width = 15; // The width of your projectile
-			Projectile.height = 15; // The height of your projectile
+			Projectile.width = 16; // The width of your projectile
+			Projectile.height = 16; // The height of your projectile
 			Projectile.friendly = true; // Deals damage to enemies
 			Projectile.penetrate = -1; // Infinite pierce
 			Projectile.DamageType = DamageClass.Melee; // Deals melee damage
