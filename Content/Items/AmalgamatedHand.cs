@@ -19,7 +19,7 @@ namespace CTG2.Content.Items {
 	{
 		public override void SetDefaults() {
 	  		Item.CloneDefaults(ItemID.Sunfury);
-			Item.damage = 38;
+			Item.damage = 35;
 			Item.useTime = 40;
             Item.useAnimation = 40;
             Item.shootSpeed = 13.8f;
@@ -99,8 +99,8 @@ namespace CTG2.Content.Items {
 
 		public override void SetDefaults() {
 			Projectile.netImportant = true; // This ensures that the projectile is synced when other players join the world.
-			Projectile.width = 16; // The width of your projectile
-			Projectile.height = 16; // The height of your projectile
+			Projectile.width = 14; // The width of your projectile
+			Projectile.height = 14; // The height of your projectile
 			Projectile.friendly = true; // Deals damage to enemies
 			Projectile.penetrate = -1; // Infinite pierce
 			Projectile.DamageType = DamageClass.Melee; // Deals melee damage
