@@ -523,18 +523,18 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
-      "Prefix": 0,
+      "Name": "Shackle",
+      "Type": 216,
+      "Stack": 1,
+      "Prefix": 63,
       "Slot": 65,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
-      "Prefix": 0,
+      "Name": "White String",
+      "Type": 3306,
+      "Stack": 1,
+      "Prefix": 64,
       "Slot": 66,
       "Modded": false
     },
@@ -603,9 +603,9 @@
       "Modded": false
     },
     {
-      "Name": "Blindfold",
-      "Type": 888,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 75,
       "Modded": false
@@ -619,9 +619,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Blindfold",
+      "Type": 888,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 77,
       "Modded": false
@@ -683,8 +683,8 @@
       "Modded": false
     },
     {
-      "Name": "Silver and Black Dye",
-      "Type": 3559,
+      "Name": "Reflective Silver Dye",
+      "Type": 3026,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 85,
@@ -699,9 +699,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Silver and Black Dye",
+      "Type": 3559,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 87,
       "Modded": false
