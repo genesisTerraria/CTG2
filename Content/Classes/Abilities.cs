@@ -121,7 +121,8 @@ namespace CTG2.Content
                          Player.inventory[b].type == ItemID.BlizzardinaBottle || Player.inventory[b].type == ItemID.EoCShield || Player.inventory[b].type == ItemID.Magiluminescence || Player.inventory[b].type == ItemID.DestroyerEmblem ||
                          Player.inventory[b].type == ItemID.DevilHorns || Player.inventory[b].type == ItemID.FlowerBoyShirt || Player.inventory[b].type == ItemID.FlowerBoyPants || Player.inventory[b].type == ItemID.LizardTail ||
                          Player.inventory[b].type == ItemID.ApprenticeScarf || Player.inventory[b].type == ItemID.Yoraiz0rDarkness || Player.inventory[b].type == 5558 || Player.inventory[b].type == 4772 || 
-                         Player.inventory[b].type == 1839 || Player.inventory[b].type == 1748 || Player.inventory[b].type == ItemID.Mushroom || Player.inventory[b].type == 4663 || Player.inventory[b].type == 1007 || Player.inventory[b].type == 1019)
+                         Player.inventory[b].type == 1839 || Player.inventory[b].type == 1748 || Player.inventory[b].type == ItemID.Mushroom || Player.inventory[b].type == 4663 || Player.inventory[b].type == 1007 ||
+                         Player.inventory[b].type == 1019 || Player.inventory[b].type == 1018 || Player.inventory[b].type == 3016 || Player.inventory[b].type == 926)
                 {
                     Item newItem = new Item();
                     newItem.TurnToAir();
