@@ -230,11 +230,11 @@ public class ChargedBowPlayer : ModPlayer
             Projectile p = Main.projectile[i];
             if (p.active && p.owner == Player.whoAmI && p.ModProjectile is ChargedBowProjectile bow)
             {
-                if (bow.charge >= 60f)
-                {
-                    Player.moveSpeed *= 0.8f;
-                    Player.maxRunSpeed *= 0.8f;
-                }
+                // if (bow.charge >= 60f)
+                // {
+                //     Player.moveSpeed *= 0.8f;
+                //     Player.maxRunSpeed *= 0.8f;
+                // }
                 break;
             }
         }
