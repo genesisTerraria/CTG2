@@ -515,8 +515,8 @@
       "Modded": false
     },
     {
-      "Name": "Worm Scarf",
-      "Type": 3224,
+      "Name": "Flesh Knuckles",
+      "Type": 3016,
       "Stack": 1,
       "Prefix": 76,
       "Slot": 64,
@@ -595,9 +595,9 @@
       "Modded": false
     },
     {
-      "Name": "Hand Warmer",
-      "Type": 1921,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 74,
       "Modded": false
