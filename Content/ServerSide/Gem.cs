@@ -67,7 +67,7 @@ public class Gem
             if (!ply.active || ply.dead)
                 continue;
 
-            if (ply.Hitbox.Intersects(GemHitbox))
+            if (ply.Hitbox.Intersects(GemHitbox) && !IsHeld && !ply.ghost)
             {
                 // IsHeld = true;
                 // HeldBy = ply.whoAmI;
