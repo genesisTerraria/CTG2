@@ -348,7 +348,6 @@ namespace CTG2.Content
                         if (attacker.HasBuff(320) && attacker.team != Player.team)
                         {
                             Player.AddBuff(30, 60);
-                            Player.AddBuff(32, 60);
                             Player.AddBuff(44, 60);
                         }
                         break;

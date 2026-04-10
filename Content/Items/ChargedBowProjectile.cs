@@ -232,8 +232,8 @@ public class ChargedBowPlayer : ModPlayer
             {
                 if (bow.charge >= 60f)
                 {
-                    Player.moveSpeed *= 0.6f;
-                    Player.maxRunSpeed *= 0.6f;
+                    Player.moveSpeed *= 0.8f;
+                    Player.maxRunSpeed *= 0.8f;
                 }
                 break;
             }
