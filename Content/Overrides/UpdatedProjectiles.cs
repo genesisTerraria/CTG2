@@ -31,32 +31,32 @@ public class ProjectileOverrides : GlobalProjectile
 
     public override void AI(Projectile projectile)
     {
-        if (projectile.type == 280)
-        {
-            float scale = 0.5f;
+        // if (projectile.type == 280)
+        // {
+        //     float scale = 0.5f;
 
-            Vector2 center = projectile.Center;
+        //     Vector2 center = projectile.Center;
 
-            projectile.scale = scale;
+        //     projectile.scale = scale;
 
-            projectile.width = (int)(projectile.width * scale);
-            projectile.height = (int)(projectile.height * scale);
+        //     projectile.width = (int)(projectile.width * scale);
+        //     projectile.height = (int)(projectile.height * scale);
 
-            projectile.Center = center;
-        }
-        if (projectile.type == 706)
-        {
-            float scale = 0.75f;
+        //     projectile.Center = center;
+        // }
+        // if (projectile.type == 706)
+        // {
+        //     float scale = 0.75f;
 
-            Vector2 center = projectile.Center;
+        //     Vector2 center = projectile.Center;
 
-            projectile.scale = scale;
+        //     projectile.scale = scale;
 
-            projectile.width = (int)(projectile.width * scale);
-            projectile.height = (int)(projectile.height * scale);
+        //     projectile.width = (int)(projectile.width * scale);
+        //     projectile.height = (int)(projectile.height * scale);
 
-            projectile.Center = center;
-        }
+        //     projectile.Center = center;
+        // }
         if (!playedSoundBoomerangs && (projectile.type == ProjectileID.ThornChakram || projectile.type == ProjectileID.Flamarang))
         {
             SoundEngine.PlaySound(SoundID.Item1, projectile.Center);
@@ -165,32 +165,32 @@ public class ProjectileOverrides : GlobalProjectile
             projectile.tileCollide = false;
             projectile.timeLeft = 1; // dies almost instantly
         }
-        if (projectile.type == 280)
-        {
-            float scale = 0.5f;
+        // if (projectile.type == 280)
+        // {
+        //     float scale = 0.5f;
 
-            Vector2 center = projectile.Center;
+        //     Vector2 center = projectile.Center;
 
-            projectile.scale = scale;
+        //     projectile.scale = scale;
 
-            projectile.width = (int)(projectile.width * scale);
-            projectile.height = (int)(projectile.height * scale);
+        //     projectile.width = (int)(projectile.width * scale);
+        //     projectile.height = (int)(projectile.height * scale);
 
-            projectile.Center = center;
-        }
-        if (projectile.type == 706)
-        {
-            float scale = 0.75f;
+        //     projectile.Center = center;
+        // }
+        // if (projectile.type == 706)
+        // {
+        //     float scale = 0.75f;
 
-            Vector2 center = projectile.Center;
+        //     Vector2 center = projectile.Center;
 
-            projectile.scale = scale;
+        //     projectile.scale = scale;
 
-            projectile.width = (int)(projectile.width * scale);
-            projectile.height = (int)(projectile.height * scale);
+        //     projectile.width = (int)(projectile.width * scale);
+        //     projectile.height = (int)(projectile.height * scale);
 
-            projectile.Center = center;
-        }
+        //     projectile.Center = center;
+        // }
         if (projectile.type == ProjectileID.NebulaArcanumExplosionShot)
         {
             projectile.damage = 0; //second check in case first fails for nebula epxlosion
