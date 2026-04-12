@@ -57,10 +57,6 @@ public class ProjectileOverrides : GlobalProjectile
 
             projectile.Center = center;
         }
-        if (projectile.type == 706)
-        {
-            projectile.scale = 1.1f;
-        }
         if (!playedSoundBoomerangs && (projectile.type == ProjectileID.ThornChakram || projectile.type == ProjectileID.Flamarang))
         {
             SoundEngine.PlaySound(SoundID.Item1, projectile.Center);
