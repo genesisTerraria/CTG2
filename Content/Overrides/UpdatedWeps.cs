@@ -225,7 +225,7 @@ namespace CTG2.Content.Items.ModifiedWeps
 
                 case 218: // phoenix fireball
                     item.crit = 0;
-                    item.damage = 34;
+                    item.damage = 32;
                     item.shootSpeed = 13f;
                     item.shoot = 666;
                     item.scale = 0;
@@ -236,8 +236,8 @@ namespace CTG2.Content.Items.ModifiedWeps
 
                 case 3835: // phoenix phantom
                     item.crit = 0;
-                    item.damage = 36;
-                    item.shootSpeed = 6f;
+                    item.damage = 34;
+                    item.shootSpeed = 5f;
                     item.shoot = 706;
                     item.mana = 15;
                     item.scale = 0;
@@ -247,7 +247,7 @@ namespace CTG2.Content.Items.ModifiedWeps
 
                 case 3543: // phoenix aerial bane
                     item.crit = 0;
-                    item.damage = 32;
+                    item.damage = 31;
                     item.shootSpeed = 9f;
                     item.shoot = 710;
                     item.mana = 10;

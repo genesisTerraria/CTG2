@@ -31,6 +31,32 @@ public class ProjectileOverrides : GlobalProjectile
 
     public override void AI(Projectile projectile)
     {
+        if (projectile.type == 280)
+        {
+            float scale = 0.5f;
+
+            Vector2 center = projectile.Center;
+
+            projectile.scale = scale;
+
+            projectile.width = (int)(projectile.width * scale);
+            projectile.height = (int)(projectile.height * scale);
+
+            projectile.Center = center;
+        }
+        if (projectile.type == 706)
+        {
+            float scale = 0.75f;
+
+            Vector2 center = projectile.Center;
+
+            projectile.scale = scale;
+
+            projectile.width = (int)(projectile.width * scale);
+            projectile.height = (int)(projectile.height * scale);
+
+            projectile.Center = center;
+        }
         if (projectile.type == 706)
         {
             projectile.scale = 1.1f;
