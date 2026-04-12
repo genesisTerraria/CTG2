@@ -571,69 +571,69 @@ namespace ClassesNamespace
                 bombCounter += 1200;
             }
 
-            if (gameTime >= blockCounter && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0 && gameTime <= 19000) // blocks over time
-            {
-                int stack = 0;
+            // if (gameTime >= blockCounter && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0 && gameTime <= 19000) // blocks over time
+            // {
+            //     int stack = 0;
 
-                switch (playerManager.currentClass?.Name)
-                {
-                    case "Archer":
-                        stack = 50;
-                        break;
-                    case "Ninja":
-                        stack = 50;
-                        break;
-                    case "Beast":
-                        stack = 50;
-                        break;
-                    case "Gladiator":
-                        stack = 50;
-                        break;
-                    case "Paladin":
-                        stack = 50;
-                        break;
-                    case "Tank":
-                        stack = 50;
-                        break;
-                    case "Black Mage":
-                        stack = 50;
-                        break;
-                    case "Psychic":
-                        stack = 50;
-                        break;
-                    case "White Mage":
-                        stack = 50;
-                        break;
-                    case "Miner":
-                        stack = 50;
-                        break;
-                    case "Fish":
-                        stack = 50;
-                        break;
-                    case "Clown":
-                        stack = 50;
-                        break;
-                    case "Phoenix":
-                        stack = 50;
-                        break;
-                    case "Tiki Priest":
-                        stack = 50;
-                        break;
-                    case "Tree":
-                        stack = 50;
-                        break;
-                    case "Mutant":
-                        stack = 50;
-                        break;
-                    case "Leech":
-                        stack = 50;
-                        break;
-                }
+            //     switch (playerManager.currentClass?.Name)
+            //     {
+            //         case "Archer":
+            //             stack = 50;
+            //             break;
+            //         case "Ninja":
+            //             stack = 50;
+            //             break;
+            //         case "Beast":
+            //             stack = 50;
+            //             break;
+            //         case "Gladiator":
+            //             stack = 50;
+            //             break;
+            //         case "Paladin":
+            //             stack = 50;
+            //             break;
+            //         case "Tank":
+            //             stack = 50;
+            //             break;
+            //         case "Black Mage":
+            //             stack = 50;
+            //             break;
+            //         case "Psychic":
+            //             stack = 50;
+            //             break;
+            //         case "White Mage":
+            //             stack = 50;
+            //             break;
+            //         case "Miner":
+            //             stack = 50;
+            //             break;
+            //         case "Fish":
+            //             stack = 50;
+            //             break;
+            //         case "Clown":
+            //             stack = 50;
+            //             break;
+            //         case "Phoenix":
+            //             stack = 50;
+            //             break;
+            //         case "Tiki Priest":
+            //             stack = 50;
+            //             break;
+            //         case "Tree":
+            //             stack = 50;
+            //             break;
+            //         case "Mutant":
+            //             stack = 50;
+            //             break;
+            //         case "Leech":
+            //             stack = 50;
+            //             break;
+            //     }
 
-                giveItemDirect(ItemID.DirtBlock, stack);
+            //     giveItemDirect(ItemID.DirtBlock, stack);
 
-                blockCounter += 1800;
-            }
+            //     blockCounter += 1800;
+            // }
             
             return;
             // if (Main.GameUpdateCount % 60 != 0) //replace dye after removal every second
