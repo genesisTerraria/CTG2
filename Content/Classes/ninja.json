@@ -29,7 +29,7 @@
     {
       "Name": "Mud Block",
       "Type": 176,
-      "Stack": 200,
+      "Stack": 300,
       "Prefix": 0,
       "Slot": 3,
       "Modded": false
