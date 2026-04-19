@@ -1332,37 +1332,34 @@ public class GameManager : ModSystem
     {
         Player player = Main.player[playerIdx];
         // Clear main inventory
+        player.extraAccessory = false;
+        player.extraAccessorySlots = 0;
+        
         for (int i = 0; i < player.inventory.Length; i++)
-        {
-            player.inventory[i].TurnToAir();
-        }
+            player.inventory[i] = new Item();
 
-        // Clear armor and accessories
         for (int i = 0; i < player.armor.Length; i++)
-        {
-            player.armor[i].TurnToAir();
-        }
+            player.armor[i] = new Item();
 
-        // Clear dye slots
-        for (int i = 0; i < player.dye.Length; i++)
-        {
-            player.dye[i].TurnToAir();
-        }
-
-        // Clear miscellaneous equipment
         for (int i = 0; i < player.miscEquips.Length; i++)
-        {
-            player.miscEquips[i].TurnToAir();
-        }
+            player.miscEquips[i] = new Item();
 
-        // Clear misc dyes
+        for (int i = 0; i < player.dye.Length; i++)
+            player.dye[i] = new Item();
+
         for (int i = 0; i < player.miscDyes.Length; i++)
-        {
-            player.miscDyes[i].TurnToAir();
-        }
+            player.miscDyes[i] = new Item();
 
-        // Sync inventory changes to all clients
-        //NetMessage.SendData(MessageID.SyncPlayer, -1, -1, null, player.whoAmI);
+        player.trashItem = new Item();
+        Main.mouseItem = new Item();
+
+        player.usedAegisFruit = false;
+        player.usedAegisCrystal = false;
+        player.usedGalaxyPearl = false;
+        player.usedGummyWorm = false;
+        player.usedAmbrosia = false;
+        player.ateArtisanBread = true;
+        player.usedArcaneCrystal = false;
 
         Console.WriteLine($"GameManager: Cleared inventory for player {player.whoAmI} ({player.name})");
     }
