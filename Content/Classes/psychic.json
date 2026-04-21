@@ -11,8 +11,8 @@
       "Modded": true
     },
     {
-      "Name": "Whoopie Cushion",
-      "Type": 215,
+      "Name": "Thunder Zapper",
+      "Type": 4062,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 1,
@@ -323,9 +323,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Whoopie Cushion",
+      "Type": 215,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 40,
       "Modded": false
@@ -491,8 +491,8 @@
       "Modded": false
     },
     {
-      "Name": "Ash Wood Greaves",
-      "Type": 5281,
+      "Name": "Tax Collector\u0027s Pants",
+      "Type": 3244,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 61,
@@ -571,9 +571,9 @@
       "Modded": false
     },
     {
-      "Name": "Tax Collector\u0027s Pants",
-      "Type": 3244,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 71,
       "Modded": false

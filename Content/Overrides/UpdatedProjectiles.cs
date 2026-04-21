@@ -72,6 +72,13 @@ public class ProjectileOverrides : GlobalProjectile
                 projectile.timeLeft = 180;
             }
         }
+        if (projectile.type == 617)
+        {
+            if (projectile.timeLeft > 300)
+            {
+                projectile.timeLeft = 300;
+            }
+        }
         if (projectile.type == 41)
         {
             projectile.extraUpdates = 1; // determines how quickly the projectile falls and velocity magnitude
@@ -273,6 +280,19 @@ public class ModifyHurtModPlayer : ModPlayer
                 }
             }
             Player.ClearBuff(BuffID.Poisoned);
+        }
+        if (info.DamageSource.SourceProjectileType == 732)
+        {
+            Player attacker = Main.player[attackerIndex];
+            var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
+            if (attackerPlayer.currentClass.Name == "Psychic")
+            {
+                ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
+                packet.Write((byte)CTG2.MessageType.RequestMana);
+                packet.Write(attacker.whoAmI);
+                packet.Write(10);
+                packet.Send();
+            }
         }
         if (info.DamageSource.SourceProjectileType == 507)
         {

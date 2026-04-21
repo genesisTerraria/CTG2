@@ -57,6 +57,9 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint orbDelay = 60;
         private uint orbLastUsedCounter = 0;
 
+        private uint thunderZapperDelay = 60;
+        private uint thunderZapperLastUsedCounter = 0;
+
         public override bool InstancePerEntity => true;
 
 
@@ -135,7 +138,8 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     break;
                 case ItemID.NebulaArcanum: //psy
-                    item.damage = 69;
+                    item.damage = 53;
+                    item.shootSpeed = 7;
                     break;
                 case ItemID.AmethystStaff:
                     item.damage = 39;
@@ -276,6 +280,16 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     item.mana = 11;
                     break;
+                case 4062: // psychic charge wep
+                    item.shoot = 732;
+                    item.scale = 0;
+                    item.damage = 23;
+                    item.useTime = 14;
+                    item.useAnimation = 14;
+                    item.shootSpeed = 20;
+                    item.crit = 0;
+                    item.mana = 0;
+                    break;
             }
         }
 
@@ -334,6 +348,17 @@ namespace CTG2.Content.Items.ModifiedWeps
                 if (Main.GameUpdateCount - rForkLastUsedCounter >= rForkDelay)
                 {
                     rForkLastUsedCounter = Main.GameUpdateCount;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (item.type == 4062)
+            {
+                if (Main.GameUpdateCount - thunderZapperLastUsedCounter >= thunderZapperDelay)
+                {
+                    thunderZapperLastUsedCounter = Main.GameUpdateCount;
 
                     return true;
                 }

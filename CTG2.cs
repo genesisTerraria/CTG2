@@ -140,7 +140,9 @@ namespace CTG2
         RequestKickPlayer = 101,
         SyncModList = 102,
         KickPlayerDifficulty = 103,
-        SyncAuthPlayer = 104
+        SyncAuthPlayer = 104,
+        RequestMana = 105,
+        SyncMana = 106
 
     }
 
@@ -1191,6 +1193,48 @@ namespace CTG2
                         break;
                 
                     player.Heal(amount);
+                    break;
+                }
+
+                case (byte)MessageType.RequestMana:
+                {
+                    if (Main.netMode != NetmodeID.Server)
+                        break;
+                
+                    int plyrindex = reader.ReadInt32();
+                    int amt = reader.ReadInt32();
+                
+                    Player player = Main.player[plyrindex];
+                    if (!player.active)
+                        break;
+                
+                    // Server heals
+                    player.statMana = Math.Min(player.statManaMax2, player.statMana + amt);
+                
+                    // Sync to all clients (including sender)
+                    ModPacket packet = GetPacket();
+                    packet.Write((byte)MessageType.SyncMana);
+                    packet.Write(plyrindex);
+                    packet.Write(amt);
+                    packet.Send();
+
+                    break;
+                }
+
+                case (byte)MessageType.SyncMana:
+                {
+                    // SERVER -> CLIENTS ONLY
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                        break;
+                
+                    int playerID = reader.ReadInt32();
+                    int amount = reader.ReadInt32();
+                
+                    Player player = Main.player[playerID];
+                    if (!player.active)
+                        break;
+                
+                    player.statMana = Math.Min(player.statManaMax2, player.statMana + amount);
                     break;
                 }
 

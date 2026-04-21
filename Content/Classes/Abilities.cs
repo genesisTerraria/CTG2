@@ -678,8 +678,10 @@ namespace CTG2.Content
 
         private void PsychicOnUse()
         {
-            Player.AddBuff(196, 54000);
             Player.AddBuff(178, 54000);
+            Player.AddBuff(196, 54000);
+            Player.AddBuff(117, 54000);
+            Player.AddBuff(7, 54000);
 
             psychicActive = true;
             class8HP = Player.statLife;
@@ -703,7 +705,7 @@ namespace CTG2.Content
         {
             if (psychicActive && manaConsumed > 0)
             {
-                int hpCost = manaConsumed;
+                int hpCost = 20; //manaConsumed;
                 Player.statLife -= hpCost;
                 class8HP = Player.statLife;
 
@@ -716,11 +718,6 @@ namespace CTG2.Content
 
                 NetMessage.SendData(MessageID.SyncPlayer, -1, -1, null, Player.whoAmI); // Sync HP
             }
-        }
-
-        private void PsychicPostStatus()
-        {
-
         }
 
         private void WhiteMageOnUse()
@@ -1267,6 +1264,16 @@ namespace CTG2.Content
 
                 NinjaAbilityDeequip();
             }
+            
+            if (selectedClass == 8 && !Player.dead && !Player.ghost && playerManager.playerState == PlayerManager.PlayerState.Active && psychicActive && CTG2.Ability1Keybind.JustPressed)
+            {
+                Player.ClearBuff(178);
+                Player.ClearBuff(196);
+                Player.ClearBuff(117);
+                Player.ClearBuff(7);
+
+                psychicActive = false;
+            }
 
             if (((Player.HeldItem.type == ItemID.WhoopieCushion && Player.controlUseItem && Player.itemTime == 0) || CTG2.Ability1Keybind.JustPressed) && cooldown == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && !Player.HasBuff(BuffID.Webbed)) // Only activate if not on cooldown
             {
@@ -1388,7 +1395,6 @@ namespace CTG2.Content
             BeastPostStatus();
             GladiatorPostStatus();
             PaladinPostStatus();
-            PsychicPostStatus();
             ClownPostStatus();
             TreePostStatus();
 
