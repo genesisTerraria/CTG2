@@ -14,8 +14,7 @@ namespace CTG2.Content
     public class ChatPlayer : ModPlayer
     {
         public bool IsMuted = false;
-
-
+        
         public override void PreUpdate()
         {
             if (IsMuted && !string.IsNullOrEmpty(Main.chatText))

@@ -16,35 +16,38 @@ namespace CTG2.Content.Functionality
         {
             Terraria.Chat.On_ChatHelper.DisplayMessage += (orig, text, color, messageAuthor) =>
             {
-                var x = ModContent.GetInstance<CTG2>();
-                if (CTG2.UuidByWhoAmI.TryGetValue(messageAuthor, out var uuid) && x.PlayerDataDictionary.TryGetValue(uuid, out var pd) && pd.myAdminStatus)
-                {
-                    color = new Color(140, 43, 79, 255);
-                }
+                // var x = ModContent.GetInstance<CTG2>();
+                // if (CTG2.UuidByWhoAmI.TryGetValue(messageAuthor, out var uuid) && x.PlayerDataDictionary.TryGetValue(uuid, out var pd) && pd.myAdminStatus)
+                // {
+                //     color = new Color(140, 43, 79, 255);
+                // }
 
-                else
-                {
-                    if (Main.player[messageAuthor].team == 3) { color = Main.teamColor[Main.player[messageAuthor].team]; }
-                    if (Main.player[messageAuthor].team == 1) { color = Main.teamColor[Main.player[messageAuthor].team]; }
-                }
+                // else
+                // {
+                //     if (Main.player[messageAuthor].team == 3) { color = Main.teamColor[Main.player[messageAuthor].team]; }
+                //     if (Main.player[messageAuthor].team == 1) { color = Main.teamColor[Main.player[messageAuthor].team]; }
+                // }
+
+                if (Main.player[messageAuthor].team == 3) { color = Main.teamColor[Main.player[messageAuthor].team]; }
+                if (Main.player[messageAuthor].team == 1) { color = Main.teamColor[Main.player[messageAuthor].team]; }
                 
                 orig(text, color, messageAuthor);
             };
-            Terraria.GameContent.UI.Chat.On_NameTagHandler.GenerateTag += (orig, name) =>
-            {
-                var p = Array.Find(Main.player, pl => pl.active && pl.name == name);
-                if (p != null &&
-                    CTG2.UuidByWhoAmI.TryGetValue(p.whoAmI, out var uuid) && ModContent.GetInstance<CTG2>().PlayerDataDictionary.TryGetValue(uuid, out var data))
-                {
-                    if (data.myAdminStatus && data.chatFlairItemId ==58) 
-                        return "[i:5554] [Admin] " + name + ":";
+            // Terraria.GameContent.UI.Chat.On_NameTagHandler.GenerateTag += (orig, name) =>
+            // {
+            //     var p = Array.Find(Main.player, pl => pl.active && pl.name == name);
+            //     if (p != null &&
+            //         CTG2.UuidByWhoAmI.TryGetValue(p.whoAmI, out var uuid) && ModContent.GetInstance<CTG2>().PlayerDataDictionary.TryGetValue(uuid, out var data))
+            //     {
+            //         if (data.myAdminStatus && data.chatFlairItemId ==58) 
+            //             return "[i:5554] [Admin] " + name + ":";
 
-                    if (data.chatFlairItemId >= 0)
-                        return "[i:" + data.chatFlairItemId + "] " + name + ":";
-                }
+            //         if (data.chatFlairItemId >= 0)
+            //             return "[i:" + data.chatFlairItemId + "] " + name + ":";
+            //     }
 
-                return name + ":"; // fallback
-            };
+            //     return name + ":"; // fallback
+            // };
 
         
             Terraria.On_Player.DropTombstone += (orig, self, coins, deathText, hitDir) => { };

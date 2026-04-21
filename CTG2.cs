@@ -973,7 +973,7 @@ namespace CTG2
 
                     Color teamColor = GetTeamColor(senderID);
 
-                    string formattedMessage = $"[TEAM CHAT] {senderPlayer.name}: {teamMessage}";
+                    string formattedMessage = $"[TEAM CHAT] <{senderPlayer.name}> {teamMessage}";
 
                     foreach (Player teamPlayer in Main.player)
                     {
