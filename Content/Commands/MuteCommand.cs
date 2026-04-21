@@ -45,7 +45,6 @@
 //                 return;
 //             }
 
-
 //             var mod1 = ModContent.GetInstance<CTG2>();
 //             ModPacket packet1 = mod1.GetPacket();
 //             packet1.Write((byte)MessageType.RequestMute);

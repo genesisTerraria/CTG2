@@ -125,7 +125,7 @@ public class ClientModifications : ModSystem
 
         c.EmitDelegate<System.Func<Player, bool>>(player =>
         {
-            if (player.TryGetModPlayer<AdminPlayer>(out var adminPlayer) && adminPlayer.IsAdmin)
+            if (player.TryGetModPlayer<Content.Commands.Auth.AuthPlayer>(out var adminPlayer) && adminPlayer.IsAdmin)
             {
                 return true;
             }

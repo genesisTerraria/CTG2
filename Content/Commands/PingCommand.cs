@@ -102,7 +102,7 @@ namespace CTG2.Content.Commands
                 if (player == null || !player.active)
                     continue;
 
-                if (player.name.Equals(targetName, StringComparison.OrdinalIgnoreCase))
+                if (player.name.Equals(targetName, StringComparison.Ordinal))
                 {
                     lastPlayer = player;
 

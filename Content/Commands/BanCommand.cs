@@ -8,6 +8,7 @@ using System;
 using Terraria.ID;
 using CTG2;
 using CTG2.Content.Commands.Auth;
+using System.Collections.Generic;
 
 namespace CTG2.Content.Commands
 {
@@ -30,22 +31,62 @@ namespace CTG2.Content.Commands
                 return;
             }
 
-            if (args.Length != 1)
+            string rawInput = Main.chatText; 
+
+            string message = "";
+            if (rawInput.Length > 5) 
             {
-                caller.Reply("Usage: /ban <playerName>");
+                message = rawInput.Substring(5).Trim();
+            }
+
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                caller.Reply("Message cannot be empty!", Color.Red);
                 return;
             }
 
-            string targetName = string.Join(" ", args);
+            string[] messageParts = message.Split(' ');
+
+            string targetName = "";
+
+            if (messageParts[0].StartsWith("\""))
+            {
+                List<string> parts = new List<string>();
+                bool foundClosingQuote = false;
+
+                for (int i = 0; i < messageParts.Length; i++)
+                {
+                    parts.Add(messageParts[i]);
+
+                    if (messageParts[i].EndsWith("\""))
+                    {
+                        foundClosingQuote = true;
+
+                        targetName = string.Join(" ", parts).Trim('"');
+
+                        break;
+                    }
+                }
+
+                if (!foundClosingQuote)
+                {
+                    caller.Reply("Missing closing quote for item name.", Color.Red);
+                    return;
+                }
+            }
+            else
+            {
+                targetName = args[0];
+            }
 
             foreach (Player player in Main.player)
             {
                 if (player == null || !player.active)
                     continue;
 
-                if (player.name.Equals(targetName, StringComparison.OrdinalIgnoreCase))
+                if (player.name.Equals(targetName, StringComparison.Ordinal))
                 {
-                    var adminPlayer = player.GetModPlayer<AdminPlayer>();
+                    var adminPlayer = player.GetModPlayer<AuthPlayer>();
 
                     if (adminPlayer.IsAdmin)
                     {
@@ -55,7 +96,7 @@ namespace CTG2.Content.Commands
 
                     ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
                     packet.Write((byte)MessageType.RequestBanPlayer);
-                    packet.Write(args[0]); 
+                    packet.Write(targetName); 
                     packet.Send();
                     caller.Reply($"Player '{player.name}' has been banned.", Color.Green);
                     return;

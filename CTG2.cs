@@ -1074,7 +1074,7 @@ namespace CTG2
                     Player targetPlayer = null;
                     foreach (Player p in Main.player)
                     {
-                        if (p.active && p.name.Equals(targetPlayerName, StringComparison.OrdinalIgnoreCase))
+                        if (p.active && p.name.Equals(targetPlayerName, StringComparison.Ordinal))
                         {
                             targetPlayer = p;
                             break;

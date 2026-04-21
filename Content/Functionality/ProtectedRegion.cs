@@ -55,7 +55,7 @@ public class TempModPlayer : ModPlayer
 
     public override void PostUpdate()
     {
-        var adminPlayer = Player.GetModPlayer<CTG2.Content.AdminPlayer>();
+        var adminPlayer = Player.GetModPlayer<CTG2.Content.Commands.Auth.AuthPlayer>();
 
         if (adminPlayer.IsAdmin && Main.myPlayer == Player.whoAmI &&
             Main.keyState.IsKeyDown(Microsoft.Xna.Framework.Input.Keys.F5) &&
