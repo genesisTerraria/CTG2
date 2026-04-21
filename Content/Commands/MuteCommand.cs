@@ -1,57 +1,109 @@
-// using Terraria;
-// using Terraria.ID;
-// using Terraria.ModLoader;
-// using Microsoft.Xna.Framework;
-// using System;
-// using System.Linq;
-// using System.Collections.Generic;
-// using CTG2.Content.ClientSide;
+using Terraria;
+using Terraria.ModLoader;
+using Terraria.Localization;
+using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria.Net;
+using System;
+using Terraria.ID;
+using CTG2;
+using CTG2.Content.Commands.Auth;
+using System.Collections.Generic;
 
+namespace CTG2.Content.Commands
+{
+    public class MuteCommand : ModCommand
+    {
+        public override CommandType Type => CommandType.Chat;
 
-// namespace CTG2.Content.Commands
-// {
-//     public class MuteCommand : ModCommand
-//     {
-//         private static readonly Dictionary<int, int> playerTeamAssignments = new();
+        public override string Command => "mute";
 
-//         public override CommandType Type => CommandType.Chat;
-//         public override string Command => "mute";
-//         public override string Usage => "/mute <playerName>";
-//         public override string Description => "Mutes a player.";
+        public override string Usage => "/mute <playerName>";
 
-//         public override void Action(CommandCaller caller, string input, string[] args)
-//         {
-//             var modPlayer = caller.Player.GetModPlayer<AdminPlayer>();
-//             if (!modPlayer.IsAdmin)
-//             {
-//                 caller.Reply("You must be an admin to use this command.", Color.Red);
-//                 return;
-//             }
-            
-//             if (args.Length < 1)
-//             {
-//                 caller.Reply("Usage: /mute <playerName>", Color.Red);
-//                 return;
-//             }
+        public override string Description => "Mutes a player in the server.";
 
-//             string targetName = args[0].ToLower();
+        public override void Action(CommandCaller caller, string input, string[] args)
+        {
+            var modPlayer = caller.Player.GetModPlayer<AuthPlayer>();
+            if (!modPlayer.IsAdmin)
+            {
+                caller.Reply("You must be an admin to use this command.", Color.Red);
+                return;
+            }
 
+            string rawInput = Main.chatText; 
 
-//             Player target = Main.player.FirstOrDefault(p => p.active && p.name.ToLower() == targetName);
+            string message = "";
+            if (rawInput.Length > 5) 
+            {
+                message = rawInput.Substring(5).Trim();
+            }
 
-//             if (target == null)
-//             {
-//                 caller.Reply($"Player '{targetName}' not found.", Color.Red);
-//                 return;
-//             }
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                caller.Reply("Message cannot be empty!", Color.Red);
+                return;
+            }
 
-//             var mod1 = ModContent.GetInstance<CTG2>();
-//             ModPacket packet1 = mod1.GetPacket();
-//             packet1.Write((byte)MessageType.RequestMute);
-//             packet1.Write(target.whoAmI);
-//             packet1.Send();
-            
-//             caller.Reply($"Muted {target.name}", Color.Green);
-//         }
-//     }
-// }
+            string[] messageParts = message.Split(' ');
+
+            string targetName = "";
+
+            if (messageParts[0].StartsWith("\""))
+            {
+                List<string> parts = new List<string>();
+                bool foundClosingQuote = false;
+
+                for (int i = 0; i < messageParts.Length; i++)
+                {
+                    parts.Add(messageParts[i]);
+
+                    if (messageParts[i].EndsWith("\""))
+                    {
+                        foundClosingQuote = true;
+
+                        targetName = string.Join(" ", parts).Trim('"');
+
+                        break;
+                    }
+                }
+
+                if (!foundClosingQuote)
+                {
+                    caller.Reply("Missing closing quote for item name.", Color.Red);
+                    return;
+                }
+            }
+            else
+            {
+                targetName = args[0];
+            }
+
+            foreach (Player player in Main.player)
+            {
+                if (player == null || !player.active)
+                    continue;
+
+                if (player.name.Equals(targetName, StringComparison.Ordinal))
+                {
+                    var adminPlayer = player.GetModPlayer<AuthPlayer>();
+
+                    if (adminPlayer.IsAdmin)
+                    {
+                        caller.Reply("You cannot mute another admin.", Color.Red);
+                        return;
+                    }
+
+                    ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
+                    packet.Write((byte)MessageType.RequestMute);
+                    packet.Write(player.whoAmI); 
+                    packet.Send();
+                    caller.Reply($"Player '{player.name}' has been muted.", Color.Green);
+                    return;
+                }
+            }
+
+            caller.Reply($"No player named '{targetName}' was found.");
+        }
+    }
+}

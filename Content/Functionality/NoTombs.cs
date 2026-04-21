@@ -30,8 +30,11 @@ namespace CTG2.Content.Functionality
 
                 if (Main.player[messageAuthor].team == 3) { color = Main.teamColor[Main.player[messageAuthor].team]; }
                 if (Main.player[messageAuthor].team == 1) { color = Main.teamColor[Main.player[messageAuthor].team]; }
-                
-                orig(text, color, messageAuthor);
+
+                if (!Main.player[messageAuthor].GetModPlayer<ChatPlayer>().IsMuted)
+                {
+                    orig(text, color, messageAuthor);
+                }
             };
             // Terraria.GameContent.UI.Chat.On_NameTagHandler.GenerateTag += (orig, name) =>
             // {

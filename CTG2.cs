@@ -1240,46 +1240,61 @@ namespace CTG2
 
                 // ...existing code...
                 case (byte)MessageType.RequestMute:
+                {
+                    int mutedPlayer = reader.ReadInt32();
+
+                    if (Main.netMode == NetmodeID.Server)
                     {
-                        int mutedplayer = reader.ReadInt32();
-                        // Send mute packet to the target player
-                        var muteMod = ModContent.GetInstance<CTG2>();
-                        ModPacket packet = muteMod.GetPacket();
+                        ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
                         packet.Write((byte)MessageType.Mute);
-                        packet.Write(mutedplayer);
-                        packet.Send(toClient: mutedplayer);
-                        break;
+                        packet.Write(mutedPlayer);
+                        packet.Send(toClient: mutedPlayer);
                     }
+
+                    break;
+                }
                 case (byte)MessageType.Mute:
+                {
+                    int mutedPlayer = reader.ReadInt32();
+
+                    if (mutedPlayer == Main.myPlayer)
                     {
-                        int mutedPlayer = reader.ReadInt32();
-                        if (mutedPlayer == Main.myPlayer)
-                        {
-                            //Main.player[mutedPlayer].GetModPlayer<ChatPlayer>().IsMuted = true;
-                            Main.NewText("You have been muted.", Microsoft.Xna.Framework.Color.Red);
-                        }
-                        break;
+                        Main.player[mutedPlayer]
+                            .GetModPlayer<ChatPlayer>()
+                            .IsMuted = true;
+
+                        Main.NewText("You have been muted.", Color.Red);
                     }
+                    break;
+                }
                 case (byte)MessageType.RequestUnmute:
+                {
+                    int unmutedPlayer = reader.ReadInt32();
+
+                    if (Main.netMode == NetmodeID.Server)
                     {
-                        int unmuteplayer = reader.ReadInt32();
-                        var unmutemod = ModContent.GetInstance<CTG2>();
-                        ModPacket packet = unmutemod.GetPacket();
+                        ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
                         packet.Write((byte)MessageType.Unmute);
-                        packet.Write(unmuteplayer);
-                        packet.Send(toClient: unmuteplayer);
-                        break;
+                        packet.Write(unmutedPlayer);
+                        packet.Send(toClient: unmutedPlayer);
                     }
+
+                    break;
+                }
                 case (byte)MessageType.Unmute:
+                {
+                    int unmutedPlayer = reader.ReadInt32();
+
+                    if (unmutedPlayer == Main.myPlayer)
                     {
-                        int unmutePlayer = reader.ReadInt32();
-                        if (unmutePlayer == Main.myPlayer)
-                        {
-                            //Main.player[unmutePlayer].GetModPlayer<ChatPlayer>().IsMuted = false;
-                            Main.NewText("You have been unmuted.", Microsoft.Xna.Framework.Color.Green);
-                        }
-                        break;
+                        Main.player[unmutedPlayer]
+                            .GetModPlayer<ChatPlayer>()
+                            .IsMuted = false;
+
+                        Main.NewText("You have been unmuted.", Color.Green);
                     }
+                    break;
+                }
                 case (byte)MessageType.LateJoin:
                     {
                         int joiningPlayer = reader.ReadInt32();
