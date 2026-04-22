@@ -20,6 +20,7 @@ namespace CTG2.Content.Commands
             }
 
             CTG2.SendExitSpectatorRequest(caller.Player.whoAmI);
+
             caller.Reply("Exiting spectator mode.", Color.Green);
         }
     }

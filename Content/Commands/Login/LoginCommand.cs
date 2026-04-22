@@ -49,17 +49,26 @@ namespace CTG2.Content.Commands
                         modPlayer.IsLoggedIn = true;
                         modPlayer.Username = username;
                         caller.Player.name = username;
-                        modPlayer.SyncPlayer(-1, caller.Player.whoAmI, false);
-                        
+
                         if (AuthPlayer.Admins.Contains(username))
                         {
                             modPlayer.IsAdmin = true;
-                            caller.Reply("Logged in successfully. Welcome, admin.", Color.Gold);
+                            caller.Reply("Logged in successfully as admin.", Color.Green);
                         }
                         else
                         {
                             caller.Reply("Logged in successfully.", Color.Green);
                         }
+
+                        var mod = ModContent.GetInstance<CTG2>();
+
+                        ModPacket packet = mod.GetPacket();
+                        packet.Write((byte)MessageType.SyncAuthPlayer);
+                        packet.Write(caller.Player.whoAmI);
+                        packet.Write(modPlayer.IsLoggedIn);
+                        packet.Write(modPlayer.IsAdmin);
+                        packet.Write(caller.Player.name);
+                        packet.Send();
                     }
                     else
                     {

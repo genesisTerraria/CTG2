@@ -86,13 +86,13 @@ namespace CTG2.Content.Commands
 
                 if (player.name.Equals(targetName, StringComparison.Ordinal))
                 {
-                    var adminPlayer = player.GetModPlayer<AuthPlayer>();
+                    // var adminPlayer = player.GetModPlayer<AuthPlayer>();
 
-                    if (adminPlayer.IsAdmin)
-                    {
-                        caller.Reply("You cannot unmute another admin.", Color.Red);
-                        return;
-                    }
+                    // if (adminPlayer.IsAdmin)
+                    // {
+                    //     caller.Reply("You cannot unmute another admin.", Color.Red);
+                    //     return;
+                    // }
 
                     ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
                     packet.Write((byte)MessageType.RequestUnmute);

@@ -142,8 +142,8 @@ namespace CTG2
         KickPlayerDifficulty = 103,
         SyncAuthPlayer = 104,
         RequestMana = 105,
-        SyncMana = 106
-
+        SyncMana = 106,
+        SyncLoginData = 107
     }
 
     public class CTG2 : Mod
@@ -1626,12 +1626,14 @@ namespace CTG2
 
                 case (byte)MessageType.SyncAuthPlayer:
                 {
-                   byte playerIndexxx = reader.ReadByte();
+                    int playerIndexxx = reader.ReadInt32();
                     bool isLoggedIn = reader.ReadBoolean();
+                    bool isAdmin = reader.ReadBoolean();
                     string username = reader.ReadString();
 
                     var authPlayer = Main.player[playerIndexxx].GetModPlayer<AuthPlayer>();
                     authPlayer.IsLoggedIn = isLoggedIn;
+                    authPlayer.IsAdmin = isAdmin;
                     authPlayer.Username = username;
 
                     // Apply name on all clients
@@ -1642,9 +1644,10 @@ namespace CTG2
                     if (Main.netMode == NetmodeID.Server)
                     {
                         ModPacket packet = GetPacket();
-                        packet.Write((byte)msgType);
+                        packet.Write((byte)MessageType.SyncAuthPlayer);
                         packet.Write(playerIndexxx);
                         packet.Write(isLoggedIn);
+                        packet.Write(isAdmin);
                         packet.Write(username);
                         packet.Send(-1, whoAmI);
                     }

@@ -997,8 +997,23 @@ public class GameManager : ModSystem
         {
             playerSpectatorStatus[playerIndex] = false;
 
+            if (BlueGem.IsHeld && BlueGem.HeldBy == playerIndex)
+            {
+                Color blueColor = new Color(0, 119, 182);
+                BlueGem.Reset();
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} has dropped the blue team's gem!"), blueColor);
+                Console.WriteLine($"Player {player.name} dropped Blue Gem when exiting spectator mode");
+            }
+
+            if (RedGem.IsHeld && RedGem.HeldBy == playerIndex)
+            {
+                RedGem.Reset();
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} has dropped the red team's gem!"), Color.Red);
+                Console.WriteLine($"Player {player.name} dropped Red Gem when exitingspectator mode");
+            }
+
             Console.WriteLine($"GameManager: SetPlayerSpectator called with isSpectator=false for player {playerIndex}");
-            if (player.team == 0 || MatchTime < matchStartTime)
+            if (player.team == 0 || MatchTime <= 0)
             {
                 ModPacket packet = mod.GetPacket();
                 packet.Write((byte)MessageType.ServerTeleport);
@@ -1188,22 +1203,35 @@ public class GameManager : ModSystem
         {
             foreach (Player p in Main.player)
             {
-                if (p.active) ForcePlayerStatSync(-1, p.whoAmI);
-
-                var modPlayer = p.GetModPlayer<Content.Commands.Auth.AuthPlayer>();
-
-                if (!modPlayer.IsLoggedIn)
+                if (p.active) 
                 {
+                    ForcePlayerStatSync(-1, p.whoAmI);
+
                     var mod = ModContent.GetInstance<CTG2>();
 
                     ModPacket packet = mod.GetPacket();
-                    packet = mod.GetPacket();
-                    packet.Write((byte)MessageType.SyncAddBuff);
+                    packet.Write((byte)MessageType.SyncAuthPlayer);
                     packet.Write(p.whoAmI);
-                    packet.Write(BuffID.Webbed);
-                    packet.Write(120);
+                    packet.Write(p.GetModPlayer<Content.Commands.Auth.AuthPlayer>().IsLoggedIn);
+                    packet.Write(p.GetModPlayer<Content.Commands.Auth.AuthPlayer>().IsAdmin);
+                    packet.Write(p.name);
                     packet.Send();
                 }
+
+                // var modPlayer = p.GetModPlayer<Content.Commands.Auth.AuthPlayer>();
+
+                // if (!modPlayer.IsLoggedIn)
+                // {
+                //     var mod = ModContent.GetInstance<CTG2>();
+
+                //     ModPacket packet = mod.GetPacket();
+                //     packet = mod.GetPacket();
+                //     packet.Write((byte)MessageType.SyncAddBuff);
+                //     packet.Write(p.whoAmI);
+                //     packet.Write(BuffID.Webbed);
+                //     packet.Write(120);
+                //     packet.Send();
+                // }
             }
         }
 
