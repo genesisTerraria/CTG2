@@ -31,17 +31,18 @@ namespace CTG2.Content
     public class CheckPoints : ModCommand
     {
         public override CommandType Type => CommandType.Chat;
-
-
         public override string Command => "points";
-
-
         public override string Usage => "/points";
-
         public override string Description => "Displays the currently saved start and end points.";
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
+            var modPlayer = caller.Player.GetModPlayer<Content.Commands.Auth.AuthPlayer>();
+            if (!modPlayer.IsAdmin)
+            {
+                caller.Reply("You must be an admin to use this command.", Color.Red);
+                return;
+            }
 
             if (MapSave.startPoint == Vector2.Zero)
             {
@@ -75,6 +76,13 @@ namespace CTG2.Content
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
+            var modPlayer = caller.Player.GetModPlayer<Content.Commands.Auth.AuthPlayer>();
+            if (!modPlayer.IsAdmin)
+            {
+                caller.Reply("You must be an admin to use this command.", Color.Red);
+                return;
+            }
+
             if (args.Length == 0)
             {
                 caller.Reply("Error: Please provide a name for the save file. Usage: " + Usage, Color.Red);

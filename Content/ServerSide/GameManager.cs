@@ -953,10 +953,14 @@ public class GameManager : ModSystem
     {
         if (!Main.player[playerIndex].active) return;
 
+        var mod = ModContent.GetInstance<CTG2>();
+
         var player = Main.player[playerIndex];
+
         if (isSpectator)
         {
-            // drop gem if they have it 
+            playerSpectatorStatus[playerIndex] = true;
+
             if (BlueGem.IsHeld && BlueGem.HeldBy == playerIndex)
             {
                 Color blueColor = new Color(0, 119, 182);
@@ -972,14 +976,6 @@ public class GameManager : ModSystem
                 Console.WriteLine($"Player {player.name} dropped Red Gem when entering spectator mode");
             }
 
-
-            // Set spectator status (REMOVE THIS EVENTUALLY)
-            playerSpectatorStatus[playerIndex] = true;
-
-            // Send teleport packet to client
-            CTG2.WebPlayer(player.whoAmI, 60); //not sure if webbing is needed here
-
-            var mod = ModContent.GetInstance<CTG2>();
             ModPacket packet = mod.GetPacket();
             packet.Write((byte)MessageType.ServerTeleport);
             packet.Write(playerIndex);
@@ -995,29 +991,41 @@ public class GameManager : ModSystem
             statusPacket.Write(true); // is spectator
             statusPacket.Send(toClient: playerIndex);
 
-            // DEBUG: Global broadcast
             Console.WriteLine($"Player {player.name} entered spectator mode");
         }
         else
         {
-            Console.WriteLine($"GameManager: SetPlayerSpectator called with isSpectator=false for player {playerIndex}");
-            if (player.team == 0)
-            {
-                Console.WriteLine($"Player {player.name} cannot exit spectator mode - no team assigned");
-                return;
-            }
-            // Check if player has original team
-
             playerSpectatorStatus[playerIndex] = false;
-            int playerTeam = player.team;
 
-            var mod = ModContent.GetInstance<CTG2>();
-            NetMessage.SendData(MessageID.PlayerTeam, -1, -1, null, playerIndex, playerTeam);
+            Console.WriteLine($"GameManager: SetPlayerSpectator called with isSpectator=false for player {playerIndex}");
+            if (player.team == 0 || MatchTime < matchStartTime)
+            {
+                ModPacket packet = mod.GetPacket();
+                packet.Write((byte)MessageType.ServerTeleport);
+                packet.Write(playerIndex);
+                packet.Write((int)11152);
+                packet.Write((int)4128);
+                packet.Send(toClient: playerIndex);
 
+                PlayerManager.GetPlayerManager(player.whoAmI).playerState = PlayerManager.PlayerState.None;
 
-            Console.WriteLine($"GameManager: Directly calling startPlayerClassSelection for player {playerIndex} (non-game-start)");
-            startPlayerClassSelection(playerIndex, false);
-            // TELL SERVER TO REMOVE GHOST AND NO LONGER A SPECTATOR
+                ModPacket statusPacket = mod.GetPacket();
+                statusPacket.Write((byte)MessageType.ServerSpectatorUpdate);
+                statusPacket.Write(playerIndex);
+                statusPacket.Write(false); // is spectator
+                statusPacket.Send(toClient: playerIndex);
+
+                Console.WriteLine($"Player {player.name} exited spectator mode.");
+            }
+            else
+            {
+                startPlayerClassSelection(playerIndex, false);
+
+                NetMessage.SendData(MessageID.PlayerTeam, -1, -1, null, playerIndex, player.team);
+
+                Console.WriteLine($"GameManager: Directly calling startPlayerClassSelection for player {playerIndex} (non-game-start)");
+            }
+
             ModPacket statusPacket2 = mod.GetPacket();
             statusPacket2.Write((byte)MessageType.ServerSpectatorUpdate);
             statusPacket2.Write(playerIndex);
@@ -1422,10 +1430,6 @@ public class GameManager : ModSystem
         }
         else if (IsGameActive)
         {
-            // Game is active - handle based on game phase
-
-
-
             // Remove from spectator if they were spectating
             if (playerSpectatorStatus.GetValueOrDefault(playerIndex, false))
             {

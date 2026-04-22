@@ -8,10 +8,8 @@ namespace CTG2.Content.Commands
     {
         public override CommandType Type => CommandType.Chat;
         public override string Command => "spectate";
-        public override string Description => "Toggles spectator mode.";
+        public override string Description => "Enables spectator mode.";
         public override string Usage => "/spectate";
-
-        private bool spectating = false;
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
@@ -21,18 +19,16 @@ namespace CTG2.Content.Commands
                 return;
             }
 
-            spectating = !spectating;
+            CTG2.SendEnterSpectatorRequest(caller.Player.whoAmI);
 
-            if (spectating)
-            {
-                CTG2.SendEnterSpectatorRequest(caller.Player.whoAmI);
-                caller.Reply("Entering spectator mode.", Color.Green);
-            }
-            else
-            {
-                CTG2.SendExitSpectatorRequest(caller.Player.whoAmI);
-                caller.Reply("Exiting spectator mode.", Color.Green);
-            }
+            var mod = ModContent.GetInstance<CTG2>();
+            ModPacket packet = mod.GetPacket();
+            packet.Write((byte)MessageType.RequestTeamChange);
+            packet.Write(caller.Player.whoAmI);
+            packet.Write(0);
+            packet.Send();
+
+            caller.Reply("Entering spectator mode.", Color.Green);
         }
     }
 }
