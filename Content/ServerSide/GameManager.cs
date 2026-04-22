@@ -1184,11 +1184,26 @@ public class GameManager : ModSystem
             return;
         }
 
-        if (Main.GameUpdateCount % 1 == 0)
+        if (Main.GameUpdateCount % 10 == 0)
         {
             foreach (Player p in Main.player)
             {
                 if (p.active) ForcePlayerStatSync(-1, p.whoAmI);
+
+                var modPlayer = p.GetModPlayer<Content.Commands.Auth.AuthPlayer>();
+
+                if (!modPlayer.IsLoggedIn)
+                {
+                    var mod = ModContent.GetInstance<CTG2>();
+
+                    ModPacket packet = mod.GetPacket();
+                    packet = mod.GetPacket();
+                    packet.Write((byte)MessageType.SyncAddBuff);
+                    packet.Write(p.whoAmI);
+                    packet.Write(BuffID.Webbed);
+                    packet.Write(120);
+                    packet.Send();
+                }
             }
         }
 
