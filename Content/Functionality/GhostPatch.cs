@@ -49,10 +49,7 @@ namespace CTG2.Content.Functionality
         )
         {
             IEnumerable<Player> filtered = players.Where(p =>
-                p != null &&
-                (
-                    !p.ghost || p.whoAmI == Main.myPlayer
-                )
+                p != null && !p.ghost
             );
 
             orig(self, camera, filtered);
