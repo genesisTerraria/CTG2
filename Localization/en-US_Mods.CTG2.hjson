@@ -220,6 +220,11 @@ Configs: {
 			Label: Local Player Team Outline
 			Tooltip: If enabled, the local player will have a team outline.
 		}
+
+		IsVanillaDashEnabled: {
+			Label: Enable vanilla double-tap dash
+			Tooltip: When enabled, the vanilla double-tap dash works as normal. When disabled, only the Dash keybind triggers dashes.
+		}
 	}
 }
 

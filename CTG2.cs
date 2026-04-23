@@ -143,7 +143,8 @@ namespace CTG2
         SyncAuthPlayer = 104,
         RequestMana = 105,
         SyncMana = 106,
-        SyncLoginData = 107
+        SyncLoginData = 107,
+        Dash = 108
     }
 
     public class CTG2 : Mod
@@ -158,6 +159,7 @@ namespace CTG2
         public static ModKeybind BlessingOfTheDragonsKeybind;
         public static ModKeybind AdvancedBinocularsKeybind;
         public static ModKeybind Ability1Keybind;
+        public static ModKeybind DashKeybind { get; private set; }
         //public static int BiomeMusicId = 0; // client side 
 
         private static string _savedText = "";
@@ -247,6 +249,7 @@ namespace CTG2
             BlessingOfTheDragonsKeybind = KeybindLoader.RegisterKeybind(this, "PhoenixDash", "LeftShift");
             AdvancedBinocularsKeybind = KeybindLoader.RegisterKeybind(this, "AdvancedBinoculars", "MouseRight");
             Ability1Keybind = KeybindLoader.RegisterKeybind(this, "Ability 1", "R");
+            DashKeybind = KeybindLoader.RegisterKeybind(this, "Dash", "F");
 
             On_Sign.ReadSign += CaptureSignText;
             On_Sign.TextSign += RestoreSignText;
@@ -343,7 +346,9 @@ namespace CTG2
                 
                     break;
                 }
-
+                case (byte)MessageType.Dash:
+                    DashInputSystem.HandlePacket(reader, whoAmI);
+                    break;
                 case (byte)MessageType.SyncAddBuff:
                 {
                     // SERVER -> CLIENTS ONLY

@@ -42,5 +42,10 @@ namespace CTG2.Content.Configs
         [Tooltip("If enabled, the local player will have a team outline.")]
         [DefaultValue(true)]
         public bool EnabledLocalPlayerTeamOutline;
+
+        [Label("Enable vanilla double-tap dash")]
+        [Tooltip("When enabled, the vanilla double-tap dash works as normal. When disabled, only the Dash keybind triggers dashes.")]
+        [DefaultValue(true)]
+        public bool IsVanillaDashEnabled;
     }
 }
