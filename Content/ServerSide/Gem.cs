@@ -178,7 +178,6 @@ public class GemFunctionality : ModPlayer
 
         if (player.team == 3 && player.Hitbox.Intersects(redGem.GemHitbox) && !redGem.IsHeld && !player.dead && !player.ghost) //red gem pickup code
         {
-            
             redGem.IsHeld = true;
             redGem.HeldBy = player.whoAmI;
 
