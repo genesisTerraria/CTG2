@@ -330,14 +330,30 @@ public class ModifyHurtModPlayer : ModPlayer
                 packet.Send();
             }
         }
-        // else if (info.DamageSource.SourceProjectileType == 706)
-        // {
-        //     Player.AddBuff(BuffID.OnFire, 4 * 60);
-        // }
-        // else if (info.DamageSource.SourceProjectileType == 710) // hellfire
-        // {
-        //     Player.AddBuff(323, 4 * 60);
-        // }
+        if (info.DamageSource.SourceProjectileType == 97)
+        {
+            Player attacker = Main.player[attackerIndex];
+            var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
+            if (attackerPlayer.currentClass.Name == "Gladiator")
+            {
+                attacker.AddBuff(215, 120);
+                attacker.AddBuff(114, 120);
+
+                ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
+                packet.Write((byte)CTG2.MessageType.RequestAddBuff);
+                packet.Write(attacker.whoAmI);
+                packet.Write(215);
+                packet.Write(120);
+                packet.Send();
+
+                packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
+                packet.Write((byte)CTG2.MessageType.RequestAddBuff);
+                packet.Write(attacker.whoAmI);
+                packet.Write(114);
+                packet.Write(120);
+                packet.Send();
+            }
+        }
         if (info.DamageSource.SourceProjectileType == 273)
         {
             Player attacker = Main.player[attackerIndex];

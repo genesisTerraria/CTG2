@@ -218,8 +218,8 @@ namespace CTG2.Content.Items.ModifiedWeps
                     break;
                 case 4347: //gray zapinator
                     item.damage = 35;
-                    item.useAnimation = 18;
-                    item.useTime = 18;
+                    item.useAnimation = 14;
+                    item.useTime = 14;
                     item.knockBack = 10;
                     item.shoot = 285;
                     item.shootSpeed = 10f;
@@ -513,6 +513,14 @@ namespace CTG2.Content.Items.ModifiedWeps
                     player.statDefense -= 100;
                     player.GetDamage(DamageClass.Generic) -= 0.99f;
                     break;
+            }
+        }
+
+        public override void HoldItem(Item item, Player player)
+        {
+            if (item.type == 4760 && Main.mouseRight)
+            {
+                player.statDefense += 10;
             }
         }
     }
