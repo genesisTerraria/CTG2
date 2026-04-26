@@ -520,7 +520,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         {
             if (item.type == 4760 && Main.mouseRight)
             {
-                player.statDefense += 10;
+                player.statDefense += 4;
             }
         }
     }
