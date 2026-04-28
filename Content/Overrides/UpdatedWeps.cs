@@ -190,7 +190,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useAnimation = 18;
                     item.useTime = 18;
                     item.crit = 0;
-                    item.mana = 24;
+                    item.mana = 26;
                     break;
                 case 802: //rotted fork
                     item.damage = 32;

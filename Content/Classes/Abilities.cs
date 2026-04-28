@@ -676,12 +676,11 @@ namespace CTG2.Content
         
         private void BlackMageOnUse()
         {
-            Player.AddBuff(176, 15);
             Player.AddBuff(206, 420);
             Player.AddBuff(137, 420);
             Player.AddBuff(320, 420);
 
-            Player.statMana = Player.statManaMax2;
+            Player.statMana = Math.Min(Player.statMana + 14, Player.statManaMax2);
 
             class7EndTimer = 420;
             // if (Player.GetModPlayer<Abilities>().class7HitCounter >= 10)
