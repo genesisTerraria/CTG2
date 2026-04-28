@@ -127,6 +127,32 @@ public class ChargedBowProjectile : ModProjectile
     SoundStyle bowSound = new SoundStyle("CTG2/Content/Items/BowSound");
     SoundStyle bowSound2 = new SoundStyle("CTG2/Content/Items/BowSound2");
 
+    private bool foundHellfire()
+    {
+        Player player = Main.player[Projectile.owner];
+
+        for (int i = 0; i < player.inventory.Length; i++)
+        {
+            int type = player.inventory[i].type;
+
+            if (type == ItemID.ShimmerArrow)
+            {
+                return false;
+            }
+            else if (type == ItemID.HellfireArrow)
+            {
+                return true;
+            }
+        }
+
+        if (player.trashItem.type == ItemID.ShimmerArrow || Main.mouseItem.type == ItemID.ShimmerArrow)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
     public override void SendExtraAI(BinaryWriter writer) {
         writer.Write(Math.Min(charge, 40f));
         writer.Write(Rotation);
@@ -192,7 +218,8 @@ public class ChargedBowProjectile : ModProjectile
 
         if (released && Projectile.owner == Main.myPlayer && !recentlyFired) {
             Item item = player.HeldItem;
-            Vector2 speed = new Vector2(item.shootSpeed, 0f).RotatedBy(Rotation) * (0.5f + (Math.Min(charge, 40f) / 40f) * 0.5f) * 1.8f;
+            float shimmerReduc = (float) (foundHellfire() ? 0 : 0.3);
+            Vector2 speed = new Vector2(item.shootSpeed, 0f).RotatedBy(Rotation) * (0.5f + (Math.Min(charge, 40f) / 40f) * 0.5f) * (1.8f - shimmerReduc);
             Vector2 spawnPos = player.MountedCenter + Vector2.One.RotatedBy(Rotation - MathHelper.PiOver4) * 2f;
 
             Projectile arrow = Projectile.NewProjectileDirect(

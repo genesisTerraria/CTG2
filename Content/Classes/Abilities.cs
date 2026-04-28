@@ -24,8 +24,6 @@ namespace CTG2.Content
     public class Abilities : ModPlayer
     {
         public int cooldown = 0;
-
-        public int class1EndTimer = -1;
         public int class2PassiveCounter = 0;
         public int class2AbilityTimer = -1;
 
@@ -384,8 +382,38 @@ namespace CTG2.Content
 
         private void ArcherOnUse()
         {
-            Player.AddBuff(320, 6 * 60);
-            class1EndTimer = 360;
+            for (int i = 0; i < Player.inventory.Length; i++)
+            {
+                int type = Player.inventory[i].type;
+                int stack = Player.inventory[i].stack;
+
+                if (type == ItemID.ShimmerArrow)
+                {
+                    Player.inventory[i] = new Item(ItemID.HellfireArrow, stack);
+                }
+                else if (type == ItemID.HellfireArrow)
+                {
+                    Player.inventory[i] = new Item(ItemID.ShimmerArrow, stack);
+                }
+            }
+
+            if (Player.trashItem.type == ItemID.ShimmerArrow)
+            {
+                Player.trashItem = new Item(ItemID.HellfireArrow, Player.trashItem.stack);
+            }
+            else if (Player.trashItem.type == ItemID.HellfireArrow)
+            {
+                Player.trashItem = new Item(ItemID.ShimmerArrow, Player.trashItem.stack);
+            }
+
+            if (Main.mouseItem.type == ItemID.ShimmerArrow)
+            {
+                Main.mouseItem = new Item(ItemID.HellfireArrow, Main.mouseItem.stack);
+            }
+            else if (Main.mouseItem.type == ItemID.HellfireArrow)
+            {
+                Main.mouseItem = new Item(ItemID.ShimmerArrow, Main.mouseItem.stack);
+            }
 
             playedSound = false;
 
@@ -1159,20 +1187,10 @@ namespace CTG2.Content
             var playerManager = Player.GetModPlayer<PlayerManager>();
             int selectedClass = playerManager.currentClass.AbilityID;
 
-            bool endedEarly = (Player.dead || Player.ghost) && class1EndTimer > 0;
+            bool endedEarly = Player.dead || Player.ghost;
 
             switch (selectedClass)
             {
-                case 1:
-                    if (endedEarly || (!playedSound && class1EndTimer == 0))
-                    {
-                        SoundEngine.PlaySound(SoundID.DD2_SonicBoomBladeSlash.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
-                        playedSound = true;
-                        class1EndTimer = -1;
-                    }
-
-                    break;
-
                 case 2:
                     if (!Player.dead && !Player.ghost && playerManager.playerState == PlayerManager.PlayerState.Active)
                     {
@@ -1280,7 +1298,7 @@ namespace CTG2.Content
                 switch (selectedClass)
                 {
                     case 1:
-                        SetCooldown(36);
+                        SetCooldown(1);
                         ArcherOnUse();
 
                         break;
@@ -1402,9 +1420,6 @@ namespace CTG2.Content
             {
                 if (cooldown > 0)
                     cooldown--;
-
-                if (class1EndTimer >= 0)
-                    class1EndTimer--;
 
                 if (class2AbilityTimer >= 0)
                     class2AbilityTimer--;

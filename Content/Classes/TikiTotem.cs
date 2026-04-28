@@ -137,7 +137,7 @@ namespace CTG2.Content.Classes
                     return false;
             }
 
-            //return true;
+            return true;
         }
 
 
