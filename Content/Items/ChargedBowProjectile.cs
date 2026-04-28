@@ -117,6 +117,8 @@ public class ChargedBowProjectile : ModProjectile
     private SlotId sound;
     private bool released;
     private int syncTimer;
+    private int storedProjType;
+    private bool ammoLocked = false;
 
     // Getters for the Drawer Layer
     public float GetRotation() => Rotation;
@@ -126,32 +128,6 @@ public class ChargedBowProjectile : ModProjectile
 
     SoundStyle bowSound = new SoundStyle("CTG2/Content/Items/BowSound");
     SoundStyle bowSound2 = new SoundStyle("CTG2/Content/Items/BowSound2");
-
-    private bool foundHellfire()
-    {
-        Player player = Main.player[Projectile.owner];
-
-        for (int i = 0; i < player.inventory.Length; i++)
-        {
-            int type = player.inventory[i].type;
-
-            if (type == ItemID.ShimmerArrow)
-            {
-                return false;
-            }
-            else if (type == ItemID.HellfireArrow)
-            {
-                return true;
-            }
-        }
-
-        if (player.trashItem.type == ItemID.ShimmerArrow || Main.mouseItem.type == ItemID.ShimmerArrow)
-        {
-            return false;
-        }
-
-        return true;
-    }
 
     public override void SendExtraAI(BinaryWriter writer) {
         writer.Write(Math.Min(charge, 40f));
@@ -195,7 +171,23 @@ public class ChargedBowProjectile : ModProjectile
             player.direction = Math.Cos(Rotation) >= 0 ? 1 : -1;
 
             if (player.channel && !released) {
-                charge = charge + 1f;
+                if (!ammoLocked)
+                {
+                    Item item = player.HeldItem;
+
+                    player.PickAmmo(item,
+                        out storedProjType,
+                        out float _,
+                        out int _,
+                        out float _,
+                        out int _
+                    );
+
+                    ammoLocked = true;
+                }
+
+                charge += 1f;
+
                 if (charge >= 40f && c1 == 0f) {
                     c1 = 1f;
                     if (SoundEngine.TryGetActiveSound(sound, out var s)) s.Stop();
@@ -218,8 +210,14 @@ public class ChargedBowProjectile : ModProjectile
 
         if (released && Projectile.owner == Main.myPlayer && !recentlyFired) {
             Item item = player.HeldItem;
-            float shimmerReduc = (float) (foundHellfire() ? 0 : 0.3);
-            Vector2 speed = new Vector2(item.shootSpeed, 0f).RotatedBy(Rotation) * (0.5f + (Math.Min(charge, 40f) / 40f) * 0.5f) * (1.8f - shimmerReduc);
+
+            bool isHellfire = storedProjType == ProjectileID.HellfireArrow;
+            bool isShimmer = storedProjType == ProjectileID.ShimmerArrow;
+
+            float shimmerSpeedReduc = isShimmer ? 0.5f : 0f;
+            float hellfireDamageReduc = isHellfire ? 3f : 0f;
+
+            Vector2 speed = new Vector2(item.shootSpeed, 0f).RotatedBy(Rotation) * (0.5f + (Math.Min(charge, 40f) / 40f) * 0.5f) * (1.8f - shimmerSpeedReduc);
             Vector2 spawnPos = player.MountedCenter + Vector2.One.RotatedBy(Rotation - MathHelper.PiOver4) * 2f;
 
             Projectile arrow = Projectile.NewProjectileDirect(
@@ -227,12 +225,14 @@ public class ChargedBowProjectile : ModProjectile
                 spawnPos,
                 speed,
                 (int)Projectile.ai[1],
-                (int)player.GetDamage(item.DamageType).ApplyTo(item.damage * (0.5f + Math.Min(charge, 40f) / 80f)),
+                (int)player.GetDamage(item.DamageType).ApplyTo((item.damage - hellfireDamageReduc)* (0.5f + Math.Min(charge, 40f) / 80f)),
                 item.knockBack,
                 Projectile.owner
             );
             arrow.extraUpdates = 1;
             arrow.netUpdate = true;
+
+            ammoLocked = false;
         }
 
         if (released && !recentlyFired) {
@@ -248,22 +248,22 @@ public class ChargedBowProjectile : ModProjectile
 }
 
 
-public class ChargedBowPlayer : ModPlayer
-{
-    public override void ResetEffects()
-    {
-        for (int i = 0; i < Main.maxProjectiles; i++)
-        {
-            Projectile p = Main.projectile[i];
-            if (p.active && p.owner == Player.whoAmI && p.ModProjectile is ChargedBowProjectile bow)
-            {
-                // if (bow.charge >= 60f)
-                // {
-                //     Player.moveSpeed *= 0.8f;
-                //     Player.maxRunSpeed *= 0.8f;
-                // }
-                break;
-            }
-        }
-    }
-}
+// public class ChargedBowPlayer : ModPlayer
+// {
+//     public override void ResetEffects()
+//     {
+//         for (int i = 0; i < Main.maxProjectiles; i++)
+//         {
+//             Projectile p = Main.projectile[i];
+//             if (p.active && p.owner == Player.whoAmI && p.ModProjectile is ChargedBowProjectile bow)
+//             {
+//                 // if (bow.charge >= 60f)
+//                 // {
+//                 //     Player.moveSpeed *= 0.8f;
+//                 //     Player.maxRunSpeed *= 0.8f;
+//                 // }
+//                 break;
+//             }
+//         }
+//     }
+// }

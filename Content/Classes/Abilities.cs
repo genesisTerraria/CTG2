@@ -24,6 +24,7 @@ namespace CTG2.Content
     public class Abilities : ModPlayer
     {
         public int cooldown = 0;
+        public bool class1isHellfire = true;
         public int class2PassiveCounter = 0;
         public int class2AbilityTimer = -1;
 
@@ -382,42 +383,45 @@ namespace CTG2.Content
 
         private void ArcherOnUse()
         {
+            class1isHellfire = !class1isHellfire;
+
             for (int i = 0; i < Player.inventory.Length; i++)
             {
                 int type = Player.inventory[i].type;
                 int stack = Player.inventory[i].stack;
 
-                if (type == ItemID.ShimmerArrow)
+                if (type == ItemID.ShimmerArrow && class1isHellfire)
                 {
                     Player.inventory[i] = new Item(ItemID.HellfireArrow, stack);
                 }
-                else if (type == ItemID.HellfireArrow)
+                else if (type == ItemID.HellfireArrow && !class1isHellfire)
                 {
                     Player.inventory[i] = new Item(ItemID.ShimmerArrow, stack);
                 }
             }
 
-            if (Player.trashItem.type == ItemID.ShimmerArrow)
+            if (Player.trashItem.type == ItemID.ShimmerArrow && class1isHellfire)
             {
                 Player.trashItem = new Item(ItemID.HellfireArrow, Player.trashItem.stack);
             }
-            else if (Player.trashItem.type == ItemID.HellfireArrow)
+            else if (Player.trashItem.type == ItemID.HellfireArrow && !class1isHellfire)
             {
                 Player.trashItem = new Item(ItemID.ShimmerArrow, Player.trashItem.stack);
             }
 
-            if (Main.mouseItem.type == ItemID.ShimmerArrow)
+            if (Main.mouseItem.type == ItemID.ShimmerArrow && class1isHellfire)
             {
                 Main.mouseItem = new Item(ItemID.HellfireArrow, Main.mouseItem.stack);
             }
-            else if (Main.mouseItem.type == ItemID.HellfireArrow)
+            else if (Main.mouseItem.type == ItemID.HellfireArrow && !class1isHellfire)
             {
                 Main.mouseItem = new Item(ItemID.ShimmerArrow, Main.mouseItem.stack);
             }
 
             playedSound = false;
 
-            SoundEngine.PlaySound(SoundID.DD2_PhantomPhoenixShot.WithVolumeScale(Main.soundVolume * 6f), Player.Center);
+            if (class1isHellfire) SoundEngine.PlaySound(SoundID.DD2_PhantomPhoenixShot.WithVolumeScale(Main.soundVolume * 6f), Player.Center);
+            else SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy.WithVolumeScale(Main.soundVolume * 6f), Player.Center);
         }
 
 

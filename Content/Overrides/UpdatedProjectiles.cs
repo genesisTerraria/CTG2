@@ -79,7 +79,7 @@ public class ProjectileOverrides : GlobalProjectile
                 projectile.timeLeft = 300;
             }
         }
-        if (projectile.type == 41)
+        if (projectile.type == 41 || projectile.type == 1006)
         {
             projectile.extraUpdates = 1; // determines how quickly the projectile falls and velocity magnitude
         }
