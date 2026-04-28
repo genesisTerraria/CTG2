@@ -274,7 +274,7 @@ public class ModifyHurtModPlayer : ModPlayer
                         ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
                         packet.Write((byte)CTG2.MessageType.RequestHeal);
                         packet.Write(player.whoAmI);
-                        packet.Write(5);
+                        packet.Write(7);
                         packet.Send();
                     }
                 }

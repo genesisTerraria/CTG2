@@ -56,7 +56,7 @@ namespace CTG2.Content.Classes
         private int totemTeam = 0;
         private int maxHP = 200;
 
-        private float amplitude = 16f; // 1 block = 16 pixels
+        private float amplitude = 8f; // 1 block = 16 pixels
         private float period = 120f;   // 2 seconds * 60 ticks
 
         private bool spawnPositionRecorded = false;
@@ -127,17 +127,17 @@ namespace CTG2.Content.Classes
 
         public override bool? CanBeHitByProjectile(Projectile projectile)
         {
-            // int tikiTeam = (int)NPC.ai[0];
+            int tikiTeam = (int)NPC.ai[0];
 
-            // if (projectile.owner >= 0 && projectile.owner < Main.maxPlayers)
-            // {
-            //     Player player = Main.player[projectile.owner];
+            if (projectile.owner >= 0 && projectile.owner < Main.maxPlayers)
+            {
+                Player player = Main.player[projectile.owner];
 
-            //     if (tikiTeam == player.team)
-            //         return false;
-            // }
+                if (tikiTeam == player.team)
+                    return false;
+            }
 
-            return true;
+            //return true;
         }
 
 

@@ -12,20 +12,23 @@ namespace CTG2.Content.Buffs
         {
             player.statDefense += 6;
 
-            int dust = Dust.NewDust(
-                player.position,
-                player.width,
-                player.height,
-                DustID.GemEmerald, // nice green dust
-                0f,
-                0f,
-                150,
-                Color.Green,
-                1.6f
-            );
+            if (!player.HasBuff(BuffID.Invisibility))
+            {
+                int dust = Dust.NewDust(
+                    player.position,
+                    player.width,
+                    player.height,
+                    DustID.GemEmerald, // nice green dust
+                    0f,
+                    0f,
+                    150,
+                    Color.Green,
+                    1.6f
+                );
 
-            Main.dust[dust].noGravity = true;
-            Main.dust[dust].velocity *= 0.5f;
+                Main.dust[dust].noGravity = true;
+                Main.dust[dust].velocity *= 0.5f;
+            }
         }
     }
 }
