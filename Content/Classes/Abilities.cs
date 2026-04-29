@@ -1301,7 +1301,7 @@ namespace CTG2.Content
                 switch (selectedClass)
                 {
                     case 1:
-                        SetCooldown(1);
+                        SetCooldown(0);
                         ArcherOnUse();
 
                         break;

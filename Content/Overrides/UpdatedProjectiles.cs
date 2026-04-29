@@ -79,9 +79,17 @@ public class ProjectileOverrides : GlobalProjectile
                 projectile.timeLeft = 300;
             }
         }
-        if (projectile.type == 41 || projectile.type == 1006)
+        if (projectile.type == 41)
         {
-            projectile.extraUpdates = 1; // determines how quickly the projectile falls and velocity magnitude
+            projectile.extraUpdates = 1;
+        }
+        if (projectile.type == 1006) // shimmer arrow
+        {
+            // Only apply if charge < 30
+            if (projectile.localAI[0] < 30f)
+            {
+                projectile.extraUpdates = 1;
+            }
         }
         if (projectile.type == ProjectileID.ThornChakram)
         {

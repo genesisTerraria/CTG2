@@ -119,6 +119,7 @@ public class ChargedBowProjectile : ModProjectile
     private int syncTimer;
     private int storedProjType;
     private bool ammoLocked = false;
+    private bool surpassedShimmerThreshold = false;
 
     // Getters for the Drawer Layer
     public float GetRotation() => Rotation;
@@ -208,13 +209,26 @@ public class ChargedBowProjectile : ModProjectile
             start = true;
         }
 
+        bool isHellfire = storedProjType == ProjectileID.HellfireArrow;
+        bool isShimmer = storedProjType == ProjectileID.ShimmerArrow;
+
+        if (charge >= 30f && !surpassedShimmerThreshold && isShimmer)
+        {
+            surpassedShimmerThreshold = true;
+            SoundEngine.PlaySound(SoundID.DD2_LightningAuraZap.WithVolumeScale(Main.soundVolume * 6f), player.Center);
+        }
+
         if (released && Projectile.owner == Main.myPlayer && !recentlyFired) {
             Item item = player.HeldItem;
 
-            bool isHellfire = storedProjType == ProjectileID.HellfireArrow;
-            bool isShimmer = storedProjType == ProjectileID.ShimmerArrow;
+            bool curvedShimmer = charge < 30f;
 
-            float shimmerSpeedReduc = isShimmer ? 0.5f : 0f;
+            float shimmerSpeedReduc = 0;
+            if (isShimmer)
+            {
+                if (curvedShimmer) shimmerSpeedReduc = 0.5f;
+                else shimmerSpeedReduc = -3f;
+            }
             float hellfireDamageReduc = isHellfire ? 3f : 0f;
 
             Vector2 speed = new Vector2(item.shootSpeed, 0f).RotatedBy(Rotation) * (0.5f + (Math.Min(charge, 40f) / 40f) * 0.5f) * (1.8f - shimmerSpeedReduc);
@@ -229,9 +243,13 @@ public class ChargedBowProjectile : ModProjectile
                 item.knockBack,
                 Projectile.owner
             );
-            arrow.extraUpdates = 1;
-            arrow.netUpdate = true;
 
+            arrow.localAI[0] = charge;
+
+            if (isHellfire || (isShimmer && curvedShimmer))
+                arrow.extraUpdates = 1;
+
+            arrow.netUpdate = true;
             ammoLocked = false;
         }
 
