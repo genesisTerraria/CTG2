@@ -438,31 +438,47 @@ public class GameManager : ModSystem
 
             // Reset ability attributes
             player.GetModPlayer<Abilities>().cooldown = 0;
+            player.GetModPlayer<Abilities>().class1isHellfire = true;
+            player.GetModPlayer<Abilities>().class2PassiveCounter = 0;
+            player.GetModPlayer<Abilities>().class2AbilityTimer = -1;
+            player.GetModPlayer<Abilities>().class3SpawnTimer = -1;
+            player.GetModPlayer<Abilities>().class3PendingSpawn = false;
             player.GetModPlayer<Abilities>().class4BuffTimer = 0;
             player.GetModPlayer<Abilities>().class4PendingBuffs = false;
             player.GetModPlayer<Abilities>().class7HitCounter = 0;
+            player.GetModPlayer<Abilities>().class7EndTimer = -1;
             player.GetModPlayer<Abilities>().class8HP = 0;
             player.GetModPlayer<Abilities>().psychicActive = false;
+            player.GetModPlayer<Abilities>().class11EndTimer = -1;
             player.GetModPlayer<Abilities>().class12SwapTimer = -1;
             player.GetModPlayer<Abilities>().class12ClosestDist = 99999;
-            player.GetModPlayer<Abilities>().class12ClosestPlayer = null;
+            player.GetModPlayer<Abilities>().class13EndTimer = -1;
             player.GetModPlayer<Abilities>().class15AbilityTimer = -1;
             player.GetModPlayer<Abilities>().mutantState = 1;
+            player.GetModPlayer<Abilities>().class17EndTimer = -1;
             
             ModPacket abilityPacket = mod.GetPacket();
             abilityPacket.Write((byte)MessageType.SyncAbilityAttributes);
             abilityPacket.Write(player.whoAmI);
             abilityPacket.Write(0);
+            abilityPacket.Write(true);
+            abilityPacket.Write(0);
+            abilityPacket.Write(-1);
+            abilityPacket.Write(-1);
+            abilityPacket.Write(false);
+            abilityPacket.Write(0);
+            abilityPacket.Write(false);
+            abilityPacket.Write(0);
+            abilityPacket.Write(-1);
             abilityPacket.Write(0);
             abilityPacket.Write(false);
             abilityPacket.Write(-1);
-            abilityPacket.Write(0);
-            abilityPacket.Write(0);
-            abilityPacket.Write(false);
             abilityPacket.Write(-1);
             abilityPacket.Write(99999);
             abilityPacket.Write(-1);
+            abilityPacket.Write(-1);
             abilityPacket.Write(1);
+            abilityPacket.Write(-1);
             abilityPacket.Send(toClient: player.whoAmI);
 
             // Reset classsystem attributes

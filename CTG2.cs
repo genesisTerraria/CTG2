@@ -779,31 +779,48 @@ namespace CTG2
                 case (byte)MessageType.SyncAbilityAttributes:
                     int playerindd = reader.ReadInt32();
                     int cooldown = reader.ReadInt32();
+                    bool class1isHellfire = reader.ReadBoolean();
+                    int class2PassiveCounter = reader.ReadInt32();
+                    int class2AbilityTimer = reader.ReadInt32();
+                    int class3SpawnTimer = reader.ReadInt32();
+                    bool class3PendingSpawn = reader.ReadBoolean();
                     int class4BuffTimer = reader.ReadInt32();
                     bool class4PendingBuffs = reader.ReadBoolean();
-                    int class6ReleaseTimer = reader.ReadInt32();
                     int class7HitCounter = reader.ReadInt32();
+                    int class7EndTimer = reader.ReadInt32();
                     int class8HP = reader.ReadInt32();
                     bool psychicActive = reader.ReadBoolean();
+                    int class11EndTimer = reader.ReadInt32();
                     int class12SwapTimer = reader.ReadInt32();
                     int class12ClosestDist = reader.ReadInt32();
+                    int class13EndTimer = reader.ReadInt32();
                     int class15AbilityTimer = reader.ReadInt32();
                     int mutantState = reader.ReadInt32();
+                    int class17EndTimer = reader.ReadInt32();
 
                     if (playerindd == Main.myPlayer)
                     {
                         var abils = Main.player[playerindd].GetModPlayer<Abilities>();
 
                         abils.cooldown = cooldown;
+                        abils.class1isHellfire = class1isHellfire;
+                        abils.class2PassiveCounter = class2PassiveCounter;
+                        abils.class2AbilityTimer = class2AbilityTimer;
+                        abils.class3SpawnTimer = class3SpawnTimer;
+                        abils.class3PendingSpawn = class3PendingSpawn;
                         abils.class4BuffTimer = class4BuffTimer;
                         abils.class4PendingBuffs = class4PendingBuffs;
                         abils.class7HitCounter = class7HitCounter;
+                        abils.class7EndTimer = class7EndTimer;
                         abils.class8HP = class8HP;
                         abils.psychicActive = psychicActive;
+                        abils.class11EndTimer = class11EndTimer;
                         abils.class12SwapTimer = class12SwapTimer;
                         abils.class12ClosestDist = class12ClosestDist;
+                        abils.class13EndTimer = class13EndTimer;
                         abils.class15AbilityTimer = class15AbilityTimer;
                         abils.mutantState = mutantState;
+                        abils.class17EndTimer = class17EndTimer;
                     }
                     break;
                 case (byte)MessageType.SyncClassSystemAttributes:
