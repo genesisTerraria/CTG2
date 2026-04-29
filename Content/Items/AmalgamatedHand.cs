@@ -164,7 +164,7 @@ namespace CTG2.Content.Items {
 						{
 							CurrentAIState = AIState.LaunchingForward;
 							StateTimer = 0f;
-							Projectile.velocity = unitVectorTowardsMouse * launchSpeed + player.velocity;
+							Projectile.velocity = unitVectorTowardsMouse * launchSpeed + player.velocity * 1.15f;
 							Projectile.Center = mountedCenter;
 							Projectile.netUpdate = true;
 							Projectile.ResetLocalNPCHitImmunity();
