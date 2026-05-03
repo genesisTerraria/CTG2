@@ -164,6 +164,9 @@ public class ChargedBowProjectile : ModProjectile
         Projectile.position = player.MountedCenter;
         Projectile.knockBack = player.HeldItem.knockBack;
 
+        bool isHellfire = storedProjType == ProjectileID.HellfireArrow;
+        bool isShimmer = storedProjType == ProjectileID.ShimmerArrow;
+
         if (charge >= 40f) td++; // Increment glow timer
 
         if (Projectile.owner == Main.myPlayer) {
@@ -187,7 +190,8 @@ public class ChargedBowProjectile : ModProjectile
                     ammoLocked = true;
                 }
 
-                charge += 1f;
+                if (isShimmer) charge += 1f;
+                else charge += 0.667f;
 
                 if (charge >= 40f && c1 == 0f) {
                     c1 = 1f;
@@ -209,9 +213,6 @@ public class ChargedBowProjectile : ModProjectile
             start = true;
         }
 
-        bool isHellfire = storedProjType == ProjectileID.HellfireArrow;
-        bool isShimmer = storedProjType == ProjectileID.ShimmerArrow;
-
         if (charge >= 30f && !surpassedShimmerThreshold && isShimmer)
         {
             surpassedShimmerThreshold = true;
@@ -227,9 +228,9 @@ public class ChargedBowProjectile : ModProjectile
             if (isShimmer)
             {
                 if (curvedShimmer) shimmerSpeedReduc = 0.5f;
-                else shimmerSpeedReduc = -3f;
+                else shimmerSpeedReduc = 0f;
             }
-            float hellfireDamageReduc = isHellfire ? 3f : 0f;
+            float hellfireDamageReduc = isHellfire ? 1f : 0f;
 
             Vector2 speed = new Vector2(item.shootSpeed, 0f).RotatedBy(Rotation) * (0.5f + (Math.Min(charge, 40f) / 40f) * 0.5f) * (1.8f - shimmerSpeedReduc);
             Vector2 spawnPos = player.MountedCenter + Vector2.One.RotatedBy(Rotation - MathHelper.PiOver4) * 2f;
@@ -244,7 +245,7 @@ public class ChargedBowProjectile : ModProjectile
                 Projectile.owner
             );
 
-            arrow.localAI[0] = charge;
+            arrow.ai[1] = charge;
 
             if (isHellfire || (isShimmer && curvedShimmer))
                 arrow.extraUpdates = 1;
