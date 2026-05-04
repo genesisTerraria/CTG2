@@ -91,16 +91,16 @@ public class DashInputPlayer : ModPlayer
 
         if (selectedDashType <= 0)
         {
-            if (Main.myPlayer == Player.whoAmI)
-            {
-                PopupText.NewText(new AdvancedPopupRequest
-                {
-                    Color = Color.Crimson,
-                    Text = "No dash item equipped!",
-                    Velocity = new Vector2(0f, -4f),
-                    DurationInFrames = 60
-                }, Main.LocalPlayer.Top + new Vector2(0f, -40f));
-            }
+            // if (Main.myPlayer == Player.whoAmI)
+            // {
+            //     PopupText.NewText(new AdvancedPopupRequest
+            //     {
+            //         Color = Color.Crimson,
+            //         Text = "No dash item equipped!",
+            //         Velocity = new Vector2(0f, -4f),
+            //         DurationInFrames = 60
+            //     }, Main.LocalPlayer.Top + new Vector2(0f, -40f));
+            // }
             return false;
         }
 

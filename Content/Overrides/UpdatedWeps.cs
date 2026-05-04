@@ -60,6 +60,13 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint thunderZapperDelay = 60;
         private uint thunderZapperLastUsedCounter = 0;
 
+        private uint fisherDelay = 38;
+        private uint fisherLastUsedCounter = 0;
+
+        private uint anchorDelay = 120;
+        private uint anchorLastUsedCounter = 0;
+        bool playedAnchorSound = true;
+
         public override bool InstancePerEntity => true;
 
 
@@ -321,6 +328,30 @@ namespace CTG2.Content.Items.ModifiedWeps
                 else
                     return false;
             }
+            else if (item.type == ModContent.ItemType<KingFisher>())
+            {
+                if (Main.GameUpdateCount - fisherLastUsedCounter >= fisherDelay)
+                {
+                    fisherLastUsedCounter = Main.GameUpdateCount;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (item.type == ModContent.ItemType<FishermansAnchor>())
+            {
+                if (Main.GameUpdateCount - anchorLastUsedCounter >= anchorDelay)
+                {
+                    anchorLastUsedCounter = Main.GameUpdateCount;
+
+                    playedAnchorSound = false;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
             else if (item.type == ItemID.Bananarang)
             {
                 if (Main.GameUpdateCount - bananarangLastUsedCounter >= bananarangDelay)
@@ -521,6 +552,15 @@ namespace CTG2.Content.Items.ModifiedWeps
             if (item.type == 4760 && Main.mouseRight)
             {
                 player.statDefense += 4;
+            }
+        }
+
+        public override void UpdateInventory(Item item, Player player)
+        {
+            if (Main.GameUpdateCount - anchorLastUsedCounter >= anchorDelay && !playedAnchorSound)
+            {
+                SoundEngine.PlaySound(SoundID.MaxMana.WithVolumeScale(Main.soundVolume * 2f), player.Center);
+                playedAnchorSound = true;
             }
         }
     }

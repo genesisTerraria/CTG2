@@ -105,6 +105,16 @@ Items: {
 		DisplayName: Slasher
 		Tooltip: ""
 	}
+
+	KingFisher: {
+		Tooltip: ""
+		DisplayName: King Fisher
+	}
+
+	FishermansAnchor: {
+		DisplayName: Fisherman's Anchor
+		Tooltip: ""
+	}
 }
 
 NPCs: {
@@ -124,6 +134,7 @@ Projectiles: {
 	HexagonalBarrierProjectile.DisplayName: Hexagonal Barrier Projectile
 	AmalgamatedHandProjectile2.DisplayName: Amalgamated Hand Projectile2
 	SlasherHeld.DisplayName: Slasher Held
+	SittingDuckBobber.DisplayName: Sitting Duck Bobber
 }
 
 Buffs: {
