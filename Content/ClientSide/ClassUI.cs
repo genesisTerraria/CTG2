@@ -325,7 +325,7 @@ public class ClassUI : UIState
             _classList.Add(btn);
         }
 
-        for (int id = 10; id <= 18; id++)
+        for (int id = 10; id <= 19; id++)
         {
             var cls = CTG2.CTG2.config.Classes.FirstOrDefault(c => c.AbilityID == id);
             if (cls == null)

@@ -65,6 +65,10 @@ namespace CTG2.Content.Items.ModifiedWeps
 
         private uint anchorDelay = 120;
         private uint anchorLastUsedCounter = 0;
+
+        private uint daggerfishDelay = 47;
+        private uint daggerfishLastUsedCounter = 0;
+
         bool playedAnchorSound = true;
 
         public override bool InstancePerEntity => true;
@@ -297,6 +301,9 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     item.mana = 0;
                     break;
+                case ItemID.FrostDaggerfish:
+                    item.damage = 28;
+                    break;
             }
         }
 
@@ -346,6 +353,17 @@ namespace CTG2.Content.Items.ModifiedWeps
                     anchorLastUsedCounter = Main.GameUpdateCount;
 
                     playedAnchorSound = false;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (item.type == ItemID.FrostDaggerfish)
+            {
+                if (Main.GameUpdateCount - daggerfishLastUsedCounter >= daggerfishDelay)
+                {
+                    daggerfishLastUsedCounter = Main.GameUpdateCount;
 
                     return true;
                 }

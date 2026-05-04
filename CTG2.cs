@@ -144,7 +144,10 @@ namespace CTG2
         RequestMana = 105,
         SyncMana = 106,
         SyncLoginData = 107,
-        Dash = 108
+        Dash = 108,
+        RequestClearBuff = 109,
+        SyncClearBuff = 110,
+        FishermanPull = 111
     }
 
     public class CTG2 : Mod
@@ -346,6 +349,31 @@ namespace CTG2
                 
                     break;
                 }
+                case (byte)MessageType.RequestClearBuff:
+                {
+                    // CLIENT -> SERVER ONLY
+                    // if (Main.netMode != NetmodeID.Server)
+                    //     break;
+                
+                    int playerID = reader.ReadInt32();
+                    int buffType = reader.ReadInt32();
+                
+                    Player player = Main.player[playerID];
+                    if (!player.active)
+                        break;
+                
+                    // Server deletes the buff
+                    player.ClearBuff(buffType);
+                
+                    // Sync to all clients (including sender)
+                    ModPacket packet = GetPacket();
+                    packet.Write((byte)MessageType.SyncClearBuff);
+                    packet.Write(playerID);
+                    packet.Write(buffType);
+                    packet.Send();
+                
+                    break;
+                }
                 case (byte)MessageType.Dash:
                     DashInputSystem.HandlePacket(reader, whoAmI);
                     break;
@@ -364,6 +392,22 @@ namespace CTG2
                         break;
                 
                     player.AddBuff(buffType, time);
+                    break;
+                }
+                case (byte)MessageType.SyncClearBuff:
+                {
+                    // SERVER -> CLIENTS ONLY
+                    if (Main.netMode != NetmodeID.MultiplayerClient)
+                        break;
+                
+                    int playerID = reader.ReadInt32();
+                    int buffType = reader.ReadInt32();
+                
+                    Player player = Main.player[playerID];
+                    if (!player.active)
+                        break;
+                
+                    player.ClearBuff(buffType);
                     break;
                 }
                 
@@ -439,6 +483,9 @@ namespace CTG2
                             break;
                         case 18:
                             className = "Rng Man";
+                            break;
+                        case 19:
+                            className = "Fisherman";
                             break;
                     }
 
@@ -1438,6 +1485,53 @@ namespace CTG2
                             dashPly.SendDash(plyy.velocity, -1, whoAmI);
 
                         break;
+                case (byte)MessageType.FishermanPull:
+                {
+                    byte victimID = reader.ReadByte();
+                    byte attackerID = reader.ReadByte();
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        var modCTG = ModContent.GetInstance<CTG2>();
+                        
+                        // Need to separately send to victim or doesn't work
+                        ModPacket packet = modCTG.GetPacket();
+                        packet.Write((byte)MessageType.FishermanPull);
+                        packet.Write(victimID);
+                        packet.Write(attackerID);
+                        packet.Send(victimID, whoAmI);
+
+                        // Send to all other clients for visual sync
+                        packet = modCTG.GetPacket();
+                        packet.Write((byte)MessageType.FishermanPull);
+                        packet.Write(victimID);
+                        packet.Write(attackerID);
+                        packet.Send(-1, victimID);
+
+                        break;
+                    }
+
+                    Player victim = Main.player[victimID];
+                    Player attacker = Main.player[attackerID];
+
+                    Vector2 pullVelocity = attacker.Center - victim.Center;
+                    if (pullVelocity != Vector2.Zero)
+                    {
+                        pullVelocity.Normalize();
+                        float absY = Math.Abs(pullVelocity.Y); // 0 = fully horizontal, 1 = fully vertical
+                        float speed = MathHelper.Lerp(11f, 17f, absY);
+                        pullVelocity *= speed;
+                    }
+
+                    if (victimID == Main.myPlayer)
+                    {
+                        Main.LocalPlayer.velocity = pullVelocity;
+                    }
+                    else
+                        victim.velocity = pullVelocity;
+
+                    break;
+                }
 
                 case (byte)MessageType.DASH:
                     {

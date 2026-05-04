@@ -11,7 +11,7 @@
       "Modded": true
     },
     {
-      "Name": "Fisherman\u0027s Anchor",
+      "Name": "Fishermans Anchor",
       "Type": 5551,
       "Stack": 1,
       "Prefix": 0,
@@ -35,9 +35,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Frost Daggerfish",
+      "Type": 3197,
+      "Stack": 3,
       "Prefix": 0,
       "Slot": 4,
       "Modded": false
@@ -475,24 +475,24 @@
       "Modded": false
     },
     {
-      "Name": "Angler Hat",
-      "Type": 2367,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 59,
       "Modded": false
     },
     {
-      "Name": "Angler Vest",
-      "Type": 2368,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 60,
       "Modded": false
     },
     {
-      "Name": "Angler Pants",
-      "Type": 2369,
+      "Name": "Moon Lord Legs",
+      "Type": 5001,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 61,
@@ -502,7 +502,7 @@
       "Name": "Lucky Horseshoe",
       "Type": 158,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 62,
       "Slot": 62,
       "Modded": false
     },
@@ -515,10 +515,10 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
-      "Prefix": 0,
+      "Name": "Anklet of the Wind",
+      "Type": 212,
+      "Stack": 1,
+      "Prefix": 75,
       "Slot": 64,
       "Modded": false
     },
@@ -555,25 +555,25 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Summer Hat",
+      "Type": 242,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 69,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Clothier\u0027s Jacket",
+      "Type": 3246,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 70,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Safeman\u0027s Pink Leggings",
+      "Type": 4749,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 71,
       "Modded": false
@@ -587,9 +587,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Angler Tackle Bag",
+      "Type": 3721,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 73,
       "Modded": false
@@ -651,9 +651,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Brown and Black Dye",
+      "Type": 2875,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 81,
       "Modded": false

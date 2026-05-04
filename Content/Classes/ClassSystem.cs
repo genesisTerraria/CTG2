@@ -53,7 +53,8 @@ namespace ClassesNamespace
         RushMutant,
         RegenMutant,
         Leech,
-        RngMan
+        RngMan,
+        Fisherman
     }
 
 
@@ -83,6 +84,7 @@ namespace ClassesNamespace
 
         public int blockCounter = 1800;
         public int bombCounter = 1200;
+        public int daggerfishCounter = 1800;
 
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
         {
@@ -569,6 +571,14 @@ namespace ClassesNamespace
                     giveItemDirect(ItemID.StickyBomb, 1);
 
                 bombCounter += 1200;
+            }
+
+            if (gameTime >= daggerfishCounter && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0) // daggerfish over time
+            {
+                if (playerManager.currentClass?.Name == "Fisherman")
+                    giveItemDirect(ItemID.FrostDaggerfish, 3);
+
+                daggerfishCounter += 1800;
             }
 
             // if (gameTime >= blockCounter && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0 && gameTime <= 19000) // blocks over time

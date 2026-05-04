@@ -306,6 +306,8 @@ namespace CTG2.Content
 
         public override void OnHurt(Player.HurtInfo info)
         {
+            if (Player.whoAmI != Main.myPlayer) return;
+
             int projectileType = info.DamageSource.SourceProjectileType;
             int attackerIndex = info.DamageSource.SourcePlayerIndex;
             var selectedClassPlayer = Player.GetModPlayer<PlayerManager>();
@@ -340,6 +342,22 @@ namespace CTG2.Content
                         // fallback to quickspawn for any remainder (keeps previous behavior when inventory is full)
                         attacker.QuickSpawnItem(null, itemType, remaining);
                     }
+                }
+
+                if (attacker.team != Player.team && projectileType == ModContent.ProjectileType<SittingDuckBobber>() && attacker.HasBuff(103))
+                {
+                    var mod = ModContent.GetInstance<CTG2>();
+                    ModPacket packet = mod.GetPacket();
+                    packet.Write((byte)MessageType.RequestClearBuff);
+                    packet.Write(attacker.whoAmI);
+                    packet.Write(BuffID.Wet);
+                    packet.Send();
+
+                    packet = Mod.GetPacket();
+                    packet.Write((byte)MessageType.FishermanPull);
+                    packet.Write(Player.whoAmI);
+                    packet.Write(attacker.whoAmI);
+                    packet.Send();
                 }
 
                 switch (projectileType)
@@ -767,7 +785,7 @@ namespace CTG2.Content
                     ModPacket packet1 = mod.GetPacket();
                     packet1.Write((byte)MessageType.RequestAddBuff);
                     packet1.Write(other.whoAmI);
-                    packet1.Write(103);
+                    packet1.Write(137);
                     packet1.Write(480);
                     packet1.Send();
 
@@ -1162,6 +1180,13 @@ namespace CTG2.Content
             SoundEngine.PlaySound(SoundID.Item60.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
 
+        private void FishermanOnUse()
+        {
+            Player.AddBuff(103, 4 * 60);
+
+            SoundEngine.PlaySound(SoundID.Item66, Player.Center);
+        }
+
         private void RngManOnUse()
         {
             int itemType = Main.rand.Next(1, ItemLoader.ItemCount);
@@ -1405,6 +1430,12 @@ namespace CTG2.Content
                     case 18:
                         SetCooldown(5);
                         RngManOnUse();
+
+                        break;
+
+                    case 19:
+                        SetCooldown(30);
+                        FishermanOnUse();
 
                         break;
                 }

@@ -293,6 +293,19 @@
         "buffs": [],
         "ability-id": 18,
         "upgrades": []
+    },
+    {
+      "name": "Fisherman",
+      "summary": "",
+      "description": "",
+      "inventory": "fisherman",
+      "icon": 2424,
+      "ability-cooldown": 30,
+      "health-from-kills": 0,
+      "respawn-time": 9,
+        "buffs": [107],
+      "ability-id": 19,
+      "upgrades": []
     }
   ]
 }
