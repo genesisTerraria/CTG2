@@ -309,7 +309,6 @@ public class ModifyHurtModPlayer : ModPlayer
         if (info.DamageSource.SourceProjectileType == 520) // frost daggerfish
         {
             Player.AddBuff(46, 60);
-            Player.AddBuff(103, 60);
         }
         if (info.DamageSource.SourceProjectileType == 153)
         {
