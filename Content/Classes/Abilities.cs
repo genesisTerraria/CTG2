@@ -3,6 +3,7 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures; 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Linq;
 using System.Collections.Generic;
@@ -17,12 +18,17 @@ using CTG2.Content.Classes;
 using CTG2.Content.Items;
 using Terraria.Audio;
 using Microsoft.Xna.Framework.Audio;
+using Terraria.GameContent;
 
 
 namespace CTG2.Content
 {
     public class Abilities : ModPlayer
     {
+        public const int ClownSwapRadiusTiles = 22;
+        public const float ClownSwapRadiusPixels = ClownSwapRadiusTiles * 16f;
+        public const float ClownSwapRadiusPixelsSquared = ClownSwapRadiusPixels * ClownSwapRadiusPixels;
+
         public int cooldown = 0;
         public bool class1isHellfire = true;
         public int class2PassiveCounter = 0;
@@ -65,6 +71,33 @@ namespace CTG2.Content
         SoundStyle abilityReady = new SoundStyle("CTG2/Content/Classes/AbilityReady");
         SoundStyle whiteMageHeal = new SoundStyle("CTG2/Content/Classes/WhiteMageHeal");
         SoundStyle clownSwap = new SoundStyle("CTG2/Content/Classes/ClownSwap");
+
+        private bool IsPlayerWithinClownSwapRadius(Player other)
+        {
+            if (!other.active || other.dead || other.whoAmI == Player.whoAmI)
+                return false;
+
+            return Vector2.DistanceSquared(Player.Center, other.Center) <= ClownSwapRadiusPixelsSquared;
+        }
+
+        public bool IsValidClownSwapTarget(Player other)
+        {
+            if (!IsPlayerWithinClownSwapRadius(other) || other.ghost || other.team == 0 || Player.team == 0)
+                return false;
+
+            return Player.team != other.team;
+        }
+
+        public bool HasClownSwapTargetInRange()
+        {
+            foreach (Player other in Main.player)
+            {
+                if (IsValidClownSwapTarget(other))
+                    return true;
+            }
+
+            return false;
+        }
 
 
         private int GetItemIDByName(string itemName)
@@ -928,10 +961,7 @@ namespace CTG2.Content
 
             foreach (Player other in Main.player)
             {
-                if (!other.active || other.dead || other.whoAmI == Player.whoAmI)
-                    continue;
-
-                if (Vector2.Distance(Player.Center, other.Center) <= 22 * 16) // 22 block radius
+                if (IsPlayerWithinClownSwapRadius(other))
                 {
                     ModPacket audioPacket = mod.GetPacket();
                     audioPacket.Write((byte)MessageType.RequestAudioToClient);
@@ -966,12 +996,13 @@ namespace CTG2.Content
             {
                 foreach (Player other in Main.player)
                 {
-                    if (!other.active || other.dead || other.whoAmI == Player.whoAmI || other.ghost || other.team == 0)
+                    if (!IsValidClownSwapTarget(other))
                         continue;
 
-                    if (Vector2.Distance(Player.Center, other.Center) <= 22 * 16 && Vector2.Distance(Player.Center, other.Center) < class12ClosestDist && Player.team != other.team) // 22 block radius
+                    float distance = Vector2.Distance(Player.Center, other.Center);
+                    if (distance < class12ClosestDist)
                     {
-                        class12ClosestDist = (int)Vector2.Distance(Player.Center, other.Center);
+                        class12ClosestDist = (int)distance;
                         class12ClosestPlayer = other;
                     }
                 }
@@ -1490,6 +1521,84 @@ namespace CTG2.Content
                     Player.lifeRegen = 0;
                 }
             }
+        }
+    }
+
+    public class ClownSwapRangeVisualizer : ModSystem
+    {
+        private const int CircleSegments = 96;
+        private const float CircleLineThickness = 3f;
+
+        public override void PostDrawTiles()
+        {
+            if (Main.dedServ || Main.gameMenu)
+                return;
+
+            Player player = Main.LocalPlayer;
+            if (!player.active || player.dead)
+                return;
+
+            Abilities abilities = player.GetModPlayer<Abilities>();
+            PlayerManager playerManager = player.GetModPlayer<PlayerManager>();
+            bool isClownWithCushion = string.Equals(playerManager.currentClass?.Name, "Clown", StringComparison.Ordinal)
+                && player.HeldItem.type == ItemID.WhoopieCushion;
+            if (!isClownWithCushion && abilities.class12SwapTimer <= 0)
+                return;
+
+            Color ringColor = abilities.HasClownSwapTargetInRange()
+                ? new Color(90, 255, 140)
+                : new Color(255, 140, 70);
+
+            float pulse = 0.65f + 0.25f * (float)Math.Sin(Main.GlobalTimeWrappedHourly * 8f);
+            DrawCircle(Main.spriteBatch, player.Center, Abilities.ClownSwapRadiusPixels, ringColor * pulse);
+        }
+
+        private static void DrawCircle(SpriteBatch spriteBatch, Vector2 worldCenter, float radius, Color color)
+        {
+            spriteBatch.Begin(
+                SpriteSortMode.Deferred,
+                BlendState.AlphaBlend,
+                SamplerState.PointClamp,
+                DepthStencilState.None,
+                RasterizerState.CullCounterClockwise,
+                null,
+                Main.GameViewMatrix.ZoomMatrix);
+
+            Texture2D pixel = TextureAssets.MagicPixel.Value;
+            Rectangle source = new Rectangle(0, 0, 1, 1);
+            Vector2 screenCenter = worldCenter - Main.screenPosition;
+
+            for (int i = 0; i < CircleSegments; i++)
+            {
+                float startAngle = MathHelper.TwoPi * i / CircleSegments;
+                float endAngle = MathHelper.TwoPi * (i + 1) / CircleSegments;
+
+                Vector2 start = screenCenter + startAngle.ToRotationVector2() * radius;
+                Vector2 end = screenCenter + endAngle.ToRotationVector2() * radius;
+
+                DrawLine(spriteBatch, pixel, source, start, end, color);
+            }
+
+            spriteBatch.End();
+        }
+
+        private static void DrawLine(SpriteBatch spriteBatch, Texture2D pixel, Rectangle source, Vector2 start, Vector2 end, Color color)
+        {
+            Vector2 edge = end - start;
+            float length = edge.Length();
+            if (length <= 0f)
+                return;
+
+            spriteBatch.Draw(
+                pixel,
+                start,
+                source,
+                color,
+                edge.ToRotation(),
+                new Vector2(0f, 0.5f),
+                new Vector2(length, CircleLineThickness),
+                SpriteEffects.None,
+                0f);
         }
     }
 
