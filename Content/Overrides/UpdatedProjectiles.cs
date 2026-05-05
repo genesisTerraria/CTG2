@@ -252,12 +252,20 @@ public class ModifyHurtModPlayer : ModPlayer
         var modPlayer = Player.GetModPlayer<PlayerManager>();
         int attackerIndex = info.DamageSource.SourcePlayerIndex;
         int projIndex = info.DamageSource.SourceProjectileLocalIndex;
-        Projectile proj = Main.projectile[projIndex];
         if (projIndex >= 0 && projIndex < Main.maxProjectiles)
         {
-            if (proj.active && (proj.type == 263 || proj.type == 513 || proj.type == 229 || proj.type == 45 || proj.type == 280))
+            Projectile proj = Main.projectile[projIndex];
+            if (proj.active)
             {
-                proj.Kill();
+                if (proj.type == 969)
+                {
+                    Player.AddBuff(149, 60);
+                    proj.Kill();
+                }
+                else if (proj.type == 263 || proj.type == 513 || proj.type == 229 || proj.type == 45 || proj.type == 280)
+                {
+                    proj.Kill();
+                }
             }
         }
 
@@ -312,11 +320,6 @@ public class ModifyHurtModPlayer : ModPlayer
         if (info.DamageSource.SourceProjectileType == 507)
         {
             Player.AddBuff(160, 90);
-        }
-        if (info.DamageSource.SourceProjectileType == 969)
-        {
-            Player.AddBuff(149, 60);
-            proj.Kill();
         }
         if (info.DamageSource.SourceProjectileType == 520) // frost daggerfish
         {
