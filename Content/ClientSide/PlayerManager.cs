@@ -322,7 +322,7 @@ public class PlayerManager : ModPlayer
             Player attacker = Main.player[attackerIndex];
             var attackerManager = attacker.GetModPlayer<PlayerManager>();
 
-            attackerManager.damage += Math.Max(Player.statLife, info.Damage);
+            attackerManager.damage += Math.Min(Player.statLife, info.Damage);
         }
     }
 
