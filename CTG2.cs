@@ -25,10 +25,13 @@ using Humanizer;
 using System.Reflection;
 using DirectDashMod.Players;
 
+using Color = Microsoft.Xna.Framework.Color;
+
 
 using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.CameraModifiers;
+using System.Drawing;
 
 
 
@@ -525,7 +528,7 @@ namespace CTG2
                     break;
                 case (byte)MessageType.RequestChat:
                     string message = reader.ReadString();
-                    ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(message), Microsoft.Xna.Framework.Color.Olive);
+                    ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral(message), Microsoft.Xna.Framework.Color.Green);
                     break;
                 case (byte)MessageType.RequestChatColored:
                     string msg = reader.ReadString();
@@ -1010,7 +1013,7 @@ namespace CTG2
 
                         for (int i = 0; i < mapArray.Length; i++)
                         {
-                            ChatHelper.SendChatMessageToClient(NetworkText.FromLiteral($"{i + 1}. {mapArray[i]}"), Color.White, playerMapView);
+                            ChatHelper.SendChatMessageToClient(NetworkText.FromLiteral($"{i + 1}. {mapArray[i]}"), Color.Yellow, playerMapView);
                         }
                     }
 

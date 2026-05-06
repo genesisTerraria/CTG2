@@ -35,7 +35,7 @@ namespace CTG2.Content
             myPacket.Write((byte)MessageType.ClearMapQueue);
             myPacket.Send();
 
-            caller.Reply("Cleared map queue!", Color.Green);
+            caller.Reply("Cleared map queue.", Color.Green);
         }
     }
 }

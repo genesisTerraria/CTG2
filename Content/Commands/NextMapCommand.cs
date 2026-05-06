@@ -9,7 +9,7 @@ using CTG2.Content.Commands.Auth;
 
 namespace CTG2.Content
 {
-    public class MapCommand : ModCommand
+    public class NextMapCommand : ModCommand
     {
         public override CommandType Type => CommandType.Chat;
         public override string Command => "nm";
@@ -37,7 +37,7 @@ namespace CTG2.Content
                 caller.Reply($"Error: '{mapName}' is not a valid map name.", Color.Red);
                 return;
             }
-            caller.Reply(mapName + " added to the map queue", Color.Green);
+            caller.Reply($"Added {mapName} to the map queue.", Color.Green);
 
             ModPacket myPacket = Mod.GetPacket();
             myPacket.Write((byte)MessageType.RequestNextMap);

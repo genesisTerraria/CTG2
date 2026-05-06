@@ -17,9 +17,17 @@ namespace CTG2.Content.Commands
         public override string Command => "rollmap";
         public override string Description => "Generates a random map";
         public override string Usage => "/rollmap";
+        private long latestUseTime = 0;
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
+            if (Main.GameUpdateCount - latestUseTime < 60)
+            {
+                caller.Reply("You are using this command too quickly!", Color.Red);
+                return;
+            }
+
+            latestUseTime = Main.GameUpdateCount;
             Player player = caller.Player;
             Random random = new Random();
 
