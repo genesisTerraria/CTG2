@@ -4,6 +4,7 @@ using System.IO;
 using System.Text.Json;
 using ClassesNamespace;
 using CTG2.Content.ServerSide;
+using CTG2.Content.Systems.Client;
 using Terraria;
 using Terraria.DataStructures;
 using Terraria.ID;
@@ -342,6 +343,8 @@ public class PlayerManager : ModPlayer
         packetSync.Write((byte)MessageType.RequestSyncGameInfo);
         packetSync.Write(Main.myPlayer);
         packetSync.Send();
+
+        ModContent.GetInstance<CtgDiscordSdk>().LogCurrentUserIdentity();
     }
 
     // When a player disconnects, this hook can clean up their data.

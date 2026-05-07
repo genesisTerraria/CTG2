@@ -12,6 +12,7 @@ using CTG2.Content.ServerSide;
 using CTG2.Content.Commands;
 using CTG2.Content.Items;
 using CTG2.Content.Commands.Auth;
+using CTG2.Content.Systems.Client;
 using Microsoft.Xna.Framework;
 using Terraria.ID;
 using System.Collections.Generic;
@@ -153,7 +154,9 @@ namespace CTG2
         GiveItemToKiller = 111,
         RequestPickup = 112,
         ConfirmPickup = 113,
-        ClearMapQueue = 114
+        ClearMapQueue = 114,
+        LogDiscordIdentity = 115,
+        KickDiscordIdentityFailed = 116
     }
 
     public class CTG2 : Mod
@@ -236,6 +239,7 @@ namespace CTG2
 
         public override void Load()
         {
+            CtgNativeDiscordLibraryLoader.Register(this);
 
             //MusicLoader.AddMusic(this, "Assets/Music/clashroyaleOT");
             base.Load();
@@ -326,6 +330,30 @@ namespace CTG2
                     manager.StartGame();
                     Console.WriteLine("Server Received Game Start Request!");
                     break;
+
+                case (byte)MessageType.LogDiscordIdentity:
+                {
+                    int senderPlayerIndex = reader.ReadInt32();
+                    long discordId = reader.ReadInt64();
+                    string discordUsername = reader.ReadString();
+                    string terrariaName = senderPlayerIndex >= 0 && senderPlayerIndex < Main.player.Length
+                        ? Main.player[senderPlayerIndex].name
+                        : "(unknown)";
+                    Console.WriteLine($"[Discord] Player '{terrariaName}' (player {senderPlayerIndex}) -> discord username={discordUsername}, id={discordId}");
+                    break;
+                }
+
+                case (byte)MessageType.KickDiscordIdentityFailed:
+                {
+                    int kickPlayerIndex = reader.ReadInt32();
+                    if (kickPlayerIndex >= 0 && kickPlayerIndex < Main.player.Length && Main.player[kickPlayerIndex].active)
+                    {
+                        Console.WriteLine($"[Discord] Kicking player '{Main.player[kickPlayerIndex].name}' (player {kickPlayerIndex}) — Discord identity could not be resolved.");
+                        NetMessage.BootPlayer(kickPlayerIndex, NetworkText.FromLiteral("Please open Discord, wait two minutes and try again."));
+                        return;
+                    }
+                    break;
+                }
 
                 case (byte)MessageType.RequestEndGame:
                     manager.EndGame();
