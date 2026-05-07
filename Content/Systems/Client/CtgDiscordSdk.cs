@@ -17,12 +17,28 @@ public class CtgDiscordSdk : ModSystem
     private bool _initFailed;
     private User? _currentUser;
     private bool _alreadyLogged;
+    private bool _discordUnsupportedPlatform;
     private On_Main.hook_Update _updateHook;
 
     public override void Load()
     {
+        // TODO: remove this bypass once we ship a macOS discord_game_sdk.dylib
+        if (OperatingSystem.IsMacOS())
+        {
+            _discordUnsupportedPlatform = true;
+            Mod.Logger.Info("Discord SDK identity check is temporarily disabled on macOS.");
+            return;
+        }
+
         CtgNativeDiscordLibraryLoader.Register(Mod);
         TryInit();
+    }
+
+    public override void OnWorldUnload()
+    {
+        // Reset per-session state so the next world join re-runs the identity check.
+        _alreadyLogged = false;
+        _currentUser = null;
     }
 
     public override void Unload()
@@ -39,6 +55,7 @@ public class CtgDiscordSdk : ModSystem
         _initAttempted = false;
         _initFailed = false;
         _alreadyLogged = false;
+        _discordUnsupportedPlatform = false;
     }
 
     private void TryInit()
@@ -105,6 +122,9 @@ public class CtgDiscordSdk : ModSystem
 
     public void LogCurrentUserIdentity()
     {
+        if (_discordUnsupportedPlatform)
+            return;
+
         if (_alreadyLogged)
             return;
 
