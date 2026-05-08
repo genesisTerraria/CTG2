@@ -1,25 +1,24 @@
+using ClassesNamespace;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures; 
+using Terraria.GameContent;
+using Terraria.Audio;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Audio;
 using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.IO;
 using System.Text.Json;
 using System.Runtime.CompilerServices;
-using ClassesNamespace;
 using CTG2.Content.ClientSide;
 using CTG2.Content.ServerSide;
 using CTG2.Content.Buffs;
 using CTG2.Content.Classes;
 using CTG2.Content.Items;
-using Terraria.Audio;
-using Microsoft.Xna.Framework.Audio;
-using Terraria.GameContent;
-
 
 namespace CTG2.Content
 {
