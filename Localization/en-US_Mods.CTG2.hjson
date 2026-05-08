@@ -172,6 +172,11 @@ Buffs: {
 		DisplayName: Immortality
 		Description: You cannot be killed while in this state!
 	}
+
+	Netted: {
+		Description: Mods.CTG2.Buffs.Netted.Description
+		DisplayName: Netted
+	}
 }
 
 Keybinds: {

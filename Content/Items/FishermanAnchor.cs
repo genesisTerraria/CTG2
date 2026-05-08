@@ -11,7 +11,9 @@ namespace CTG2.Content.Items
 		public override void SetDefaults()
 		{
 	  		Item.CloneDefaults(ItemID.Anchor);
-			Item.damage = 36;
+			Item.damage = 34;
+			Item.useAnimation = 25;
+			Item.useTime = 25;
 		}
 
 		public override bool Shoot(Player player, Terraria.DataStructures.EntitySource_ItemUse_WithAmmo source,

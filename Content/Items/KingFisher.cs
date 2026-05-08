@@ -37,10 +37,7 @@ namespace CTG2.Content.Items
         {
             Projectile.CloneDefaults(366);
 
-            // Projectile.width = 14;
-            // Projectile.height = 14;
             Projectile.damage = 25;
-            // Projectile.knockBack = 3f;
             Projectile.friendly = true;
             Projectile.hostile = false;
         }

@@ -59,9 +59,9 @@ public class ProjectileOverrides : GlobalProjectile
         // }
         if (projectile.type == 969)
         {
-            if (projectile.timeLeft > 180)
+            if (projectile.timeLeft > 120)
             {
-                projectile.timeLeft = 180;
+                projectile.timeLeft = 120;
             }
         }
         if (!playedSoundBoomerangs && (projectile.type == ProjectileID.ThornChakram || projectile.type == ProjectileID.Flamarang))
@@ -267,7 +267,8 @@ public class ModifyHurtModPlayer : ModPlayer
 
         if (info.DamageSource.SourceProjectileType == 969 && Player.whoAmI == Main.myPlayer)
         {
-            Player.AddBuff(149, 60);
+            //Player.AddBuff(ModContent.BuffType<Netted>(), 60);
+            Player.AddBuff(BuffID.Dazed, 60);
         }
 
         if (modPlayer.currentClass.Name == "Paladin")

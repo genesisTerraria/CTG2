@@ -1200,7 +1200,7 @@ namespace CTG2.Content
             Vector2 direction = Main.MouseWorld - Player.Center;
             direction.Normalize();
 
-            float speed = 10f;
+            float speed = 7f;
             Vector2 velocity = direction * speed;
 
             Projectile.NewProjectile(
