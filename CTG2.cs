@@ -333,13 +333,21 @@ namespace CTG2
 
                 case (byte)MessageType.LogDiscordIdentity:
                 {
-                    int senderPlayerIndex = reader.ReadInt32();
+                    int senderPlayerIndex = reader.ReadInt32(); // read for stream alignment only
                     long discordId = reader.ReadInt64();
                     string discordUsername = reader.ReadString();
-                    string terrariaName = senderPlayerIndex >= 0 && senderPlayerIndex < Main.player.Length
-                        ? Main.player[senderPlayerIndex].name
+
+                    // Use the authoritative whoAmI from HandlePacket — never trust client-supplied index.
+                    string terrariaName = whoAmI >= 0 && whoAmI < Main.player.Length
+                        ? Main.player[whoAmI].name
                         : "(unknown)";
-                    Console.WriteLine($"[Discord] Player '{terrariaName}' (player {senderPlayerIndex}) -> discord username={discordUsername}, id={discordId}");
+                    Console.WriteLine($"[Discord] Player '{terrariaName}' (player {whoAmI}) -> discord username={discordUsername}, id={discordId}");
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        ModContent.GetInstance<NeatQueueTeamAssignmentSystem>()
+                            .RegisterDiscordIdentity(whoAmI, discordId.ToString(), discordUsername);
+                    }
                     break;
                 }
 
