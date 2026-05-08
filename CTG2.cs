@@ -156,7 +156,9 @@ namespace CTG2
         ConfirmPickup = 113,
         ClearMapQueue = 114,
         LogDiscordIdentity = 115,
-        KickDiscordIdentityFailed = 116
+        KickDiscordIdentityFailed = 116,
+        RequestWhois = 117,
+        WhoisResult = 118
     }
 
     public class CTG2 : Mod
@@ -359,6 +361,44 @@ namespace CTG2
                         Console.WriteLine($"[Discord] Kicking player '{Main.player[kickPlayerIndex].name}' (player {kickPlayerIndex}) — Discord identity could not be resolved.");
                         NetMessage.BootPlayer(kickPlayerIndex, NetworkText.FromLiteral("Please open Discord, wait two minutes and try again."));
                         return;
+                    }
+                    break;
+                }
+
+                case (byte)MessageType.RequestWhois:
+                {
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        int targetPlayerIndex = reader.ReadInt32();
+
+                        bool success = false;
+                        string targetName = "(unknown)";
+                        string discordUsername = string.Empty;
+                        string failureReason = "Player not found or not online.";
+
+                        if (targetPlayerIndex >= 0 && targetPlayerIndex < Main.player.Length && Main.player[targetPlayerIndex].active)
+                        {
+                            targetName = Main.player[targetPlayerIndex].name;
+
+                            if (ModContent.GetInstance<NeatQueueTeamAssignmentSystem>()
+                                .TryGetDiscordUsername(targetPlayerIndex, out discordUsername))
+                            {
+                                success = true;
+                                failureReason = string.Empty;
+                            }
+                            else
+                            {
+                                failureReason = $"No Discord username is registered for {targetName}.";
+                            }
+                        }
+
+                        ModPacket resultPacket = mod.GetPacket();
+                        resultPacket.Write((byte)MessageType.WhoisResult);
+                        resultPacket.Write(success);
+                        resultPacket.Write(targetName);
+                        resultPacket.Write(discordUsername ?? string.Empty);
+                        resultPacket.Write(failureReason);
+                        resultPacket.Send(whoAmI);
                     }
                     break;
                 }
@@ -1957,6 +1997,27 @@ namespace CTG2
                         //         }
                         //     }
                         // }
+                    }
+                    break;
+                }
+
+                case (byte)MessageType.WhoisResult:
+                {
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                        bool success = reader.ReadBoolean();
+                        string targetName = reader.ReadString();
+                        string discordUsername = reader.ReadString();
+                        string failureReason = reader.ReadString();
+
+                        if (success)
+                        {
+                            Main.NewText($"{targetName}'s Discord username: {discordUsername}", Color.CornflowerBlue);
+                        }
+                        else
+                        {
+                            Main.NewText(failureReason, Color.Red);
+                        }
                     }
                     break;
                 }

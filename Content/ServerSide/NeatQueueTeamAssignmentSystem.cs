@@ -101,6 +101,28 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
         Mod.Logger.Info("[NeatQueue] Cleared assignment map");
     }
 
+    public bool TryGetDiscordUsername(int whoAmI, out string username)
+    {
+        username = string.Empty;
+
+        if (whoAmI < 0 || whoAmI >= Main.player.Length || !Main.player[whoAmI].active)
+        {
+            if (_discordIdentityByWhoAmI.TryGetValue(whoAmI, out DiscordIdentity staleIdentity))
+            {
+                _whoAmIByDiscordId.Remove(staleIdentity.DiscordId);
+            }
+
+            _discordIdentityByWhoAmI.Remove(whoAmI);
+            return false;
+        }
+
+        if (!_discordIdentityByWhoAmI.TryGetValue(whoAmI, out DiscordIdentity identity))
+            return false;
+
+        username = identity.Username;
+        return !string.IsNullOrWhiteSpace(username);
+    }
+
     public bool TryAssignByDiscordId(string discordId)
     {
         if (string.IsNullOrEmpty(discordId))
