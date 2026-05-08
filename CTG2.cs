@@ -156,7 +156,9 @@ namespace CTG2
         ConfirmPickup = 113,
         ClearMapQueue = 114,
         LogDiscordIdentity = 115,
-        KickDiscordIdentityFailed = 116
+        KickDiscordIdentityFailed = 116,
+        RequestWhois = 117,
+        WhoisResult = 118
     }
 
     public class CTG2 : Mod
@@ -333,13 +335,21 @@ namespace CTG2
 
                 case (byte)MessageType.LogDiscordIdentity:
                 {
-                    int senderPlayerIndex = reader.ReadInt32();
+                    int senderPlayerIndex = reader.ReadInt32(); // read for stream alignment only
                     long discordId = reader.ReadInt64();
                     string discordUsername = reader.ReadString();
-                    string terrariaName = senderPlayerIndex >= 0 && senderPlayerIndex < Main.player.Length
-                        ? Main.player[senderPlayerIndex].name
+
+                    // Use the authoritative whoAmI from HandlePacket — never trust client-supplied index.
+                    string terrariaName = whoAmI >= 0 && whoAmI < Main.player.Length
+                        ? Main.player[whoAmI].name
                         : "(unknown)";
-                    Console.WriteLine($"[Discord] Player '{terrariaName}' (player {senderPlayerIndex}) -> discord username={discordUsername}, id={discordId}");
+                    Console.WriteLine($"[Discord] Player '{terrariaName}' (player {whoAmI}) -> discord username={discordUsername}, id={discordId}");
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        ModContent.GetInstance<NeatQueueTeamAssignmentSystem>()
+                            .RegisterDiscordIdentity(whoAmI, discordId.ToString(), discordUsername);
+                    }
                     break;
                 }
 
@@ -351,6 +361,44 @@ namespace CTG2
                         Console.WriteLine($"[Discord] Kicking player '{Main.player[kickPlayerIndex].name}' (player {kickPlayerIndex}) — Discord identity could not be resolved.");
                         NetMessage.BootPlayer(kickPlayerIndex, NetworkText.FromLiteral("Please open Discord, wait two minutes and try again."));
                         return;
+                    }
+                    break;
+                }
+
+                case (byte)MessageType.RequestWhois:
+                {
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        int targetPlayerIndex = reader.ReadInt32();
+
+                        bool success = false;
+                        string targetName = "(unknown)";
+                        string discordUsername = string.Empty;
+                        string failureReason = "Player not found or not online.";
+
+                        if (targetPlayerIndex >= 0 && targetPlayerIndex < Main.player.Length && Main.player[targetPlayerIndex].active)
+                        {
+                            targetName = Main.player[targetPlayerIndex].name;
+
+                            if (ModContent.GetInstance<NeatQueueTeamAssignmentSystem>()
+                                .TryGetDiscordUsername(targetPlayerIndex, out discordUsername))
+                            {
+                                success = true;
+                                failureReason = string.Empty;
+                            }
+                            else
+                            {
+                                failureReason = $"No Discord username is registered for {targetName}.";
+                            }
+                        }
+
+                        ModPacket resultPacket = mod.GetPacket();
+                        resultPacket.Write((byte)MessageType.WhoisResult);
+                        resultPacket.Write(success);
+                        resultPacket.Write(targetName);
+                        resultPacket.Write(discordUsername ?? string.Empty);
+                        resultPacket.Write(failureReason);
+                        resultPacket.Send(whoAmI);
                     }
                     break;
                 }
@@ -1949,6 +1997,27 @@ namespace CTG2
                         //         }
                         //     }
                         // }
+                    }
+                    break;
+                }
+
+                case (byte)MessageType.WhoisResult:
+                {
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                        bool success = reader.ReadBoolean();
+                        string targetName = reader.ReadString();
+                        string discordUsername = reader.ReadString();
+                        string failureReason = reader.ReadString();
+
+                        if (success)
+                        {
+                            Main.NewText($"{targetName}'s Discord username: {discordUsername}", Color.CornflowerBlue);
+                        }
+                        else
+                        {
+                            Main.NewText(failureReason, Color.Red);
+                        }
                     }
                     break;
                 }

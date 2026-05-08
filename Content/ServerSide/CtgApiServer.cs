@@ -1,9 +1,11 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Net;
 using System.Security.Cryptography;
 using System.Text;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using CTG2.Content.Configs;
@@ -181,6 +183,127 @@ namespace CTG2.Content.ServerSide
                     }
 
                     await WriteJsonAsync(context, 200, new { ok = true, mode });
+                    return;
+                }
+
+                if (method == "POST" && path == "/neatqueue/teams")
+                {
+                    if (!IsAuthorized(context.Request.Headers[TokenHeader]))
+                    {
+                        await WriteJsonAsync(context, 401, new { ok = false, error = "Unauthorized." });
+                        return;
+                    }
+
+                    string body;
+                    using (var reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding ?? Encoding.UTF8))
+                        body = await reader.ReadToEndAsync(cancellationToken);
+
+                    NeatQueueTeamsRequest request;
+                    try
+                    {
+                        request = JsonSerializer.Deserialize<NeatQueueTeamsRequest>(body, new JsonSerializerOptions
+                        {
+                            PropertyNameCaseInsensitive = true
+                        });
+                    }
+                    catch (JsonException)
+                    {
+                        await WriteJsonAsync(context, 400, new { ok = false, error = "Invalid JSON." });
+                        return;
+                    }
+
+                    if (request?.Assignments == null)
+                    {
+                        await WriteJsonAsync(context, 400, new { ok = false, error = "Missing assignments array." });
+                        return;
+                    }
+
+                    Mod.Logger.Info($"[NeatQueue] Received TEAMS_CREATED match=#{request.MatchNumber?.ToString() ?? "?"} queue={request.Queue ?? "?"} count={request.Assignments.Length}");
+
+                    var systemAssignments = new List<NeatQueueTeamAssignmentSystem.NeatQueueAssignment>(request.Assignments.Length);
+                    foreach (var dto in request.Assignments)
+                    {
+                        if (dto == null)
+                            continue;
+                        systemAssignments.Add(new NeatQueueTeamAssignmentSystem.NeatQueueAssignment
+                        {
+                            DiscordId = dto.DiscordId,
+                            Name = dto.Name,
+                            Team = dto.Team,
+                            TeamNum = dto.TeamNum
+                        });
+                    }
+
+                    int storedCount = 0;
+                    int skippedCount = 0;
+                    int assignedOnlineCount = 0;
+                    Exception caught = null;
+                    await Main.RunOnMainThread(() =>
+                    {
+                        try
+                        {
+                            var sys = ModContent.GetInstance<NeatQueueTeamAssignmentSystem>();
+                            (storedCount, skippedCount) = sys.ReplaceAssignments(systemAssignments);
+                            assignedOnlineCount = sys.TryAssignAllOnline();
+                        }
+                        catch (Exception ex)
+                        {
+                            caught = ex;
+                        }
+                    });
+
+                    if (caught != null)
+                    {
+                        Mod.Logger.Error($"CTG2 API /neatqueue/teams main-thread error: {caught}");
+                        await WriteJsonAsync(context, 500, new { ok = false, error = "Internal server error." });
+                        return;
+                    }
+
+                    await WriteJsonAsync(context, 200, new
+                    {
+                        ok = true,
+                        assignment_count = storedCount,
+                        assigned_online_count = assignedOnlineCount,
+                        skipped_count = skippedCount
+                    });
+                    return;
+                }
+
+                if (method == "POST" && path == "/neatqueue/clear-teams")
+                {
+                    if (!IsAuthorized(context.Request.Headers[TokenHeader]))
+                    {
+                        await WriteJsonAsync(context, 401, new { ok = false, error = "Unauthorized." });
+                        return;
+                    }
+
+                    // Drain the body but don't require any specific shape.
+                    using (var reader = new StreamReader(context.Request.InputStream, context.Request.ContentEncoding ?? Encoding.UTF8))
+                        _ = await reader.ReadToEndAsync(cancellationToken);
+
+                    Mod.Logger.Info("[NeatQueue] Received clear-teams");
+
+                    Exception caught = null;
+                    await Main.RunOnMainThread(() =>
+                    {
+                        try
+                        {
+                            ModContent.GetInstance<NeatQueueTeamAssignmentSystem>().ClearAssignments();
+                        }
+                        catch (Exception ex)
+                        {
+                            caught = ex;
+                        }
+                    });
+
+                    if (caught != null)
+                    {
+                        Mod.Logger.Error($"CTG2 API /neatqueue/clear-teams main-thread error: {caught}");
+                        await WriteJsonAsync(context, 500, new { ok = false, error = "Internal server error." });
+                        return;
+                    }
+
+                    await WriteJsonAsync(context, 200, new { ok = true, cleared = true });
                     return;
                 }
 
@@ -365,6 +488,34 @@ namespace CTG2.Content.ServerSide
         private class GamemodeRequest
         {
             public string Mode { get; set; }
+        }
+
+        private class NeatQueueTeamsRequest
+        {
+            public string Action { get; set; }
+
+            [JsonPropertyName("match_number")]
+            public int? MatchNumber { get; set; }
+
+            public string Queue { get; set; }
+            public string Guild { get; set; }
+            public string Channel { get; set; }
+            public NeatQueueAssignmentDto[] Assignments { get; set; }
+        }
+
+        private class NeatQueueAssignmentDto
+        {
+            [JsonPropertyName("discord_id")]
+            public string DiscordId { get; set; }
+
+            public string Name { get; set; }
+            public string Team { get; set; }
+
+            [JsonPropertyName("team_num")]
+            public int? TeamNum { get; set; }
+
+            public bool Captain { get; set; }
+            public bool Picked { get; set; }
         }
 
         private readonly struct ApiSettings
