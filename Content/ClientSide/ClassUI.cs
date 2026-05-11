@@ -273,6 +273,10 @@ public class ClassUI : UIState
             if (cls == null)
                 continue;
 
+            // RNG CTG: only RngMan (column 2) is allowed; keep first column empty like classes 10–19 loop.
+            if (gameManager != null && gameManager.rngConfig)
+                continue;
+
             var btn = new UITextPanel<string>(cls.Name)
             {
                 Width = { Percent = 1f },
