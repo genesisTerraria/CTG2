@@ -338,10 +338,45 @@ namespace CTG2.Content
 
         public override void OnHurt(Player.HurtInfo info)
         {
-            if (Player.whoAmI != Main.myPlayer) return;
-
             int projectileType = info.DamageSource.SourceProjectileType;
             int attackerIndex = info.DamageSource.SourcePlayerIndex;
+
+            // RngMan passive runs on the victim's ModPlayer instance; grant must run where the attacker is simulated
+            // as local (multiplayer client) or on the server / single-player host — not only when the victim is local.
+            if (attackerIndex >= 0 && attackerIndex < Main.maxPlayers)
+            {
+                Player attacker = Main.player[attackerIndex];
+                if (attacker.active && !attacker.dead)
+                {
+                    var attackerManager = attacker.GetModPlayer<PlayerManager>();
+                    int selectedClass = attackerManager.currentClass.AbilityID;
+
+                    bool grantRngManHit =
+                        selectedClass == 18
+                        && attacker.team != Player.team
+                        && (
+                            Main.netMode == NetmodeID.Server
+                            || Main.netMode == NetmodeID.SinglePlayer
+                            || (Main.netMode == NetmodeID.MultiplayerClient && attackerIndex == Main.myPlayer)
+                        );
+
+                    if (grantRngManHit)
+                    {
+                        int itemType = Main.rand.Next(1, ItemLoader.ItemCount);
+                        int amount = ContentSamples.ItemsByType[itemType].maxStack;
+
+                        int remaining = TryAddItemToInventory(attacker, itemType, amount);
+
+                        if (remaining > 0)
+                        {
+                            attacker.QuickSpawnItem(null, itemType, remaining);
+                        }
+                    }
+                }
+            }
+
+            if (Player.whoAmI != Main.myPlayer) return;
+
             var selectedClassPlayer = Player.GetModPlayer<PlayerManager>();
 
             if (selectedClassPlayer.currentClass.AbilityID == 2 && Player.HasBuff(BuffID.Swiftness))
@@ -360,21 +395,6 @@ namespace CTG2.Content
                 Player attacker = Main.player[attackerIndex];
                 int damage = info.Damage;
                 var attackerManager = attacker.GetModPlayer<PlayerManager>();
-                int selectedClass = attackerManager.currentClass.AbilityID;
-
-                if (selectedClass == 18 && attacker.team != Player.team)
-                {
-                    int itemType = Main.rand.Next(1, ItemLoader.ItemCount);
-                    int amount = ContentSamples.ItemsByType[itemType].maxStack;
-
-                    int remaining = TryAddItemToInventory(attacker, itemType, amount);
-
-                    if (remaining > 0)
-                    {
-                        // fallback to quickspawn for any remainder (keeps previous behavior when inventory is full)
-                        attacker.QuickSpawnItem(null, itemType, remaining);
-                    }
-                }
 
                 switch (projectileType)
                 {
