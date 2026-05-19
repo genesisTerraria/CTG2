@@ -21,7 +21,7 @@ namespace CTG2.Content
 
         public override bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
         {
-            if (AllowBreaking || type == TileID.Dirt || type == TileID.Bubble || type == TileID.Mud || type == TileID.Grass || type == 127)
+            if (AllowBreaking || type == TileID.Dirt || type == TileID.Bubble || type == TileID.Mud || type == TileID.Grass || type == 127 || type == TileID.Rope)
             {
                 return base.CanKillTile(i, j, type, ref blockDamaged);
             }
@@ -33,7 +33,7 @@ namespace CTG2.Content
 
         public override bool CanExplode(int i, int j, int type)
         {
-            if (AllowBreaking || type == TileID.Dirt || type == TileID.Mud || type == TileID.Grass || type == 127)
+            if (AllowBreaking || type == TileID.Dirt || type == TileID.Mud || type == TileID.Grass || type == 127 || type == TileID.Rope)
             {
                 return base.CanExplode(i, j, type);
             }
@@ -52,7 +52,6 @@ namespace CTG2.Content
     {
         public override bool CanExplode(int i, int j, int type)
         {
-
             return false;
         }
     }

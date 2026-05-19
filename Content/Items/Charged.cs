@@ -14,8 +14,8 @@ using System.IO;
 public class Charged : GlobalItem
 {
     public bool Affected;
-    private uint useDelay = 42; // Time between shots
-    private uint postShotDelay = 30;
+    private uint useDelay = 50; // Overall maximum firerate
+    private uint postShotDelay = 30; // Burst delay
     private uint lastUsedCounter = 0;
 
 

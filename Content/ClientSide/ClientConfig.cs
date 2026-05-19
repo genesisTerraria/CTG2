@@ -54,6 +54,12 @@ public class ClassConfig
     [JsonPropertyName("ability-cooldown")]
     public int AbilityCooldown { get; set; }
 
+    [JsonPropertyName("ability-2-cooldown")]
+    public int Ability2Cooldown { get; set; }
+
+    [JsonPropertyName("ability-3-cooldown")]
+    public int Ability3Cooldown { get; set; }
+
     [JsonPropertyName("health-from-kills")]
     public int HealthFromKills { get; set; }
 

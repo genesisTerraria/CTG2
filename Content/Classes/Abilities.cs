@@ -29,6 +29,8 @@ namespace CTG2.Content
         public const float ClownSwapRadiusPixelsSquared = ClownSwapRadiusPixels * ClownSwapRadiusPixels;
 
         public int cooldown = 0;
+        public int cooldown2 = 0;
+        public int cooldown3 = 0;
         public bool class1isHellfire = true;
         public int class2PassiveCounter = 0;
         public int class2AbilityTimer = -1;
@@ -68,8 +70,9 @@ namespace CTG2.Content
         public int mutantState = 1;
 
         SoundStyle abilityReady = new SoundStyle("CTG2/Content/Classes/AbilityReady");
+        SoundStyle ability2Ready = new SoundStyle("CTG2/Content/Classes/Ability2Ready");
+        SoundStyle ability3Ready = new SoundStyle("CTG2/Content/Classes/Ability3Ready");
         SoundStyle whiteMageHeal = new SoundStyle("CTG2/Content/Classes/WhiteMageHeal");
-        SoundStyle clownSwap = new SoundStyle("CTG2/Content/Classes/ClownSwap");
 
         private bool IsPlayerWithinClownSwapRadius(Player other)
         {
@@ -429,11 +432,20 @@ namespace CTG2.Content
         }
 
 
-        private void SetCooldown(int seconds)
+        private void SetCooldown(float seconds)
         {
-            cooldown = seconds * 60;
+            cooldown = (int) (seconds * 60f);
         }
 
+        private void SetCooldown2(int seconds)
+        {
+            cooldown2 = seconds * 60;
+        }
+
+        private void SetCooldown3(int seconds)
+        {
+            cooldown3 = seconds * 60;
+        }
 
         private void ArcherOnUse()
         {
@@ -476,6 +488,44 @@ namespace CTG2.Content
 
             if (class1isHellfire) SoundEngine.PlaySound(SoundID.DD2_PhantomPhoenixShot.WithVolumeScale(Main.soundVolume * 6f), Player.Center);
             else SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy.WithVolumeScale(Main.soundVolume * 6f), Player.Center);
+        }
+
+
+        private void ArcherOnUse2()
+        {
+            for (int i = 0; i < Player.inventory.Length; i++)
+            {
+                if (Player.inventory[i].type == 3568) // luminite arrow
+                {
+                    Player.inventory[i] = new Item(ItemID.None, 0);
+                }
+            }
+
+            Player.trashItem = new Item();
+            Main.mouseItem = new Item();
+
+            for (int i = 54; i <= 57; i++)
+            {
+                if (Player.inventory[i].IsAir)
+                {
+                    Player.inventory[i] = new Item(3568, 1);
+                    break;
+                }
+            }
+
+            var mod = ModContent.GetInstance<CTG2>();
+            ModPacket audioPacketSelf = mod.GetPacket();
+            audioPacketSelf.Write((byte)MessageType.RequestAudioToClient);
+            audioPacketSelf.Write("CTG2/Content/Classes/ArcherAbility2");
+            audioPacketSelf.Write(Player.whoAmI);
+            audioPacketSelf.Send();
+        }
+
+        private void ArcherOnUse3()
+        {
+            Player.AddBuff(BuffID.Slow, 45);
+            Player.AddBuff(BuffID.Chilled, 45);
+            Player.AddBuff(176, 30);
         }
 
 
@@ -1348,6 +1398,12 @@ namespace CTG2.Content
             if (cooldown == 1)
                 SoundEngine.PlaySound(abilityReady.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
 
+            if (cooldown2 == 1)
+                SoundEngine.PlaySound(ability2Ready.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+
+            if (cooldown3 == 1)
+                SoundEngine.PlaySound(ability3Ready.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+
             if (selectedClass == 2 && !Player.dead && !Player.ghost && playerManager.playerState == PlayerManager.PlayerState.Active && Player.HasBuff(BuffID.Swiftness) && CTG2.Ability1Keybind.JustPressed)
             {
                 Player.ClearBuff(BuffID.Swiftness);
@@ -1369,12 +1425,12 @@ namespace CTG2.Content
                 psychicActive = false;
             }
 
-            if (((Player.HeldItem.type == ItemID.WhoopieCushion && Player.controlUseItem && Player.itemTime == 0) || CTG2.Ability1Keybind.JustPressed) && cooldown == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && !Player.HasBuff(BuffID.Webbed)) // Only activate if not on cooldown
+            if (CTG2.Ability1Keybind.JustPressed && cooldown == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && !Player.HasBuff(BuffID.Webbed)) // Only activate if not on cooldown
             {
                 switch (selectedClass)
                 {
                     case 1:
-                        SetCooldown(0);
+                        SetCooldown(0.5f);
                         ArcherOnUse();
 
                         break;
@@ -1488,6 +1544,28 @@ namespace CTG2.Content
                         break;
                 }
             }
+
+            if (CTG2.Ability2Keybind.JustPressed && cooldown2 == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && !Player.HasBuff(BuffID.Webbed)) // Only activate if not on cooldown
+            {
+                switch (selectedClass)
+                {
+                    case 1:
+                        SetCooldown2(20);
+                        ArcherOnUse2();
+                        break;
+                }
+            }
+
+            if (CTG2.Ability3Keybind.JustPressed && cooldown3 == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && !Player.HasBuff(BuffID.Webbed)) // Only activate if not on cooldown
+            {
+                switch (selectedClass)
+                {
+                    case 1:
+                        SetCooldown3(1);
+                        ArcherOnUse3();
+                        break;
+                }
+            }
         }
        
         public override void PostUpdate()
@@ -1502,6 +1580,12 @@ namespace CTG2.Content
             {
                 if (cooldown > 0)
                     cooldown--;
+
+                if (cooldown2 > 0)
+                    cooldown2--;
+
+                if (cooldown3 > 0)
+                    cooldown3--;
 
                 if (class2AbilityTimer >= 0)
                     class2AbilityTimer--;

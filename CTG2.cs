@@ -173,6 +173,8 @@ namespace CTG2
         public static ModKeybind BlessingOfTheDragonsKeybind;
         public static ModKeybind AdvancedBinocularsKeybind;
         public static ModKeybind Ability1Keybind;
+        public static ModKeybind Ability2Keybind;
+        public static ModKeybind Ability3Keybind;
         public static ModKeybind DashKeybind { get; private set; }
         //public static int BiomeMusicId = 0; // client side 
 
@@ -264,6 +266,8 @@ namespace CTG2
             BlessingOfTheDragonsKeybind = KeybindLoader.RegisterKeybind(this, "PhoenixDash", "LeftShift");
             AdvancedBinocularsKeybind = KeybindLoader.RegisterKeybind(this, "AdvancedBinoculars", "MouseRight");
             Ability1Keybind = KeybindLoader.RegisterKeybind(this, "Ability 1", "R");
+            Ability2Keybind = KeybindLoader.RegisterKeybind(this, "Ability 2", "F");
+            Ability3Keybind = KeybindLoader.RegisterKeybind(this, "Ability 3", "C");
             DashKeybind = KeybindLoader.RegisterKeybind(this, "Dash", "F");
 
             On_Sign.ReadSign += CaptureSignText;

@@ -191,6 +191,8 @@ Keybinds: {
 	"Advanced Binoculars.DisplayName": Advanced  Binoculars
 	"Dragonbreather dash.DisplayName": Dragonbreather dash
 	PhoenixDash.DisplayName: Phoenix Dash
+	"Ability 2.DisplayName": Ability 2
+	"Ability 3.DisplayName": Ability 3
 }
 
 Configs: {

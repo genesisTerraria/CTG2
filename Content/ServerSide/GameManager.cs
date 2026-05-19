@@ -127,8 +127,7 @@ public class GameManager : ModSystem
 
     public override void OnWorldLoad()
     {
-        // TODO: Re-Paste the Arena on world load (in case it gets destroyed by an admin).
-        Main.spawnTileX = 11152 / 16; //spawn coords for the world ONLY on world load (this is changed later)
+        Main.spawnTileX = 11152 / 16; // spawn coords for the world
         Main.spawnTileY = 4128 / 16;
 
         BlueGem = new Gem(new Vector2(CTG2.config.BlueGem[0], CTG2.config.BlueGem[1]), 3);

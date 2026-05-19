@@ -1,10 +1,10 @@
 {
-  "HealthPoints": 150,
+  "HealthPoints": 140,
   "ManaPoints": 0,
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
-      "Type": 5555,
+      "Type": 5557,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -20,7 +20,7 @@
     },
     {
       "Name": "Rancor",
-      "Type": 5554,
+      "Type": 5556,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 2,
@@ -435,17 +435,17 @@
       "Modded": false
     },
     {
-      "Name": "Hellfire Arrow",
-      "Type": 265,
-      "Stack": 9999,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 54,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Hellfire Arrow",
+      "Type": 265,
+      "Stack": 9999,
       "Prefix": 0,
       "Slot": 55,
       "Modded": false

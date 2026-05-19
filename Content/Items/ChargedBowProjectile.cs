@@ -28,6 +28,9 @@ public class ChargedBowDrawer : PlayerDrawLayer
 
     protected override void Draw(ref PlayerDrawSet drawInfo) {
         Player player = drawInfo.drawPlayer;
+
+        if (player.dead || player.ghost) return;
+
         Projectile proj = null;
 
         // Find the projectile instance
@@ -113,11 +116,11 @@ public class ChargedBowProjectile : ModProjectile
     public float charge;
     private int t;
     private bool recentlyFired = false;
-    private bool start;
+    public bool isLuminite = false;
     private SlotId sound;
     private bool released;
     private int syncTimer;
-    private int storedProjType;
+    private int soundCooldownTimer = 0;
     private bool ammoLocked = false;
     private bool surpassedShimmerThreshold = false;
 
@@ -129,6 +132,7 @@ public class ChargedBowProjectile : ModProjectile
 
     SoundStyle bowSound = new SoundStyle("CTG2/Content/Items/BowSound");
     SoundStyle bowSound2 = new SoundStyle("CTG2/Content/Items/BowSound2");
+    SoundStyle archerAbility2Release = new SoundStyle("CTG2/Content/Items/ArcherAbility2Release");
 
     public override void SendExtraAI(BinaryWriter writer) {
         writer.Write(Math.Min(charge, 40f));
@@ -164,8 +168,9 @@ public class ChargedBowProjectile : ModProjectile
         Projectile.position = player.MountedCenter;
         Projectile.knockBack = player.HeldItem.knockBack;
 
-        bool isHellfire = storedProjType == ProjectileID.HellfireArrow;
-        bool isShimmer = storedProjType == ProjectileID.ShimmerArrow;
+        bool isHellfire = (int)Projectile.ai[1] == ProjectileID.HellfireArrow;
+        bool isShimmer = (int)Projectile.ai[1] == ProjectileID.ShimmerArrow;
+        isLuminite = (int)Projectile.ai[1] == 639;
 
         if (charge >= 40f) td++; // Increment glow timer
 
@@ -179,19 +184,12 @@ public class ChargedBowProjectile : ModProjectile
                 {
                     Item item = player.HeldItem;
 
-                    player.PickAmmo(item,
-                        out storedProjType,
-                        out float _,
-                        out int _,
-                        out float _,
-                        out int _
-                    );
-
                     ammoLocked = true;
                 }
 
                 if (isShimmer) charge += 1f;
-                else charge += 0.667f;
+                else if (isHellfire) charge += 0.667f;
+                else charge += 0.333f;
 
                 if (charge >= 40f && c1 == 0f) {
                     c1 = 1f;
@@ -208,9 +206,11 @@ public class ChargedBowProjectile : ModProjectile
             if (++syncTimer % 3 == 0) Projectile.netUpdate = true;
         }
 
-        if (player.channel && !released && !start) {
+        if (soundCooldownTimer > 0) soundCooldownTimer--;
+
+        if (player.channel && !released && soundCooldownTimer == 0 && charge < 40) {
             sound = SoundEngine.PlaySound(bowSound.WithVolumeScale(Main.soundVolume * 1.25f), player.Center);
-            start = true;
+            soundCooldownTimer = 45;
         }
 
         if (charge >= 30f && !surpassedShimmerThreshold && isShimmer)
@@ -224,15 +224,17 @@ public class ChargedBowProjectile : ModProjectile
 
             bool curvedShimmer = charge < 30f;
 
-            float shimmerSpeedReduc = 0;
-            if (isShimmer)
-            {
-                if (curvedShimmer) shimmerSpeedReduc = 0.5f;
-                else shimmerSpeedReduc = 0f;
-            }
-            float hellfireDamageReduc = isHellfire ? 1f : 0f;
+            float speedReduction = 0;
+            if (isShimmer && curvedShimmer) speedReduction = 0.5f;
+            else if (isLuminite) speedReduction = -1.5f;
 
-            Vector2 speed = new Vector2(item.shootSpeed, 0f).RotatedBy(Rotation) * (0.5f + (Math.Min(charge, 40f) / 40f) * 0.5f) * (1.8f - shimmerSpeedReduc);
+            float damageReduction = 0;
+            if (isHellfire) damageReduction = 4f;
+            else if (isLuminite) damageReduction = -10f;
+
+            float critDamageIncrease = player.HasBuff(176) ? 4 : 0;
+
+            Vector2 speed = new Vector2(item.shootSpeed, 0f).RotatedBy(Rotation) * (0.5f + (Math.Min(charge, 40f) / 40f) * 0.5f) * (1.8f - speedReduction);
             Vector2 spawnPos = player.MountedCenter + Vector2.One.RotatedBy(Rotation - MathHelper.PiOver4) * 2f;
 
             Projectile arrow = Projectile.NewProjectileDirect(
@@ -240,7 +242,7 @@ public class ChargedBowProjectile : ModProjectile
                 spawnPos,
                 speed,
                 (int)Projectile.ai[1],
-                (int)player.GetDamage(item.DamageType).ApplyTo((item.damage - hellfireDamageReduc)* (0.5f + Math.Min(charge, 40f) / 80f)),
+                (int)player.GetDamage(item.DamageType).ApplyTo((item.damage - damageReduction + critDamageIncrease)* (0.5f + Math.Min(charge, 40f) / 80f)),
                 item.knockBack,
                 Projectile.owner
             );
@@ -257,6 +259,8 @@ public class ChargedBowProjectile : ModProjectile
         if (released && !recentlyFired) {
             SoundEngine.PlaySound(bowSound2.WithVolumeScale(Main.soundVolume * 2.5f), Projectile.position);
             recentlyFired = true;
+
+            if (isLuminite) SoundEngine.PlaySound(archerAbility2Release.WithVolumeScale(Main.soundVolume * 2.5f), Projectile.position);
         }
 
         if (released) {
@@ -267,22 +271,22 @@ public class ChargedBowProjectile : ModProjectile
 }
 
 
-// public class ChargedBowPlayer : ModPlayer
-// {
-//     public override void ResetEffects()
-//     {
-//         for (int i = 0; i < Main.maxProjectiles; i++)
-//         {
-//             Projectile p = Main.projectile[i];
-//             if (p.active && p.owner == Player.whoAmI && p.ModProjectile is ChargedBowProjectile bow)
-//             {
-//                 // if (bow.charge >= 60f)
-//                 // {
-//                 //     Player.moveSpeed *= 0.8f;
-//                 //     Player.maxRunSpeed *= 0.8f;
-//                 // }
-//                 break;
-//             }
-//         }
-//     }
-// }
+public class ChargedBowPlayer : ModPlayer
+{
+    public override void ResetEffects()
+    {
+        for (int i = 0; i < Main.maxProjectiles; i++)
+        {
+            Projectile p = Main.projectile[i];
+            if (p.active && p.owner == Player.whoAmI && p.ModProjectile is ChargedBowProjectile bow)
+            {
+                if (bow.charge > 0f && bow.isLuminite)
+                {
+                    Player.moveSpeed *= 0.5f;
+                    Player.maxRunSpeed *= 0.5f;
+                }
+                break;
+            }
+        }
+    }
+}
