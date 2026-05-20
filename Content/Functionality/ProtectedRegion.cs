@@ -3,6 +3,8 @@ using Terraria.ModLoader;
 using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using System;
+using Terraria.ID;
+using Terraria.DataStructures;
 
 
 public class ProtectedRegionTile : GlobalTile
@@ -86,5 +88,28 @@ public class TempModPlayer : ModPlayer
                 firstCorner = null;
             }
         }
+    }
+}
+
+public class ProtectedRegionProjectile : GlobalProjectile
+{
+    public override bool PreAI(Projectile projectile)
+    {
+        if (projectile.type == ProjectileID.RopeCoil ||
+            projectile.type == ProjectileID.SilkRopeCoil ||
+            projectile.type == ProjectileID.VineRopeCoil ||
+            projectile.type == ProjectileID.WebRopeCoil)
+        {
+            int tileX = (int)((projectile.position.X + projectile.width / 2) / 16);
+            int tileY = (int)((projectile.position.Y + projectile.height / 2) / 16);
+
+            if (ProtectedRegionTile.IsInProtectedRegion(tileX, tileY))
+            {
+                projectile.Kill();
+                return false;
+            }
+        }
+
+        return true;
     }
 }

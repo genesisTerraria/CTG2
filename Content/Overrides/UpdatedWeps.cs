@@ -295,6 +295,9 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useTime =1;
                     item.useAnimation=1;
                     break;
+                case 4707: // Tragic Umbrella
+                    item.damage = 0;
+                    break;
                 case 165: //paladin weapon
                     item.shoot = 699;
                     item.scale = 0;

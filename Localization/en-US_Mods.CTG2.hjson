@@ -115,6 +115,11 @@ Items: {
 		DisplayName: Fisherman's Anchor
 		Tooltip: ""
 	}
+
+	ThrowingStars: {
+		DisplayName: Throwing Stars
+		Tooltip: ""
+	}
 }
 
 NPCs: {
@@ -135,6 +140,7 @@ Projectiles: {
 	AmalgamatedHandProjectile2.DisplayName: Amalgamated Hand Projectile2
 	SlasherHeld.DisplayName: Slasher Held
 	SittingDuckBobber.DisplayName: Sitting Duck Bobber
+	ThrowingStarsProjectile.DisplayName: Throwing Stars Projectile
 }
 
 Buffs: {

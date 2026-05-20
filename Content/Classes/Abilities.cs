@@ -630,6 +630,26 @@ namespace CTG2.Content
             SoundEngine.PlaySound(SoundID.DD2_BetsyWindAttack.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
 
+        private void NinjaOnUse2()
+        {
+            Vector2 direction = Main.MouseWorld - Player.Center;
+            direction.Normalize();
+
+            float speed = 13f;
+            Vector2 velocity = direction * speed;
+
+            Projectile.NewProjectile(
+                Player.GetSource_FromThis(),
+                Player.Center,
+                velocity,
+                ProjectileID.RopeCoil,
+                0,
+                0,
+                Player.whoAmI
+            );
+
+            SoundEngine.PlaySound(SoundID.Item66, Player.Center);
+        }
 
         private void BeastOnUse()
         {
@@ -1436,7 +1456,7 @@ namespace CTG2.Content
                         break;
 
                     case 2:
-                        SetCooldown(30);
+                        SetCooldown(45);
                         NinjaOnUse();
 
                         break;
@@ -1552,6 +1572,10 @@ namespace CTG2.Content
                     case 1:
                         SetCooldown2(20);
                         ArcherOnUse2();
+                        break;
+                    case 2:
+                        SetCooldown2(30);
+                        NinjaOnUse2();
                         break;
                 }
             }

@@ -15,7 +15,7 @@ public class DropBlockSystem : ModSystem
         {
             Item item = Main.item[i];
 
-            if (item.active && item.type == ItemID.Rope)
+            if (item.active && (item.type == ItemID.Rope || item.type == ItemID.RopeCoil))
             {
                 item.TurnToAir();
                 NetMessage.SendData(MessageID.SyncItem, -1, -1, null, i);
