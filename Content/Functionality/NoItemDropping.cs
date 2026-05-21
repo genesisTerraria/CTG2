@@ -15,13 +15,7 @@ public class DropBlockSystem : ModSystem
         {
             Item item = Main.item[i];
 
-            if (item.active && (item.type == ItemID.Rope || item.type == ItemID.RopeCoil))
-            {
-                item.TurnToAir();
-                NetMessage.SendData(MessageID.SyncItem, -1, -1, null, i);
-            }
-
-            if (item.velocity.Y == -2f && item.active) //BlockRewardSystem.canBeDropped == false
+            if (item.active && item.type != ItemID.DirtBlock && item.type != ItemID.MudBlock && item.type != ItemID.Bubble)
             {
                 item.TurnToAir();
                 NetMessage.SendData(MessageID.SyncItem, -1, -1, null, i);

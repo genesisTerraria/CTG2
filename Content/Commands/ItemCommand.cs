@@ -95,12 +95,44 @@ namespace CTG2.Content.Commands
 
             if (itemType != -1)
             {
-                player.QuickSpawnItem(null, itemType, amount);
+                giveItemDirect(itemType, amount, player);
                 caller.Reply($"Gave {amount}x {Lang.GetItemNameValue(itemType)}.", Color.Green);
             }
             else
             {
                 caller.Reply($"Item '{itemName}' not found. Try exact name or item ID.", Color.Red);
+            }
+        }
+
+        private void giveItemDirect(int itemID, int stack, Player player)
+        {
+            int firstOpen = -1;
+            bool gaveItem = false;
+
+            for (int i = 0; i < player.inventory.Length; i++)
+            {
+                Item item = player.inventory[i];
+                if (item.type == itemID)
+                {
+                    Item newItem = new Item();
+                    newItem.SetDefaults(itemID);
+                    newItem.stack = item.stack + stack;
+                    player.inventory[i] = newItem;
+
+                    gaveItem = true;
+
+                    break;
+                }
+                else if (item.type == ItemID.None && firstOpen == -1)
+                    firstOpen = i;
+            }
+
+            if (firstOpen != -1 && !gaveItem)
+            {
+                Item newItem = new Item();
+                newItem.SetDefaults(itemID);
+                newItem.stack = stack;
+                player.inventory[firstOpen] = newItem;
             }
         }
     }

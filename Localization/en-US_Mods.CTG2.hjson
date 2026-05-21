@@ -120,6 +120,16 @@ Items: {
 		DisplayName: Throwing Stars
 		Tooltip: ""
 	}
+
+	SeaUrchin: {
+		DisplayName: Sea Urchin
+		Tooltip: ""
+	}
+
+	Sharkron: {
+		DisplayName: Sharkron
+		Tooltip: ""
+	}
 }
 
 NPCs: {

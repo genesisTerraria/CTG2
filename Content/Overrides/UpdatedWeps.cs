@@ -21,6 +21,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         public long daggerfishLastUsedCounter;
         public long sharknadoLastUsedCounter;
         public long chumBallLastUsedCounter;
+        public long anchorLastUsedCounter;
     }
 
     public class OverloadedWeps : GlobalItem
@@ -73,7 +74,6 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint fisherDelay = 38;
 
         private uint anchorDelay = 120;
-        private uint anchorLastUsedCounter = 0;
 
         private uint daggerfishDelay = 47;
         private uint sharknadoDelay = 47;
@@ -377,6 +377,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     mPlayer.daggerfishLastUsedCounter = Main.GameUpdateCount;
                     mPlayer.sharknadoLastUsedCounter = Main.GameUpdateCount;
                     mPlayer.chumBallLastUsedCounter = Main.GameUpdateCount;
+                    mPlayer.anchorLastUsedCounter = Main.GameUpdateCount - 2 * 60 + 25;
                     return true;
                 }
                 return false;
@@ -419,9 +420,9 @@ namespace CTG2.Content.Items.ModifiedWeps
             }
             else if (item.type == ModContent.ItemType<FishermansAnchor>())
             {
-                if (Main.GameUpdateCount - anchorLastUsedCounter >= anchorDelay)
+                if (Main.GameUpdateCount - mPlayer.anchorLastUsedCounter >= anchorDelay)
                 {
-                    anchorLastUsedCounter = Main.GameUpdateCount;
+                    mPlayer.anchorLastUsedCounter = Main.GameUpdateCount;
 
                     playedAnchorSound = false;
 
@@ -635,7 +636,9 @@ namespace CTG2.Content.Items.ModifiedWeps
 
         public override void UpdateInventory(Item item, Player player)
         {
-            if (Main.GameUpdateCount - anchorLastUsedCounter >= anchorDelay && !playedAnchorSound)
+            var mPlayer = player.GetModPlayer<CooldownPlayer>();
+            
+            if (Main.GameUpdateCount - mPlayer.anchorLastUsedCounter >= anchorDelay && !playedAnchorSound)
             {
                 SoundEngine.PlaySound(SoundID.MaxMana.WithVolumeScale(Main.soundVolume * 2f), player.Center);
                 playedAnchorSound = true;

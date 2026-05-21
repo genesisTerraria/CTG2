@@ -13,12 +13,12 @@ namespace CTG2.Content.Items
         public override string Texture => "Terraria/Images/Item_2296";
         public override void SetDefaults()
         {
-            Item.CloneDefaults(2296);
+            Item.CloneDefaults(ItemID.SittingDucksFishingRod);
             Item.shoot = ModContent.ProjectileType<SittingDuckBobber>();
             Item.shootSpeed = 16f;
         }
 
-         public override bool Shoot(Player player, Terraria.DataStructures.EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
+        public override bool Shoot(Player player, Terraria.DataStructures.EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
             // Spawn your custom bobber instead of the vanilla one
             int proj = Projectile.NewProjectile(source, position, velocity,
@@ -26,6 +26,11 @@ namespace CTG2.Content.Items
                 damage, knockback, player.whoAmI);
 
             return false; // Return false to cancel the vanilla spawn
+        }
+
+        public override void ModifyFishingLine(Projectile bobber, ref Vector2 lineOriginOffset, ref Color lineColor)
+        {
+            lineOriginOffset = new Vector2(45f, -34f); // adjust to match rod tip
         }
     }
 

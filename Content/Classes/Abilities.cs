@@ -1286,6 +1286,8 @@ namespace CTG2.Content
 
         private void FishermanOnUse()
         {
+            Player.AddBuff(BuffID.Cursed, 18);
+            
             Vector2 direction = Main.MouseWorld - Player.Center;
             direction.Normalize();
 
