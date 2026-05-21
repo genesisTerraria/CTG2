@@ -1287,7 +1287,7 @@ namespace CTG2.Content
         private void FishermanOnUse()
         {
             Player.AddBuff(BuffID.Cursed, 18);
-            
+
             Vector2 direction = Main.MouseWorld - Player.Center;
             direction.Normalize();
 
@@ -1447,7 +1447,7 @@ namespace CTG2.Content
                 psychicActive = false;
             }
 
-            if (CTG2.Ability1Keybind.JustPressed && cooldown == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && !Player.HasBuff(BuffID.Webbed)) // Only activate if not on cooldown
+            if (((Player.HeldItem.type == ItemID.WhoopieCushion && Player.controlUseItem && Player.itemTime == 0) || CTG2.Ability1Keybind.JustPressed) && cooldown == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && !Player.HasBuff(BuffID.Webbed)) // Only activate if not on cooldown
             {
                 switch (selectedClass)
                 {
