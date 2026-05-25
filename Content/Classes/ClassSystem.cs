@@ -85,6 +85,7 @@ namespace ClassesNamespace
         public int blockCounter = 1800;
         public int bombCounter = 1200;
         public int fishCounter = 3600;
+        public int bugCounter = 3600;
 
         public override void ModifyMaxStats(out StatModifier health, out StatModifier mana)
         {
@@ -579,6 +580,14 @@ namespace ClassesNamespace
                     CTG2.CTG2.GiveItemToPlayer(Player, ItemID.AtlanticCod, 1, 0);
 
                 fishCounter += 3600;
+            }
+
+            if (gameTime >= bugCounter && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0) // daggerfish over time
+            {
+                if (playerManager.currentClass?.Name == "Beast")
+                    CTG2.CTG2.GiveItemToPlayer(Player, ItemID.LightningBug, 3, 0);
+
+                bugCounter += 3600;
             }
 
             // if (gameTime >= blockCounter && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0 && gameTime <= 19000) // blocks over time

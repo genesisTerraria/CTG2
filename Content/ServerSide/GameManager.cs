@@ -486,12 +486,14 @@ public class GameManager : ModSystem
             player.GetModPlayer<ClassSystem>().blockCounter = 1800;
             player.GetModPlayer<ClassSystem>().bombCounter = 1200;
             player.GetModPlayer<ClassSystem>().fishCounter = 3600;
+            player.GetModPlayer<ClassSystem>().bugCounter = 3600;
 
             ModPacket classSystemPacket = mod.GetPacket();
             classSystemPacket.Write((byte)MessageType.SyncClassSystemAttributes);
             classSystemPacket.Write(player.whoAmI);
             classSystemPacket.Write(1800);
             classSystemPacket.Write(1200);
+            classSystemPacket.Write(3600);
             classSystemPacket.Write(3600);
             classSystemPacket.Send(toClient: player.whoAmI);
 
@@ -860,7 +862,7 @@ public class GameManager : ModSystem
 
             BlueGem.Reset();
 
-            if (isOvertime)
+            if (isOvertime && !RedGem.IsHeld)
             {
                 winner = 2;
                 EndGame();
@@ -881,7 +883,7 @@ public class GameManager : ModSystem
 
             RedGem.Reset();
 
-            if (isOvertime)
+            if (isOvertime && !BlueGem.IsHeld)
             {
                 winner = 1;
                 EndGame();

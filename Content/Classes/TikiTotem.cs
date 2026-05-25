@@ -124,7 +124,6 @@ namespace CTG2.Content.Classes
             }
         }
 
-
         public override bool? CanBeHitByProjectile(Projectile projectile)
         {
             int tikiTeam = (int)NPC.ai[0];

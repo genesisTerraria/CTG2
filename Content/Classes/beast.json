@@ -4,19 +4,19 @@
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
-      "Type": 5555,
+      "Type": 5559,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
       "Modded": true
     },
     {
-      "Name": "Whoopie Cushion",
-      "Type": 215,
+      "Name": "Hellwing Tome",
+      "Type": 5553,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 1,
-      "Modded": false
+      "Modded": true
     },
     {
       "Name": "Gray Zapinator",
@@ -35,9 +35,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Lightning Bug",
+      "Type": 2004,
+      "Stack": 3,
       "Prefix": 0,
       "Slot": 4,
       "Modded": false
@@ -323,9 +323,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Whoopie Cushion",
+      "Type": 215,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 40,
       "Modded": false
@@ -502,23 +502,23 @@
       "Name": "Lucky Horseshoe",
       "Type": 158,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 62,
       "Slot": 62,
       "Modded": false
     },
     {
-      "Name": "Royal Gel",
-      "Type": 3090,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 63,
       "Modded": false
     },
     {
-      "Name": "Lucky Coin",
-      "Type": 855,
-      "Stack": 1,
-      "Prefix": 62,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
+      "Prefix": 0,
       "Slot": 64,
       "Modded": false
     },

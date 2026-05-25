@@ -64,6 +64,13 @@ public class ProjectileOverrides : GlobalProjectile
                 projectile.timeLeft = 120;
             }
         }
+        if (projectile.type == 485)
+        {
+            if (projectile.timeLeft > 300)
+            {
+                projectile.timeLeft = 300;
+            }
+        }
         if (!playedSoundBoomerangs && (projectile.type == ProjectileID.ThornChakram || projectile.type == ProjectileID.Flamarang))
         {
             SoundEngine.PlaySound(SoundID.Item1, projectile.Center);
@@ -187,32 +194,6 @@ public class ProjectileOverrides : GlobalProjectile
             projectile.tileCollide = false;
             projectile.timeLeft = 1; // dies almost instantly
         }
-        // if (projectile.type == 280)
-        // {
-        //     float scale = 0.5f;
-
-        //     Vector2 center = projectile.Center;
-
-        //     projectile.scale = scale;
-
-        //     projectile.width = (int)(projectile.width * scale);
-        //     projectile.height = (int)(projectile.height * scale);
-
-        //     projectile.Center = center;
-        // }
-        // if (projectile.type == 706)
-        // {
-        //     float scale = 0.75f;
-
-        //     Vector2 center = projectile.Center;
-
-        //     projectile.scale = scale;
-
-        //     projectile.width = (int)(projectile.width * scale);
-        //     projectile.height = (int)(projectile.height * scale);
-
-        //     projectile.Center = center;
-        // }
         if (projectile.type == ProjectileID.NebulaArcanumExplosionShot)
         {
             projectile.damage = 0; //second check in case first fails for nebula epxlosion
@@ -222,6 +203,11 @@ public class ProjectileOverrides : GlobalProjectile
         if (projectile.type == 513)
         {
             projectile.damage = 31;
+        }
+        if (projectile.type == ProjectileID.IceSickle || projectile.type == ProjectileID.ChlorophyteOrb || projectile.type == ProjectileID.DemonScythe || projectile.type == ProjectileID.GoldenShowerFriendly || projectile.type == ProjectileID.WeatherPainShot
+         || projectile.type == ModContent.ProjectileType<SittingDuckBobber>())
+        {
+            projectile.penetrate = 1;
         }
     }   
 }
@@ -256,11 +242,20 @@ public class ModifyHurtModPlayer : ModPlayer
         if (projIndex >= 0 && projIndex < Main.maxProjectiles)
         {
             Projectile proj = Main.projectile[projIndex];
-            if (proj.active)
+
+            if (Main.player[attackerIndex].HeldItem.type != ModContent.ItemType<UpgradedShardstonePickaxe>()
+             && Main.player[attackerIndex].HeldItem.type != ModContent.ItemType<ShardstonePickaxe>())
             {
-                if (proj.type == 263 || proj.type == 513 || proj.type == 229 || proj.type == 45 || proj.type == 280 || proj.type == 969)
+                foreach (Projectile proje in Main.projectile)
                 {
-                    proj.Kill();
+                    if (proje.active && proje.owner == Player.whoAmI && proje.type == ModContent.ProjectileType<FoliageTendrilsProjectile>())
+                    {
+                        var tendril = proje.ModProjectile as FoliageTendrilsProjectile;
+                        if (tendril != null && tendril.latched)
+                        {
+                            proje.Kill();
+                        }
+                    }
                 }
             }
         }

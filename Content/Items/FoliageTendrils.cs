@@ -25,6 +25,7 @@ namespace CTG2.Content.Items
     public class FoliageTendrilsProjectile : ModProjectile
     {
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.Web;
+        public bool latched = false;
         private static Asset<Texture2D> chainTexture;
 
         public override void Load()
@@ -50,6 +51,18 @@ namespace CTG2.Content.Items
                 }
             }
             return hooksOut < 4;
+        }
+
+        private bool wasLatched = false;
+
+        public override void AI()
+        {
+            base.AI();
+
+            if (Projectile.ai[0] == 1f || Projectile.ai[0] == 2f)
+            {
+                latched = true;
+            }
         }
 
         public override float GrappleRange()

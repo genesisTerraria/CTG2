@@ -11,6 +11,7 @@ using CTG2.Content.ClientSide;
 using CTG2.Content.ServerSide;
 using CTG2.Content.Commands;
 using CTG2.Content.Items;
+using CTG2.Content.NPCs;
 using CTG2.Content.Commands.Auth;
 using CTG2.Content.Systems.Client;
 using Microsoft.Xna.Framework;
@@ -33,6 +34,7 @@ using Terraria.GameContent.Bestiary;
 using Terraria.GameContent.ItemDropRules;
 using Terraria.Graphics.CameraModifiers;
 using System.Drawing;
+using System.Collections;
 
 
 
@@ -158,7 +160,9 @@ namespace CTG2
         LogDiscordIdentity = 115,
         KickDiscordIdentityFailed = 116,
         RequestWhois = 117,
-        WhoisResult = 118
+        WhoisResult = 118,
+        UpdatedLatched = 119,
+        SyncSlimerAttributes = 120
     }
 
     public class CTG2 : Mod
@@ -421,15 +425,55 @@ namespace CTG2
 
                     break;
                 case (byte)MessageType.RequestSpawnNpc:
+                {
                     var npcX = reader.ReadInt32();
                     var npcY = reader.ReadInt32();
                     var npcType = reader.ReadInt32();
+
                     // use ai0 to store spawning player's team.
                     float ai0 = (float)reader.ReadInt32();
-                    float ai1 = reader.ReadSingle();
-                    int npcIndex = NPC.NewNPC(Main.LocalPlayer.GetSource_Misc("SpawnNPC"), npcX, npcY, npcType, 0, ai0, ai1);
+                    int mobTeam = reader.ReadInt32();
+                    int mobSpawner = reader.ReadInt32();
+                    int npcIndex = NPC.NewNPC(Main.LocalPlayer.GetSource_Misc("SpawnNPC"), npcX, npcY, npcType, 0, ai0);
+
+                    var mob = Main.npc[npcIndex];
+
+                    if (mobSpawner != -1 && mob.ModNPC is SlimerClone slimerClone)
+                    {
+                        slimerClone.team = mobTeam;
+                        slimerClone.spawner = mobSpawner;
+
+                        if (Main.netMode == NetmodeID.Server)
+                        {
+                            ModPacket packet = GetPacket();
+                            packet.Write((byte)MessageType.SyncSlimerAttributes);
+                            packet.Write(npcIndex);
+                            packet.Write(mobTeam);
+                            packet.Write(mobSpawner);
+                            packet.Send(-1, whoAmI); 
+                        }
+                    }
 
                     break;
+                }
+
+                case (byte)MessageType.SyncSlimerAttributes:
+                {
+                    var mobIndex = reader.ReadInt32();
+                    var mobTeam = reader.ReadInt32();
+                    var mobSpawner = reader.ReadInt32();
+
+                    var mob = Main.npc[mobIndex];
+
+                    if (mobSpawner != -1 && mob.ModNPC is SlimerClone slimerClone)
+                    {
+                        slimerClone.team = mobTeam;
+                        slimerClone.spawner = mobSpawner;
+                    }
+
+                    break;
+                }
+
                 case (byte)MessageType.SyncNpcIndex:
                     int syncedNpcIndex = reader.ReadInt32();
                     CTG2.requestedNpcIndex = syncedNpcIndex;
@@ -1026,6 +1070,7 @@ namespace CTG2
                     int blockCounter = reader.ReadInt32();
                     int bombCounter = reader.ReadInt32();
                     int fishCounter = reader.ReadInt32();
+                    int bugCounter = reader.ReadInt32();
 
                     if (Main.netMode == NetmodeID.Server)
                     {
@@ -1035,6 +1080,7 @@ namespace CTG2
                         classSystemPacket.Write(blockCounter);
                         classSystemPacket.Write(bombCounter);
                         classSystemPacket.Write(fishCounter);
+                        classSystemPacket.Write(bugCounter);
                         classSystemPacket.Send(toClient: playerIndd);
                     }
 
@@ -1043,6 +1089,7 @@ namespace CTG2
                     sys.blockCounter = blockCounter;
                     sys.bombCounter = bombCounter;
                     sys.fishCounter = fishCounter;
+                    sys.bugCounter = bugCounter;
 
                     break;
             
@@ -1754,11 +1801,24 @@ namespace CTG2
 
                         Player carrier = Main.player[requestingPlayer];
 
-                        ModPacket packetText = mod.GetPacket();
-                        packetText.Write((byte)MessageType.RequestChatColored);
-                        packetText.Write($"{carrier.name} has picked up the red team's gem!");
-                        packetText.Write(Color.Red.PackedValue);
-                        packetText.Send(); //send chat pickup text
+                        if (gemId == 1)
+                        {
+                            ModPacket packetText = mod.GetPacket();
+                            packetText.Write((byte)MessageType.RequestChatColored);
+                            packetText.Write($"{carrier.name} has picked up the red team's gem!");
+                            packetText.Write(Color.Red.PackedValue);
+                            packetText.Send(); //send chat pickup text
+                        }
+                        else
+                        {
+                            Color blueColor = new Color(0, 119, 182);
+
+                            ModPacket packetText = mod.GetPacket();
+                            packetText.Write((byte)MessageType.RequestChatColored);
+                            packetText.Write($"{carrier.name} has picked up the blue team's gem!");
+                            packetText.Write(blueColor.PackedValue);
+                            packetText.Send(); //send chat pickup text
+                        }
 
                         ModPacket packetAudio = mod.GetPacket();
                         packetAudio.Write((byte)MessageType.RequestAudio);
@@ -2043,6 +2103,27 @@ namespace CTG2
                         }
                     }
 
+                    break;
+                }
+
+                case (byte)MessageType.UpdatedLatched:
+                {
+                    int hookIndex = reader.ReadInt32();
+                    Projectile hookProj = Main.projectile[hookIndex];
+
+                    var tendril = hookProj.ModProjectile as FoliageTendrilsProjectile;
+                    if (tendril != null && tendril.latched)
+                    {
+                        hookProj.Kill();
+                    }
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        ModPacket packet = GetPacket();
+                        packet.Write((byte)MessageType.UpdatedLatched);
+                        packet.Write(hookIndex);
+                        packet.Send(-1, whoAmI);
+                    }
                     break;
                 }
 

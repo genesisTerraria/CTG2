@@ -130,6 +130,16 @@ Items: {
 		DisplayName: Sharkron
 		Tooltip: ""
 	}
+
+	RubberSlimeSaddle: {
+		DisplayName: Rubber Slime Saddle
+		Tooltip: ""
+	}
+
+	HellwingTome: {
+		DisplayName: Hellwing Tome
+		Tooltip: ""
+	}
 }
 
 NPCs: {
@@ -137,6 +147,7 @@ NPCs: {
 	StationaryBeast.DisplayName: Stationary Slimer
 	TikiTotem.DisplayName: Tiki Totem
 	PaladinShield.DisplayName: Paladin Shield
+	SlimerClone.DisplayName: Slimer Clone
 }
 
 Projectiles: {
@@ -192,6 +203,16 @@ Buffs: {
 	Netted: {
 		Description: Mods.CTG2.Buffs.Netted.Description
 		DisplayName: Netted
+	}
+
+	RubberSlimeBuff: {
+		Description: Mods.CTG2.Buffs.RubberSlimeBuff.Description
+		DisplayName: Rubber Slime Buff
+	}
+
+	SlimySaddleAdjuster: {
+		DisplayName: Slimy Saddle Adjuster
+		Description: Mods.CTG2.Buffs.SlimySaddleAdjuster.Description
 	}
 }
 

@@ -19,6 +19,7 @@ using CTG2.Content.ServerSide;
 using CTG2.Content.Buffs;
 using CTG2.Content.Classes;
 using CTG2.Content.Items;
+using CTG2.Content.NPCs;
 
 namespace CTG2.Content
 {
@@ -683,9 +684,10 @@ namespace CTG2.Content
                     packet.Write((byte)MessageType.RequestSpawnNpc);
                     packet.Write((int)Player.Center.X);
                     packet.Write((int)Player.Center.Y);
-                    packet.Write(-2);
+                    packet.Write(ModContent.NPCType<SlimerClone>());
+                    packet.Write(0);
                     packet.Write(Player.team);
-                    packet.Write(0f);
+                    packet.Write(Player.whoAmI);
                     packet.Send();
 
                     SoundEngine.PlaySound(SoundID.DD2_BetsyScream.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
@@ -1156,7 +1158,8 @@ namespace CTG2.Content
             packet1.Write((int)Player.Center.Y);
             packet1.Write(ModContent.NPCType<TikiTotem>());
             packet1.Write(Player.team);
-            packet1.Write(0f);
+            packet1.Write(-1);
+            packet1.Write(-1);
             packet1.Send();
 
             SoundEngine.PlaySound(SoundID.DD2_DefenseTowerSpawn.WithVolumeScale(Main.soundVolume * 2f), Player.Center);

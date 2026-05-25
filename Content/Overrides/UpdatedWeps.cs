@@ -22,6 +22,8 @@ namespace CTG2.Content.Items.ModifiedWeps
         public long sharknadoLastUsedCounter;
         public long chumBallLastUsedCounter;
         public long anchorLastUsedCounter;
+        public long zapinatorLastUsedCounter;
+        public long hellwingLastUsedCounter;
     }
 
     public class OverloadedWeps : GlobalItem
@@ -32,9 +34,8 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint nagDelay = 40;
         private uint nagLastUsedCounter = 0;
 
-        private uint zapinatorDelay = 51; //lowkey i think this is off rn but i cant tell 
-        private uint zapinatorLastUsedCounter = 0;
-
+        private uint zapinatorDelay = 51;
+        private uint hellWingDelay = 51;
         private uint grenadeDelay = 60;
         private uint grenadeLastUsedCounter = 0;
 
@@ -318,20 +319,6 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     item.mana = 0;
                     break;
-                case ItemID.FrostDaggerfish:
-                    item.damage = 28;
-                    break;
-                case ItemID.Snowball:
-                    item.damage = 31;
-                    item.shoot = 408;
-                    item.shootSpeed = 12.5f;
-                    break;
-                case ItemID.ChumBucket:
-                    item.damage = 24;
-                    item.scale = 0;
-                    item.shoot = 928;
-                    item.shootSpeed = 9f;
-                    break;
             }
         }
 
@@ -382,19 +369,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 }
                 return false;
             }
-            else if (item.type == ItemID.FrostDaggerfish)
-            {
-                if (Main.GameUpdateCount - mPlayer.daggerfishLastUsedCounter >= daggerfishDelay)
-                {
-                    mPlayer.fisherLastUsedCounter = Main.GameUpdateCount;
-                    mPlayer.daggerfishLastUsedCounter = Main.GameUpdateCount;
-                    mPlayer.sharknadoLastUsedCounter = Main.GameUpdateCount;
-                    mPlayer.chumBallLastUsedCounter = Main.GameUpdateCount;
-                    return true;
-                }
-                return false;
-            }
-            else if (item.type == ItemID.Snowball)
+            else if (item.type == ModContent.ItemType<Sharkron>())
             {
                 if (Main.GameUpdateCount - mPlayer.sharknadoLastUsedCounter >= sharknadoDelay)
                 {
@@ -406,7 +381,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 }
                 return false;
             }
-            else if (item.type == ItemID.ChumBucket)
+            else if (item.type == ModContent.ItemType<SeaUrchin>())
             {
                 if (Main.GameUpdateCount - mPlayer.chumBallLastUsedCounter >= chumBallDelay)
                 {
@@ -477,9 +452,22 @@ namespace CTG2.Content.Items.ModifiedWeps
             }
             else if (item.type == 4347)
             {
-                if (Main.GameUpdateCount - zapinatorLastUsedCounter >= zapinatorDelay)
+                if (Main.GameUpdateCount - mPlayer.zapinatorLastUsedCounter >= zapinatorDelay)
                 {
-                    zapinatorLastUsedCounter = Main.GameUpdateCount;
+                    mPlayer.zapinatorLastUsedCounter = Main.GameUpdateCount;
+                    mPlayer.hellwingLastUsedCounter = Main.GameUpdateCount - 15;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (item.type == ModContent.ItemType<HellwingTome>())
+            {
+                if (Main.GameUpdateCount - mPlayer.hellwingLastUsedCounter >= zapinatorDelay)
+                {
+                    mPlayer.zapinatorLastUsedCounter = Main.GameUpdateCount - 15;
+                    mPlayer.hellwingLastUsedCounter = Main.GameUpdateCount;
 
                     return true;
                 }
@@ -637,7 +625,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         public override void UpdateInventory(Item item, Player player)
         {
             var mPlayer = player.GetModPlayer<CooldownPlayer>();
-            
+
             if (Main.GameUpdateCount - mPlayer.anchorLastUsedCounter >= anchorDelay && !playedAnchorSound)
             {
                 SoundEngine.PlaySound(SoundID.MaxMana.WithVolumeScale(Main.soundVolume * 2f), player.Center);
