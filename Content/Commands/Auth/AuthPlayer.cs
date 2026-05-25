@@ -14,7 +14,7 @@ namespace CTG2.Content.Commands.Auth
 
         public static readonly HashSet<string> Admins = new()
         {
-            "genesis", "crono", "prince"
+            "genesis", "crono", "prince", "zialith", "coldy"
         };
 
         public override void Initialize()
