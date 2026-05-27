@@ -232,7 +232,7 @@ public class ModifyHurtModPlayer : ModPlayer
         return base.CanHitPvpWithProj(proj, target);
     }
 
-
+    [System.Obsolete]
     public override void OnHurt(Player.HurtInfo info)
     {
         var modPlayer = Player.GetModPlayer<PlayerManager>();
@@ -265,6 +265,42 @@ public class ModifyHurtModPlayer : ModPlayer
             //Player.AddBuff(ModContent.BuffType<Netted>(), 60);
             Player.AddBuff(BuffID.Dazed, 60);
         }
+
+        // Archer section
+        if (info.DamageSource.SourceProjectileType == 41 && Player.whoAmI == Main.myPlayer)
+        {
+            Player.AddBuff(ModContent.BuffType<Stygiophobia>(), 240);
+        }
+
+        if (info.DamageSource.SourceProjectileType == 1006 && Player.whoAmI == Main.myPlayer)
+        {
+            Player.AddBuff(ModContent.BuffType<Kenophobia>(), 240);
+        }
+
+        bool isPickaxe = info.DamageSource.SourceItem != null && (
+            info.DamageSource.SourceItem.type == ModContent.ItemType<ShardstonePickaxe>() ||
+            info.DamageSource.SourceItem.type == ModContent.ItemType<UpgradedShardstonePickaxe>()
+        );
+
+        if (Player.HasBuff(ModContent.BuffType<Kenophobia>()) && Player.HasBuff(ModContent.BuffType<Stygiophobia>()) && !isPickaxe && Player.statLife > 0)
+        {
+            int initialHealth = Player.statLife;
+
+            Player.statLife -= 3;
+
+            CombatText.NewText(Player.getRect(), Color.Red, 3);
+
+            if (initialHealth <= 3)
+            {
+                PlayerDeathReason reason = PlayerDeathReason.ByCustomReason("Archer passive ability extra damage");
+                reason.SourceItem = info.DamageSource.SourceItem;
+                reason.SourcePlayerIndex = info.DamageSource.SourcePlayerIndex;
+                reason.SourceProjectileType = info.DamageSource.SourceProjectileType;
+
+                Player.KillMe(reason, 3, 0);
+            }
+        }
+
 
         if (modPlayer.currentClass.Name == "Paladin")
         {

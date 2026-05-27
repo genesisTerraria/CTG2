@@ -14,8 +14,8 @@ namespace CTG2.Content.Items
 			Item.DamageType = DamageClass.Ranged;
 			Item.width = 18;
 			Item.height = 40;
-			Item.useTime = 28;
-			Item.useAnimation = 54;
+			Item.useTime = 28; // determines ua/ut: burst firerate
+			Item.useAnimation = 28; // doesnt matter
 			Item.knockBack = 5;
 			Item.value = Item.buyPrice(silver: 1);
 			Item.rare = ItemRarityID.Red;

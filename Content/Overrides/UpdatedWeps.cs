@@ -72,7 +72,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint thunderZapperDelay = 60;
         private uint thunderZapperLastUsedCounter = 0;
 
-        private uint fisherDelay = 38;
+        private uint fisherDelay = 55;
 
         private uint anchorDelay = 120;
 
@@ -455,7 +455,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 if (Main.GameUpdateCount - mPlayer.zapinatorLastUsedCounter >= zapinatorDelay)
                 {
                     mPlayer.zapinatorLastUsedCounter = Main.GameUpdateCount;
-                    mPlayer.hellwingLastUsedCounter = Main.GameUpdateCount - 15;
+                    mPlayer.hellwingLastUsedCounter = Main.GameUpdateCount;
 
                     return true;
                 }
@@ -466,7 +466,7 @@ namespace CTG2.Content.Items.ModifiedWeps
             {
                 if (Main.GameUpdateCount - mPlayer.hellwingLastUsedCounter >= zapinatorDelay)
                 {
-                    mPlayer.zapinatorLastUsedCounter = Main.GameUpdateCount - 15;
+                    mPlayer.zapinatorLastUsedCounter = Main.GameUpdateCount;
                     mPlayer.hellwingLastUsedCounter = Main.GameUpdateCount;
 
                     return true;

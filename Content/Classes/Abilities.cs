@@ -32,11 +32,16 @@ namespace CTG2.Content
         public int cooldown = 0;
         public int cooldown2 = 0;
         public int cooldown3 = 0;
+        private bool playedSound = false;
+        public uint class1LastUsedCounter = 0;
         public bool class1isHellfire = true;
+        public bool class1UsedLuminite = true;
+        public bool class1QuickDraw = false;
+        public bool class1ChargeSet = false;
+        public bool class1CooldownSet = false;
         public int class2PassiveCounter = 0;
         public int class2AbilityTimer = -1;
 
-        public bool playedSound = false;
         public int class3SpawnTimer = -1;
         public bool class3PendingSpawn = false;
 
@@ -73,7 +78,6 @@ namespace CTG2.Content
         SoundStyle abilityReady = new SoundStyle("CTG2/Content/Classes/AbilityReady");
         SoundStyle ability2Ready = new SoundStyle("CTG2/Content/Classes/Ability2Ready");
         SoundStyle ability3Ready = new SoundStyle("CTG2/Content/Classes/Ability3Ready");
-        SoundStyle whiteMageHeal = new SoundStyle("CTG2/Content/Classes/WhiteMageHeal");
 
         private bool IsPlayerWithinClownSwapRadius(Player other)
         {
@@ -122,7 +126,6 @@ namespace CTG2.Content
 
             List<ItemData> classItems = classData.InventoryItems;
 
-            bool placedWeapon = false;
             bool placedMushrooms = false;
 
             for (int b = 0; b < Player.inventory.Length; b++)
@@ -133,7 +136,6 @@ namespace CTG2.Content
                     newItem.SetDefaults(GetItemIDByName("Amalgamated Hand"));
                     newItem.stack = 1;
                     Player.inventory[b] = newItem;
-                    placedWeapon = true;
                 }
                 else if (Player.inventory[b].type == ModContent.ItemType<AmalgamatedHand>() && !rmoot) //use GetItemIDByName for Amalgamated Hand
                 {
@@ -141,7 +143,6 @@ namespace CTG2.Content
                     newItem.SetDefaults(ItemID.TheRottedFork);
                     newItem.stack = 1;
                     Player.inventory[b] = newItem;
-                    placedWeapon = true;
                 }
                 else if (b > 29 && b < 50 && Player.inventory[b].type == ItemID.None && !placedMushrooms && !rmoot)
                 {
@@ -494,6 +495,8 @@ namespace CTG2.Content
 
         private void ArcherOnUse2()
         {
+            class1UsedLuminite = false;
+
             for (int i = 0; i < Player.inventory.Length; i++)
             {
                 if (Player.inventory[i].type == 3568) // luminite arrow
@@ -524,9 +527,19 @@ namespace CTG2.Content
 
         private void ArcherOnUse3()
         {
-            Player.AddBuff(BuffID.Slow, 45);
-            Player.AddBuff(BuffID.Chilled, 45);
-            Player.AddBuff(176, 30);
+            class1QuickDraw = true;
+
+            SoundEngine.PlaySound(SoundID.Item101, Player.Center);
+        }
+
+        private void ArcherPostStatus3()
+        {
+            if (class1ChargeSet && class1CooldownSet)
+            {
+                class1QuickDraw = false;
+                class1ChargeSet = false;
+                class1CooldownSet = false;
+            }
         }
 
 
@@ -1575,7 +1588,7 @@ namespace CTG2.Content
                 switch (selectedClass)
                 {
                     case 1:
-                        SetCooldown2(20);
+                        SetCooldown2(23);
                         ArcherOnUse2();
                         break;
                     case 2:
@@ -1590,7 +1603,7 @@ namespace CTG2.Content
                 switch (selectedClass)
                 {
                     case 1:
-                        SetCooldown3(1);
+                        SetCooldown3(10);
                         ArcherOnUse3();
                         break;
                 }
@@ -1599,6 +1612,10 @@ namespace CTG2.Content
        
         public override void PostUpdate()
         {
+            var playerManager = Player.GetModPlayer<PlayerManager>();
+            int selectedClass = playerManager.currentClass.AbilityID;
+
+            ArcherPostStatus3();
             BeastPostStatus();
             GladiatorPostStatus();
             PaladinPostStatus();
@@ -1610,7 +1627,7 @@ namespace CTG2.Content
                 if (cooldown > 0)
                     cooldown--;
 
-                if (cooldown2 > 0)
+                if (cooldown2 > 0 && (selectedClass != 1 || class1UsedLuminite))
                     cooldown2--;
 
                 if (cooldown3 > 0)

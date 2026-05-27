@@ -3,16 +3,12 @@ using Terraria.ModLoader;
 using Terraria.ID;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ReLogic.Content;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Microsoft.Xna.Framework.Audio;
 using ReLogic.Utilities;
 using System;
 using System.IO;
-using CTG2.Content.Items;
-using Terraria.Chat;
-using Terraria.Localization;
+using CTG2.Content;
 using Terraria.DataStructures;
 
 // --- RENDER LAYER ---
@@ -163,6 +159,8 @@ public class ChargedBowProjectile : ModProjectile
 
     public override void AI() {
         Player player = Main.player[Projectile.owner];
+        var owner = Main.player[Projectile.owner];
+        var manager = owner.GetModPlayer<Abilities>();
 
         Projectile.timeLeft = 2;
         Projectile.position = player.MountedCenter;
@@ -187,9 +185,20 @@ public class ChargedBowProjectile : ModProjectile
                     ammoLocked = true;
                 }
 
-                if (isShimmer) charge += 1f;
-                else if (isHellfire) charge += 0.667f;
-                else charge += 0.333f;
+                if (manager.class1QuickDraw && !manager.class1ChargeSet)
+                {
+                    if (isShimmer) charge += 40f;
+                    else if (isHellfire) charge += 26.67f;
+                    else charge += 13.33f;
+
+                    manager.class1ChargeSet = true;
+                }
+                else
+                {
+                    if (isShimmer) charge += 1f;
+                    else if (isHellfire) charge += 0.667f;
+                    else charge += 0.333f;
+                }
 
                 if (charge >= 40f && c1 == 0f) {
                     c1 = 1f;
@@ -251,6 +260,9 @@ public class ChargedBowProjectile : ModProjectile
 
             if (isHellfire || (isShimmer && curvedShimmer))
                 arrow.extraUpdates = 1;
+
+            if (isLuminite)
+                manager.class1UsedLuminite = true;
 
             arrow.netUpdate = true;
             ammoLocked = false;

@@ -214,6 +214,16 @@ Buffs: {
 		DisplayName: Slimy Saddle Adjuster
 		Description: Mods.CTG2.Buffs.SlimySaddleAdjuster.Description
 	}
+
+	Kenophobia: {
+		DisplayName: Kenophobia
+		Description: Mods.CTG2.Buffs.Kenophobia.Description
+	}
+
+	Stygiophobia: {
+		DisplayName: Stygiophobia
+		Description: Mods.CTG2.Buffs.Stygiophobia.Description
+	}
 }
 
 Keybinds: {
