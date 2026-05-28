@@ -261,6 +261,7 @@ Keybinds: {
 	"Shield ofCthulhu Dash.DisplayName": Shield of Cthulhu  Dash
 	BlackMageDash.DisplayName: Black Mage Dash
 	PhoenixOmni-DirectionalDash.DisplayName: Phoenix Omni- Directional Dash
+	"Damage Board.DisplayName": Damage  Board
 }
 
 Configs: {
