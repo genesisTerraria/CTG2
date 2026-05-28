@@ -24,6 +24,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         public long anchorLastUsedCounter;
         public long zapinatorLastUsedCounter;
         public long hellwingLastUsedCounter;
+        public long umbrellaLastUsedCounter;
     }
 
     public class OverloadedWeps : GlobalItem
@@ -75,12 +76,13 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint fisherDelay = 55;
 
         private uint anchorDelay = 120;
-
-        private uint daggerfishDelay = 47;
         private uint sharknadoDelay = 47;
         private uint chumBallDelay = 47;
 
+        private uint umbrellaDelay = 10 * 60;
+
         bool playedAnchorSound = true;
+        bool playedUmbrellaSound = true;
 
         public override bool InstancePerEntity => true;
 
@@ -297,7 +299,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useAnimation=1;
                     break;
                 case 4707: // Tragic Umbrella
-                    item.damage = 0;
+                    item.damage = 10;
                     break;
                 case 165: //paladin weapon
                     item.shoot = 699;
@@ -573,6 +575,19 @@ namespace CTG2.Content.Items.ModifiedWeps
                 else
                     return false;
             }
+            else if (item.type == ItemID.TragicUmbrella)
+            {
+                if (Main.GameUpdateCount - mPlayer.umbrellaLastUsedCounter >= umbrellaDelay)
+                {
+                    mPlayer.umbrellaLastUsedCounter = Main.GameUpdateCount;
+
+                    playedUmbrellaSound = false;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
             else
                 return true;
         }
@@ -630,6 +645,12 @@ namespace CTG2.Content.Items.ModifiedWeps
             {
                 SoundEngine.PlaySound(SoundID.MaxMana.WithVolumeScale(Main.soundVolume * 2f), player.Center);
                 playedAnchorSound = true;
+            }
+
+            if (Main.GameUpdateCount - mPlayer.umbrellaLastUsedCounter >= umbrellaDelay && !playedUmbrellaSound)
+            {
+                SoundEngine.PlaySound(SoundID.Item105.WithVolumeScale(Main.soundVolume * 2f), player.Center);
+                playedUmbrellaSound = true;
             }
         }
     }

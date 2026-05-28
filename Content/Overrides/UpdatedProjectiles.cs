@@ -269,12 +269,12 @@ public class ModifyHurtModPlayer : ModPlayer
         // Archer section
         if (info.DamageSource.SourceProjectileType == 41 && Player.whoAmI == Main.myPlayer)
         {
-            Player.AddBuff(ModContent.BuffType<Stygiophobia>(), 240);
+            Player.AddBuff(ModContent.BuffType<Stygiophobia>(), 300);
         }
 
         if (info.DamageSource.SourceProjectileType == 1006 && Player.whoAmI == Main.myPlayer)
         {
-            Player.AddBuff(ModContent.BuffType<Kenophobia>(), 240);
+            Player.AddBuff(ModContent.BuffType<Kenophobia>(), 300);
         }
 
         bool isPickaxe = info.DamageSource.SourceItem != null && (
@@ -301,7 +301,51 @@ public class ModifyHurtModPlayer : ModPlayer
             }
         }
 
+        // Ninja section
+        if (info.DamageSource.SourceProjectileType == ModContent.ProjectileType<ThrowingStarsProjectile>() && Player.whoAmI == Main.myPlayer)
+        {
+            Player attacker = Main.player[attackerIndex];
+            attacker.AddBuff(ModContent.BuffType<Hypervision>(), 60);
 
+            ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
+            packet.Write((byte)CTG2.MessageType.RequestAddBuff);
+            packet.Write(attacker.whoAmI);
+            packet.Write(ModContent.BuffType<Hypervision>());
+            packet.Write(60);
+            packet.Send();
+
+            ModPacket packetMana = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
+            packetMana.Write((byte)CTG2.MessageType.RequestMana);
+            packetMana.Write(attacker.whoAmI);
+            packetMana.Write(7);
+            packetMana.Send();
+        }
+
+        if (info.DamageSource.SourceItem != null && info.DamageSource.SourceItem.type == ItemID.TragicUmbrella)
+        {
+            Player.AddBuff(ModContent.BuffType<Endangered>(), 15 * 60);
+        }
+
+        if (Player.HasBuff(ModContent.BuffType<Endangered>()) && !isPickaxe && Player.statLife > 0)
+        {
+            int initialHealth = Player.statLife;
+
+            Player.statLife -= 4;
+
+            CombatText.NewText(Player.getRect(), Color.Red, 4);
+
+            if (initialHealth <= 4)
+            {
+                PlayerDeathReason reason = PlayerDeathReason.ByCustomReason("Ninja umbrella extra damage");
+                reason.SourceItem = info.DamageSource.SourceItem;
+                reason.SourcePlayerIndex = info.DamageSource.SourcePlayerIndex;
+                reason.SourceProjectileType = info.DamageSource.SourceProjectileType;
+
+                Player.KillMe(reason, 4, 0);
+            }
+        }
+
+        // Paladin section
         if (modPlayer.currentClass.Name == "Paladin")
         {
             if (Player.HeldItem.type == 4760 && Main.mouseRight) // Paladin buffs when hit

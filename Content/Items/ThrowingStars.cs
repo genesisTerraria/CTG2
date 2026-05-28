@@ -12,12 +12,8 @@ using Terraria.GameContent;
 namespace CTG2.Content.Items {
     public class ThrowingStars : ModItem
     {
-        private uint useDelay = 90; // Overall maximum firerate
-        private uint lastUsedCounter = 0;
-        bool playedSound = true;
-
         public override void SetDefaults() {
-            Item.damage = 27;
+            Item.damage = 32;
             Item.crit = 0;
             Item.shootSpeed = 18;
             Item.useStyle = 5;
@@ -27,20 +23,9 @@ namespace CTG2.Content.Items {
             Item.useTime = 14;
             Item.useAnimation = 14;
             Item.autoReuse = true;
+            Item.mana = 15;
 
             Item.shoot = ModContent.ProjectileType<ThrowingStarsProjectile>();
-        }
-
-        public override void UpdateInventory(Player player)
-        {
-            if (Main.GameUpdateCount - lastUsedCounter >= useDelay && !playedSound)
-            {
-                SoundEngine.PlaySound(SoundID.Camera.WithVolumeScale(Main.soundVolume * 1.25f), player.Center);
-
-                playedSound = true;
-            }
-
-            base.UpdateInventory(player);
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source,
@@ -51,21 +36,6 @@ namespace CTG2.Content.Items {
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI, MathHelper.ToRadians(10f));
 
             return false;
-        }
-
-        public override bool CanUseItem(Player player)
-        {
-            if (Main.GameUpdateCount - lastUsedCounter >= useDelay)
-            {
-                lastUsedCounter = Main.GameUpdateCount;
-                playedSound = false;
-    
-                return true;
-            }
-            else
-            {
-                return false;
-            }
         }
     }
 

@@ -140,6 +140,11 @@ Items: {
 		DisplayName: Hellwing Tome
 		Tooltip: ""
 	}
+
+	TabooArtifact: {
+		DisplayName: Taboo Artifact
+		Tooltip: ""
+	}
 }
 
 NPCs: {
@@ -217,12 +222,22 @@ Buffs: {
 
 	Kenophobia: {
 		DisplayName: Kenophobia
-		Description: Mods.CTG2.Buffs.Kenophobia.Description
+		Description: Damage marker for Shimmer Arrows
 	}
 
 	Stygiophobia: {
 		DisplayName: Stygiophobia
-		Description: Mods.CTG2.Buffs.Stygiophobia.Description
+		Description: Damage marker for Hellfire Arrows
+	}
+
+	Hypervision: {
+		Description: Your movement speed is increased by 15%
+		DisplayName: Hypervision
+	}
+
+	Endangered: {
+		DisplayName: Endangered
+		Description: You take 4 extra damage per hit
 	}
 }
 
@@ -240,6 +255,12 @@ Keybinds: {
 	PhoenixDash.DisplayName: Phoenix Dash
 	"Ability 2.DisplayName": Ability 2
 	"Ability 3.DisplayName": Ability 3
+	"Shield of Cthulhu Dash.DisplayName": Shield of  Cthulhu  Dash
+	"Black Mage Dash.DisplayName": Black  Mage  Dash
+	"Phoenix Omni-Directional Dash.DisplayName": Phoenix  Omni- Directional  Dash
+	"Shield ofCthulhu Dash.DisplayName": Shield of Cthulhu  Dash
+	BlackMageDash.DisplayName: Black Mage Dash
+	PhoenixOmni-DirectionalDash.DisplayName: Phoenix Omni- Directional Dash
 }
 
 Configs: {

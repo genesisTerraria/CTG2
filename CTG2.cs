@@ -162,7 +162,8 @@ namespace CTG2
         RequestWhois = 117,
         WhoisResult = 118,
         UpdatedLatched = 119,
-        SyncSlimerAttributes = 120
+        SyncSlimerAttributes = 120,
+        TabooArtifact = 121
     }
 
     public class CTG2 : Mod
@@ -175,6 +176,7 @@ namespace CTG2
         private static Dictionary<int, (int requester, long startTime)> pendingPings = new();
 
         public static ModKeybind BlessingOfTheDragonsKeybind;
+        public static ModKeybind TabooArtifactKeybind;
         public static ModKeybind AdvancedBinocularsKeybind;
         public static ModKeybind Ability1Keybind;
         public static ModKeybind Ability2Keybind;
@@ -267,12 +269,13 @@ namespace CTG2
                 }
             }
 
-            BlessingOfTheDragonsKeybind = KeybindLoader.RegisterKeybind(this, "PhoenixDash", "LeftShift");
+            BlessingOfTheDragonsKeybind = KeybindLoader.RegisterKeybind(this, "PhoenixOmni-DirectionalDash", "LeftShift");
+            TabooArtifactKeybind = KeybindLoader.RegisterKeybind(this, "BlackMageDash", "LeftShift");
             AdvancedBinocularsKeybind = KeybindLoader.RegisterKeybind(this, "AdvancedBinoculars", "MouseRight");
             Ability1Keybind = KeybindLoader.RegisterKeybind(this, "Ability 1", "R");
             Ability2Keybind = KeybindLoader.RegisterKeybind(this, "Ability 2", "F");
             Ability3Keybind = KeybindLoader.RegisterKeybind(this, "Ability 3", "C");
-            DashKeybind = KeybindLoader.RegisterKeybind(this, "Dash", "F");
+            DashKeybind = KeybindLoader.RegisterKeybind(this, "Shield ofCthulhu Dash", "F");
 
             On_Sign.ReadSign += CaptureSignText;
             On_Sign.TextSign += RestoreSignText;
@@ -1656,16 +1659,32 @@ namespace CTG2
                     break;
 
                 case (byte)MessageType.BlessingOfTheDragons:
-                        byte plyNum = reader.ReadByte();
-                        Player plyy = Main.player[plyNum];
-                        BlessingOfTheDragonsPlayer dashPly = plyy.GetModPlayer<BlessingOfTheDragonsPlayer>();
+                {
+                    byte plyNum = reader.ReadByte();
+                    Player plyy = Main.player[plyNum];
+                    BlessingOfTheDragonsPlayer dashPly = plyy.GetModPlayer<BlessingOfTheDragonsPlayer>();
 
-                        dashPly.ReceiveDash(plyy, reader);
+                    dashPly.ReceiveDash(plyy, reader);
 
-                        if (Main.netMode == NetmodeID.Server)
-                            dashPly.SendDash(plyy.velocity, -1, whoAmI);
+                    if (Main.netMode == NetmodeID.Server)
+                        dashPly.SendDash(plyy.velocity, -1, whoAmI);
 
-                        break;
+                    break;
+                }
+
+                case (byte)MessageType.TabooArtifact:
+                {
+                    byte plyNum = reader.ReadByte();
+                    Player plyy = Main.player[plyNum];
+                    TabooArtifactPlayer dashPly = plyy.GetModPlayer<TabooArtifactPlayer>();
+
+                    dashPly.ReceiveDash(plyy, reader);
+
+                    if (Main.netMode == NetmodeID.Server)
+                        dashPly.SendDash(plyy.velocity, -1, whoAmI);
+
+                    break;
+                }
 
                 case (byte)MessageType.DASH:
                     {
