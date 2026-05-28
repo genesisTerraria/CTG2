@@ -1592,7 +1592,7 @@ namespace CTG2.Content
                         ArcherOnUse2();
                         break;
                     case 2:
-                        SetCooldown2(20);
+                        SetCooldown2(22);
                         NinjaOnUse2();
                         break;
                 }
