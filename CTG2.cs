@@ -163,7 +163,8 @@ namespace CTG2
         WhoisResult = 118,
         UpdatedLatched = 119,
         SyncSlimerAttributes = 120,
-        TabooArtifact = 121
+        RequestDamageBoard = 121,
+        SyncDamageBoard = 122
     }
 
     public class CTG2 : Mod
@@ -176,12 +177,12 @@ namespace CTG2
         private static Dictionary<int, (int requester, long startTime)> pendingPings = new();
 
         public static ModKeybind BlessingOfTheDragonsKeybind;
-        public static ModKeybind TabooArtifactKeybind;
         public static ModKeybind AdvancedBinocularsKeybind;
         public static ModKeybind Ability1Keybind;
         public static ModKeybind Ability2Keybind;
         public static ModKeybind Ability3Keybind;
         public static ModKeybind DashKeybind { get; private set; }
+        public static ModKeybind DamageBoardKeybind { get; private set; }
         //public static int BiomeMusicId = 0; // client side 
 
         private static string _savedText = "";
@@ -269,14 +270,13 @@ namespace CTG2
                 }
             }
 
-            BlessingOfTheDragonsKeybind = KeybindLoader.RegisterKeybind(this, "PhoenixOmni-DirectionalDash", "LeftShift");
-            TabooArtifactKeybind = KeybindLoader.RegisterKeybind(this, "BlackMageDash", "LeftShift");
+            BlessingOfTheDragonsKeybind = KeybindLoader.RegisterKeybind(this, "PhoenixDash", "LeftShift");
             AdvancedBinocularsKeybind = KeybindLoader.RegisterKeybind(this, "AdvancedBinoculars", "MouseRight");
             Ability1Keybind = KeybindLoader.RegisterKeybind(this, "Ability 1", "R");
             Ability2Keybind = KeybindLoader.RegisterKeybind(this, "Ability 2", "F");
             Ability3Keybind = KeybindLoader.RegisterKeybind(this, "Ability 3", "C");
-            DashKeybind = KeybindLoader.RegisterKeybind(this, "Shield ofCthulhu Dash", "F");
-
+            DashKeybind = KeybindLoader.RegisterKeybind(this, "Dash", "F");
+            DamageBoardKeybind = KeybindLoader.RegisterKeybind(this, "Damage Board", "Tab");
             On_Sign.ReadSign += CaptureSignText;
             On_Sign.TextSign += RestoreSignText;
         }
@@ -285,6 +285,7 @@ namespace CTG2
         {
             On_Sign.ReadSign -= CaptureSignText;
             On_Sign.TextSign -= RestoreSignText;
+            DamageBoardKeybind = null;
         }
 
         public bool ApplyGamemodeChange(string mode, string source = "unknown")
@@ -411,6 +412,54 @@ namespace CTG2
                         resultPacket.Write(failureReason);
                         resultPacket.Send(whoAmI);
                     }
+                    break;
+                }
+
+                case (byte)MessageType.RequestDamageBoard:
+                {
+                    if (Main.netMode != NetmodeID.Server)
+                        break;
+                    
+                    List<PlayerManager> blue = new();
+                    List<PlayerManager> red = new();
+
+                    foreach (Player p in Main.player)
+                    {
+                        if (p == null || !p.active) continue;
+                        if (p.team != 1 && p.team != 3) continue;
+
+                        var pm = p.GetModPlayer<PlayerManager>();
+                        if (p.team == 3) blue.Add(pm);
+                        else red.Add(pm);
+                    }
+
+                    blue.Sort((a, b) => b.damage.CompareTo(a.damage));
+                    red.Sort((a, b) => b.damage.CompareTo(a.damage));
+
+                    ModPacket response = GetPacket();
+                    response.Write((byte)MessageType.SyncDamageBoard);
+
+                    response.Write(blue.Count);
+                    foreach (var pm in blue)
+                    {
+                        response.Write(pm.Player.name);
+                        response.Write(pm.Player.team);
+                        response.Write(pm.kills);
+                        response.Write(pm.deaths);
+                        response.Write(pm.damage);
+                    }
+
+                    response.Write(red.Count);
+                    foreach (var pm in red)
+                    {
+                        response.Write(pm.Player.name);
+                        response.Write(pm.Player.team);
+                        response.Write(pm.kills);
+                        response.Write(pm.deaths);
+                        response.Write(pm.damage);
+                    }
+
+                    response.Send(toClient: whoAmI);
                     break;
                 }
 
@@ -1184,6 +1233,41 @@ namespace CTG2
                         playerManager.damage = newDamage;
                     }
                     break;
+
+                case (byte)MessageType.SyncDamageBoard:
+                {
+                    DamageBoardData.Players.Clear();
+
+                    int blueCount = reader.ReadInt32();
+                    for (int i = 0; i < blueCount; i++)
+                    {
+                        DamageBoardData.Players.Add(new DamageBoardData.DamageBoardEntry
+                        {
+                            Name = reader.ReadString(),
+                            Team = reader.ReadInt32(),
+                            Kills = reader.ReadInt32(),
+                            Deaths = reader.ReadInt32(),
+                            Damage = reader.ReadInt32()
+                        });
+                    }
+
+                    int redCount = reader.ReadInt32();
+                    for (int i = 0; i < redCount; i++)
+                    {
+                        DamageBoardData.Players.Add(new DamageBoardData.DamageBoardEntry
+                        {
+                            Name = reader.ReadString(),
+                            Team = reader.ReadInt32(),
+                            Kills = reader.ReadInt32(),
+                            Deaths = reader.ReadInt32(),
+                            Damage = reader.ReadInt32()
+                        });
+                    }
+
+                    DamageBoardData.Visible = true;
+                    break;
+                }
+
                 case (byte)MessageType.UpdateRespawnTime:
                 {
                     int playerIndexRespawn = reader.ReadInt32();
@@ -1659,32 +1743,16 @@ namespace CTG2
                     break;
 
                 case (byte)MessageType.BlessingOfTheDragons:
-                {
-                    byte plyNum = reader.ReadByte();
-                    Player plyy = Main.player[plyNum];
-                    BlessingOfTheDragonsPlayer dashPly = plyy.GetModPlayer<BlessingOfTheDragonsPlayer>();
+                        byte plyNum = reader.ReadByte();
+                        Player plyy = Main.player[plyNum];
+                        BlessingOfTheDragonsPlayer dashPly = plyy.GetModPlayer<BlessingOfTheDragonsPlayer>();
 
-                    dashPly.ReceiveDash(plyy, reader);
+                        dashPly.ReceiveDash(plyy, reader);
 
-                    if (Main.netMode == NetmodeID.Server)
-                        dashPly.SendDash(plyy.velocity, -1, whoAmI);
+                        if (Main.netMode == NetmodeID.Server)
+                            dashPly.SendDash(plyy.velocity, -1, whoAmI);
 
-                    break;
-                }
-
-                case (byte)MessageType.TabooArtifact:
-                {
-                    byte plyNum = reader.ReadByte();
-                    Player plyy = Main.player[plyNum];
-                    TabooArtifactPlayer dashPly = plyy.GetModPlayer<TabooArtifactPlayer>();
-
-                    dashPly.ReceiveDash(plyy, reader);
-
-                    if (Main.netMode == NetmodeID.Server)
-                        dashPly.SendDash(plyy.velocity, -1, whoAmI);
-
-                    break;
-                }
+                        break;
 
                 case (byte)MessageType.DASH:
                     {

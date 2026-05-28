@@ -21,16 +21,21 @@ public class UIManager : ModSystem
 {   
     private UserInterface classInterface;
     private ClassUI classUIState;
+    private UserInterface damageBoardInterface;
+    private DamageBoardUI damageBoardState;
     
     
     public override void OnWorldLoad()
     {
         // 1) Create your UIState
         classUIState = new ClassUI();
+        damageBoardState = new DamageBoardUI();
 
         // 2) Create a UserInterface and attach your state
         classInterface = new UserInterface();
         classInterface.SetState(classUIState);
+        damageBoardInterface = new UserInterface();
+        damageBoardInterface.SetState(damageBoardState);
     }
     
     public override void UpdateUI(GameTime gameTime)
@@ -39,6 +44,11 @@ public class UIManager : ModSystem
         if (Main.LocalPlayer.GetModPlayer<PlayerManager>().ShowClassUI)
         {
             classInterface?.Update(gameTime);
+        }
+
+        if (DamageBoardData.Visible)
+        {
+            damageBoardInterface?.Update(gameTime);
         }
     }
     
@@ -68,6 +78,10 @@ public class UIManager : ModSystem
                 {
                     DrawTopUI();
                     DrawAbilityCooldown();
+                    if (DamageBoardData.Visible)
+                    {
+                        damageBoardInterface?.Draw(Main.spriteBatch, new GameTime());
+                    }
                     return true;
                 },
                 InterfaceScaleType.UI)
