@@ -13,7 +13,7 @@ namespace CTG2.Content.Items {
     public class ThrowingStars : ModItem
     {
         public override void SetDefaults() {
-            Item.damage = 32;
+            Item.damage = 35;
             Item.crit = 0;
             Item.shootSpeed = 18;
             Item.useStyle = 5;
@@ -24,6 +24,7 @@ namespace CTG2.Content.Items {
             Item.useAnimation = 14;
             Item.autoReuse = true;
             Item.mana = 15;
+            Item.rare = ItemRarityID.Blue;
 
             Item.shoot = ModContent.ProjectileType<ThrowingStarsProjectile>();
         }
