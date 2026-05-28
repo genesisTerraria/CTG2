@@ -181,24 +181,51 @@ public class GameMap
             int sectionY1 = startY / 150;
             int sectionY2 = (startY + mapHeight) / 150;
 
-            for (int sx = sectionX1; sx <= sectionX2; sx++)
+        for (int sx = sectionX1; sx <= sectionX2; sx++)
+        {
+            for (int sy = sectionY1; sy <= sectionY2; sy++)
             {
-                for (int sy = sectionY1; sy <= sectionY2; sy++)
+                for (int i = 0; i < 255; i++)
                 {
-                    // 1. Mark the section as "not seen" by clients to force a refresh
-                    for (int i = 0; i < 255; i++)
-                    {
-                        if (Netplay.Clients[i].IsActive)
-                            Netplay.Clients[i].TileSections[sx, sy] = false;
-                    }
-                    
-                    // 2. Send the raw section data (This mimics the "joining world" sync)
-                    NetMessage.SendSection(-1, sx, sy);
+                    if (Netplay.Clients[i].IsActive)
+                        Netplay.Clients[i].TileSections[sx, sy] = false;
                 }
+
+                // Existing sync to real clients
+                NetMessage.SendSection(-1, sx, sy);
+
+                // Extra direct sync to Reese recorder
+                TrySendSectionToReeseRecorder(sx, sy);
             }
+}
         }
 
         WorldGen.noTileActions = false;
         WorldGen.gen = false;
     }
+
+private const int ReeseRecordClientIndex = 254;
+
+private static void TrySendSectionToReeseRecorder(int sx, int sy)
+{
+    if (Main.netMode != NetmodeID.Server)
+        return;
+
+    if (sx < 0 || sx >= Main.maxSectionsX || sy < 0 || sy >= Main.maxSectionsY)
+        return;
+
+    if (Netplay.Clients == null || ReeseRecordClientIndex >= Netplay.Clients.Length)
+        return;
+
+    var recordClient = Netplay.Clients[ReeseRecordClientIndex];
+
+    if (recordClient == null || !recordClient.IsActive)
+        return;
+
+    // Force this section to be considered unsent for the recorder.
+    recordClient.TileSections[sx, sy] = false;
+
+    // Send directly to the fake recording client, not as a broadcast.
+    NetMessage.SendSection(ReeseRecordClientIndex, sx, sy);
+}
 }
