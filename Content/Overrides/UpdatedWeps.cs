@@ -577,7 +577,7 @@ namespace CTG2.Content.Items.ModifiedWeps
             }
             else if (item.type == ItemID.TragicUmbrella)
             {
-                if (Main.GameUpdateCount - mPlayer.umbrellaLastUsedCounter >= umbrellaDelay)
+                if (Main.GameUpdateCount - mPlayer.umbrellaLastUsedCounter >= umbrellaDelay && !player.HasBuff(BuffID.WitheredArmor))
                 {
                     mPlayer.umbrellaLastUsedCounter = Main.GameUpdateCount;
 

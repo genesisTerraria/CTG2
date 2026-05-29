@@ -8,6 +8,15 @@ namespace CTG2.Content.Buffs
 {
     public class Endangered : ModBuff
     {
+        public override void SetStaticDefaults()
+        {
+            Main.debuff[Type] = true;
+            Main.buffNoSave[Type] = true;
+
+            // Reuse the Webbed buff texture
+            BuffID.Sets.IsATagBuff[Type] = false;
+        }
+        
         public override void Update(Player player, ref int buffIndex)
         {
             if (!player.HasBuff(BuffID.Invisibility))

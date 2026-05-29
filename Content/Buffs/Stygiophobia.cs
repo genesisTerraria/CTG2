@@ -10,6 +10,15 @@ namespace CTG2.Content.Buffs
         private const int cooldown = 2;
         private int count = 0;
 
+        public override void SetStaticDefaults()
+        {
+            Main.debuff[Type] = true;
+            Main.buffNoSave[Type] = true;
+
+            // Reuse the Webbed buff texture
+            BuffID.Sets.IsATagBuff[Type] = false;
+        }
+
         public override void Update(Player player, ref int buffIndex)
         {
             if (count % cooldown == 0 && !player.HasBuff(BuffID.Invisibility))
