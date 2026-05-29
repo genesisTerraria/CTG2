@@ -26,7 +26,8 @@ public enum MapTypes
     Crown,
     Caliburn,
     Crypt,
-    Cheese
+    Cheese,
+    Rings
 }
 
 public class MapData

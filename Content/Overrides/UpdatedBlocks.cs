@@ -8,6 +8,18 @@ namespace CTG2.Content
     public class UnbreakableTiles : GlobalTile
     {
         public static bool AllowBreaking = false;
+
+        private static bool IsAlwaysBreakableTile(int type)
+        {
+            return type == TileID.Dirt
+                || type == TileID.Bubble
+                || type == TileID.Mud
+                || type == TileID.Grass
+                || type == TileID.BreakableIce
+                || type == 127
+                || type == TileID.Rope;
+        }
+
         public override bool CanPlace(int i, int j, int type)
         {
             Tile existing = Main.tile[i, j];
@@ -21,7 +33,7 @@ namespace CTG2.Content
 
         public override bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
         {
-            if (AllowBreaking || type == TileID.Dirt || type == TileID.Bubble || type == TileID.Mud || type == TileID.Grass || type == 127 || type == TileID.Rope)
+            if (AllowBreaking || IsAlwaysBreakableTile(type))
             {
                 return base.CanKillTile(i, j, type, ref blockDamaged);
             }
@@ -33,7 +45,7 @@ namespace CTG2.Content
 
         public override bool CanExplode(int i, int j, int type)
         {
-            if (AllowBreaking || type == TileID.Dirt || type == TileID.Mud || type == TileID.Grass || type == 127 || type == TileID.Rope)
+            if (AllowBreaking || type == TileID.Dirt || type == TileID.Mud || type == TileID.Grass || type == TileID.BreakableIce || type == 127 || type == TileID.Rope)
             {
                 return base.CanExplode(i, j, type);
             }

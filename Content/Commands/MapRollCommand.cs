@@ -84,6 +84,9 @@ namespace CTG2.Content.Commands
                 //case 16:
                     //mapName = "Temple";
                     //break;
+                case 16:
+                    mapName= "Rings";
+                    break;
             }
 
             string msg = $"{player.name} generated the random map {mapName}!";
