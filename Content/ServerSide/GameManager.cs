@@ -248,7 +248,9 @@ public class GameManager : ModSystem
         }
         else
         {
-            var randomMap = (MapTypes)CTG2.randomGenerator.Next(0, 15);
+            //derive amount of maps from the enum rather than hardcoding
+            var mapCount = Enum.GetValues(typeof(MapTypes)).Length;
+            var randomMap = (MapTypes)CTG2.randomGenerator.Next(0, mapCount);
 
             PreloadLava();
             Map.LoadMap(randomMap);
