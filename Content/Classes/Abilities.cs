@@ -28,6 +28,9 @@ namespace CTG2.Content
         public const int ClownSwapRadiusTiles = 22;
         public const float ClownSwapRadiusPixels = ClownSwapRadiusTiles * 16f;
         public const float ClownSwapRadiusPixelsSquared = ClownSwapRadiusPixels * ClownSwapRadiusPixels;
+        public const int WhiteMageHealRadiusTiles = 25;
+        public const float WhiteMageHealRadiusPixels = WhiteMageHealRadiusTiles * 16f;
+        public const float WhiteMageHealRadiusPixelsSquared = WhiteMageHealRadiusPixels * WhiteMageHealRadiusPixels;
 
         public int cooldown = 0;
         public int cooldown2 = 0;
@@ -100,6 +103,30 @@ namespace CTG2.Content
             foreach (Player other in Main.player)
             {
                 if (IsValidClownSwapTarget(other))
+                    return true;
+            }
+
+            return false;
+        }
+
+        private bool IsPlayerWithinWhiteMageHealRadius(Player other)
+        {
+            if (!other.active || other.dead || other.whoAmI == Player.whoAmI)
+                return false;
+
+            return Vector2.DistanceSquared(Player.Center, other.Center) <= WhiteMageHealRadiusPixelsSquared;
+        }
+
+        public bool IsValidWhiteMageHealTarget(Player other)
+        {
+            return IsPlayerWithinWhiteMageHealRadius(other) && Player.team == other.team;
+        }
+
+        public bool HasWhiteMageHealTargetInRange()
+        {
+            foreach (Player other in Main.player)
+            {
+                if (IsValidWhiteMageHealTarget(other))
                     return true;
             }
 
@@ -898,10 +925,7 @@ namespace CTG2.Content
 
             foreach (Player other in Main.player)
             {
-                if (!other.active || other.dead || other.whoAmI == Player.whoAmI)
-                    continue;
-
-                if (Vector2.Distance(Player.Center, other.Center) <= 25 * 16 && Player.team == other.team) // 25 block radius
+                if (IsValidWhiteMageHealTarget(other))
                 {
                     ModPacket packet1 = mod.GetPacket();
                     packet1.Write((byte)MessageType.RequestAddBuff);
@@ -1689,15 +1713,28 @@ namespace CTG2.Content
             PlayerManager playerManager = player.GetModPlayer<PlayerManager>();
             bool isClownWithCushion = string.Equals(playerManager.currentClass?.Name, "Clown", StringComparison.Ordinal)
                 && player.HeldItem.type == ItemID.WhoopieCushion;
-            if (!isClownWithCushion && abilities.class12SwapTimer <= 0)
+            bool isWhiteMageWithCushion = playerManager.currentClass?.AbilityID == 9
+                && player.HeldItem.type == ItemID.WhoopieCushion;
+            bool shouldDrawClownRange = isClownWithCushion || abilities.class12SwapTimer > 0;
+            if (!shouldDrawClownRange && !isWhiteMageWithCushion)
                 return;
 
-            Color ringColor = abilities.HasClownSwapTargetInRange()
-                ? new Color(90, 255, 140)
-                : new Color(255, 140, 70);
-
             float pulse = 0.65f + 0.25f * (float)Math.Sin(Main.GlobalTimeWrappedHourly * 8f);
-            DrawCircle(Main.spriteBatch, player.Center, Abilities.ClownSwapRadiusPixels, ringColor * pulse);
+            if (shouldDrawClownRange)
+            {
+                Color clownRingColor = abilities.HasClownSwapTargetInRange()
+                    ? new Color(90, 255, 140)
+                    : new Color(255, 140, 70);
+                DrawCircle(Main.spriteBatch, player.Center, Abilities.ClownSwapRadiusPixels, clownRingColor * pulse);
+            }
+
+            if (isWhiteMageWithCushion)
+            {
+                Color whiteMageRingColor = abilities.HasWhiteMageHealTargetInRange()
+                    ? new Color(120, 240, 255)
+                    : new Color(255, 255, 255);
+                DrawCircle(Main.spriteBatch, player.Center, Abilities.WhiteMageHealRadiusPixels, whiteMageRingColor * pulse);
+            }
         }
 
         private static void DrawCircle(SpriteBatch spriteBatch, Vector2 worldCenter, float radius, Color color)
