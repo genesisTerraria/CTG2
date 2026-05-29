@@ -416,16 +416,17 @@ public class GameManager : ModSystem
 
             if (player.team == 1)
             {
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/FF0000:{player.name}]: {PlayerManager.GetPlayerManager(player.whoAmI).kills} Kills, {PlayerManager.GetPlayerManager(player.whoAmI).deaths} Deaths, {PlayerManager.GetPlayerManager(player.whoAmI).damage} Damage"), Color.Yellow);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/FF0000:{player.name}]: {PlayerManager.GetPlayerManager(player.whoAmI).kills} Kills, {PlayerManager.GetPlayerManager(player.whoAmI).deaths} Deaths, {PlayerManager.GetPlayerManager(player.whoAmI).damage} Damage, {PlayerManager.GetPlayerManager(player.whoAmI).damageTaken} Damage Taken"), Color.Yellow);
             }
             else if (player.team == 3)
             {
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/0077B6:{player.name}]: {PlayerManager.GetPlayerManager(player.whoAmI).kills} Kills, {PlayerManager.GetPlayerManager(player.whoAmI).deaths} Deaths, {PlayerManager.GetPlayerManager(player.whoAmI).damage} Damage"), Color.Yellow);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/0077B6:{player.name}]: {PlayerManager.GetPlayerManager(player.whoAmI).kills} Kills, {PlayerManager.GetPlayerManager(player.whoAmI).deaths} Deaths, {PlayerManager.GetPlayerManager(player.whoAmI).damage} Damage, {PlayerManager.GetPlayerManager(player.whoAmI).damageTaken} Damage Taken"), Color.Yellow);
             }
 
             PlayerManager.GetPlayerManager(player.whoAmI).kills = 0;
             PlayerManager.GetPlayerManager(player.whoAmI).deaths = 0;
             PlayerManager.GetPlayerManager(player.whoAmI).damage = 0;
+            PlayerManager.GetPlayerManager(player.whoAmI).damageTaken = 0;
 
             ModPacket kdrPacket = mod.GetPacket();
             kdrPacket.Write((byte)MessageType.UpdatePlayerKDR);

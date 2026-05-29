@@ -39,6 +39,7 @@ public class PlayerManager : ModPlayer
     public int kills = 0;
     public int deaths = 0;
     public int damage = 0;
+    public int damageTaken = 0;
 
     public PlayerState playerState = PlayerState.None; // UPDATE THIS EVERY STATE TRANSITION 
     public double classSelectionTimer = -1;
@@ -325,6 +326,9 @@ public class PlayerManager : ModPlayer
 
             attackerManager.damage += Math.Min(Player.statLife, info.Damage);
         }
+
+        // Track damage taken by this player
+        this.damageTaken += info.Damage;
     }
 
 

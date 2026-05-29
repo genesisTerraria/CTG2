@@ -450,6 +450,7 @@ namespace CTG2
                         response.Write(pm.kills);
                         response.Write(pm.deaths);
                         response.Write(pm.damage);
+                        response.Write(pm.damageTaken);
                     }
 
                     response.Write(red.Count);
@@ -460,6 +461,7 @@ namespace CTG2
                         response.Write(pm.kills);
                         response.Write(pm.deaths);
                         response.Write(pm.damage);
+                        response.Write(pm.damageTaken);
                     }
 
                     response.Send(toClient: whoAmI);
@@ -1250,7 +1252,8 @@ namespace CTG2
                             Team = reader.ReadInt32(),
                             Kills = reader.ReadInt32(),
                             Deaths = reader.ReadInt32(),
-                            Damage = reader.ReadInt32()
+                            Damage = reader.ReadInt32(),
+                            DamageTaken = reader.ReadInt32()
                         });
                     }
 
@@ -1263,7 +1266,8 @@ namespace CTG2
                             Team = reader.ReadInt32(),
                             Kills = reader.ReadInt32(),
                             Deaths = reader.ReadInt32(),
-                            Damage = reader.ReadInt32()
+                            Damage = reader.ReadInt32(),
+                            DamageTaken = reader.ReadInt32()
                         });
                     }
 
