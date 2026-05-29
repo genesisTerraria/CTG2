@@ -6765,19 +6765,9 @@
       "LiquidType": 0
     },
     {
-      "TileType": 541,
+      "TileType": null,
       "WallType": null,
-      "TileColor": 21,
-      "WallColor": 0,
-      "HalfBlock": false,
-      "Slope": 0,
-      "LiquidAmount": 0,
-      "LiquidType": 0
-    },
-    {
-      "TileType": 541,
-      "WallType": null,
-      "TileColor": 21,
+      "TileColor": 0,
       "WallColor": 0,
       "HalfBlock": false,
       "Slope": 0,
@@ -6795,9 +6785,19 @@
       "LiquidType": 0
     },
     {
-      "TileType": 541,
+      "TileType": null,
       "WallType": null,
-      "TileColor": 21,
+      "TileColor": 0,
+      "WallColor": 0,
+      "HalfBlock": false,
+      "Slope": 0,
+      "LiquidAmount": 0,
+      "LiquidType": 0
+    },
+    {
+      "TileType": null,
+      "WallType": null,
+      "TileColor": 0,
       "WallColor": 0,
       "HalfBlock": false,
       "Slope": 0,
@@ -10117,9 +10117,9 @@
       "LiquidType": 0
     },
     {
-      "TileType": 541,
+      "TileType": null,
       "WallType": null,
-      "TileColor": 21,
+      "TileColor": 0,
       "WallColor": 0,
       "HalfBlock": false,
       "Slope": 0,
@@ -10127,9 +10127,9 @@
       "LiquidType": 0
     },
     {
-      "TileType": 541,
+      "TileType": null,
       "WallType": null,
-      "TileColor": 21,
+      "TileColor": 0,
       "WallColor": 0,
       "HalfBlock": false,
       "Slope": 0,
