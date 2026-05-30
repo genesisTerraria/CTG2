@@ -145,6 +145,11 @@ Items: {
 		DisplayName: Taboo Artifact
 		Tooltip: ""
 	}
+
+	TealCurrentBucket: {
+		DisplayName: Monster Energy Bucket
+		Tooltip: Places Monster Energy that grants movement speed after you stand in it.
+	}
 }
 
 NPCs: {
@@ -168,6 +173,8 @@ Projectiles: {
 	SittingDuckBobber.DisplayName: Sitting Duck Bobber
 	ThrowingStarsProjectile.DisplayName: Throwing Stars Projectile
 }
+
+Tiles.TealCurrentTile.MapEntry: Monster Energy
 
 Buffs: {
 	Retaliation: {
@@ -243,6 +250,11 @@ Buffs: {
 	RisingSun: {
 		Description: Mods.CTG2.Buffs.RisingSun.Description
 		DisplayName: Rising Sun
+	}
+
+	TealCurrentSpeed: {
+		DisplayName: Caffeine
+		Description: Your movement speed is increased.
 	}
 }
 
