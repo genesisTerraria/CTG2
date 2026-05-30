@@ -64,7 +64,7 @@ public class ProjectileOverrides : GlobalProjectile
                 projectile.timeLeft = 120;
             }
         }
-        if (projectile.type == 485)
+        if (projectile.type == ProjectileID.Hellwing)
         {
             if (projectile.timeLeft > 300)
             {
@@ -86,11 +86,11 @@ public class ProjectileOverrides : GlobalProjectile
                 projectile.timeLeft = 180;
             }
         }
-        if (projectile.type == 617)
+        if (projectile.type == ProjectileID.NebulaArcanum)
         {
-            if (projectile.timeLeft > 300)
+            if (projectile.timeLeft > 7 * 60)
             {
-                projectile.timeLeft = 300;
+                projectile.timeLeft = 7 * 60;
             }
         }
         if (projectile.type == 41)

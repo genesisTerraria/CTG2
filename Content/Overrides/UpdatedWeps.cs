@@ -166,7 +166,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     break;
                 case ItemID.NebulaArcanum: //psy
-                    item.damage = 53;
+                    item.damage = 56;
                     item.shootSpeed = 7;
                     break;
                 case ItemID.AmethystStaff:
@@ -311,10 +311,10 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     item.mana = 11;
                     break;
-                case 4062: // psychic charge wep
+                case ItemID.ThunderStaff: // psychic charge wep
                     item.shoot = 732;
                     item.scale = 0;
-                    item.damage = 23;
+                    item.damage = 25;
                     item.useTime = 14;
                     item.useAnimation = 14;
                     item.shootSpeed = 20;

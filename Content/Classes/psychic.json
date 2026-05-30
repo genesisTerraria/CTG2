@@ -4,7 +4,7 @@
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
-      "Type": 5555,
+      "Type": 5559,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -526,7 +526,7 @@
       "Name": "Toolbox",
       "Type": 1923,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 76,
       "Slot": 65,
       "Modded": false
     },
@@ -534,7 +534,7 @@
       "Name": "Step Stool",
       "Type": 4341,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 76,
       "Slot": 66,
       "Modded": false
     },
