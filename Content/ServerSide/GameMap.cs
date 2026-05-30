@@ -7,6 +7,7 @@ using Terraria.GameContent.Achievements;
 using Terraria.ModLoader;
 using Terraria.ID;
 using Terraria.Localization;
+using CTG2.Content.Functionality;
 
 namespace CTG2.Content.ServerSide;
 
@@ -48,6 +49,7 @@ public class MapData
     public bool YellowWire { get; set; }
     public bool HasActuator { get; set; }
     public bool IsActuated { get; set; }
+    public bool MonsterEnergy { get; set; }
 }
 public class GameMap
 {   
@@ -123,6 +125,7 @@ public class GameMap
         int startY = PasteY;
         int mapWidth = mapData[0].Count;
         int mapHeight = mapData.Count;
+        int monsterEnergyTileType = ModContent.TileType<TealCurrentTile>();
 
         WorldGen.noTileActions = true;
         WorldGen.gen = true;
@@ -155,10 +158,10 @@ public class GameMap
                 tile.HasActuator = mapTile.HasActuator;
                 tile.IsActuated = mapTile.IsActuated;
 
-                if (mapTile.TileType.HasValue)
+                if (mapTile.TileType.HasValue || mapTile.MonsterEnergy)
                 {
                     tile.HasTile = true;
-                    tile.TileType = (ushort) (mapTile.TileType ?? 0);
+                    tile.TileType = (ushort) (mapTile.MonsterEnergy ? monsterEnergyTileType : mapTile.TileType ?? 0);
                     tile.IsHalfBlock = mapTile.HalfBlock;
                     tile.Slope = mapTile.Slope;
 

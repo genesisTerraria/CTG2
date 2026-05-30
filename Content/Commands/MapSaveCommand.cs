@@ -14,6 +14,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Newtonsoft.Json;
 using CTG2.Content;
 using System.Linq;
+using CTG2.Content.Functionality;
 using CTG2.Content.ServerSide;
 using Terraria.GameContent.Biomes;
 
@@ -110,6 +111,7 @@ namespace CTG2.Content
 
                 int width = Math.Abs(endX - startX);
                 int height = Math.Abs(endY - startY);
+                int monsterEnergyTileType = ModContent.TileType<TealCurrentTile>();
                 
                 var rows = new List<List<MapData>>(height);
                 for (int y = 0; y <= height; y++)
@@ -118,6 +120,7 @@ namespace CTG2.Content
                     for (int x = 0; x <= width; x++)
                     {
                         var tile = Framing.GetTileSafely(startX + x, startY + y);
+                        bool isMonsterEnergy = tile.HasTile && tile.TileType == monsterEnergyTileType;
 
                         // if your MapData uses nullable ints, they'll pick up `null` here
                         row.Add(new MapData
@@ -137,7 +140,8 @@ namespace CTG2.Content
                             GreenWire = tile.GreenWire,
                             YellowWire = tile.YellowWire,
                             HasActuator = tile.HasActuator,
-                            IsActuated = tile.IsActuated
+                            IsActuated = tile.IsActuated,
+                            MonsterEnergy = isMonsterEnergy
                         });
                     }
                     rows.Add(row);
