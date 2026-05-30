@@ -126,10 +126,18 @@ namespace CTG2.Content
                             WallType = tile.WallType != 0 ? (int?) tile.WallType : null,
                             TileColor = tile.TileColor,
                             WallColor = tile.WallColor,
+                            TileFrameX = tile.HasTile && Main.tileFrameImportant[tile.TileType] ? tile.TileFrameX : null,
+                            TileFrameY = tile.HasTile && Main.tileFrameImportant[tile.TileType] ? tile.TileFrameY : null,
                             HalfBlock = tile.IsHalfBlock,
                             Slope = tile.Slope,
                             LiquidAmount = tile.LiquidAmount,   // 0–255
-                            LiquidType = tile.LiquidType        // 0=water, 1=lava, 2=honey, 3=shimmer
+                            LiquidType = tile.LiquidType,       // 0=water, 1=lava, 2=honey, 3=shimmer
+                            RedWire = tile.RedWire,
+                            BlueWire = tile.BlueWire,
+                            GreenWire = tile.GreenWire,
+                            YellowWire = tile.YellowWire,
+                            HasActuator = tile.HasActuator,
+                            IsActuated = tile.IsActuated
                         });
                     }
                     rows.Add(row);

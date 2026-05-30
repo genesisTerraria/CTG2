@@ -36,10 +36,18 @@ public class MapData
     public int? WallType  { get; set; }
     public int? TileColor  { get; set; }
     public int? WallColor  { get; set; }
+    public short? TileFrameX { get; set; }
+    public short? TileFrameY { get; set; }
     public bool HalfBlock {get; set;}
     public SlopeType Slope      {get; set;}
     public byte LiquidAmount {get; set;}
     public int LiquidType  {get; set;}
+    public bool RedWire { get; set; }
+    public bool BlueWire { get; set; }
+    public bool GreenWire { get; set; }
+    public bool YellowWire { get; set; }
+    public bool HasActuator { get; set; }
+    public bool IsActuated { get; set; }
 }
 public class GameMap
 {   
@@ -136,15 +144,29 @@ public class GameMap
                 // Completely wipe existing state
                 tile.ClearEverything();
 
+                tile.WallType = (ushort) (mapTile.WallType ?? 0);
+                tile.TileColor = (byte) (mapTile.TileColor ?? 0);
+                tile.WallColor = (byte) (mapTile.WallColor ?? 0);
+
+                tile.RedWire = mapTile.RedWire;
+                tile.BlueWire = mapTile.BlueWire;
+                tile.GreenWire = mapTile.GreenWire;
+                tile.YellowWire = mapTile.YellowWire;
+                tile.HasActuator = mapTile.HasActuator;
+                tile.IsActuated = mapTile.IsActuated;
+
                 if (mapTile.TileType.HasValue)
                 {
                     tile.HasTile = true;
                     tile.TileType = (ushort) (mapTile.TileType ?? 0);
                     tile.IsHalfBlock = mapTile.HalfBlock;
                     tile.Slope = mapTile.Slope;
-                    tile.WallType = (ushort) (mapTile.WallType ?? 0);
-                    tile.TileColor = (byte) mapTile.TileColor;
-                    tile.WallColor = (byte) mapTile.WallColor;
+
+                    if (mapTile.TileFrameX.HasValue && mapTile.TileFrameY.HasValue && Main.tileFrameImportant[tile.TileType])
+                    {
+                        tile.TileFrameX = mapTile.TileFrameX.Value;
+                        tile.TileFrameY = mapTile.TileFrameY.Value;
+                    }
                 }
             }
         }
@@ -170,7 +192,37 @@ public class GameMap
 
         // PASS 3: EXPLICIT FRAMING
         // We do this before syncing so the server knows exactly what the tiles look like
-        WorldGen.RangeFrame(startX, startY, startX + mapWidth, startY + mapHeight);
+        WorldGen.RangeFrame(startX - 1, startY - 1, startX + mapWidth, startY + mapHeight);
+
+        // PASS 3B: RESTORE SAVED FRAMES
+        // RangeFrame fixes block joins, but frame-important objects like pumps need their saved frame coordinates.
+        for (int y = 0; y < mapHeight; y++)
+        {
+            for (int x = 0; x < mapWidth; x++)
+            {
+                int wx = x + startX;
+                int wy = y + startY;
+
+                if (!WorldGen.InWorld(wx, wy))
+                    continue;
+
+                var mapTile = mapData[y][x];
+
+                if (!mapTile.TileFrameX.HasValue || !mapTile.TileFrameY.HasValue)
+                    continue;
+
+                Tile tile = Main.tile[wx, wy];
+
+                if (!tile.HasTile)
+                    continue;
+
+                if (!Main.tileFrameImportant[tile.TileType])
+                    continue;
+
+                tile.TileFrameX = mapTile.TileFrameX.Value;
+                tile.TileFrameY = mapTile.TileFrameY.Value;
+            }
+        }
 
         // PASS 4: Network Force-Sync
         if (Main.netMode == NetmodeID.Server)
