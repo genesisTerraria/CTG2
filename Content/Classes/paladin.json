@@ -4,23 +4,23 @@
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
-      "Type": 5555,
+      "Type": 5559,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
       "Modded": true
     },
     {
-      "Name": "Sergeant United Shield",
-      "Type": 4760,
+      "Name": "Water Bolt",
+      "Type": 165,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 1,
       "Modded": false
     },
     {
-      "Name": "Water Bolt",
-      "Type": 165,
+      "Name": "Ghastly Glaive",
+      "Type": 3836,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 2,
@@ -35,9 +35,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Sergeant United Shield",
+      "Type": 4760,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 4,
       "Modded": false
@@ -539,9 +539,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Step Stool",
+      "Type": 4341,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 67,
       "Modded": false

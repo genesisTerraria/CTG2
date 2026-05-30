@@ -52,7 +52,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint goldenShowerDelay = 60;
         private uint goldenShowerLastUsedCounter = 0;
 
-        private uint ghastlyglaiveDelay = 45;
+        private uint ghastlyglaiveDelay = 70;
         private uint ghastlyglaiveLastUsedCounter = 0;
 
         private uint chainKnifeDelay = 55;
@@ -287,10 +287,6 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useTime = 24;
                     item.useAnimation = 24;
                     break;
-
-                case 3836: //ghastly glaive
-                    item.damage = 35;
-                    break;
                 case 4760: //Pala shield
                     item.shoot = 0;
                     item.scale = 0;
@@ -301,15 +297,22 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case 4707: // Tragic Umbrella
                     item.damage = 10;
                     break;
-                case 165: //paladin weapon
-                    item.shoot = 699;
+                case ItemID.WaterBolt: //paladin weapon
+                    item.shoot = ProjectileID.MonkStaffT2;
                     item.scale = 0;
-                    item.damage = 32;
+                    item.damage = 34;
+                    item.useTime = 18;
+                    item.useAnimation = 18;
+                    item.shootSpeed = 58f;
+                    item.crit = 0;
+                    item.mana = 11;
+                    break;
+                case ItemID.MonkStaffT2: //ghastly glaive
+                    item.damage = 27;
                     item.useTime = 14;
                     item.useAnimation = 14;
                     item.shootSpeed = 46f;
                     item.crit = 0;
-                    item.mana = 11;
                     break;
                 case ItemID.ThunderStaff: // psychic charge wep
                     item.shoot = 732;
@@ -476,7 +479,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 else
                     return false;
             }
-            else if (item.type == 3836) //ghastly glaive
+            else if (item.type == ItemID.MonkStaffT2) //ghastly glaive
             {
                 if (Main.GameUpdateCount - ghastlyglaiveLastUsedCounter >= ghastlyglaiveDelay)
                 {
