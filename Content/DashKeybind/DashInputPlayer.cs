@@ -49,10 +49,19 @@ public class DashInputPlayer : ModPlayer
         return Player.direction == 0 ? 1 : Player.direction;
     }
 
+    // private bool CanDash()
+    // {
+    //     if (Player.dashDelay != 0) return false;
+    //     if (Player.mount.Active || Player.dead || Player.frozen || Player.webbed || Player.tongued || Player.stoned)
+    //         return false;
+    //     return true;
+    // }
     private bool CanDash()
     {
         if (Player.dashDelay != 0) return false;
         if (Player.mount.Active || Player.dead || Player.frozen || Player.webbed || Player.tongued || Player.stoned)
+            return false;
+        if (Player.HasBuff(BuffID.Dazed) || Player.HasBuff(BuffID.OgreSpit))
             return false;
         return true;
     }

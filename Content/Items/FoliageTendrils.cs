@@ -41,11 +41,13 @@ namespace CTG2.Content.Items
 
         public override bool? CanUseGrapple(Player player)
         {
+            if (player.HasBuff(BuffID.Dazed) || player.HasBuff(BuffID.OgreSpit))
+                return false;
+                
             int hooksOut = 0;
             foreach (var projectile in Main.ActiveProjectiles)
             {
-                // Fixed: use Projectile.owner instead of Main.myPlayer
-                if (projectile.owner == Projectile.owner && projectile.type == Projectile.type)
+                if (projectile.owner == player.whoAmI && projectile.type == Projectile.type)
                 {
                     hooksOut++;
                 }

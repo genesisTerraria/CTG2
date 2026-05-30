@@ -84,7 +84,7 @@ namespace CTG2.Content.Items
 
 		public override void PreUpdateMovement() {
 
-			if (Player.whoAmI == Main.myPlayer && !Player.HasBuff(BuffID.Webbed))
+			if (Player.whoAmI == Main.myPlayer && !Player.HasBuff(BuffID.Webbed) && !Player.HasBuff(BuffID.OgreSpit) && !Player.HasBuff(BuffID.Dazed))
 			{
 				Vector2 newVelocity = Player.velocity;
 
