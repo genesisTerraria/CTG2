@@ -12,7 +12,8 @@ namespace CTG2.Content.Functionality
         private static readonly HashSet<int> BannedItemIDs = new()
         {
             ItemID.WoodenHammer,
-            4909, // StickyDirtBomb
+            4908, // Dirt Bomb
+            4909, // Sticky Dirt Bomb
             4824, // Wet Bomb
             4825, // Honey Bomb
             4826, // Lava Bomb
