@@ -49,7 +49,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint flamarangDelay = 30;
         private uint flamarangLastUsedCounter = 0;
 
-        private uint goldenShowerDelay = 55;
+        private uint goldenShowerDelay = 60;
         private uint goldenShowerLastUsedCounter = 0;
 
         private uint ghastlyglaiveDelay = 45;
@@ -257,35 +257,35 @@ namespace CTG2.Content.Items.ModifiedWeps
 
                 case 218: // phoenix fireball
                     item.crit = 0;
-                    item.damage = 32;
+                    item.damage = 29;
                     item.shootSpeed = 13f;
                     item.shoot = 666;
                     item.scale = 0;
                     item.mana = 0;
-                    item.useTime = 18;
-                    item.useAnimation = 18;
+                    item.useTime = 24;
+                    item.useAnimation = 24;
                     break;
 
                 case 3835: // phoenix phantom
                     item.crit = 0;
-                    item.damage = 33;
+                    item.damage = 32;
                     item.shootSpeed = 5f;
                     item.shoot = 706;
                     item.mana = 15;
                     item.scale = 0;
-                    item.useTime = 18;
-                    item.useAnimation = 18;
+                    item.useTime = 24;
+                    item.useAnimation = 24;
                     break;
 
                 case 3543: // phoenix aerial bane
                     item.crit = 0;
-                    item.damage = 31;
+                    item.damage = 30;
                     item.shootSpeed = 9f;
                     item.shoot = 710;
-                    item.mana = 10;
+                    item.mana = 11;
                     item.scale = 0;
-                    item.useTime = 18;
-                    item.useAnimation = 18;
+                    item.useTime = 24;
+                    item.useAnimation = 24;
                     break;
 
                 case 3836: //ghastly glaive

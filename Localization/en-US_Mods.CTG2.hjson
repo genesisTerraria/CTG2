@@ -239,6 +239,11 @@ Buffs: {
 		DisplayName: Endangered
 		Description: You take 4 extra damage per hit
 	}
+
+	RisingSun: {
+		Description: Mods.CTG2.Buffs.RisingSun.Description
+		DisplayName: Rising Sun
+	}
 }
 
 Keybinds: {

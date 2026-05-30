@@ -1177,10 +1177,20 @@ namespace CTG2.Content
 
         private void PhoenixOnUse()
         {
-            Player.AddBuff(176, 2 * 60);
+            Player.AddBuff(BuffID.NebulaUpMana1, 2 * 60);
+            Player.AddBuff(ModContent.BuffType<RisingSun>(), 4 * 60);
 
             playedSound = false;
             class13EndTimer = 120;
+
+            Player.statLife -= 40;
+
+            if (Player.statLife <= 0)
+            {
+                Player.KillMe(PlayerDeathReason.ByCustomReason(Terraria.Localization.NetworkText.FromLiteral($"{Player.name} finished ")), 9999, 0);
+            }
+
+            NetMessage.SendData(MessageID.SyncPlayer, -1, -1, null, Player.whoAmI); // Sync HP
 
             SoundEngine.PlaySound(SoundID.Item100.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
