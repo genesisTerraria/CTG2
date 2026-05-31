@@ -149,6 +149,23 @@ public class GameManager : ModSystem
         MatchTime = 0;
     }
 
+    public void ResetGemStateForReplay()
+    {
+        BlueGem?.Reset();
+        RedGem?.Reset();
+
+        blueWasHeld = false;
+        redWasHeld = false;
+
+        intPercentageBlue = 0;
+        intPercentageRed = 0;
+
+        blueGemCarrier = "At Base";
+        redGemCarrier = "At Base";
+        blueCarrierName = "";
+        redCarrierName = "";
+    }
+
     public void StartGame()
     {
         var mod = ModContent.GetInstance<CTG2>();

@@ -165,7 +165,8 @@ namespace CTG2
         SyncSlimerAttributes = 120,
         RequestDamageBoard = 121,
         SyncDamageBoard = 122,
-        TabooArtifact = 123
+        TabooArtifact = 123,
+        SyncGemState = 124
     }
 
     public class CTG2 : Mod
@@ -189,6 +190,10 @@ namespace CTG2
 
         private static string _savedText = "";
         private static int _savedIndex = -1;
+        private static Mod _reeseMod;
+        private static bool _reeseCompatRegistered;
+        private static readonly Action<int, uint, bool> ReeseSnapshotWriterCallback = WriteReeseReplaySnapshot;
+        private static readonly Action<uint, string> ReeseStateResetCallback = OnReeseReplayStateReset;
 
 
         // static methods
@@ -284,11 +289,130 @@ namespace CTG2
             On_Sign.TextSign += RestoreSignText;
         }
 
+        public override void PostSetupContent()
+        {
+            base.PostSetupContent();
+            TryRegisterReeseCompat();
+        }
+
         public override void Unload()
         {
+            if (_reeseMod != null)
+            {
+                try
+                {
+                    _reeseMod.Call("UnregisterReplaySnapshotWriter", ReeseSnapshotWriterCallback);
+                    _reeseMod.Call("UnregisterReplayStateResetCallback", ReeseStateResetCallback);
+                }
+                catch
+                {
+                    // Ignore unload cleanup errors.
+                }
+            }
+
+            _reeseMod = null;
+            _reeseCompatRegistered = false;
+
             On_Sign.ReadSign -= CaptureSignText;
             On_Sign.TextSign -= RestoreSignText;
             DamageBoardKeybind = null;
+        }
+
+        private static void TryRegisterReeseCompat()
+        {
+            if (_reeseCompatRegistered)
+                return;
+
+            if (!ModLoader.TryGetMod("Reese", out Mod reese))
+                return;
+
+            _reeseMod = reese;
+
+            bool snapshotRegistered = false;
+            bool resetRegistered = false;
+
+            try
+            {
+                snapshotRegistered = reese.Call("RegisterReplaySnapshotWriter", ReeseSnapshotWriterCallback) is bool snapshotOk && snapshotOk;
+            }
+            catch (Exception e)
+            {
+                ModContent.GetInstance<CTG2>().Logger.Warn($"Failed to register Reese snapshot writer: {e}");
+            }
+
+            try
+            {
+                resetRegistered = reese.Call("RegisterReplayStateResetCallback", ReeseStateResetCallback) is bool resetOk && resetOk;
+            }
+            catch (Exception e)
+            {
+                ModContent.GetInstance<CTG2>().Logger.Warn($"Failed to register Reese replay reset callback: {e}");
+            }
+
+            _reeseCompatRegistered = snapshotRegistered || resetRegistered;
+
+            if (_reeseCompatRegistered)
+                ModContent.GetInstance<CTG2>().Logger.Info($"Registered CTG2 Reese compatibility. Snapshot={snapshotRegistered}, Reset={resetRegistered}");
+        }
+
+        private static void WriteReeseReplaySnapshot(int clientId, uint tick, bool initial)
+        {
+            if (Main.netMode != NetmodeID.Server)
+                return;
+
+            GameManager manager = ModContent.GetInstance<GameManager>();
+            if (manager?.RedGem == null || manager.BlueGem == null)
+                return;
+
+            SendGemStateSnapshot(clientId, 1, manager.RedGem);
+            SendGemStateSnapshot(clientId, 2, manager.BlueGem);
+
+            // Also snapshot CTG2's UI/game-info fields into Reese baselines.
+            // This is quiet and does not create chat/audio.
+            manager.SyncGameInfo(clientId);
+        }
+
+        private static void SendGemStateSnapshot(int toClient, int gemId, Gem gem)
+        {
+            ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
+            packet.Write((byte)MessageType.SyncGemState);
+            packet.Write(gemId);
+            packet.Write(gem.IsHeld);
+            packet.Write(gem.IsHeld ? gem.HeldBy : -1);
+            packet.Write(gem.IsCaptured);
+            packet.Send(toClient: toClient);
+        }
+
+        private static void OnReeseReplayStateReset(uint tick, string reason)
+        {
+            // This callback is for replay playback/local state cleanup.
+            // Do not let a dedicated server reset an active match because of this.
+            if (Main.dedServ)
+                return;
+
+            GameManager manager = ModContent.GetInstance<GameManager>();
+            manager?.ResetGemStateForReplay();
+
+            GameInfo.blueGemX = 0;
+            GameInfo.redGemX = 0;
+            GameInfo.blueGemCarrier = "At Base";
+            GameInfo.redGemCarrier = "At Base";
+            GameInfo.blueGemCarrierName = "";
+            GameInfo.redGemCarrierName = "";
+        }
+
+        private static void ApplyGemStateSnapshot(int gemId, bool isHeld, int heldBy, bool isCaptured)
+        {
+            GameManager manager = ModContent.GetInstance<GameManager>();
+            if (manager?.RedGem == null || manager.BlueGem == null)
+                return;
+
+            Gem gem = gemId == 1 ? manager.RedGem : manager.BlueGem;
+
+            gem.IsHeld = isHeld;
+            gem.HeldBy = isHeld ? heldBy : -1;
+            gem.IsCaptured = isCaptured;
+            gem.IsPickupPending = false;
         }
 
         public bool ApplyGamemodeChange(string mode, string source = "unknown")
@@ -765,10 +889,13 @@ namespace CTG2
 
                     // 1. Update the local state (this happens on Server or the receiving Clients)
                     var manager1 = ModContent.GetInstance<GameManager>();
-                    if (gemType1 == 1)
-                        manager1.RedGem.IsHeld = isHeld;
-                    else
-                        manager1.BlueGem.IsHeld = isHeld;
+                    Gem gem1 = gemType1 == 1 ? manager1.RedGem : manager1.BlueGem;
+                    gem1.IsHeld = isHeld;
+                    if (!isHeld)
+                    {
+                        gem1.HeldBy = -1;
+                        gem1.IsPickupPending = false;
+                    }
 
                     // 2. If the Server received this from a client, it must tell all other clients
                     if (Main.netMode == NetmodeID.Server) {
@@ -786,10 +913,10 @@ namespace CTG2
 
                     // 1. Update the local state (this happens on Server or the receiving Clients)
                     var manager2 = ModContent.GetInstance<GameManager>();
-                    if (gemType2 == 1)
-                        manager2.RedGem.HeldBy = heldBy;
-                    else
-                        manager2.BlueGem.HeldBy = heldBy;
+                    Gem gem2 = gemType2 == 1 ? manager2.RedGem : manager2.BlueGem;
+                    gem2.HeldBy = heldBy;
+                    if (heldBy == -1)
+                        gem2.IsPickupPending = false;
 
                     // 2. If the Server received this from a client, it must tell all other clients
                     if (Main.netMode == NetmodeID.Server) {
@@ -822,6 +949,16 @@ namespace CTG2
                         packet.Send(-1, whoAmI); 
                     }
                     break;
+                case (byte)MessageType.SyncGemState:
+                {
+                    int gemId = reader.ReadInt32();
+                    bool snapshotIsHeld = reader.ReadBoolean();
+                    int snapshotHeldBy = reader.ReadInt32();
+                    bool snapshotIsCaptured = reader.ReadBoolean();
+
+                    ApplyGemStateSnapshot(gemId, snapshotIsHeld, snapshotHeldBy, snapshotIsCaptured);
+                    break;
+                }
 
                 case (byte)MessageType.ClearInventory:
                     int playerIdxx = reader.ReadInt32();
