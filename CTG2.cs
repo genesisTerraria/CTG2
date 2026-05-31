@@ -166,7 +166,8 @@ namespace CTG2
         RequestDamageBoard = 121,
         SyncDamageBoard = 122,
         TabooArtifact = 123,
-        SyncGemState = 124
+        SyncGemState = 124,
+        SetNoKnockback = 125
     }
 
     public class CTG2 : Mod
@@ -539,6 +540,23 @@ namespace CTG2
                         resultPacket.Write(failureReason);
                         resultPacket.Send(whoAmI);
                     }
+                    break;
+                }
+
+                case (byte)MessageType.SetNoKnockback:
+                {
+                    int index = reader.ReadInt32();
+
+                    Main.player[index].noKnockback = true;
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        ModPacket kbPacket = mod.GetPacket();
+                        kbPacket.Write((byte)MessageType.SetNoKnockback);
+                        kbPacket.Write(index);
+                        kbPacket.Send(-1);
+                    }
+
                     break;
                 }
 

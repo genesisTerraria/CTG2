@@ -7,6 +7,7 @@ using Terraria.Audio;
 using CTG2.Content.ClientSide;
 using CTG2.Content.Buffs;
 using Microsoft.Xna.Framework;
+using CTG2;
 
 
 public class ProjectileOverrides : GlobalProjectile
@@ -26,6 +27,18 @@ public class ProjectileOverrides : GlobalProjectile
         }
 
         return true;
+    }
+
+    public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
+    {
+        if (projectile.type == ProjectileID.EmeraldBolt)
+            target.noKnockback = true;
+
+        var mod = ModContent.GetInstance<CTG2.CTG2>();
+        ModPacket resultPacket = mod.GetPacket();
+        resultPacket.Write((byte)MessageType.SetNoKnockback);
+        resultPacket.Write(target.whoAmI);
+        resultPacket.Send();
     }
 
 
@@ -94,6 +107,8 @@ public class ProjectileOverrides : GlobalProjectile
             {
                 projectile.timeLeft = 180;
             }
+
+            projectile.penetrate = 1;
         }
         if (projectile.type == ProjectileID.NebulaArcanum)
         {
@@ -114,29 +129,29 @@ public class ProjectileOverrides : GlobalProjectile
                 projectile.extraUpdates = 1;
             }
         }
-        if (projectile.type == ProjectileID.EmeraldBolt)
-        {
-            if (projectile.Hitbox.Intersects(player.Hitbox) && Main.player[projectile.owner].team != player.team)
-            {
-                int initialHealth = player.statLife;
+        // if (projectile.type == ProjectileID.EmeraldBolt)
+        // {
+        //     if (projectile.Hitbox.Intersects(player.Hitbox) && Main.player[projectile.owner].team != player.team)
+        //     {
+        //         int initialHealth = player.statLife;
 
-                player.statLife -= 8;
+        //         player.statLife -= 8;
 
-                CombatText.NewText(player.getRect(), Color.Cyan, 8);
-                NetMessage.SendData(MessageID.SpiritHeal, -1, -1, null, player.whoAmI, 8);
+        //         CombatText.NewText(player.getRect(), Color.Cyan, 8);
+        //         NetMessage.SendData(MessageID.SpiritHeal, -1, -1, null, player.whoAmI, 8);
 
-                projectile.Kill();
+        //         projectile.Kill();
 
-                if (initialHealth <= 8)
-                {
-                    PlayerDeathReason reason = PlayerDeathReason.ByCustomReason("Tree second weapon");
-                    reason.SourceItem = new Item(ItemID.WandofSparking);
-                    reason.SourcePlayerIndex = projectile.owner;
+        //         if (initialHealth <= 8)
+        //         {
+        //             PlayerDeathReason reason = PlayerDeathReason.ByCustomReason("Tree second weapon");
+        //             reason.SourceItem = new Item(ItemID.WandofSparking);
+        //             reason.SourcePlayerIndex = projectile.owner;
 
-                    player.KillMe(reason, 8, 0);
-                }
-            }
-        }
+        //             player.KillMe(reason, 8, 0);
+        //         }
+        //     }
+        // }
         if (projectile.type == ProjectileID.ThornChakram)
         {
             for (int i = 0; i < Main.maxProjectiles; i++)

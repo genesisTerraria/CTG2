@@ -1243,7 +1243,7 @@ namespace CTG2.Content
                 bool isCorrectType = proj.type == ProjectileID.Bananarang || proj.type == ProjectileID.EmeraldBolt || proj.type == ProjectileID.ToxicCloud;
                 if (proj.active && proj.owner == Player.whoAmI && isCorrectType)
                 {
-                    int spore = Projectile.NewProjectile(
+                    Projectile.NewProjectile(
                         Player.GetSource_Misc("Class15Ability2"),
                         proj.Center,
                         Vector2.Zero,
@@ -1252,7 +1252,6 @@ namespace CTG2.Content
                         0f,
                         Player.whoAmI
                     );
-                    Main.projectile[spore].penetrate = 1;
 
                     proj.Kill();
                 }

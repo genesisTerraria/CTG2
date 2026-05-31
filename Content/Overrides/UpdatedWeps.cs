@@ -148,7 +148,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.DamageType = DamageClass.Magic;
                     break;
                 case ItemID.WandofSparking:
-                    item.damage = 0;
+                    item.damage = 12;
                     item.useTime = 8;
                     item.useAnimation = 8;
                     item.shootSpeed = 9f;
