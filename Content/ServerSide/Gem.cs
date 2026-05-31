@@ -45,6 +45,7 @@ public class Gem
         IsHeld = false;
         IsCaptured = false;
         HeldBy = -1;
+        IsPickupPending = false;
     }
     // Runs all Gem Logic - Check if Gem can be picked up/captured by any players
     public void Update(Gem otherGem, List<Player> otherTeam)
@@ -215,12 +216,20 @@ public class GemFunctionality : ModPlayer
         if (redGem.IsHeld && redGem.HeldBy == player.whoAmI && ((player.dead && player.team == 3) || player.ghost))
         {
             redGem.IsHeld = false;
+            redGem.HeldBy = -1;
+            redGem.IsPickupPending = false;
 
             ModPacket packetIsHeld = mod.GetPacket();
             packetIsHeld.Write((byte)MessageType.UpdateIsHeld);
             packetIsHeld.Write(1);
             packetIsHeld.Write(false);
             packetIsHeld.Send();
+
+            ModPacket packetHeldBy = mod.GetPacket();
+            packetHeldBy.Write((byte)MessageType.UpdateHeldBy);
+            packetHeldBy.Write(1);
+            packetHeldBy.Write(-1);
+            packetHeldBy.Send();
 
             ModPacket packetText = mod.GetPacket();
             packetText.Write((byte)MessageType.RequestChatColored);
@@ -236,6 +245,8 @@ public class GemFunctionality : ModPlayer
         else if (blueGem.IsHeld && blueGem.HeldBy == player.whoAmI && ((player.dead && player.team == 1) || player.ghost))
         {
             blueGem.IsHeld = false;
+            blueGem.HeldBy = -1;
+            blueGem.IsPickupPending = false;
             Color blueColor = new Color(0, 119, 182);
 
             ModPacket packetIsHeld = mod.GetPacket();
@@ -243,6 +254,12 @@ public class GemFunctionality : ModPlayer
             packetIsHeld.Write(2);
             packetIsHeld.Write(false);
             packetIsHeld.Send();
+
+            ModPacket packetHeldBy = mod.GetPacket();
+            packetHeldBy.Write((byte)MessageType.UpdateHeldBy);
+            packetHeldBy.Write(2);
+            packetHeldBy.Write(-1);
+            packetHeldBy.Send();
 
             ModPacket packetText = mod.GetPacket();
             packetText.Write((byte)MessageType.RequestChatColored);
@@ -260,6 +277,8 @@ public class GemFunctionality : ModPlayer
         {
             redGem.IsCaptured = true;
             redGem.IsHeld = false;
+            redGem.HeldBy = -1;
+            redGem.IsPickupPending = false;
 
             //need packets to update gem state from client->server side here
 
@@ -274,6 +293,12 @@ public class GemFunctionality : ModPlayer
             packetIsHeld.Write(1);
             packetIsHeld.Write(false);
             packetIsHeld.Send();
+
+            ModPacket packetHeldBy = mod.GetPacket();
+            packetHeldBy.Write((byte)MessageType.UpdateHeldBy);
+            packetHeldBy.Write(1);
+            packetHeldBy.Write(-1);
+            packetHeldBy.Send();
 
             ModPacket packetCapture = mod.GetPacket();
             packetCapture.Write((byte)MessageType.RequestChatColored);
@@ -303,6 +328,8 @@ public class GemFunctionality : ModPlayer
         {
             blueGem.IsCaptured = true;
             blueGem.IsHeld = false;
+            blueGem.HeldBy = -1;
+            blueGem.IsPickupPending = false;
             Color blueColor = new Color(0, 119, 182);
 
             //need packets to update gem state from client->server side here
@@ -318,6 +345,12 @@ public class GemFunctionality : ModPlayer
             packetIsHeld.Write(2);
             packetIsHeld.Write(false);
             packetIsHeld.Send();
+
+            ModPacket packetHeldBy = mod.GetPacket();
+            packetHeldBy.Write((byte)MessageType.UpdateHeldBy);
+            packetHeldBy.Write(2);
+            packetHeldBy.Write(-1);
+            packetHeldBy.Send();
 
             ModPacket packetCapture = mod.GetPacket();
             packetCapture.Write((byte)MessageType.RequestChatColored);
