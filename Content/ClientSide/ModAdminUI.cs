@@ -93,6 +93,22 @@ namespace CTG2.Content.ClientSide
                 BackgroundColor = new Color(40, 55, 90, 220)
             };
 
+            _detailTitle = new UIText("")
+            {
+                Top = { Pixels = 10 },
+                Left = { Pixels = 10 },
+                Width = { Percent = 0.9f },
+                Height = { Pixels = 30 }
+            };
+
+            _detailBody = new UIText("")
+            {
+                Top = { Pixels = 45 },
+                Left = { Pixels = 10 },
+                Width = { Percent = 0.9f },
+                Height = { Pixels = 30 }
+            };
+
             _detailButtonList = new UIList
             {
                 Top = { Pixels = 90 },
