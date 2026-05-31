@@ -36,11 +36,10 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint nagLastUsedCounter = 0;
 
         private uint zapinatorDelay = 51;
-        private uint hellWingDelay = 51;
         private uint grenadeDelay = 60;
         private uint grenadeLastUsedCounter = 0;
 
-        private uint bananarangDelay = 55;
+        private uint bananarangDelay = 52;
         private uint bananarangLastUsedCounter = 0;
 
         private uint maceDelay = 60;
@@ -134,10 +133,10 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case ItemID.Bananarang: // Tree
                     item.useTime = 20;
                     item.useAnimation = 20;
-                    item.shootSpeed = 11.4f;
+                    item.shootSpeed = 12f;
                     item.knockBack = 6f;
                     item.autoReuse = false;
-                    item.damage = 35;
+                    item.damage = 32;
                     item.crit = 0;
                     break;
                 case ItemID.ChainKnife: // Leech
@@ -147,6 +146,15 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.damage = 31;
                     item.crit = 0;
                     item.DamageType = DamageClass.Magic;
+                    break;
+                case ItemID.WandofSparking:
+                    item.damage = 0;
+                    item.useTime = 8;
+                    item.useAnimation = 8;
+                    item.shootSpeed = 9f;
+                    item.crit = 0;
+                    item.mana = 18;
+                    item.shoot = ProjectileID.EmeraldBolt;
                     break;
                 case ItemID.CursedFlames: // Leech
                     item.useTime = 37;

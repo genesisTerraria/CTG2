@@ -1,18 +1,18 @@
 {
-  "HealthPoints": 160,
-  "ManaPoints": 0,
+  "HealthPoints": 140,
+  "ManaPoints": 18,
   "InventoryItems": [
     {
       "Name": "Upgraded Shardstone Pickaxe",
-      "Type": 5557,
+      "Type": 5565,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
       "Modded": true
     },
     {
-      "Name": "Whoopie Cushion",
-      "Type": 215,
+      "Name": "Wand of Sparking",
+      "Type": 3069,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 1,
@@ -76,7 +76,7 @@
     },
     {
       "Name": "Foliage Tendrils",
-      "Type": 5551,
+      "Type": 5552,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 9,
@@ -323,9 +323,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Whoopie Cushion",
+      "Type": 215,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 40,
       "Modded": false
@@ -502,7 +502,7 @@
       "Name": "Lucky Horseshoe",
       "Type": 158,
       "Stack": 1,
-      "Prefix": 63,
+      "Prefix": 0,
       "Slot": 62,
       "Modded": false
     },

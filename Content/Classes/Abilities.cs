@@ -1217,13 +1217,13 @@ namespace CTG2.Content
 
         private void TreeOnUse() //not done
         {
-            for (int i = 0; i < 7; i++)
+            for (int i = 0; i < 3; i++)
             {
                 Projectile.NewProjectile(
                     Player.GetSource_Misc("Class15Ability"),
                     Player.Center,
                     Vector2.Zero,
-                    511,
+                    ProjectileID.ToxicCloud,
                     0,
                     0f,
                     Player.whoAmI
@@ -1236,13 +1236,39 @@ namespace CTG2.Content
         }
 
 
+        private void TreeOnUse2()
+        {
+            foreach (Projectile proj in Main.projectile)
+            {
+                bool isCorrectType = proj.type == ProjectileID.Bananarang || proj.type == ProjectileID.EmeraldBolt || proj.type == ProjectileID.ToxicCloud;
+                if (proj.active && proj.owner == Player.whoAmI && isCorrectType)
+                {
+                    int spore = Projectile.NewProjectile(
+                        Player.GetSource_Misc("Class15Ability2"),
+                        proj.Center,
+                        Vector2.Zero,
+                        ProjectileID.SporeCloud,
+                        22,
+                        0f,
+                        Player.whoAmI
+                    );
+                    Main.projectile[spore].penetrate = 1;
+
+                    proj.Kill();
+                }
+            }
+
+            SoundEngine.PlaySound(SoundID.Item101.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+        }
+
+
         private void TreePostStatus()
         {
             for (int i = 0; i < Main.maxProjectiles; i++)
             {
                 Projectile proj = Main.projectile[i];
 
-                if (proj.active && proj.type == 511 && proj.owner == Player.whoAmI)
+                if (proj.active && proj.type == ProjectileID.ToxicCloud && proj.owner == Player.whoAmI)
                 {
                     foreach (Player other in Main.player)
                     {
@@ -1252,8 +1278,8 @@ namespace CTG2.Content
                         if (Player.whoAmI == other.whoAmI || Player.team == other.team) continue;
                         if (proj.Hitbox.Intersects(other.Hitbox))
                         {
-                            other.AddBuff(160, 30);
-                            other.AddBuff(197, 30);
+                            other.AddBuff(BuffID.Dazed, 30);
+                            other.AddBuff(BuffID.OgreSpit, 30);
 
                             NetMessage.SendData(MessageID.AddPlayerBuff, other.whoAmI, -1, null, other.whoAmI, 160, 30);
                             NetMessage.SendData(MessageID.AddPlayerBuff, other.whoAmI, -1, null, other.whoAmI, 197, 30);
@@ -1586,7 +1612,7 @@ namespace CTG2.Content
                         break;
 
                     case 15: //not finished 
-                        SetCooldown(27);
+                        SetCooldown(32);
                         TreeOnUse();
 
                         break;
@@ -1628,6 +1654,10 @@ namespace CTG2.Content
                     case 2:
                         SetCooldown2(22);
                         NinjaOnUse2();
+                        break;
+                    case 15:
+                        SetCooldown2(10);
+                        TreeOnUse2();
                         break;
                 }
             }

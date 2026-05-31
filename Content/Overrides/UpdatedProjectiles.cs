@@ -31,6 +31,7 @@ public class ProjectileOverrides : GlobalProjectile
 
     public override void AI(Projectile projectile)
     {
+        Player player = Main.LocalPlayer;
         // if (projectile.type == 280)
         // {
         //     float scale = 0.5f;
@@ -78,7 +79,15 @@ public class ProjectileOverrides : GlobalProjectile
         }
         if (projectile.type == 167 || projectile.type == 169)
             projectile.timeLeft = 0;
-        if (projectile.type == 511)
+        if (projectile.type == ProjectileID.ToxicCloud)
+        {
+            // Force a new timeLeft value (e.g., 120 ticks = 2 seconds)
+            if (projectile.timeLeft > 180)
+            {
+                projectile.timeLeft = 180;
+            }
+        }
+        if (projectile.type == ProjectileID.SporeCloud)
         {
             // Force a new timeLeft value (e.g., 120 ticks = 2 seconds)
             if (projectile.timeLeft > 180)
@@ -103,6 +112,29 @@ public class ProjectileOverrides : GlobalProjectile
             if (projectile.localAI[0] < 30f)
             {
                 projectile.extraUpdates = 1;
+            }
+        }
+        if (projectile.type == ProjectileID.EmeraldBolt)
+        {
+            if (projectile.Hitbox.Intersects(player.Hitbox) && Main.player[projectile.owner].team != player.team)
+            {
+                int initialHealth = player.statLife;
+
+                player.statLife -= 8;
+
+                CombatText.NewText(player.getRect(), Color.Cyan, 8);
+                NetMessage.SendData(MessageID.SpiritHeal, -1, -1, null, player.whoAmI, 8);
+
+                projectile.Kill();
+
+                if (initialHealth <= 8)
+                {
+                    PlayerDeathReason reason = PlayerDeathReason.ByCustomReason("Tree second weapon");
+                    reason.SourceItem = new Item(ItemID.WandofSparking);
+                    reason.SourcePlayerIndex = projectile.owner;
+
+                    player.KillMe(reason, 8, 0);
+                }
             }
         }
         if (projectile.type == ProjectileID.ThornChakram)
@@ -380,6 +412,19 @@ public class ModifyHurtModPlayer : ModPlayer
                 }
             }
             Player.ClearBuff(BuffID.Poisoned);
+        }
+        if (info.DamageSource.SourceProjectileType == ProjectileID.EmeraldBolt)
+        {
+            Player attacker = Main.player[attackerIndex];
+            var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
+            if (attackerPlayer.currentClass.Name == "Tree")
+            {
+                ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
+                packet.Write((byte)CTG2.MessageType.RequestHeal);
+                packet.Write(attacker.whoAmI);
+                packet.Write(4);
+                packet.Send();
+            }
         }
         if (info.DamageSource.SourceProjectileType == 732)
         {
