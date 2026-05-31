@@ -28,7 +28,8 @@ public enum MapTypes
     Caliburn,
     Crypt,
     Cheese,
-    Rings
+    Rings,
+    Pipes
 }
 
 public class MapData
