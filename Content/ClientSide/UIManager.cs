@@ -23,6 +23,8 @@ public class UIManager : ModSystem
     private ClassUI classUIState;
     private UserInterface damageBoardInterface;
     private DamageBoardUI damageBoardState;
+    private UserInterface modAdminInterface;
+    private ModAdminUI modAdminState;
     
     
     public override void OnWorldLoad()
@@ -30,12 +32,15 @@ public class UIManager : ModSystem
         // 1) Create your UIState
         classUIState = new ClassUI();
         damageBoardState = new DamageBoardUI();
+        modAdminState = new ModAdminUI();
 
         // 2) Create a UserInterface and attach your state
         classInterface = new UserInterface();
         classInterface.SetState(classUIState);
         damageBoardInterface = new UserInterface();
         damageBoardInterface.SetState(damageBoardState);
+        modAdminInterface = new UserInterface();
+        modAdminInterface.SetState(modAdminState);
     }
     
     public override void UpdateUI(GameTime gameTime)
@@ -44,6 +49,11 @@ public class UIManager : ModSystem
         if (Main.LocalPlayer.GetModPlayer<PlayerManager>().ShowClassUI)
         {
             classInterface?.Update(gameTime);
+        }
+
+        if (Main.LocalPlayer.GetModPlayer<PlayerManager>().ShowModUI)
+        {
+            modAdminInterface?.Update(gameTime);
         }
 
         if (DamageBoardData.Visible)
@@ -58,14 +68,30 @@ public class UIManager : ModSystem
         if (index != -1)
         {
             
+            int insertIndex = index;
+
             if (Main.LocalPlayer.GetModPlayer<PlayerManager>().ShowClassUI)
             {
-                layers.Insert(index, new LegacyGameInterfaceLayer(
+                layers.Insert(insertIndex, new LegacyGameInterfaceLayer(
                     "CTG2: Class Selection UI",
                     delegate
                     {
                         // Draw your UI
                         classInterface.Draw(Main.spriteBatch, new GameTime());
+                        return true;
+                    },
+                    InterfaceScaleType.UI)
+                );
+                insertIndex++;
+            }
+
+            if (Main.LocalPlayer.GetModPlayer<PlayerManager>().ShowModUI)
+            {
+                layers.Insert(insertIndex, new LegacyGameInterfaceLayer(
+                    "CTG2: Admin Mod UI",
+                    delegate
+                    {
+                        modAdminInterface.Draw(Main.spriteBatch, new GameTime());
                         return true;
                     },
                     InterfaceScaleType.UI)

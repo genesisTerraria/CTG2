@@ -27,6 +27,7 @@ public class PlayerManager : ModPlayer
     }
     public bool ShowClassUI = false;
     public bool ShowGameUI = false;
+    public bool ShowModUI = false;
 
     public static int previousMatchStage = 0;
     public int customRespawnTimer = -1;
