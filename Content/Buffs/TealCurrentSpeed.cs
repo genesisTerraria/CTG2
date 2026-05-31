@@ -7,9 +7,9 @@ namespace CTG2.Content.Buffs
     {
         public override void Update(Player player, ref int buffIndex)
         {
-            player.moveSpeed += 0.15f;
-            player.accRunSpeed += 0.5f;
-            player.maxRunSpeed += 0.5f;
+            player.moveSpeed += 0.10f;
+            player.accRunSpeed += 0.10f;
+            player.maxRunSpeed += 0.10f;
         }
     }
 }
