@@ -4,3 +4,4 @@ obj/
 Content/Encryption/generate_password_hash.py
 Content/Commands/Login/generate_password_hash.py
 ctg2-api-secrets.json
+/.vs
