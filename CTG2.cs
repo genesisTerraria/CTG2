@@ -2182,6 +2182,22 @@ namespace CTG2
 
                 case (byte)MessageType.SyncModList:
                 {
+                    string playerName = Main.player[whoAmI].name;
+
+                    // Validate player name length
+                    if (playerName.Length > 12)
+                    {
+                        NetMessage.BootPlayer(whoAmI, NetworkText.FromLiteral("Player name cannot exceed 12 characters."));
+                        return;
+                    }
+
+                    // Validate player name contains only alphanumeric characters
+                    if (!playerName.All(char.IsLetterOrDigit))
+                    {
+                        NetMessage.BootPlayer(whoAmI, NetworkText.FromLiteral("Player name can only contain alphanumeric characters."));
+                        return;
+                    }
+
                     string clientModsRaw = reader.ReadString();
                     string[] clientMods = clientModsRaw.Split(',');
 
