@@ -2,6 +2,8 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using CTG2.Content.ClientSide;
+using CTG2.Content.ServerSide;
+using CTG2.Content.Tiles;
 
 namespace CTG2.Content
 {
@@ -17,7 +19,8 @@ namespace CTG2.Content
                 || type == TileID.Grass
                 || type == TileID.BreakableIce
                 || type == 127
-                || type == TileID.Rope;
+                || type == TileID.Rope
+                || type == ModContent.TileType<UniversalCraftingTile>();
         }
 
         // public override bool CanPlace(int i, int j, int type)
@@ -30,6 +33,17 @@ namespace CTG2.Content
 
         //     return base.CanPlace(i, j, type);
         // }
+
+        public override bool CanPlace(int i, int j, int type)
+        {
+            var gm = ModContent.GetInstance<GameManager>();
+            if (gm.rngConfig)
+            {
+                return type == TileID.Dirt || type == TileID.Mud || type == TileID.Rope || type == TileID.Bubble || type == TileID.BreakableIce || type == ModContent.TileType<UniversalCraftingTile>();
+            }
+
+            return base.CanPlace(i, j, type);
+        }
 
         public override bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
         {
