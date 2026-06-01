@@ -1631,7 +1631,19 @@ public class GameManager : ModSystem
 
     public void SyncGameInfo(int playerIndex)
     {
+        if (Main.netMode == NetmodeID.MultiplayerClient) return;
+
         var mod = ModContent.GetInstance<CTG2>();
+        string currentMode = GetCurrentGamemode();
+
+        // Send gamemode state to the joining client
+        ModPacket gamemodePacket = mod.GetPacket();
+        gamemodePacket.Write((byte)MessageType.UpdateGamemode);
+        gamemodePacket.Write(currentMode);
+        gamemodePacket.Send(toClient: playerIndex);
+
+        // Send chat notification
+        ChatHelper.SendChatMessageToClient(NetworkText.FromLiteral($"Current gamemode: {currentMode}"), Color.Yellow, playerIndex);
 
         ModPacket packet = mod.GetPacket();
         packet.Write((byte)MessageType.SyncGameInformation);
@@ -1654,5 +1666,13 @@ public class GameManager : ModSystem
         packet.Write(blueCarrierName);
         packet.Write(redCarrierName);
         packet.Send(toClient: playerIndex);
+    }
+
+    private string GetCurrentGamemode()
+    {
+        if (rngConfig) return "rng";
+        if (scrimsConfig) return "scrims";
+        if (pubsConfig) return "pubs";
+        return "none";
     }
 }

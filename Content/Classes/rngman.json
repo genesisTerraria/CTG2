@@ -1,5 +1,5 @@
 {
-  "HealthPoints": 100,
+  "HealthPoints": 200,
   "ManaPoints": 50,
   "InventoryItems": [
     {
@@ -29,7 +29,7 @@
     {
       "Name": "Dirt Block",
       "Type": 2,
-      "Stack": 100,
+      "Stack": 250,
       "Prefix": 0,
       "Slot": 3,
       "Modded": false

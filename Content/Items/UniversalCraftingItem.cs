@@ -10,8 +10,8 @@ namespace CTG2.Content.Items
     {
         public override void SetDefaults()
         {
-            Item.width = 28;
-            Item.height = 28;
+            //Item.width = 32;
+            //Item.height = 32;
             Item.maxStack = 1;
             Item.value = Item.buyPrice(platinum: 9999);
             Item.rare = ItemRarityID.Expert;
