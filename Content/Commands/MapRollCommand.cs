@@ -31,7 +31,7 @@ namespace CTG2.Content.Commands
             Player player = caller.Player;
             Random random = new Random();
 
-            int mapNumber = random.Next(1, 17);
+            int mapNumber = random.Next(1, 18);
             string mapName = "";
 
             switch(mapNumber)
@@ -86,6 +86,9 @@ namespace CTG2.Content.Commands
                     //break;
                 case 16:
                     mapName= "Rings";
+                    break;
+                case 17:
+                    mapName= "Ankh";
                     break;
             }
 

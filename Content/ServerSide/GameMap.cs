@@ -29,7 +29,9 @@ public enum MapTypes
     Crypt,
     Cheese,
     Rings,
-    Pipes
+    Pipes,
+    Croc,
+    Ankh
 }
 
 public class MapData
