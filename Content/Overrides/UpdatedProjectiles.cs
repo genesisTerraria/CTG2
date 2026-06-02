@@ -523,6 +523,7 @@ public class ModifyHurtModPlayer : ModPlayer
         if (info.DamageSource.SourceProjectileType == ProjectileID.ApprenticeStaffT3Shot)
         {
             Player.AddBuff(ModContent.BuffType<Transmutated>(), 90);
+            Player.AddBuff(BuffID.Cursed, 90);
         }
         if (info.DamageSource.SourceProjectileType == 732)
         {
