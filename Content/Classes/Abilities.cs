@@ -692,50 +692,113 @@ namespace CTG2.Content
             SoundEngine.PlaySound(SoundID.Item66, Player.Center);
         }
 
-        private void BeastOnUse()
+        private void AlchemistOnUse()
         {
-            playedSound = false;
+            Vector2 direction = Main.MouseWorld - Player.Center;
+            direction.Normalize();
 
-            Player.AddBuff(BuffID.Electrified, 30);
+            float speed = 8.5f;
+            Vector2 velocity = direction * speed;
 
-            var mod = ModContent.GetInstance<CTG2>();
-            ModPacket packet = mod.GetPacket();
-            packet.Write((byte)MessageType.RequestAddBuff);
-            packet.Write(Player.whoAmI);
-            packet.Write(BuffID.Electrified);
-            packet.Write(30);
-            packet.Send();
+            Projectile.NewProjectile(
+                Player.GetSource_FromThis(),
+                Player.Center,
+                velocity,
+                ProjectileID.LovePotion,
+                0,
+                0,
+                Player.whoAmI
+            );
 
-            class3SpawnTimer = 30;
-            class3PendingSpawn = true;
-
-            SoundEngine.PlaySound(SoundID.DD2_BetsySummon.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
+            SoundEngine.PlaySound(SoundID.Item106.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
         }
 
-
-        private void BeastPostStatus()
+        private void AlchemistOnUse2()
         {
-            if (class3PendingSpawn)
-            {
-                if (class3SpawnTimer <= 0)
-                {
-                    var mod = ModContent.GetInstance<CTG2>();
-                    ModPacket packet = mod.GetPacket();
-                    packet.Write((byte)MessageType.RequestSpawnNpc);
-                    packet.Write((int)Player.Center.X);
-                    packet.Write((int)Player.Center.Y);
-                    packet.Write(ModContent.NPCType<SlimerClone>());
-                    packet.Write(0);
-                    packet.Write(Player.team);
-                    packet.Write(Player.whoAmI);
-                    packet.Send();
+            Vector2 direction = Main.MouseWorld - Player.Center;
+            direction.Normalize();
 
-                    SoundEngine.PlaySound(SoundID.DD2_BetsyScream.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
+            float speed = 8.5f;
+            Vector2 velocity = direction * speed;
 
-                    class3PendingSpawn = false;
-                }
-            }
+            Projectile.NewProjectile(
+                Player.GetSource_FromThis(),
+                Player.Center,
+                velocity,
+                ProjectileID.ToxicFlask,
+                25,
+                0,
+                Player.whoAmI
+            );
+
+            SoundEngine.PlaySound(SoundID.Item106.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
         }
+
+        private void AlchemistOnUse3()
+        {
+            Vector2 direction = Main.MouseWorld - Player.Center;
+            direction.Normalize();
+
+            float speed = 10f;
+            Vector2 velocity = direction * speed;
+
+            Projectile.NewProjectile(
+                Player.GetSource_FromThis(),
+                Player.Center,
+                velocity,
+                ProjectileID.ApprenticeStaffT3Shot,
+                5,
+                0,
+                Player.whoAmI
+            );
+
+            SoundEngine.PlaySound(SoundID.Item113.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
+        }
+
+        // private void BeastOnUse()
+        // {
+        //     playedSound = false;
+
+        //     Player.AddBuff(BuffID.Electrified, 30);
+
+        //     var mod = ModContent.GetInstance<CTG2>();
+        //     ModPacket packet = mod.GetPacket();
+        //     packet.Write((byte)MessageType.RequestAddBuff);
+        //     packet.Write(Player.whoAmI);
+        //     packet.Write(BuffID.Electrified);
+        //     packet.Write(30);
+        //     packet.Send();
+
+        //     class3SpawnTimer = 30;
+        //     class3PendingSpawn = true;
+
+        //     SoundEngine.PlaySound(SoundID.DD2_BetsySummon.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
+        // }
+
+
+        // private void BeastPostStatus()
+        // {
+        //     if (class3PendingSpawn)
+        //     {
+        //         if (class3SpawnTimer <= 0)
+        //         {
+        //             var mod = ModContent.GetInstance<CTG2>();
+        //             ModPacket packet = mod.GetPacket();
+        //             packet.Write((byte)MessageType.RequestSpawnNpc);
+        //             packet.Write((int)Player.Center.X);
+        //             packet.Write((int)Player.Center.Y);
+        //             packet.Write(ModContent.NPCType<SlimerClone>());
+        //             packet.Write(0);
+        //             packet.Write(Player.team);
+        //             packet.Write(Player.whoAmI);
+        //             packet.Send();
+
+        //             SoundEngine.PlaySound(SoundID.DD2_BetsyScream.WithVolumeScale(Main.soundVolume * 4f), Player.Center);
+
+        //             class3PendingSpawn = false;
+        //         }
+        //     }
+        // }
 
 
         private void GladiatorOnUse()
@@ -1540,7 +1603,7 @@ namespace CTG2.Content
 
                     case 3:
                         SetCooldown(35);
-                        BeastOnUse();
+                        AlchemistOnUse();
 
                         break;
 
@@ -1654,6 +1717,10 @@ namespace CTG2.Content
                         SetCooldown2(22);
                         NinjaOnUse2();
                         break;
+                    case 3:
+                        SetCooldown2(25);
+                        AlchemistOnUse2();
+                        break;
                     case 15:
                         SetCooldown2(10);
                         TreeOnUse2();
@@ -1669,6 +1736,10 @@ namespace CTG2.Content
                         SetCooldown3(10);
                         ArcherOnUse3();
                         break;
+                    case 3:
+                        SetCooldown3(60);
+                        AlchemistOnUse3();
+                        break;
                 }
             }
         }
@@ -1679,7 +1750,7 @@ namespace CTG2.Content
             int selectedClass = playerManager.currentClass.AbilityID;
 
             ArcherPostStatus3();
-            BeastPostStatus();
+            //BeastPostStatus();
             GladiatorPostStatus();
             PaladinPostStatus();
             ClownPostStatus();

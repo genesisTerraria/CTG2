@@ -5,6 +5,7 @@ using Terraria.ModLoader;
 using System;
 using Terraria.Audio;
 using System.IO;
+using CTG2.Content.Buffs;
 
 namespace CTG2.Content.Items
 {
@@ -84,7 +85,9 @@ namespace CTG2.Content.Items
 
 		public override void PreUpdateMovement() {
 
-			if (Player.whoAmI == Main.myPlayer && !Player.HasBuff(BuffID.Webbed) && !Player.HasBuff(BuffID.OgreSpit) && !Player.HasBuff(BuffID.Dazed))
+			if (Player.whoAmI == Main.myPlayer && !Player.HasBuff(BuffID.Webbed) &&
+				!Player.HasBuff(BuffID.OgreSpit) && !Player.HasBuff(BuffID.Dazed) &&
+				!Player.HasBuff(ModContent.BuffType<Transmutated>()))
 			{
 				Vector2 newVelocity = Player.velocity;
 

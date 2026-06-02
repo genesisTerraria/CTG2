@@ -150,6 +150,16 @@ Items: {
 		DisplayName: Monster Energy Bucket
 		Tooltip: Places Monster Energy that grants movement speed after you stand in it.
 	}
+
+	AlchemistHook: {
+		Tooltip: ""
+		DisplayName: Alchemist Hook
+	}
+
+	SpaceSplitter: {
+		DisplayName: Space Splitter
+		Tooltip: ""
+	}
 }
 
 NPCs: {
@@ -172,6 +182,7 @@ Projectiles: {
 	SlasherHeld.DisplayName: Slasher Held
 	SittingDuckBobber.DisplayName: Sitting Duck Bobber
 	ThrowingStarsProjectile.DisplayName: Throwing Stars Projectile
+	DissonanceHookProjectile.DisplayName: Dissonance Hook Projectile
 }
 
 Tiles.TealCurrentTile.MapEntry: Monster Energy
@@ -255,6 +266,26 @@ Buffs: {
 	TealCurrentSpeed: {
 		DisplayName: Caffeine
 		Description: Your movement speed is increased.
+	}
+
+	TimeDilation: {
+		Description: Your movement speed and acceleration is decreased by 25%.
+		DisplayName: Time Dilation
+	}
+
+	Restoration: {
+		DisplayName: Restoration
+		Description: Your life regeneration is increased by 5 hp per second.
+	}
+
+	Resiliance: {
+		DisplayName: Resiliance
+		Description: Your defense is increased by 6 and your movement speed is increased by 15%.
+	}
+
+	Transmutated: {
+		DisplayName: Transmutated
+		Description: Mods.CTG2.Buffs.Transmutated.Description
 	}
 }
 

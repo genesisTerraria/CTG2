@@ -19,11 +19,45 @@ public class ProjectileOverrides : GlobalProjectile
 
     public override bool PreKill(Projectile projectile, int timeLeft)
     {
-        if (projectile.type == ProjectileID.NebulaArcanum || projectile.type == 706 || projectile.type == 666)
+        if (projectile.type == ProjectileID.NebulaArcanum || projectile.type == 706 || projectile.type == 711 || projectile.type == 666)
         {
             projectile.damage = 0;
 
             return false;
+        }
+
+        if (projectile.type == ProjectileID.LovePotion)
+        {
+            foreach (Player player in Main.player)
+            {
+                if (projectile.Hitbox.Intersects(player.Hitbox))
+                {
+                    var mod = ModContent.GetInstance<CTG2.CTG2>();
+                    ModPacket buffPacket = mod.GetPacket();
+                    buffPacket.Write((byte)MessageType.RequestAddBuff);
+                    buffPacket.Write(player.whoAmI);
+                    buffPacket.Write(ModContent.BuffType<Restoration>());
+                    buffPacket.Write(4 * 60);
+                    buffPacket.Send();
+                }
+            }
+        }
+
+        if (projectile.type == ProjectileID.ToxicFlask)
+        {
+            foreach (Player player in Main.player)
+            {
+                if (projectile.Hitbox.Intersects(player.Hitbox))
+                {
+                    var mod = ModContent.GetInstance<CTG2.CTG2>();
+                    ModPacket buffPacket = mod.GetPacket();
+                    buffPacket.Write((byte)MessageType.RequestAddBuff);
+                    buffPacket.Write(player.whoAmI);
+                    buffPacket.Write(ModContent.BuffType<Resiliance>());
+                    buffPacket.Write(3 * 60);
+                    buffPacket.Send();
+                }
+            }
         }
 
         return true;
@@ -206,6 +240,46 @@ public class ProjectileOverrides : GlobalProjectile
                 }
             }
         }
+        if (projectile.type == ProjectileID.ApprenticeStaffT3Shot)
+        {
+            Player owner = Main.player[projectile.owner];
+            foreach (Player play in Main.player)
+            {
+                if (projectile.Hitbox.Intersects(play.Hitbox) && play.team != owner.team)
+                {
+                    var mod = ModContent.GetInstance<CTG2.CTG2>();
+                    ModPacket packetBuff = mod.GetPacket();
+                    packetBuff.Write((byte)MessageType.RequestAddBuff);
+                    packetBuff.Write(play.whoAmI);
+                    packetBuff.Write(ModContent.BuffType<Transmutated>());
+                    packetBuff.Write(2 * 60);
+                    packetBuff.Send();
+
+                }
+            }
+        }
+        if (projectile.type == ProjectileID.NebulaBlaze2)
+        {
+            Player owner = Main.player[projectile.owner];
+            foreach (Player play in Main.player)
+            {
+                if (projectile.Hitbox.Intersects(play.Hitbox))
+                {
+                    projectile.Kill();
+
+                    if (owner.team == play.team)
+                    {
+                        var mod = ModContent.GetInstance<CTG2.CTG2>();
+                        ModPacket packetBuff = mod.GetPacket();
+                        packetBuff.Write((byte)MessageType.RequestAddBuff);
+                        packetBuff.Write(play.whoAmI);
+                        packetBuff.Write(BuffID.NebulaUpDmg1);
+                        packetBuff.Write(3 * 60);
+                        packetBuff.Send();
+                    }
+                }
+            }
+        }
         if (projectile.type == 700) //kill ghast projectiles
         {
             projectile.Kill();
@@ -228,6 +302,7 @@ public class ProjectileOverrides : GlobalProjectile
             projectile.scale = 0;
             projectile.Kill();
         } //If nebula code doesnt work we have to kill the projectiles onspawn
+        
     }
 
 
@@ -255,6 +330,23 @@ public class ProjectileOverrides : GlobalProjectile
          || projectile.type == ModContent.ProjectileType<SittingDuckBobber>())
         {
             projectile.penetrate = 1;
+        }
+        
+        if (projectile.type != ProjectileID.ToxicCloud &&
+            projectile.type != ProjectileID.ToxicCloud2 &&
+            projectile.type != ProjectileID.ToxicCloud3)
+            return;
+
+        // Only kill clouds that came from the ToxicFlask projectile
+        if (source is EntitySource_Parent parentSource && 
+            parentSource.Entity is Projectile parent &&
+            parent.type == ProjectileID.ToxicFlask)
+        {
+            projectile.Kill();
+        }
+        if (projectile.type == ProjectileID.NebulaBlaze2)
+        {
+            projectile.timeLeft = 10 * 60;
         }
     }   
 }

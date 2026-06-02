@@ -10,6 +10,8 @@ using Microsoft.Xna.Framework.Audio;
 using ReLogic.Utilities;
 using System;
 using CTG2.Content.ClientSide;
+using System.Globalization;
+using CTG2.Commands;
 
 namespace CTG2.Content.Items.ModifiedWeps
 {
@@ -77,8 +79,9 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint anchorDelay = 120;
         private uint sharknadoDelay = 47;
         private uint chumBallDelay = 47;
-
         private uint umbrellaDelay = 10 * 60;
+        private uint geodeDelay = 60;
+        private uint geodeLastUsedCounter = 0;
 
         bool playedAnchorSound = true;
         bool playedUmbrellaSound = true;
@@ -155,6 +158,13 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     item.mana = 18;
                     item.shoot = ProjectileID.EmeraldBolt;
+                    break;
+                case ItemID.Geode:
+                    item.damage = 20;
+                    item.useTime = 8;
+                    item.useAnimation = 8;
+                    item.shootSpeed = 8f;
+                    item.crit = 0;
                     break;
                 case ItemID.CursedFlames: // Leech
                     item.useTime = 37;
@@ -593,6 +603,17 @@ namespace CTG2.Content.Items.ModifiedWeps
                     mPlayer.umbrellaLastUsedCounter = Main.GameUpdateCount;
 
                     playedUmbrellaSound = false;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (item.type == ItemID.Geode)
+            {
+                if (Main.GameUpdateCount - geodeLastUsedCounter >= geodeDelay)
+                {
+                    geodeLastUsedCounter = Main.GameUpdateCount;
 
                     return true;
                 }

@@ -807,7 +807,7 @@ namespace CTG2
                             className = "Ninja";
                             break;
                         case 3:
-                            className = "Beast";
+                            className = "Alchemist";
                             break;
                         case 4:
                             className = "Gladiator";
@@ -1026,7 +1026,7 @@ namespace CTG2
                     packet2.Write(ply.whoAmI);
                     packet2.Write(tpX2);
                     packet2.Write(tpY2);
-                    packet2.Send();
+                    packet2.Send(-1);
                     break;
 
                 case (byte)MessageType.RequestMaxHealth:

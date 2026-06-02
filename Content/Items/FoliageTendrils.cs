@@ -5,6 +5,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.DataStructures;
+using CTG2.Content.Buffs;
 
 namespace CTG2.Content.Items
 {
@@ -41,7 +42,7 @@ namespace CTG2.Content.Items
 
         public override bool? CanUseGrapple(Player player)
         {
-            if (player.HasBuff(BuffID.Dazed) || player.HasBuff(BuffID.OgreSpit))
+            if (player.HasBuff(BuffID.Dazed) || player.HasBuff(BuffID.OgreSpit) || player.HasBuff(ModContent.BuffType<Transmutated>()))
                 return false;
                 
             int hooksOut = 0;
