@@ -1738,7 +1738,7 @@ namespace CTG2.Content
                         ArcherOnUse3();
                         break;
                     case 3:
-                        SetCooldown3(60);
+                        SetCooldown3(30);
                         AlchemistOnUse3();
                         break;
                 }

@@ -160,7 +160,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shoot = ProjectileID.EmeraldBolt;
                     break;
                 case ItemID.Geode:
-                    item.damage = 20;
+                    item.damage = 30;
                     item.useTime = 8;
                     item.useAnimation = 8;
                     item.shootSpeed = 8f;

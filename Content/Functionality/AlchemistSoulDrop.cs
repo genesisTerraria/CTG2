@@ -27,8 +27,8 @@ namespace CTG2.Content.Functionality
                 Projectile.NewProjectile(
                     Player.GetSource_FromThis(),
                     Player.Center,
-                    new Vector2(0f, -0.1f), // tiny upward velocity to prevent instant death
-                    ProjectileID.NebulaBlaze2,
+                    new Vector2(0f, 0f), // tiny upward velocity to prevent instant death
+                    ProjectileID.NebulaSphere,
                     0,
                     0f
                 );

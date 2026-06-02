@@ -30,7 +30,7 @@ public class ProjectileOverrides : GlobalProjectile
         {
             foreach (Player player in Main.player)
             {
-                if (projectile.Hitbox.Intersects(player.Hitbox) && player.team == Main.player[projectile.owner].team)
+                if (projectile.Hitbox.Intersects(player.Hitbox) && player.team == Main.player[projectile.owner].team && player.active)
                 {
                     var mod = ModContent.GetInstance<CTG2.CTG2>();
                     ModPacket buffPacket = mod.GetPacket();
@@ -47,7 +47,7 @@ public class ProjectileOverrides : GlobalProjectile
         {
             foreach (Player player in Main.player)
             {
-                if (projectile.Hitbox.Intersects(player.Hitbox) && player.team == Main.player[projectile.owner].team)
+                if (projectile.Hitbox.Intersects(player.Hitbox) && player.team == Main.player[projectile.owner].team && player.active)
                 {
                     var mod = ModContent.GetInstance<CTG2.CTG2>();
                     ModPacket buffPacket = mod.GetPacket();
@@ -242,12 +242,12 @@ public class ProjectileOverrides : GlobalProjectile
                 }
             }
         }
-        if (projectile.type == ProjectileID.NebulaBlaze2)
+        if (projectile.type == ProjectileID.NebulaSphere)
         {
             Player owner = Main.player[projectile.owner];
             foreach (Player play in Main.player)
             {
-                if (projectile.Hitbox.Intersects(play.Hitbox))
+                if (play.active && projectile.Hitbox.Intersects(play.Hitbox))
                 {
                     projectile.Kill();
 
@@ -316,7 +316,7 @@ public class ProjectileOverrides : GlobalProjectile
             projectile.penetrate = 1;
         }
 
-        if (projectile.type == ProjectileID.NebulaBlaze2)
+        if (projectile.type == ProjectileID.NebulaSphere)
         {
             projectile.timeLeft = 10 * 60;
         }
