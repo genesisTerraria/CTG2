@@ -146,6 +146,11 @@ public class ProjectileOverrides : GlobalProjectile
 
             projectile.penetrate = 1;
         }
+        if (projectile.type == ProjectileID.ApprenticeStaffT3Shot)
+        {
+            // Force a new timeLeft value (e.g., 120 ticks = 2 seconds)
+            projectile.penetrate = 5;
+        }
         if (projectile.type == ProjectileID.NebulaArcanum)
         {
             if (projectile.timeLeft > 7 * 60)
@@ -314,11 +319,6 @@ public class ProjectileOverrides : GlobalProjectile
          || projectile.type == ModContent.ProjectileType<SittingDuckBobber>())
         {
             projectile.penetrate = 1;
-        }
-
-        if (projectile.type == ProjectileID.NebulaSphere)
-        {
-            projectile.timeLeft = 10 * 60;
         }
         
     //     if (projectile.type != ProjectileID.ToxicCloud &&
@@ -516,7 +516,7 @@ public class ModifyHurtModPlayer : ModPlayer
                 ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
                 packet.Write((byte)CTG2.MessageType.RequestHeal);
                 packet.Write(attacker.whoAmI);
-                packet.Write(4);
+                packet.Write(6);
                 packet.Send();
             }
         }

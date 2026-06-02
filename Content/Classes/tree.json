@@ -4,7 +4,7 @@
   "InventoryItems": [
     {
       "Name": "Upgraded Shardstone Pickaxe",
-      "Type": 5565,
+      "Type": 5567,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -502,7 +502,7 @@
       "Name": "Lucky Horseshoe",
       "Type": 158,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 63,
       "Slot": 62,
       "Modded": false
     },
