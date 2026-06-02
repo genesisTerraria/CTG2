@@ -1892,8 +1892,10 @@ namespace CTG2
                         else if (mode == "scrims")
                             gmClient.scrimsConfig = true;
                         else if (mode == "rng")
+                        {
                             gmClient.rngConfig = true;
                             gmClient.pubsConfig = true;
+                        }
 
                         break;
                     }

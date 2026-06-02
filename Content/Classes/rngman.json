@@ -1,5 +1,5 @@
 {
-  "HealthPoints": 100,
+  "HealthPoints": 200,
   "ManaPoints": 50,
   "InventoryItems": [
     {
@@ -29,7 +29,7 @@
     {
       "Name": "Dirt Block",
       "Type": 2,
-      "Stack": 100,
+      "Stack": 250,
       "Prefix": 0,
       "Slot": 3,
       "Modded": false
@@ -371,36 +371,36 @@
       "Modded": false
     },
     {
-      "Name": "Ancient Manipulator",
-      "Type": 3549,
-      "Stack": 9999,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 46,
       "Modded": false
     },
     {
-      "Name": "Adamantite Forge",
-      "Type": 524,
-      "Stack": 9999,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 47,
       "Modded": false
     },
     {
-      "Name": "Mythril Anvil",
-      "Type": 525,
-      "Stack": 9999,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 48,
       "Modded": false
     },
     {
-      "Name": "Work Bench",
-      "Type": 36,
-      "Stack": 9999,
+      "Name": "Universal Crafting Item",
+      "Type": 0,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 49,
-      "Modded": false
+      "Modded": true
     },
     {
       "Name": "",
