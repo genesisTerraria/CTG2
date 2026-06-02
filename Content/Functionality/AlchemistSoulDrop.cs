@@ -25,13 +25,12 @@ namespace CTG2.Content.Functionality
             if (killerClass == 3)
             {
                 Projectile.NewProjectile(
-                    Player.GetSource_Death(),
+                    Player.GetSource_FromThis(),
                     Player.Center,
-                    Vector2.Zero,
+                    new Vector2(0f, -0.1f), // tiny upward velocity to prevent instant death
                     ProjectileID.NebulaBlaze2,
                     0,
-                    0f,
-                    killerIndex
+                    0f
                 );
             }
         }

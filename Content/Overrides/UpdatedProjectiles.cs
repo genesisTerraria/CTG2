@@ -30,7 +30,7 @@ public class ProjectileOverrides : GlobalProjectile
         {
             foreach (Player player in Main.player)
             {
-                if (projectile.Hitbox.Intersects(player.Hitbox))
+                if (projectile.Hitbox.Intersects(player.Hitbox) && player.team == Main.player[projectile.owner].team)
                 {
                     var mod = ModContent.GetInstance<CTG2.CTG2>();
                     ModPacket buffPacket = mod.GetPacket();
@@ -43,11 +43,11 @@ public class ProjectileOverrides : GlobalProjectile
             }
         }
 
-        if (projectile.type == ProjectileID.ToxicFlask)
+        if (projectile.type == ProjectileID.Ale)
         {
             foreach (Player player in Main.player)
             {
-                if (projectile.Hitbox.Intersects(player.Hitbox))
+                if (projectile.Hitbox.Intersects(player.Hitbox) && player.team == Main.player[projectile.owner].team)
                 {
                     var mod = ModContent.GetInstance<CTG2.CTG2>();
                     ModPacket buffPacket = mod.GetPacket();
@@ -66,13 +66,15 @@ public class ProjectileOverrides : GlobalProjectile
     public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
     {
         if (projectile.type == ProjectileID.EmeraldBolt)
+        {
             target.noKnockback = true;
 
-        var mod = ModContent.GetInstance<CTG2.CTG2>();
-        ModPacket resultPacket = mod.GetPacket();
-        resultPacket.Write((byte)MessageType.SetNoKnockback);
-        resultPacket.Write(target.whoAmI);
-        resultPacket.Send();
+            var mod = ModContent.GetInstance<CTG2.CTG2>();
+            ModPacket resultPacket = mod.GetPacket();
+            resultPacket.Write((byte)MessageType.SetNoKnockback);
+            resultPacket.Write(target.whoAmI);
+            resultPacket.Send();
+        }
     }
 
 
@@ -240,24 +242,6 @@ public class ProjectileOverrides : GlobalProjectile
                 }
             }
         }
-        if (projectile.type == ProjectileID.ApprenticeStaffT3Shot)
-        {
-            Player owner = Main.player[projectile.owner];
-            foreach (Player play in Main.player)
-            {
-                if (projectile.Hitbox.Intersects(play.Hitbox) && play.team != owner.team)
-                {
-                    var mod = ModContent.GetInstance<CTG2.CTG2>();
-                    ModPacket packetBuff = mod.GetPacket();
-                    packetBuff.Write((byte)MessageType.RequestAddBuff);
-                    packetBuff.Write(play.whoAmI);
-                    packetBuff.Write(ModContent.BuffType<Transmutated>());
-                    packetBuff.Write(1.5 * 60);
-                    packetBuff.Send();
-
-                }
-            }
-        }
         if (projectile.type == ProjectileID.NebulaBlaze2)
         {
             Player owner = Main.player[projectile.owner];
@@ -331,23 +315,26 @@ public class ProjectileOverrides : GlobalProjectile
         {
             projectile.penetrate = 1;
         }
-        
-        if (projectile.type != ProjectileID.ToxicCloud &&
-            projectile.type != ProjectileID.ToxicCloud2 &&
-            projectile.type != ProjectileID.ToxicCloud3)
-            return;
 
-        // Only kill clouds that came from the ToxicFlask projectile
-        if (source is EntitySource_Parent parentSource && 
-            parentSource.Entity is Projectile parent &&
-            parent.type == ProjectileID.ToxicFlask)
-        {
-            projectile.Kill();
-        }
         if (projectile.type == ProjectileID.NebulaBlaze2)
         {
             projectile.timeLeft = 10 * 60;
         }
+        
+    //     if (projectile.type != ProjectileID.ToxicCloud &&
+    //         projectile.type != ProjectileID.ToxicCloud2 &&
+    //         projectile.type != ProjectileID.ToxicCloud3)
+    //         return;
+
+    //     // Only kill clouds that came from the ToxicFlask projectile
+    //    if (source is EntitySource_Parent parentSource &&
+    //     parentSource.Entity is Projectile parent &&
+    //     parent.type == ProjectileID.ToxicFlask)
+    //     {
+    //         projectile.active = false;
+    //         projectile.timeLeft = 0;
+    //         NetMessage.SendData(MessageID.KillProjectile, -1, -1, null, projectile.whoAmI);
+    //     }
     }   
 }
 
@@ -532,6 +519,10 @@ public class ModifyHurtModPlayer : ModPlayer
                 packet.Write(4);
                 packet.Send();
             }
+        }
+        if (info.DamageSource.SourceProjectileType == ProjectileID.ApprenticeStaffT3Shot)
+        {
+            Player.AddBuff(ModContent.BuffType<Transmutated>(), 90);
         }
         if (info.DamageSource.SourceProjectileType == 732)
         {
