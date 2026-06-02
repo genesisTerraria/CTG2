@@ -160,6 +160,11 @@ Items: {
 		DisplayName: Space Splitter
 		Tooltip: ""
 	}
+
+	UniversalCraftingItem: {
+		DisplayName: Universal Crafting Item
+		Tooltip: ""
+	}
 }
 
 NPCs: {
@@ -185,7 +190,10 @@ Projectiles: {
 	DissonanceHookProjectile.DisplayName: Dissonance Hook Projectile
 }
 
-Tiles.TealCurrentTile.MapEntry: Monster Energy
+Tiles: {
+	TealCurrentTile.MapEntry: Monster Energy
+	UniversalCraftingTile.MapEntry: Universal Crafting Tile
+}
 
 Buffs: {
 	Retaliation: {

@@ -23,16 +23,16 @@ namespace CTG2.Content
                 || type == ModContent.TileType<UniversalCraftingTile>();
         }
 
-        // public override bool CanPlace(int i, int j, int type)
-        // {
-        //     Tile existing = Main.tile[i, j];
+        public override bool CanPlace(int i, int j, int type)
+        {
+            Tile existing = Main.tile[i, j];
 
-        //     //prevent block replace
-        //     if (existing.HasTile)
-        //         return false;
+            //prevent block replace
+            if (existing.HasTile)
+                return false;
 
-        //     return base.CanPlace(i, j, type);
-        // }
+            return base.CanPlace(i, j, type);
+        }
 
         public override bool CanPlace(int i, int j, int type)
         {
