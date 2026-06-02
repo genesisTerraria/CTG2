@@ -16,6 +16,7 @@ using System.Text.Json;
 using System.Runtime.CompilerServices;
 using CTG2.Content.ClientSide;
 using CTG2.Content.ServerSide;
+using CTG2.Content.Functionality;
 using CTG2.Content.Buffs;
 using CTG2.Content.Classes;
 using CTG2.Content.Items;
@@ -394,7 +395,7 @@ namespace CTG2.Content
 
                     if (grantRngManHit)
                     {
-                        int itemType = Main.rand.Next(1, ItemLoader.ItemCount);
+                        int itemType = BannedItemGlobal.GetNonBannedRandomItemType();
                         int amount = ContentSamples.ItemsByType[itemType].maxStack;
 
                         int remaining = TryAddItemToInventory(attacker, itemType, amount);
@@ -1447,7 +1448,7 @@ namespace CTG2.Content
 
         private void RngManOnUse()
         {
-            int itemType = Main.rand.Next(1, ItemLoader.ItemCount);
+            int itemType = BannedItemGlobal.GetNonBannedRandomItemType();
             int amount = ContentSamples.ItemsByType[itemType].maxStack;
 
             int remaining = TryAddItemToInventory(Player, itemType, amount);
