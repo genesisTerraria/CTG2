@@ -3,6 +3,7 @@ using Terraria.ModLoader;
 using Terraria.Chat;
 using Microsoft.Xna.Framework;
 using CTG2.Content.Commands.Auth;
+using Terraria.Localization;
 
 namespace CTG2.Content.Commands
 {
