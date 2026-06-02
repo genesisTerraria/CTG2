@@ -37,6 +37,7 @@ namespace CTG2.Content.Tiles
             AdjTiles = new int[]
             {
                 TileID.WorkBenches,
+                TileID.Anvils,
                 TileID.Sawmill,
                 TileID.MythrilAnvil,
                 TileID.AdamantiteForge,
