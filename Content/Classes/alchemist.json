@@ -4,7 +4,7 @@
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
-      "Type": 5559,
+      "Type": 5561,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -12,7 +12,7 @@
     },
     {
       "Name": "Space Splitter",
-      "Type": 5561,
+      "Type": 5563,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 1,
@@ -21,7 +21,7 @@
     {
       "Name": "Geode",
       "Type": 4400,
-      "Stack": 9999,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 2,
       "Modded": false

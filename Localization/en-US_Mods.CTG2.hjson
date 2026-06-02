@@ -165,6 +165,16 @@ Items: {
 		DisplayName: Universal Crafting Item
 		Tooltip: ""
 	}
+
+	GrenadeThrower: {
+		DisplayName: Grenade Thrower
+		Tooltip: ""
+	}
+
+	GeodeThrower: {
+		Tooltip: ""
+		DisplayName: Geode Thrower
+	}
 }
 
 NPCs: {

@@ -4,7 +4,7 @@
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
-      "Type": 5555,
+      "Type": 5561,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -21,7 +21,7 @@
     {
       "Name": "Sticky Grenade",
       "Type": 2586,
-      "Stack": 9999,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 2,
       "Modded": false

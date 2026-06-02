@@ -252,7 +252,7 @@ public class ProjectileOverrides : GlobalProjectile
                     packetBuff.Write((byte)MessageType.RequestAddBuff);
                     packetBuff.Write(play.whoAmI);
                     packetBuff.Write(ModContent.BuffType<Transmutated>());
-                    packetBuff.Write(2 * 60);
+                    packetBuff.Write(1.5 * 60);
                     packetBuff.Send();
 
                 }

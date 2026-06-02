@@ -165,6 +165,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useAnimation = 8;
                     item.shootSpeed = 8f;
                     item.crit = 0;
+                    item.consumable = false;
                     break;
                 case ItemID.CursedFlames: // Leech
                     item.useTime = 37;
@@ -198,11 +199,12 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.scale = 0;
                     item.UseSound = null;
                     break;
-                case 2586: //miner //maybe ovveride projectile to not do self damage or at least not self knockback
+                case ItemID.StickyGrenade: //miner //maybe ovveride projectile to not do self damage or at least not self knockback
                     item.damage = 40;
                     item.useTime = 21;
                     item.useAnimation = 21;
                     item.crit = 0;
+                    item.consumable = false;
                     break;
 
                 case 1446: //spectre staff
