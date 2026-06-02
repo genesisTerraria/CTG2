@@ -2,6 +2,7 @@ using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Localization;
+using Terraria.Chat;
 using System.Linq;
 using Microsoft.Xna.Framework;
 using System.Text.RegularExpressions;
@@ -96,7 +97,9 @@ namespace CTG2.Content.Commands
             if (itemType != -1)
             {
                 giveItemDirect(itemType, amount, player);
-                caller.Reply($"Gave {amount}x {Lang.GetItemNameValue(itemType)}.", Color.Green);
+                string itemDisplayName = Lang.GetItemNameValue(itemType);
+                caller.Reply($"Gave {amount}x {itemDisplayName}.", Color.Green);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[Admin] {caller.Player.name} spawned {amount}x {itemDisplayName}"), Color.Yellow);
             }
             else
             {
