@@ -99,7 +99,8 @@ namespace CTG2.Content.Commands
                 giveItemDirect(itemType, amount, player);
                 string itemDisplayName = Lang.GetItemNameValue(itemType);
                 caller.Reply($"Gave {amount}x {itemDisplayName}.", Color.Green);
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[Admin] {caller.Player.name} spawned {amount}x {itemDisplayName}"), Color.Yellow);
+                NetworkText message = NetworkText.FromLiteral($"[Admin] {caller.Player.name} gave {amount}x {itemDisplayName}.");
+                ChatHelper.BroadcastChatMessage(message, Color.Yellow);
             }
             else
             {

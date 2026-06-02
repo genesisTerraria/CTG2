@@ -1,10 +1,11 @@
 using Terraria;
+using Terraria.ID;
 using Terraria.ModLoader;
 using Terraria.Chat;
 using Terraria.Localization;
 using Microsoft.Xna.Framework;
 using CTG2.Content.Commands.Auth;
-using Terraria.Localization;
+using System;
 
 namespace CTG2.Content.Commands
 {
@@ -28,13 +29,27 @@ namespace CTG2.Content.Commands
 
             string status = godModePlayer.IsGodMode ? "enabled" : "disabled";
             caller.Reply($"God mode is now {status}.", Color.Green);
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[Admin] {caller.Player.name} turned {status} god mode."), Color.Yellow);
+            
+            //Global message doesnt currently work
+            //NetworkText message = NetworkText.FromLiteral($"[Admin] {caller.Player.name} {status} god mode.");
+            //ChatHelper.BroadcastChatMessage(message, Color.Yellow);
         }
     }
 
     public class GodModePlayer : ModPlayer
     {
         public bool IsGodMode = false;
+
+        public override void PostUpdate()
+        {
+            if (IsGodMode)
+            {
+                // No packet sent for this currently, also still takes damage from pve sources such as lava or spikes
+                // Set a high immunity time to prevent damage and show visual immunity effect
+                Player.immuneTime = Math.Max(Player.immuneTime, 2);
+                Player.immune = true;
+            }
+        }
 
         public override void OnHurt(Player.HurtInfo info)
         {
