@@ -25,7 +25,13 @@ namespace CTG2.Content
 
         public override bool CanPlace(int i, int j, int type)
         {
+            var gm = ModContent.GetInstance<GameManager>();
             Tile existing = Main.tile[i, j];
+
+            //temporary rngctg blocks code
+            if (gm.rngConfig)
+                return (type == TileID.Dirt || type == TileID.Mud || type == TileID.Rope || type == TileID.Bubble || type == TileID.BreakableIce || type == ModContent.TileType<UniversalCraftingTile>())
+                    && !existing.HasTile;
 
             //prevent block replace
             if (existing.HasTile)

@@ -75,7 +75,7 @@ namespace CTG2.Content.Tiles
         public override void AnimateTile(ref int frame, ref int frameCounter)
         {
             // Increases the frame counter by 1 every game tick
-            if (++frameCounter >= 9) 
+            if (++frameCounter >= 8) 
             {
                 frameCounter = 0;
                 // Cycles through 4 animation frames (0, 1, 2, 3)
