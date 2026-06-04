@@ -1,3 +1,4 @@
 displayName = Capture the Gem 2
 author = genesis, Prince, TheAlchemist, carlos2
 version = 1.0
+weakReferences = PvPHub
