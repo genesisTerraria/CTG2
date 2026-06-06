@@ -11,5 +11,6 @@ public class DisableBuffs : ModPlayer
         Player.ClearBuff(BuffID.Poisoned);
         Player.ClearBuff(BuffID.Lovestruck);
         Player.ClearBuff(BuffID.BetsysCurse);
+        Player.ClearBuff(BuffID.Stinky);
     }
 }

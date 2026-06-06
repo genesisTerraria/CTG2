@@ -726,7 +726,7 @@ namespace CTG2.Content
                 Player.GetSource_FromThis(),
                 Player.Center,
                 velocity,
-                ProjectileID.Ale,
+                ProjectileID.FoulPotion,
                 25,
                 0,
                 Player.whoAmI

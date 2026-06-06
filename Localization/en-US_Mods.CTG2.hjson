@@ -175,6 +175,11 @@ Items: {
 		Tooltip: ""
 		DisplayName: Geode Thrower
 	}
+
+	MagicGeode: {
+		Tooltip: ""
+		DisplayName: Magic Geode
+	}
 }
 
 NPCs: {
@@ -198,6 +203,7 @@ Projectiles: {
 	SittingDuckBobber.DisplayName: Sitting Duck Bobber
 	ThrowingStarsProjectile.DisplayName: Throwing Stars Projectile
 	DissonanceHookProjectile.DisplayName: Dissonance Hook Projectile
+	SpaceSplitterProjectile.DisplayName: Space Splitter Projectile
 }
 
 Tiles: {

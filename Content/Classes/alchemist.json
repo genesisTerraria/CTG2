@@ -4,7 +4,7 @@
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
-      "Type": 5561,
+      "Type": 5560,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -12,19 +12,19 @@
     },
     {
       "Name": "Space Splitter",
-      "Type": 5563,
+      "Type": 5562,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 1,
       "Modded": true
     },
     {
-      "Name": "Geode",
-      "Type": 4400,
+      "Name": "Magic Geode",
+      "Type": 5556,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 2,
-      "Modded": false
+      "Modded": true
     },
     {
       "Name": "Dirt Block",

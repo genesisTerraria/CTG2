@@ -13,7 +13,7 @@ namespace CTG2.Content.Items
         public override void SetDefaults()
         {
             Item.CloneDefaults(ItemID.QueenSlimeHook);
-            Item.shoot = ModContent.ProjectileType<DissonanceHookProjectile>();
+            Item.shoot = ModContent.ProjectileType<SpaceSplitterProjectile>();
             Item.useStyle = ItemUseStyleID.Swing;
             Item.useAnimation = 25;
             Item.useTime = 25;
@@ -23,23 +23,12 @@ namespace CTG2.Content.Items
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
-            if (!player.CheckMana(30, pay: true))
-                return false;
-
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
             return false;
         }
-
-        public override bool CanUseItem(Player player)
-        {
-            if (player.statMana < 30)
-                return false;
-
-            return base.CanUseItem(player);
-        }
     }
 
-    public class DissonanceHookProjectile : ModProjectile
+    public class SpaceSplitterProjectile : ModProjectile
     {
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.QueenSlimeHook;
         public override bool? CanUseGrapple(Player player) => false;
@@ -59,57 +48,10 @@ namespace CTG2.Content.Items
             if (Projectile.ai[0] != 0f)
                 Projectile.ai[0] = 1f;
 
-            if (Projectile.ai[0] == 0f)
-            {
-                // Check enemy player collision — teleport
-                Player ownerPlayer = Main.player[Projectile.owner];
+            // Rotate projectile to face velocity direction
+            Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
 
-                if (Projectile.owner == Main.myPlayer)
-                {
-                    for (int i = 0; i < Main.maxPlayers; i++)
-                    {
-                        Player target = Main.player[i];
-                        if (!target.active || target.dead || i == Projectile.owner) continue;
-                        if (!target.hostile || !owner.hostile) continue;
-
-                        if (Projectile.Hitbox.Intersects(target.Hitbox) && ownerPlayer.team != target.team)
-                        {
-                            Vector2 dest = Projectile.Center - new Vector2(owner.width / 2f, owner.height / 2f);
-
-                            var mod = ModContent.GetInstance<CTG2>();
-                            ModPacket packet = mod.GetPacket();
-                            packet.Write((byte)MessageType.RequestTeleport);
-                            packet.Write(owner.whoAmI);
-                            packet.Write((int)dest.X);
-                            packet.Write((int)dest.Y);
-                            packet.Send();
-
-                            ModPacket packet1 = mod.GetPacket();
-                            packet1.Write((byte)MessageType.RequestAddBuff);
-                            packet1.Write(target.whoAmI);
-                            packet1.Write(320);
-                            packet1.Write(120);
-                            packet1.Send();
-
-                            packet1 = mod.GetPacket();
-                            packet1.Write((byte)MessageType.RequestAddBuff);
-                            packet1.Write(target.whoAmI);
-                            packet1.Write(ModContent.BuffType<TimeDilation>());
-                            packet1.Write(120);
-                            packet1.Send();
-
-                            SoundEngine.PlaySound(SoundID.Item8, owner.Center);
-
-                            Projectile.Kill();
-                            return;
-                        }
-                    }
-                }
-
-                // Rotate projectile to face velocity direction
-                Projectile.rotation = Projectile.velocity.ToRotation() + MathHelper.PiOver2;
-            }
-            else
+            if (Projectile.ai[0] != 0f)
             {
                 // --- RETRACTING PHASE ---
 

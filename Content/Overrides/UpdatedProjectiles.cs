@@ -43,7 +43,7 @@ public class ProjectileOverrides : GlobalProjectile
             }
         }
 
-        if (projectile.type == ProjectileID.Ale)
+        if (projectile.type == ProjectileID.FoulPotion)
         {
             foreach (Player player in Main.player)
             {
@@ -170,29 +170,6 @@ public class ProjectileOverrides : GlobalProjectile
                 projectile.extraUpdates = 1;
             }
         }
-        // if (projectile.type == ProjectileID.EmeraldBolt)
-        // {
-        //     if (projectile.Hitbox.Intersects(player.Hitbox) && Main.player[projectile.owner].team != player.team)
-        //     {
-        //         int initialHealth = player.statLife;
-
-        //         player.statLife -= 8;
-
-        //         CombatText.NewText(player.getRect(), Color.Cyan, 8);
-        //         NetMessage.SendData(MessageID.SpiritHeal, -1, -1, null, player.whoAmI, 8);
-
-        //         projectile.Kill();
-
-        //         if (initialHealth <= 8)
-        //         {
-        //             PlayerDeathReason reason = PlayerDeathReason.ByCustomReason("Tree second weapon");
-        //             reason.SourceItem = new Item(ItemID.WandofSparking);
-        //             reason.SourcePlayerIndex = projectile.owner;
-
-        //             player.KillMe(reason, 8, 0);
-        //         }
-        //     }
-        // }
         if (projectile.type == ProjectileID.ThornChakram)
         {
             for (int i = 0; i < Main.maxProjectiles; i++)
@@ -247,12 +224,12 @@ public class ProjectileOverrides : GlobalProjectile
                 }
             }
         }
-        if (projectile.type == ProjectileID.NebulaSphere)
+        if (projectile.type == ProjectileID.NebulaBlaze2)
         {
             Player owner = Main.player[projectile.owner];
             foreach (Player play in Main.player)
             {
-                if (play.active && projectile.Hitbox.Intersects(play.Hitbox))
+                if (play.active && !play.dead && !play.ghost && play.team != 0 && projectile.Hitbox.Intersects(play.Hitbox))
                 {
                     projectile.Kill();
 
@@ -266,6 +243,8 @@ public class ProjectileOverrides : GlobalProjectile
                         packetBuff.Write(3 * 60);
                         packetBuff.Send();
                     }
+
+                    break;
                 }
             }
         }
@@ -445,6 +424,40 @@ public class ModifyHurtModPlayer : ModPlayer
             packetMana.Write(attacker.whoAmI);
             packetMana.Write(7);
             packetMana.Send();
+        }
+
+        // Alchemist section
+        if (info.DamageSource.SourceProjectileType == ModContent.ProjectileType<SpaceSplitterProjectile>())
+        {
+            Projectile hurtProjectile = Main.projectile[info.DamageSource.SourceProjectileLocalIndex];
+            Player owner = Main.player[hurtProjectile.owner];
+            Vector2 dest = hurtProjectile.Center - new Vector2(Player.width / 2f, Player.height / 2f);
+
+            var mod = ModContent.GetInstance<CTG2.CTG2>();
+            ModPacket packet = mod.GetPacket();
+            packet.Write((byte)MessageType.RequestTeleport);
+            packet.Write(owner.whoAmI);
+            packet.Write((int)dest.X);
+            packet.Write((int)dest.Y);
+            packet.Send();
+
+            ModPacket packet1 = mod.GetPacket();
+            packet1.Write((byte)MessageType.RequestAddBuff);
+            packet1.Write(Player.whoAmI);
+            packet1.Write(320);
+            packet1.Write(120);
+            packet1.Send();
+
+            packet1 = mod.GetPacket();
+            packet1.Write((byte)MessageType.RequestAddBuff);
+            packet1.Write(Player.whoAmI);
+            packet1.Write(ModContent.BuffType<TimeDilation>());
+            packet1.Write(120);
+            packet1.Send();
+
+            SoundEngine.PlaySound(SoundID.Item8, owner.Center);
+
+            hurtProjectile.Kill();
         }
 
         if (info.DamageSource.SourceItem != null && info.DamageSource.SourceItem.type == ItemID.TragicUmbrella)

@@ -27,6 +27,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         public long zapinatorLastUsedCounter;
         public long hellwingLastUsedCounter;
         public long umbrellaLastUsedCounter;
+        public long splitterLastUsedCounter;
     }
 
     public class OverloadedWeps : GlobalItem
@@ -83,8 +84,11 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint geodeDelay = 60;
         private uint geodeLastUsedCounter = 0;
 
+        private uint splitterDelay = 5 * 60;
+
         bool playedAnchorSound = true;
         bool playedUmbrellaSound = true;
+        bool playedSplitterSound = true;
 
         public override bool InstancePerEntity => true;
 
@@ -613,11 +617,24 @@ namespace CTG2.Content.Items.ModifiedWeps
                 else
                     return false;
             }
-            else if (item.type == ItemID.Geode)
+            else if (item.type == ModContent.ItemType<MagicGeode>())
             {
                 if (Main.GameUpdateCount - geodeLastUsedCounter >= geodeDelay)
                 {
                     geodeLastUsedCounter = Main.GameUpdateCount;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (item.type == ModContent.ItemType<SpaceSplitter>())
+            {
+                if (Main.GameUpdateCount - mPlayer.splitterLastUsedCounter >= splitterDelay)
+                {
+                    mPlayer.splitterLastUsedCounter = Main.GameUpdateCount;
+
+                    playedSplitterSound = false;
 
                     return true;
                 }
@@ -687,6 +704,12 @@ namespace CTG2.Content.Items.ModifiedWeps
             {
                 SoundEngine.PlaySound(SoundID.Item105.WithVolumeScale(Main.soundVolume * 2f), player.Center);
                 playedUmbrellaSound = true;
+            }
+
+            if (Main.GameUpdateCount - mPlayer.splitterLastUsedCounter >= splitterDelay && !playedSplitterSound)
+            {
+                SoundEngine.PlaySound(SoundID.MaxMana.WithVolumeScale(Main.soundVolume * 2f), player.Center);
+                playedSplitterSound = true;
             }
         }
     }
