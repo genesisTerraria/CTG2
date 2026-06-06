@@ -389,7 +389,7 @@ namespace CTG2.Content.Items.ModifiedWeps
             {
                 if (Main.GameUpdateCount - mPlayer.fisherLastUsedCounter >= fisherDelay)
                 {
-                    mPlayer.anchorLastUsedCounter = Main.GameUpdateCount - 3 * 60 + 40;
+                    mPlayer.anchorLastUsedCounter = Math.Max(Main.GameUpdateCount - 3 * 60 + 40, mPlayer.anchorLastUsedCounter);
                     mPlayer.fisherLastUsedCounter = Main.GameUpdateCount;
                     mPlayer.daggerfishLastUsedCounter = Main.GameUpdateCount;
                     mPlayer.sharknadoLastUsedCounter = Main.GameUpdateCount;
@@ -427,7 +427,7 @@ namespace CTG2.Content.Items.ModifiedWeps
             {
                 if (Main.GameUpdateCount - mPlayer.anchorLastUsedCounter >= anchorDelay)
                 {
-                    mPlayer.fisherLastUsedCounter = Main.GameUpdateCount - 55 + 40;
+                    mPlayer.fisherLastUsedCounter = Math.Max(Main.GameUpdateCount - 55 + 40, mPlayer.fisherLastUsedCounter);
                     mPlayer.anchorLastUsedCounter = Main.GameUpdateCount;
 
                     playedAnchorSound = false;
@@ -622,7 +622,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 if (Main.GameUpdateCount - geodeLastUsedCounter >= geodeDelay)
                 {
                     geodeLastUsedCounter = Main.GameUpdateCount;
-                    mPlayer.splitterLastUsedCounter = Main.GameUpdateCount - 5 * 60 + 25;
+                    mPlayer.splitterLastUsedCounter = Math.Max(Main.GameUpdateCount - 5 * 60 + 25, mPlayer.splitterLastUsedCounter);
 
                     return true;
                 }
