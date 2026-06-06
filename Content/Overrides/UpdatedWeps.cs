@@ -76,7 +76,7 @@ namespace CTG2.Content.Items.ModifiedWeps
 
         private uint fisherDelay = 55;
 
-        private uint anchorDelay = 120;
+        private uint anchorDelay = 180;
         private uint sharknadoDelay = 47;
         private uint chumBallDelay = 47;
         private uint umbrellaDelay = 10 * 60;
@@ -385,11 +385,12 @@ namespace CTG2.Content.Items.ModifiedWeps
             {
                 if (Main.GameUpdateCount - mPlayer.fisherLastUsedCounter >= fisherDelay)
                 {
+                    mPlayer.anchorLastUsedCounter = Main.GameUpdateCount - 3 * 60 + 40;
                     mPlayer.fisherLastUsedCounter = Main.GameUpdateCount;
                     mPlayer.daggerfishLastUsedCounter = Main.GameUpdateCount;
                     mPlayer.sharknadoLastUsedCounter = Main.GameUpdateCount;
                     mPlayer.chumBallLastUsedCounter = Main.GameUpdateCount;
-                    mPlayer.anchorLastUsedCounter = Main.GameUpdateCount - 2 * 60 + 25;
+
                     return true;
                 }
                 return false;
@@ -422,6 +423,7 @@ namespace CTG2.Content.Items.ModifiedWeps
             {
                 if (Main.GameUpdateCount - mPlayer.anchorLastUsedCounter >= anchorDelay)
                 {
+                    mPlayer.fisherLastUsedCounter = Main.GameUpdateCount - 55 + 40;
                     mPlayer.anchorLastUsedCounter = Main.GameUpdateCount;
 
                     playedAnchorSound = false;

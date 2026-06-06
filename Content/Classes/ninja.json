@@ -1,6 +1,6 @@
 {
   "HealthPoints": 160,
-  "ManaPoints": 15,
+  "ManaPoints": 14,
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
@@ -20,7 +20,7 @@
     },
     {
       "Name": "Zen",
-      "Type": 5565,
+      "Type": 5568,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 2,
@@ -502,7 +502,7 @@
       "Name": "Lucky Horseshoe",
       "Type": 158,
       "Stack": 1,
-      "Prefix": 65,
+      "Prefix": 0,
       "Slot": 62,
       "Modded": false
     },

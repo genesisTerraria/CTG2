@@ -17,13 +17,25 @@ namespace CTG2.Content.Items
             Item.useStyle = ItemUseStyleID.Swing;
             Item.useAnimation = 25;
             Item.useTime = 25;
-            Item.mana = 30;
+            Item.damage = 20;
+            Item.shootSpeed = 9f;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
         {
+            if (!player.CheckMana(30, pay: true))
+                return false;
+
             Projectile.NewProjectile(source, position, velocity, type, damage, knockback, player.whoAmI);
             return false;
+        }
+
+        public override bool CanUseItem(Player player)
+        {
+            if (player.statMana < 30)
+                return false;
+
+            return base.CanUseItem(player);
         }
     }
 
@@ -31,8 +43,7 @@ namespace CTG2.Content.Items
     {
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.QueenSlimeHook;
         public override bool? CanUseGrapple(Player player) => false;
-
-        private const float MaxRange = 30 * 16f; // 30 tiles in pixels
+        public override float GrappleRange() => 25 * 16f;
         private const float RetractSpeed = 24f;
 
         public override void SetDefaults()
@@ -50,20 +61,7 @@ namespace CTG2.Content.Items
 
             if (Projectile.ai[0] == 0f)
             {
-                // --- FLYING PHASE ---
-
-                // Check max range — start retracting
-                if (Vector2.Distance(Projectile.Center, owner.MountedCenter) >= MaxRange)
-                {
-                    Projectile.ai[0] = 1f;
-                    Projectile.velocity = Vector2.Zero;
-                    Projectile.netUpdate = true;
-                    return;
-                }
-
                 // Check enemy player collision — teleport
-                // Check enemy player collision — teleport
-
                 Player ownerPlayer = Main.player[Projectile.owner];
 
                 if (Projectile.owner == Main.myPlayer)

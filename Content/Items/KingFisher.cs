@@ -42,7 +42,7 @@ namespace CTG2.Content.Items
         {
             Projectile.CloneDefaults(366);
 
-            Projectile.damage = 21;
+            Projectile.damage = 23;
             Projectile.friendly = true;
             Projectile.hostile = false;
         }
@@ -58,7 +58,7 @@ namespace CTG2.Content.Items
             // Let vanilla bobber AI run first, THEN override what it reset
             base.AI();
 
-            Projectile.damage = 25;
+            Projectile.damage = 23;
             Projectile.friendly = Projectile.ai[0] == 0f; // Only damage while in flight
         }
     }

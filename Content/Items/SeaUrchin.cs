@@ -12,7 +12,7 @@ namespace CTG2.Content.Items
 		{
 	  		Item.CloneDefaults(ItemID.ChumBucket);
 
-			Item.damage = 24;
+			Item.damage = 28;
 			Item.scale = 0;
 			Item.shoot = ProjectileID.DripplerFlailExtraBall;
 			Item.shootSpeed = 9f;

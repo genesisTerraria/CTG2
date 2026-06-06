@@ -30,7 +30,7 @@ public class ProjectileOverrides : GlobalProjectile
         {
             foreach (Player player in Main.player)
             {
-                if (projectile.Hitbox.Intersects(player.Hitbox) && player.team == Main.player[projectile.owner].team && player.active)
+                if (player.active && Vector2.Distance(projectile.Center, player.Center) <= 3 * 16 && player.team == Main.player[projectile.owner].team)
                 {
                     var mod = ModContent.GetInstance<CTG2.CTG2>();
                     ModPacket buffPacket = mod.GetPacket();
@@ -47,14 +47,14 @@ public class ProjectileOverrides : GlobalProjectile
         {
             foreach (Player player in Main.player)
             {
-                if (projectile.Hitbox.Intersects(player.Hitbox) && player.team == Main.player[projectile.owner].team && player.active)
+                if (player.active && Vector2.Distance(projectile.Center, player.Center) <= 3 * 16 && player.team == Main.player[projectile.owner].team)
                 {
                     var mod = ModContent.GetInstance<CTG2.CTG2>();
                     ModPacket buffPacket = mod.GetPacket();
                     buffPacket.Write((byte)MessageType.RequestAddBuff);
                     buffPacket.Write(player.whoAmI);
                     buffPacket.Write(ModContent.BuffType<Resiliance>());
-                    buffPacket.Write(3 * 60);
+                    buffPacket.Write(7 * 60);
                     buffPacket.Send();
                 }
             }
@@ -540,7 +540,7 @@ public class ModifyHurtModPlayer : ModPlayer
         }
         if (info.DamageSource.SourceProjectileType == 507)
         {
-            Player.AddBuff(160, 90);
+            Player.AddBuff(BuffID.Dazed, 60);
         }
         if (info.DamageSource.SourceProjectileType == 520) // frost daggerfish
         {

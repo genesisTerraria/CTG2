@@ -579,12 +579,12 @@ namespace CTG2.Content
             }
             else
             {
-                class2PassiveCounter= 0;
+                class2PassiveCounter = 0;
             }
 
-            if (class2PassiveCounter >= 2 * 60)
+            if (class2PassiveCounter >= 2 * 30)
             {
-                Player.AddBuff(BuffID.Invisibility, 60 * 60);
+                Player.AddBuff(BuffID.Invisibility, 30 * 60);
 
                 playedSound = false;
 
@@ -748,7 +748,7 @@ namespace CTG2.Content
                 Player.Center,
                 velocity,
                 ProjectileID.ApprenticeStaffT3Shot,
-                5,
+                15,
                 0,
                 Player.whoAmI
             );
@@ -1719,7 +1719,7 @@ namespace CTG2.Content
                         NinjaOnUse2();
                         break;
                     case 3:
-                        SetCooldown2(25);
+                        SetCooldown2(35);
                         AlchemistOnUse2();
                         break;
                     case 15:
@@ -1738,7 +1738,7 @@ namespace CTG2.Content
                         ArcherOnUse3();
                         break;
                     case 3:
-                        SetCooldown3(30);
+                        SetCooldown3(40);
                         AlchemistOnUse3();
                         break;
                 }

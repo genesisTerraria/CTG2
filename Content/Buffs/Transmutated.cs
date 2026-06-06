@@ -33,7 +33,7 @@ namespace CTG2.Content.Buffs
             if (!transmutated) return;
 
             // Lock position completely except gravity
-            Player.noKnockback = true;
+            //Player.noKnockback = true;
             Player.controlLeft = false;
             Player.controlRight = false;
             Player.controlJump = false;

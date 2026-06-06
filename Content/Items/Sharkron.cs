@@ -12,7 +12,7 @@ namespace CTG2.Content.Items
 		{
 	  		Item.CloneDefaults(ItemID.Snowball);
 
-			Item.damage = 31;
+			Item.damage = 34;
 			Item.shoot = ProjectileID.MiniSharkron;
 			Item.shootSpeed = 12.5f;
 			Item.ammo = AmmoID.None;
