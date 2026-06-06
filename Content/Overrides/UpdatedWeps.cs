@@ -622,6 +622,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 if (Main.GameUpdateCount - geodeLastUsedCounter >= geodeDelay)
                 {
                     geodeLastUsedCounter = Main.GameUpdateCount;
+                    mPlayer.splitterLastUsedCounter = Main.GameUpdateCount - 5 * 60 + 25;
 
                     return true;
                 }

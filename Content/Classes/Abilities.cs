@@ -727,7 +727,7 @@ namespace CTG2.Content
                 Player.Center,
                 velocity,
                 ProjectileID.FoulPotion,
-                25,
+                0,
                 0,
                 Player.whoAmI
             );
