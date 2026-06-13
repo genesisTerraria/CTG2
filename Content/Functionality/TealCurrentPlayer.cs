@@ -6,7 +6,7 @@ namespace CTG2.Content.Functionality
 {
     public class TealCurrentPlayer : ModPlayer
     {
-        private const int BuffDuration = 15 * 60;
+        private const int BuffDuration = 22 * 60;
 
         public override void PostUpdate()
         {
