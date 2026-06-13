@@ -1111,7 +1111,7 @@ public class GameManager : ModSystem
         classPacket.Write(false);
         classPacket.Send(toClient: playerIndex);
 
-        Console.WriteLine($"GameManager: startPlayerClassSelection called for player {playerIndex}, team {team}, gameStarted: {gameStarted}");
+        //Console.WriteLine($"GameManager: startPlayerClassSelection called for player {playerIndex}, team {team}, gameStarted: {gameStarted}");
 
 
         //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[DEBUG] {playerIndex} successfully entered class selection (non game)"), Color.Beige);
@@ -1121,7 +1121,7 @@ public class GameManager : ModSystem
         timePacket.Write(playerIndex);
         timePacket.Write((double) 1800.0); // class selection time
         timePacket.Send(toClient: playerIndex);
-        Console.WriteLine($"GameManager: Sent SetClassSelectionTime packet to player {playerIndex}");
+        //Console.WriteLine($"GameManager: Sent SetClassSelectionTime packet to player {playerIndex}");
 
         if (!intToTeam.ContainsKey(team))
         {
@@ -1137,7 +1137,7 @@ public class GameManager : ModSystem
         statePacket.Write(playerIndex);
         statePacket.Write((byte)PlayerManager.PlayerState.ClassSelection);
         statePacket.Send(toClient: playerIndex);
-        Console.WriteLine($"GameManager: Sent UpdatePlayerState packet to player {playerIndex} (ClassSelection)");
+        //Console.WriteLine($"GameManager: Sent UpdatePlayerState packet to player {playerIndex} (ClassSelection)");
         CTG2.WebPlayer(player.whoAmI, 60);
         ModPacket packet = mod.GetPacket();
         packet.Write((byte)MessageType.ServerTeleport);
@@ -1145,7 +1145,7 @@ public class GameManager : ModSystem
         packet.Write((int)gameTeam.ClassLocation.X);
         packet.Write((int)gameTeam.ClassLocation.Y);
         packet.Send(toClient: playerIndex);
-        Console.WriteLine($"GameManager: Sent ServerTeleport packet to player {playerIndex} to {gameTeam.BaseLocation}");
+        //Console.WriteLine($"GameManager: Sent ServerTeleport packet to player {playerIndex} to {gameTeam.BaseLocation}");
     }
 
     
@@ -1468,7 +1468,7 @@ public class GameManager : ModSystem
         Player player = Main.player[playerIndex];
         int oldTeam = player.team;
 
-        Console.WriteLine($"GameManager: HandlePlayerTeamChange called for player {playerIndex} from team {oldTeam} to team {newTeam}");
+        //Console.WriteLine($"GameManager: HandlePlayerTeamChange called for player {playerIndex} from team {oldTeam} to team {newTeam}");
 
         // Set the new team
         player.team = newTeam;
@@ -1537,13 +1537,13 @@ public class GameManager : ModSystem
             //ForcePlayerStatSync(playerIndex);
 
             //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} has been moved to team {newTeam} and entered class selection"), Microsoft.Xna.Framework.Color.Green);
-            Console.WriteLine($"Player {player.name} moved to team {newTeam} and started class selection");
+            //Console.WriteLine($"Player {player.name} moved to team {newTeam} and started class selection");
         }
         else
         {
             // No game active - just update team assignment
             //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"{player.name} has been assigned to team {newTeam}"), Microsoft.Xna.Framework.Color.Yellow);
-            Console.WriteLine($"Player {player.name} assigned to team {newTeam} (no active game)");
+            //Console.WriteLine($"Player {player.name} assigned to team {newTeam} (no active game)");
         }
     }
 

@@ -167,7 +167,9 @@ namespace CTG2
         SyncDamageBoard = 122,
         TabooArtifact = 123,
         SyncGemState = 124,
-        SetNoKnockback = 125
+        SetNoKnockback = 125,
+        RequestMissing = 126,
+        MissingResult = 127
     }
 
     public class CTG2 : Mod
@@ -465,6 +467,10 @@ namespace CTG2
 
             byte msgType = reader.ReadByte();
             //mod.Logger.Info($"Received packet: {msgType}");
+
+            
+            try
+            {
             switch (msgType)
             {
                 // Client -> Server Packets (these cases will run on the Server)
@@ -538,6 +544,21 @@ namespace CTG2
                         resultPacket.Write(targetName);
                         resultPacket.Write(discordUsername ?? string.Empty);
                         resultPacket.Write(failureReason);
+                        resultPacket.Send(whoAmI);
+                    }
+                    break;
+                }
+
+                case (byte)MessageType.RequestMissing:
+                {
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        string resultMessage = ModContent.GetInstance<NeatQueueTeamAssignmentSystem>()
+                            .BuildMissingReport();
+
+                        ModPacket resultPacket = mod.GetPacket();
+                        resultPacket.Write((byte)MessageType.MissingResult);
+                        resultPacket.Write(resultMessage);
                         resultPacket.Send(whoAmI);
                     }
                     break;
@@ -1062,6 +1083,7 @@ namespace CTG2
                     }
 
                     ModContent.GetInstance<GameManager>().HandlePlayerTeamChange(target, requestedTeam);
+                    Console.WriteLine($"[TeamChange] Player team changed by COMMAND: {Main.player[target].name} (player {target}) to {GetTeamName(requestedTeam)}");
                     break;
 
                 case (byte)MessageType.RequestEnterSpectator:
@@ -2337,6 +2359,16 @@ namespace CTG2
                     break;
                 }
 
+                case (byte)MessageType.MissingResult:
+                {
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                        string resultMessage = reader.ReadString();
+                        Main.NewText(resultMessage, Color.CornflowerBlue);
+                    }
+                    break;
+                }
+
                 case (byte)MessageType.SyncModList:
                 {
                     string playerName = Main.player[whoAmI].name;
@@ -2411,6 +2443,11 @@ namespace CTG2
                     Logger.WarnFormat("CTG2: Unknown Message type: {0}", msgType);
                     break;
 
+            }
+            } //Comment this try catch-out if not debugging
+            catch (Exception ex)
+            {
+                Logger.Error($"CTG2: Exception handling packet msgType={msgType} ({(MessageType)msgType}) from player {whoAmI}", ex);
             }
         }
         private static void ProcessRequestBanPlayer(ref BinaryReader reader, int playerNumber)

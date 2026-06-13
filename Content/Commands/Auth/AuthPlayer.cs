@@ -23,14 +23,16 @@ namespace CTG2.Content.Commands.Auth
             IsAdmin = false;
             Username = "";
         }
-
-        // Sync IsLoggedIn to all clients
+        // Originally this function didn't write out IsAdmin and caused read underflow
+        // Login system still worked fine though and this was never called because of underflow
+        // Since this is pretty packet intensive if there is lag in the future remove this function
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();
             packet.Write((byte)MessageType.SyncAuthPlayer);
-            packet.Write((byte)Player.whoAmI);
+            packet.Write(Player.whoAmI);
             packet.Write(IsLoggedIn);
+            packet.Write(IsAdmin);
             packet.Write(Username ?? "");
             packet.Send(toWho, fromWho);
         }
