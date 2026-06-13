@@ -26,10 +26,10 @@ namespace CTG2.Content
 {
     public class Abilities : ModPlayer
     {
-        public const int ClownSwapRadiusTiles = 22;
+        public const int ClownSwapRadiusTiles = 20;
         public const float ClownSwapRadiusPixels = ClownSwapRadiusTiles * 16f;
         public const float ClownSwapRadiusPixelsSquared = ClownSwapRadiusPixels * ClownSwapRadiusPixels;
-        public const int WhiteMageHealRadiusTiles = 25;
+        public const int WhiteMageHealRadiusTiles = 23;
         public const float WhiteMageHealRadiusPixels = WhiteMageHealRadiusTiles * 16f;
         public const float WhiteMageHealRadiusPixelsSquared = WhiteMageHealRadiusPixels * WhiteMageHealRadiusPixels;
 
