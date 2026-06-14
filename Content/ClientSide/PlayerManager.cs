@@ -14,7 +14,6 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Diagnostics.Tracing;
 using Terraria.Chat;
 using Terraria.Localization;
-using Microsoft.Xna.Framework;
 
 
 namespace CTG2.Content.ClientSide;

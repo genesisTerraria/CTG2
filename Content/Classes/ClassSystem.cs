@@ -62,6 +62,9 @@ namespace ClassesNamespace
     {
         public int HealthPoints { get; set; }
         public int ManaPoints { get; set; }
+        public int BonusDefense { get; set; } = 0;
+        public float BonusMoveSpeed { get; set; } = 0f;
+        public float BonusRunAcceleration { get; set; } = 0f;
         public List<ItemData> InventoryItems { get; set; }
     }
 
@@ -77,6 +80,9 @@ namespace ClassesNamespace
         private int bonusRegen = 0;
         private int bonusDef = 0;
         private float bonusMoveSpeed = 0;
+        private int classBonusDefense = 0;
+        private float classBonusMoveSpeed = 0;
+        private float classBonusRunAcceleration = 0;
         public int clownSwapCaller = -1; //Gets updated by clownonuse to store who the caller is
 
         public int currentHP = 100;
@@ -178,6 +184,9 @@ namespace ClassesNamespace
 
             currentHP = classData.HealthPoints;
             currentMana = classData.ManaPoints;
+            classBonusDefense = classData.BonusDefense;
+            classBonusMoveSpeed = classData.BonusMoveSpeed;
+            classBonusRunAcceleration = classData.BonusRunAcceleration;
 
             Console.WriteLine($"Player hp is {currentHP}");
             Console.WriteLine($" {Player.name} - HP: {Player.statLife}/{Player.statLifeMax}, Mana: {Player.statMana}/{Player.statManaMax2}");
@@ -490,6 +499,14 @@ namespace ClassesNamespace
         {
             Player.extraAccessory = true;
         }
+
+        public override void PostUpdateEquips()
+        {
+            Player.statDefense += classBonusDefense;
+            Player.moveSpeed += classBonusMoveSpeed;
+            Player.runAcceleration += classBonusRunAcceleration;
+        }
+
         public override void PreUpdate()
         {
             if (GameInfo.matchStage == 3)
@@ -729,6 +746,9 @@ namespace ClassesNamespace
             packet.Write(bonusRegen);
             packet.Write(bonusDef);
             packet.Write(bonusMoveSpeed);
+            packet.Write(classBonusDefense);
+            packet.Write(classBonusMoveSpeed);
+            packet.Write(classBonusRunAcceleration);
             packet.Send(toWho, fromWho);
         }
 
@@ -740,6 +760,9 @@ namespace ClassesNamespace
             bonusRegen = reader.ReadInt32();
             bonusDef = reader.ReadInt32();
             bonusMoveSpeed = reader.ReadSingle();
+            classBonusDefense = reader.ReadInt32();
+            classBonusMoveSpeed = reader.ReadSingle();
+            classBonusRunAcceleration = reader.ReadSingle();
             // var playerManager = Player.GetModPlayer<PlayerManager>();
             // playerManager.playerState = (PlayerManager.PlayerState)reader.ReadInt32(); // new
         }
@@ -749,7 +772,7 @@ namespace ClassesNamespace
         var clientPlayerManager = clientPlayer.Player.GetModPlayer<PlayerManager>();
         var localPlayerManager = this.Player.GetModPlayer<PlayerManager>();
 
-        if (currentHP != clone.currentHP || currentMana != clone.currentMana || bonusHP != clone.bonusHP || clientPlayerManager.playerState != localPlayerManager.playerState)
+        if (currentHP != clone.currentHP || currentMana != clone.currentMana || bonusHP != clone.bonusHP || classBonusDefense != clone.classBonusDefense || classBonusMoveSpeed != clone.classBonusMoveSpeed || classBonusRunAcceleration != clone.classBonusRunAcceleration || clientPlayerManager.playerState != localPlayerManager.playerState)
         {
             SyncPlayer(-1, Main.myPlayer); //this is causing a lot of lag
         }
@@ -764,6 +787,9 @@ namespace ClassesNamespace
             clone.bonusRegen = bonusRegen;
             clone.bonusDef = bonusDef;
             clone.bonusMoveSpeed = bonusMoveSpeed;
+            clone.classBonusDefense = classBonusDefense;
+            clone.classBonusMoveSpeed = classBonusMoveSpeed;
+            clone.classBonusRunAcceleration = classBonusRunAcceleration;
             PlayerManager playerManager = targetCopy.Player.GetModPlayer<PlayerManager>();
             playerManager.playerState = this.Player.GetModPlayer<PlayerManager>().playerState; 
         }

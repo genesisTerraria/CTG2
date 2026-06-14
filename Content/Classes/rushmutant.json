@@ -1,6 +1,9 @@
 {
   "HealthPoints": 100,
   "ManaPoints": 0,
+  "BonusDefense": 0,
+  "BonusMoveSpeed": 0.0,
+  "BonusRunAcceleration": 0.0,
   "InventoryItems": [
     {
       "Name": "Upgraded Shardstone Pickaxe",
