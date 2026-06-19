@@ -32,6 +32,8 @@ namespace CTG2.Content
         public const int WhiteMageHealRadiusTiles = 23;
         public const float WhiteMageHealRadiusPixels = WhiteMageHealRadiusTiles * 16f;
         public const float WhiteMageHealRadiusPixelsSquared = WhiteMageHealRadiusPixels * WhiteMageHealRadiusPixels;
+        private const int PsychicChaosLockoutTicks = 10 * 60;
+        private static readonly int[] PsychicBuffs = new int[] { 178, 196, 117, 7 };
 
         public int cooldown = 0;
         public int cooldown2 = 0;
@@ -944,6 +946,8 @@ namespace CTG2.Content
             Player.AddBuff(117, 54000);
             Player.AddBuff(7, 54000);
 
+            Player.AddBuff(BuffID.ChaosState, PsychicChaosLockoutTicks);
+
             psychicActive = true;
             class8HP = Player.statLife;
 
@@ -1473,6 +1477,8 @@ namespace CTG2.Content
 
             var playerManager = Player.GetModPlayer<PlayerManager>();
             int selectedClass = playerManager.currentClass.AbilityID;
+            bool ability1Pressed = CTG2.Ability1Keybind.JustPressed;
+            bool ability1Consumed = false;
 
             bool endedEarly = Player.dead || Player.ghost;
 
@@ -1565,7 +1571,7 @@ namespace CTG2.Content
             if (cooldown3 == 1)
                 SoundEngine.PlaySound(ability3Ready.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
 
-            if (selectedClass == 2 && !Player.dead && !Player.ghost && playerManager.playerState == PlayerManager.PlayerState.Active && Player.HasBuff(BuffID.Swiftness) && CTG2.Ability1Keybind.JustPressed)
+            if (selectedClass == 2 && !Player.dead && !Player.ghost && playerManager.playerState == PlayerManager.PlayerState.Active && Player.HasBuff(BuffID.Swiftness) && ability1Pressed)
             {
                 Player.ClearBuff(BuffID.Swiftness);
                 Player.ClearBuff(BuffID.Tipsy);
@@ -1576,17 +1582,21 @@ namespace CTG2.Content
                 NinjaAbilityDeequip();
             }
             
-            if (selectedClass == 8 && !Player.dead && !Player.ghost && playerManager.playerState == PlayerManager.PlayerState.Active && psychicActive && CTG2.Ability1Keybind.JustPressed)
+            if (selectedClass == 8 && !Player.dead && !Player.ghost && playerManager.playerState == PlayerManager.PlayerState.Active && psychicActive && ability1Pressed)
             {
-                Player.ClearBuff(178);
-                Player.ClearBuff(196);
-                Player.ClearBuff(117);
-                Player.ClearBuff(7);
+                ability1Consumed = true;
 
-                psychicActive = false;
+                if (!Player.HasBuff(BuffID.ChaosState))
+                {
+                    foreach (int buffId in PsychicBuffs)
+                        Player.ClearBuff(buffId);
+
+                    psychicActive = false;
+                    class8HP = 0;
+                }
             }
 
-            if (((Player.HeldItem.type == ItemID.WhoopieCushion && Player.controlUseItem && Player.itemTime == 0) || CTG2.Ability1Keybind.JustPressed) && cooldown == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && !Player.HasBuff(BuffID.Webbed)) // Only activate if not on cooldown
+            if (!ability1Consumed && ((Player.HeldItem.type == ItemID.WhoopieCushion && Player.controlUseItem && Player.itemTime == 0) || ability1Pressed) && cooldown == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && !Player.HasBuff(BuffID.Webbed) && (selectedClass != 8 || !psychicActive)) // Only activate if not on cooldown
             {
                 switch (selectedClass)
                 {

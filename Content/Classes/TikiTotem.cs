@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Terraria.GameContent;
 using Microsoft.Xna.Framework.Audio;
 using Terraria.Audio;
+using CTG2.Content.Configs;
 using CTG2.Content.Items;
 using CTG2.Content.Buffs;
 
@@ -49,6 +50,12 @@ namespace CTG2.Content.Classes
 
     public class TikiTotem : ModNPC
     {
+        private const int AuraRadiusTiles = 14;
+        private const float AuraRadiusPixels = AuraRadiusTiles * 16f;
+        private const float AuraRadiusPixelsSquared = AuraRadiusPixels * AuraRadiusPixels;
+        private const int CircleSegments = 96;
+        private const float CircleLineThickness = 3f;
+
         private float healFrameGap = 120;
         //private int hitCounter = 0;
         private float frameCount = 0;
@@ -218,7 +225,7 @@ namespace CTG2.Content.Classes
                 // {
                 //     player.Heal(1);
                 // }
-                if (Vector2.Distance(NPC.Center, player.Center) <= 14 * 16)
+                if (Vector2.DistanceSquared(NPC.Center, player.Center) <= AuraRadiusPixelsSquared)
                 {
                     var mod = ModContent.GetInstance<CTG2>();
                     ModPacket packet = mod.GetPacket();
@@ -250,8 +257,54 @@ namespace CTG2.Content.Classes
         }
 
 
+        private static void DrawAuraCircle(SpriteBatch spriteBatch, Vector2 center, float radius, Color color)
+        {
+            Texture2D pixel = TextureAssets.MagicPixel.Value;
+            Rectangle source = new Rectangle(0, 0, 1, 1);
+
+            for (int i = 0; i < CircleSegments; i++)
+            {
+                float startAngle = MathHelper.TwoPi * i / CircleSegments;
+                float endAngle = MathHelper.TwoPi * (i + 1) / CircleSegments;
+
+                Vector2 start = center + startAngle.ToRotationVector2() * radius;
+                Vector2 end = center + endAngle.ToRotationVector2() * radius;
+
+                DrawLine(spriteBatch, pixel, source, start, end, color);
+            }
+        }
+
+
+        private static void DrawLine(SpriteBatch spriteBatch, Texture2D pixel, Rectangle source, Vector2 start, Vector2 end, Color color)
+        {
+            Vector2 edge = end - start;
+            float length = edge.Length();
+
+            if (length <= 0f)
+                return;
+
+            spriteBatch.Draw(
+                pixel,
+                start,
+                source,
+                color,
+                edge.ToRotation(),
+                new Vector2(0f, 0.5f),
+                new Vector2(length, CircleLineThickness),
+                SpriteEffects.None,
+                0f
+            );
+        }
+
+
         public override void PostDraw(SpriteBatch spriteBatch, Vector2 screenPos, Color drawColor)
         {
+            if (ModContent.GetInstance<CTG2Config>().EnabledTikiTotemRangeRing)
+            {
+                Vector2 auraCenter = NPC.Center - screenPos;
+                DrawAuraCircle(spriteBatch, auraCenter, AuraRadiusPixels, new Color(90, 255, 140) * 0.65f);
+            }
+
             Texture2D texture = TextureAssets.Npc[NPC.type].Value;
             Rectangle frame = NPC.frame;
             Vector2 origin = new Vector2(frame.Width / 2f, frame.Height / 2f);

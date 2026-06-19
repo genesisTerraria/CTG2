@@ -384,6 +384,11 @@ Configs: {
 			Label: Enable vanilla double-tap dash
 			Tooltip: When enabled, the vanilla double-tap dash works as normal. When disabled, only the Dash keybind triggers dashes.
 		}
+
+		EnabledTikiTotemRangeRing: {
+			Tooltip: If enabled, Tiki Totems show a green ring marking their buff range.
+			Label: Tiki Totem Range Ring
+		}
 	}
 
 	ServerConfig: {

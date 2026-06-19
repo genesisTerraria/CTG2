@@ -43,6 +43,11 @@ namespace CTG2.Content.Configs
         [DefaultValue(true)]
         public bool EnabledLocalPlayerTeamOutline;
 
+        [Label("Tiki Totem Range Ring")]
+        [Tooltip("If enabled, Tiki Totems show a green ring marking their buff range.")]
+        [DefaultValue(true)]
+        public bool EnabledTikiTotemRangeRing;
+
         [Label("Enable vanilla double-tap dash")]
         [Tooltip("When enabled, the vanilla double-tap dash works as normal. When disabled, only the Dash keybind triggers dashes.")]
         [DefaultValue(true)]

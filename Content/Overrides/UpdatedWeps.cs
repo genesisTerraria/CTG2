@@ -341,7 +341,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case ItemID.ThunderStaff: // psychic charge wep
                     item.shoot = ProjectileID.ThunderSpearShot;
                     item.scale = 0;
-                    item.damage = 25;
+                    item.damage = 22;
                     item.useTime = 14;
                     item.useAnimation = 14;
                     item.shootSpeed = 20;
