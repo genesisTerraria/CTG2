@@ -121,7 +121,7 @@ public class PlayerManager : ModPlayer
                 packet.Write((byte)MessageType.GiveItemToKiller);
                 packet.Write((byte)killerIndex);
                 packet.Write((int)ItemID.AtlanticCod);
-                packet.Write((int)3);
+                packet.Write((int)5);
                 packet.Write((byte)0);
                 packet.Send();
             }

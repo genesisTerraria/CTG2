@@ -594,7 +594,7 @@ namespace ClassesNamespace
             if (gameTime >= fishCounter && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0) // daggerfish over time
             {
                 if (playerManager.currentClass?.Name == "Fisherman")
-                    CTG2.CTG2.GiveItemToPlayer(Player, ItemID.AtlanticCod, 1, 0);
+                    CTG2.CTG2.GiveItemToPlayer(Player, ItemID.AtlanticCod, 2, 0);
 
                 fishCounter += 3600;
             }
