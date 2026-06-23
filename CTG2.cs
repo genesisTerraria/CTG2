@@ -169,7 +169,8 @@ namespace CTG2
         SyncGemState = 124,
         SetNoKnockback = 125,
         RequestMissing = 126,
-        MissingResult = 127
+        MissingResult = 127,
+        RequestDiscordIdentityRefresh = 128
     }
 
     public class CTG2 : Mod
@@ -499,9 +500,19 @@ namespace CTG2
                     break;
                 }
 
+                case (byte)MessageType.RequestDiscordIdentityRefresh:
+                {
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                        ModContent.GetInstance<CtgDiscordSdk>().LogCurrentUserIdentity(force: true);
+                    }
+                    break;
+                }
+
                 case (byte)MessageType.KickDiscordIdentityFailed:
                 {
-                    int kickPlayerIndex = reader.ReadInt32();
+                    _ = reader.ReadInt32(); // read for stream alignment only
+                    int kickPlayerIndex = whoAmI;
                     if (kickPlayerIndex >= 0 && kickPlayerIndex < Main.player.Length && Main.player[kickPlayerIndex].active)
                     {
                         Console.WriteLine($"[Discord] Kicking player '{Main.player[kickPlayerIndex].name}' (player {kickPlayerIndex}) — Discord identity could not be resolved.");

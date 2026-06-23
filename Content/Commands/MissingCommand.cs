@@ -16,12 +16,6 @@ namespace CTG2.Content.Commands
 
         public override void Action(CommandCaller caller, string input, string[] args)
         {
-            var modPlayer = caller.Player.GetModPlayer<AuthPlayer>();
-            if (!modPlayer.IsAdmin)
-            {
-                caller.Reply("You must be an admin to use this command.", Color.Red);
-                return;
-            }
 
             // On a multiplayer client the roster lives on the server, so ask the server to build it.
             if (Main.netMode == NetmodeID.MultiplayerClient)

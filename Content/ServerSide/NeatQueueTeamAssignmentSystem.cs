@@ -20,8 +20,8 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
 
     public bool PlayersReady { get; private set; }
 
-    // Fingerprint of the current rosters discord ids. Prevents a duplicate /neatqueue/teams
-    // call with the same players from resetting PlayersReady or re-firing the arrival broadcast
+    // Fingerprint of the current roster. Prevents a duplicate /neatqueue/teams call from
+    // resetting PlayersReady or re-firing the arrival broadcast.
     private string _currentRosterFingerprint = string.Empty;
 
     public sealed class DiscordIdentity
@@ -49,6 +49,8 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
 
     public void RegisterDiscordIdentity(int whoAmI, string discordId, string username)
     {
+        discordId = NormalizeDiscordId(discordId);
+
         if (string.IsNullOrEmpty(discordId))
         {
             Mod.Logger.Warn($"[NeatQueue] RegisterDiscordIdentity called with empty discordId for player {whoAmI}");
@@ -81,14 +83,16 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
         TryMarkPlayersReady();
     }
 
-    public (int storedCount, int skippedCount) ReplaceAssignments(IEnumerable<NeatQueueAssignment> assignments)
+    public (int storedCount, int skippedCount) ReplaceAssignments(
+        IEnumerable<NeatQueueAssignment> assignments,
+        string rosterIdentity = null)
     {
         // Materialize once so we can both fingerprint and iterate without re-enumerating a lazy source.
         var assignmentList = assignments?.ToList() ?? new List<NeatQueueAssignment>();
 
-        // A roster only counts as new when its set of Discord IDs has changed. A duplicate
-        // /neatqueue/teams call with the same players keeps PlayersReady latched
-        string newFingerprint = BuildRosterFingerprint(assignmentList);
+        // A roster only counts as new when its match identity or Discord ID set changes.
+        // A duplicate /neatqueue/teams call for the same match keeps PlayersReady latched.
+        string newFingerprint = BuildRosterFingerprint(assignmentList, rosterIdentity);
         bool isNewRoster = newFingerprint != _currentRosterFingerprint;
 
         if (isNewRoster)
@@ -106,7 +110,8 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
 
         foreach (var assignment in assignmentList)
         {
-            if (assignment == null || string.IsNullOrEmpty(assignment.DiscordId))
+            string discordId = NormalizeDiscordId(assignment?.DiscordId);
+            if (string.IsNullOrEmpty(discordId))
             {
                 Mod.Logger.Warn("[NeatQueue] Skipping assignment with empty discord_id");
                 skipped++;
@@ -116,16 +121,16 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
             int? teamId = ResolveTeamId(assignment.Team, assignment.TeamNum);
             if (teamId == null)
             {
-                Mod.Logger.Warn($"[NeatQueue] Skipping assignment for discord_id={assignment.DiscordId}: unknown team='{assignment.Team}' team_num={assignment.TeamNum}");
+                Mod.Logger.Warn($"[NeatQueue] Skipping assignment for discord_id={discordId}: unknown team='{assignment.Team}' team_num={assignment.TeamNum}");
                 skipped++;
                 continue;
             }
 
-            _teamIdByDiscordId[assignment.DiscordId] = teamId.Value;
+            _teamIdByDiscordId[discordId] = teamId.Value;
 
-            _rosterByDiscordId[assignment.DiscordId] = new QueueRosterEntry
+            _rosterByDiscordId[discordId] = new QueueRosterEntry
             {
-                DiscordId = assignment.DiscordId,
+                DiscordId = discordId,
                 Username = assignment.Name ?? string.Empty,
                 Team = string.IsNullOrWhiteSpace(assignment.Team)
                     ? TeamIdToTeamName(teamId.Value)
@@ -138,10 +143,28 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
 
         Mod.Logger.Info($"[NeatQueue] Stored {stored} assignments (skipped {skipped} invalid)");
 
-        // Players may already all be in the world before the roster arrives, so evaluate readiness now.
-        TryMarkPlayersReady();
-
         return (stored, skipped);
+    }
+
+    public void EvaluateRosterReadiness()
+    {
+        TryMarkPlayersReady();
+    }
+
+    public void RequestDiscordIdentityRefreshFromOnlinePlayers()
+    {
+        if (Main.netMode != NetmodeID.Server)
+            return;
+
+        foreach (Player player in Main.player)
+        {
+            if (player == null || !player.active)
+                continue;
+
+            ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
+            packet.Write((byte)MessageType.RequestDiscordIdentityRefresh);
+            packet.Send(toClient: player.whoAmI);
+        }
     }
 
     public void ClearAssignments()
@@ -177,6 +200,8 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
 
     public bool TryAssignByDiscordId(string discordId)
     {
+        discordId = NormalizeDiscordId(discordId);
+
         if (string.IsNullOrEmpty(discordId))
             return false;
 
@@ -258,7 +283,7 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
         foreach (QueueRosterEntry entry in missing)
         {
             string displayName = string.IsNullOrWhiteSpace(entry.Username) ? entry.DiscordId : entry.Username;
-            builder.Append($"\n- {displayName} — {entry.Team}");
+            builder.Append($"\n- {displayName} - {entry.Team}");
         }
 
         return builder.ToString();
@@ -266,6 +291,8 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
 
     private bool IsDiscordIdOnline(string discordId)
     {
+        discordId = NormalizeDiscordId(discordId);
+
         if (string.IsNullOrEmpty(discordId))
             return false;
 
@@ -384,14 +411,26 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
         };
     }
 
-    // Stable fingerprint of the rosters Discord ID set so the same set of
-    // players yields the same string regardless of order, team, or username
-    private static string BuildRosterFingerprint(IEnumerable<NeatQueueAssignment> assignments)
+    // Stable fingerprint of the roster so duplicate API posts for the same match are ignored,
+    // while a new match with the same players can still reset readiness.
+    private static string BuildRosterFingerprint(
+        IEnumerable<NeatQueueAssignment> assignments,
+        string rosterIdentity)
     {
-        return string.Join("|",
+        string rosterPrefix = string.IsNullOrWhiteSpace(rosterIdentity)
+            ? string.Empty
+            : $"{rosterIdentity.Trim()}|";
+
+        return rosterPrefix + string.Join("|",
             assignments
                 .Where(a => a != null && !string.IsNullOrWhiteSpace(a.DiscordId))
-                .Select(a => a.DiscordId.Trim())
+                .Select(a => NormalizeDiscordId(a.DiscordId))
+                .Where(id => !string.IsNullOrEmpty(id))
                 .OrderBy(id => id, StringComparer.Ordinal));
+    }
+
+    private static string NormalizeDiscordId(string discordId)
+    {
+        return discordId?.Trim() ?? string.Empty;
     }
 }

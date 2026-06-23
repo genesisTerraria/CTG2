@@ -12,6 +12,7 @@ using System;
 using CTG2.Content.ClientSide;
 using System.Globalization;
 using CTG2.Commands;
+using CTG2.Content.Projectiles;
 
 namespace CTG2.Content.Items.ModifiedWeps
 {
@@ -104,6 +105,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case ItemID.GoldenShower: // Fish
                     item.useTime = 20;
                     item.useAnimation = 20;
+                    item.shoot = ModContent.ProjectileType<CTG2GoldenShowerProjectile>();
                     item.shootSpeed = 6.8f;
                     item.damage = 35;
                     item.mana = 0;
@@ -193,7 +195,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shootSpeed = 7;
                     break;
                 case ItemID.AmethystStaff:
-                    item.damage = 39;
+                    item.damage = 37;
                     item.useTime = 22;
                     item.useAnimation = 22;
                     item.crit = 0;
@@ -341,7 +343,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case ItemID.ThunderStaff: // psychic charge wep
                     item.shoot = ProjectileID.ThunderSpearShot;
                     item.scale = 0;
-                    item.damage = 22;
+                    item.damage = 15;
                     item.useTime = 14;
                     item.useAnimation = 14;
                     item.shootSpeed = 20;

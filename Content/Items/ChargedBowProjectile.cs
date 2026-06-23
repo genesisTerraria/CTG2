@@ -196,7 +196,7 @@ public class ChargedBowProjectile : ModProjectile
                 else
                 {
                     if (isShimmer) charge += 1f;
-                    else if (isHellfire) charge += 0.667f;
+                    else if (isHellfire) charge += 0.8f;
                     else charge += 0.333f;
                 }
 

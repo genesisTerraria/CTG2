@@ -120,12 +120,12 @@ public class CtgDiscordSdk : ModSystem
         }
     }
 
-    public void LogCurrentUserIdentity()
+    public void LogCurrentUserIdentity(bool force = false)
     {
         if (_discordUnsupportedPlatform)
             return;
 
-        if (_alreadyLogged)
+        if (_alreadyLogged && !force)
             return;
 
         if (_initFailed || _discord == null)

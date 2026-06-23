@@ -237,14 +237,17 @@ namespace CTG2.Content.ServerSide
                     int storedCount = 0;
                     int skippedCount = 0;
                     int assignedOnlineCount = 0;
+                    string rosterIdentity = BuildRosterIdentity(request);
                     Exception caught = null;
                     await Main.RunOnMainThread(() =>
                     {
                         try
                         {
                             var sys = ModContent.GetInstance<NeatQueueTeamAssignmentSystem>();
-                            (storedCount, skippedCount) = sys.ReplaceAssignments(systemAssignments);
+                            (storedCount, skippedCount) = sys.ReplaceAssignments(systemAssignments, rosterIdentity);
                             assignedOnlineCount = sys.TryAssignAllOnline();
+                            sys.EvaluateRosterReadiness();
+                            sys.RequestDiscordIdentityRefreshFromOnlinePlayers();
                         }
                         catch (Exception ex)
                         {
@@ -357,6 +360,17 @@ namespace CTG2.Content.ServerSide
             return normalizedMode == "pubs" || normalizedMode == "scrims" || normalizedMode == "rng"
                 ? normalizedMode
                 : null;
+        }
+
+        private static string BuildRosterIdentity(NeatQueueTeamsRequest request)
+        {
+            if (request?.MatchNumber == null)
+                return null;
+
+            string queue = request.Queue?.Trim();
+            return string.IsNullOrEmpty(queue)
+                ? $"match:{request.MatchNumber.Value}"
+                : $"queue:{queue}|match:{request.MatchNumber.Value}";
         }
 
         private async Task WriteJsonAsync(HttpListenerContext context, int statusCode, object payload)

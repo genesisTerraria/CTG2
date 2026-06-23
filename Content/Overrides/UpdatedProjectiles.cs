@@ -8,6 +8,7 @@ using CTG2.Content.ClientSide;
 using CTG2.Content.Buffs;
 using Microsoft.Xna.Framework;
 using CTG2;
+using CTG2.Content.Projectiles;
 
 
 public class ProjectileOverrides : GlobalProjectile
@@ -294,7 +295,7 @@ public class ProjectileOverrides : GlobalProjectile
         {
             projectile.damage = 31;
         }
-        if (projectile.type == ProjectileID.IceSickle || projectile.type == ProjectileID.ChlorophyteOrb || projectile.type == ProjectileID.DemonScythe || projectile.type == ProjectileID.GoldenShowerFriendly || projectile.type == ProjectileID.WeatherPainShot
+        if (projectile.type == ProjectileID.IceSickle || projectile.type == ProjectileID.ChlorophyteOrb || projectile.type == ProjectileID.DemonScythe || projectile.type == ProjectileID.GoldenShowerFriendly || projectile.type == ModContent.ProjectileType<CTG2GoldenShowerProjectile>() || projectile.type == ProjectileID.WeatherPainShot
          || projectile.type == ModContent.ProjectileType<SittingDuckBobber>())
         {
             projectile.penetrate = 1;

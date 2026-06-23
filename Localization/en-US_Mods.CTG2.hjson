@@ -204,6 +204,7 @@ Projectiles: {
 	ThrowingStarsProjectile.DisplayName: Throwing Stars Projectile
 	DissonanceHookProjectile.DisplayName: Dissonance Hook Projectile
 	SpaceSplitterProjectile.DisplayName: Space Splitter Projectile
+	CTG2GoldenShowerProjectile.DisplayName: C T G2 Golden Shower Projectile
 }
 
 Tiles: {
