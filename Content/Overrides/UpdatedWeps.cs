@@ -105,7 +105,6 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case ItemID.GoldenShower: // Fish
                     item.useTime = 20;
                     item.useAnimation = 20;
-                    item.shoot = ModContent.ProjectileType<CTG2GoldenShowerProjectile>();
                     item.shootSpeed = 6.8f;
                     item.damage = 35;
                     item.mana = 0;

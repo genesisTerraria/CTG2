@@ -13,17 +13,24 @@ namespace CTG2.Content.Projectiles
         {
             Projectile.CloneDefaults(ProjectileID.GoldenShowerFriendly);
             AIType = ProjectileID.GoldenShowerFriendly;
+
+            Projectile.width = 8;
+            Projectile.height = 8;
         }
 
         public override void ModifyDamageHitbox(ref Rectangle hitbox)
         {
-            const int shrinkX = 6; //change these to change fish projectile size
-            const int shrinkY = 6;
+            const int hitboxSize = 8;
 
-            hitbox.X += shrinkX;
-            hitbox.Y += shrinkY;
-            hitbox.Width -= shrinkX * 2;
-            hitbox.Height -= shrinkY * 2;
+            int centerX = hitbox.X + hitbox.Width / 2;
+            int centerY = hitbox.Y + hitbox.Height / 2;
+
+            hitbox = new Rectangle(
+                centerX - hitboxSize / 2,
+                centerY - hitboxSize / 2,
+                hitboxSize,
+                hitboxSize
+            );
         }
     }
 }
