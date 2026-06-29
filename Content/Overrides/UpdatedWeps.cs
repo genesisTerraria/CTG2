@@ -676,7 +676,28 @@ namespace CTG2.Content.Items.ModifiedWeps
                 case ItemID.RainCoat: // Rain Coat
                     player.statDefense -= 2;
                     break;
-                case 888:
+                case ItemID.ShadowScalemail: // Gladiator
+                    player.statDefense -= 1;
+                    break;
+                case ItemID.ShadowGreaves: // Gladiator
+                    player.statDefense -= 6;
+                    break;
+                case ItemID.MoltenBreastplate: // Black Mage
+                    player.statDefense -= 3;
+                    break;
+                case ItemID.TitaniumHelmet: // White Mage
+                    player.statDefense -= 2;
+                    break;
+                case ItemID.GypsyRobe: // White Mage
+                    player.statDefense -= 2;
+                    break;
+                case ItemID.CrimsonGreaves: // Mutant
+                    player.statDefense -= 6;
+                    break;
+                case ItemID.CrimsonScalemail: // Mutant
+                    player.statDefense -= 5;
+                    break;
+                case ItemID.Blindfold:
                     player.statDefense -= 100;
                     player.GetDamage(DamageClass.Generic) -= 0.99f;
                     break;

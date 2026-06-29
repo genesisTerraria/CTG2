@@ -2,12 +2,12 @@
   "HealthPoints": 160,
   "ManaPoints": 17,
   "BonusDefense": 0,
-  "BonusMoveSpeed": 0.0,
-  "BonusRunAcceleration": 0.0,
+  "BonusMoveSpeed": 0,
+  "BonusRunAcceleration": 0,
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
-      "Type": 5555,
+      "Type": 5560,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -23,7 +23,7 @@
     },
     {
       "Name": "Staff Of Winter",
-      "Type": 5556,
+      "Type": 5563,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 2,
@@ -513,7 +513,7 @@
       "Name": "Magnet Flower",
       "Type": 4000,
       "Stack": 1,
-      "Prefix": 65,
+      "Prefix": 0,
       "Slot": 63,
       "Modded": false
     },

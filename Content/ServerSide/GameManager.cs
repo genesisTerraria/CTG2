@@ -459,12 +459,17 @@ public class GameManager : ModSystem
 
             // Reset ability attributes
             player.GetModPlayer<Abilities>().cooldown = 0;
+            player.GetModPlayer<Abilities>().cooldown2 = 0;
+            player.GetModPlayer<Abilities>().cooldown3 = 0;
+            player.GetModPlayer<Abilities>().class1UsedLuminite = true;
             player.GetModPlayer<Abilities>().class2PassiveCounter = 0;
             player.GetModPlayer<Abilities>().class2AbilityTimer = -1;
             player.GetModPlayer<Abilities>().class3SpawnTimer = -1;
             player.GetModPlayer<Abilities>().class3PendingSpawn = false;
             player.GetModPlayer<Abilities>().class4BuffTimer = 0;
             player.GetModPlayer<Abilities>().class4PendingBuffs = false;
+            player.GetModPlayer<Abilities>().class5EndTimer = -1;
+            player.GetModPlayer<Abilities>().class5PendingBuffs = false;
             player.GetModPlayer<Abilities>().class7HitCounter = 0;
             player.GetModPlayer<Abilities>().class7EndTimer = -1;
             player.GetModPlayer<Abilities>().class8HP = 0;
@@ -482,10 +487,15 @@ public class GameManager : ModSystem
             abilityPacket.Write(player.whoAmI);
             abilityPacket.Write(0);
             abilityPacket.Write(0);
+            abilityPacket.Write(0);
+            abilityPacket.Write(true);
+            abilityPacket.Write(0);
             abilityPacket.Write(-1);
             abilityPacket.Write(-1);
             abilityPacket.Write(false);
             abilityPacket.Write(0);
+            abilityPacket.Write(false);
+            abilityPacket.Write(-1);
             abilityPacket.Write(false);
             abilityPacket.Write(0);
             abilityPacket.Write(-1);

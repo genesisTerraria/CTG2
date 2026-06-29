@@ -413,8 +413,6 @@ namespace CTG2.Content
             if (selectedClassPlayer.currentClass.AbilityID == 2 && Player.HasBuff(BuffID.Swiftness))
             {
                 Player.ClearBuff(BuffID.Swiftness);
-                Player.ClearBuff(BuffID.Tipsy);
-                Player.ClearBuff(BuffID.WitheredArmor);
                 Player.ClearBuff(BuffID.Weak);
                 Player.ClearBuff(BuffID.Silenced);
 
@@ -477,6 +475,8 @@ namespace CTG2.Content
         
         private void ArcherOnUse()
         {
+            class1UsedLuminite = false;
+            
             var mod = ModContent.GetInstance<CTG2>();
             ModPacket audioPacketSelf = mod.GetPacket();
             audioPacketSelf.Write((byte)MessageType.RequestAudioToClient);
@@ -561,8 +561,6 @@ namespace CTG2.Content
         private void NinjaOnUse()
         {
             Player.AddBuff(BuffID.Swiftness, 6 * 60);
-            Player.AddBuff(BuffID.Tipsy, 6 * 60);
-            Player.AddBuff(BuffID.WitheredArmor, 6 * 60);
             Player.AddBuff(BuffID.Weak, 6 * 60);
             Player.AddBuff(BuffID.Silenced, 6 * 60);
 
@@ -725,10 +723,10 @@ namespace CTG2.Content
 
         private void GladiatorOnUse()
         {
-            Player.AddBuff(206, 300);
-            Player.AddBuff(195, 300);
-            Player.AddBuff(75, 300);
-            Player.AddBuff(320, 300);
+            Player.AddBuff(BuffID.WellFed2, 300);
+            Player.AddBuff(BuffID.WitheredArmor, 300);
+            Player.AddBuff(BuffID.WeaponImbueGold, 300);
+            Player.AddBuff(BuffID.GelBalloonBuff, 300);
 
             class4BuffTimer = 300;
             class4PendingBuffs = true;
@@ -745,11 +743,9 @@ namespace CTG2.Content
             {
                 if (class4BuffTimer <= 0)
                 {
-                    Player.AddBuff(137, 90);
-                    Player.AddBuff(32, 90);
-                    Player.AddBuff(195, 90);
-                    Player.AddBuff(5, 90);
-                    Player.AddBuff(215, 90);
+                    Player.AddBuff(BuffID.Slimed, 90);
+                    Player.AddBuff(BuffID.Slow, 90);
+                    Player.AddBuff(BuffID.WitheredArmor, 90);
 
                     class4PendingBuffs = false;
                 }
@@ -1489,11 +1485,9 @@ namespace CTG2.Content
             if (cooldown3 == 1)
                 SoundEngine.PlaySound(ability3Ready.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
 
-            if (selectedClass == 2 && !Player.dead && !Player.ghost && playerManager.playerState == PlayerManager.PlayerState.Active && Player.HasBuff(BuffID.Swiftness) && ability1Pressed)
+            if (selectedClass == 2 && !Player.dead && !Player.ghost && playerManager.playerState == PlayerManager.PlayerState.Active && Player.HasBuff(BuffID.Silenced) && ability1Pressed)
             {
                 Player.ClearBuff(BuffID.Swiftness);
-                Player.ClearBuff(BuffID.Tipsy);
-                Player.ClearBuff(BuffID.WitheredArmor);
                 Player.ClearBuff(BuffID.Weak);
                 Player.ClearBuff(BuffID.Silenced);
 

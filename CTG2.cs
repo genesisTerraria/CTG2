@@ -1266,12 +1266,17 @@ namespace CTG2
                 case (byte)MessageType.SyncAbilityAttributes:
                     int playerindd = reader.ReadInt32();
                     int cooldown = reader.ReadInt32();
+                    int cooldown2 = reader.ReadInt32();
+                    int cooldown3 = reader.ReadInt32();
+                    bool class1UsedLuminite = reader.ReadBoolean();
                     int class2PassiveCounter = reader.ReadInt32();
                     int class2AbilityTimer = reader.ReadInt32();
                     int class3SpawnTimer = reader.ReadInt32();
                     bool class3PendingSpawn = reader.ReadBoolean();
                     int class4BuffTimer = reader.ReadInt32();
                     bool class4PendingBuffs = reader.ReadBoolean();
+                    int class5EndTimer = reader.ReadInt32();
+                    bool class5PendingBuffs = reader.ReadBoolean();
                     int class7HitCounter = reader.ReadInt32();
                     int class7EndTimer = reader.ReadInt32();
                     int class8HP = reader.ReadInt32();
@@ -1289,12 +1294,17 @@ namespace CTG2
                         var abils = Main.player[playerindd].GetModPlayer<Abilities>();
 
                         abils.cooldown = cooldown;
+                        abils.cooldown2 = cooldown2;
+                        abils.cooldown3 = cooldown3;
+                        abils.class1UsedLuminite = class1UsedLuminite;
                         abils.class2PassiveCounter = class2PassiveCounter;
                         abils.class2AbilityTimer = class2AbilityTimer;
                         abils.class3SpawnTimer = class3SpawnTimer;
                         abils.class3PendingSpawn = class3PendingSpawn;
                         abils.class4BuffTimer = class4BuffTimer;
                         abils.class4PendingBuffs = class4PendingBuffs;
+                        abils.class5EndTimer = class5EndTimer;
+                        abils.class5PendingBuffs = class5PendingBuffs;
                         abils.class7HitCounter = class7HitCounter;
                         abils.class7EndTimer = class7EndTimer;
                         abils.class8HP = class8HP;

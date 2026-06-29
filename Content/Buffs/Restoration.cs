@@ -10,7 +10,7 @@ namespace CTG2.Content.Buffs
 
         public override void Update(Player player, ref int buffIndex)
         {
-            player.lifeRegen += 10;
+            player.lifeRegen += 8;
 
             if (!player.HasBuff(BuffID.Invisibility) && count % 2 == 0)
             {

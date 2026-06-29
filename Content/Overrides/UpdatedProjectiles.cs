@@ -424,8 +424,8 @@ public class ModifyHurtModPlayer : ModPlayer
             {
                 Projectile hurtProjectile = Main.projectile[projIndex];
 
-                    Player owner = Main.player[info.DamageSource.SourcePlayerIndex];
-                Vector2 dest = Player.Center;
+                Player owner = Main.player[info.DamageSource.SourcePlayerIndex];
+                Vector2 dest = Player.position;
 
                 var mod = ModContent.GetInstance<CTG2.CTG2>();
                 ModPacket packet = mod.GetPacket();

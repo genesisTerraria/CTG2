@@ -10,6 +10,7 @@ public class Charged : GlobalItem
 {
     public bool Affected;
     private uint useDelay = 50; // Overall maximum firerate
+    private uint rightClickLastUsedCounter; // separate cooldown tracker for manual-fire path
 
     public override void SetDefaults(Item item)
     {
@@ -70,7 +71,7 @@ public class Charged : GlobalItem
 
                 abils.class1UsedLuminite = true;
             }
-            else if (player.altFunctionUse == 2)
+            else if (Main.mouseRight)
             {
                 // Right click -> Shimmer Arrow
                 arrowType = ProjectileID.ShimmerArrow;
@@ -98,6 +99,38 @@ public class Charged : GlobalItem
             return false;
         }
         return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
+    }
+
+    public override void HoldItem(Item item, Player player)
+    {
+        if (!(item.useAmmo == AmmoID.Arrow && Affected)) return;
+        if (Main.myPlayer != player.whoAmI) return;
+        if (!Main.mouseRight) return;
+        if (player.ownedProjectileCounts[ModContent.ProjectileType<ChargedBowProjectile>()] > 0) return;
+        if (Main.GameUpdateCount - rightClickLastUsedCounter < useDelay) return;
+
+        // mana check, since CanUseItem isn't running this path
+        if (item.mana > 0 && !player.CheckMana(item, -1, true)) return;
+
+        rightClickLastUsedCounter = Main.GameUpdateCount;
+
+        var abils = player.GetModPlayer<Abilities>();
+        int arrowType = abils.class1UsedLuminite ? ProjectileID.ShimmerArrow : 639;
+        if (!abils.class1UsedLuminite) abils.class1UsedLuminite = true;
+
+        Vector2 velocity = (Main.MouseWorld - player.Center).SafeNormalize(Vector2.UnitX) * item.shootSpeed;
+
+        Projectile.NewProjectile(
+            player.GetSource_ItemUse(item),
+            player.Center,
+            velocity,
+            ModContent.ProjectileType<ChargedBowProjectile>(),
+            0,
+            player.GetWeaponKnockback(item),
+            player.whoAmI,
+            item.type,
+            arrowType
+        );
     }
 
     public override bool InstancePerEntity => true;

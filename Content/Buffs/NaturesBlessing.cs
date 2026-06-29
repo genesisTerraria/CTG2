@@ -10,7 +10,15 @@ namespace CTG2.Content.Buffs
     {
         public override void Update(Player player, ref int buffIndex)
         {
-            player.statDefense += 6;
+            int defenseBuff = 8;
+
+            if (player.HasBuff(BuffID.WitheredArmor))
+                defenseBuff *= 2;
+            
+            if (player.HasBuff(BuffID.BrokenArmor))
+                defenseBuff *= 2;
+
+            player.statDefense += defenseBuff;
 
             if (!player.HasBuff(BuffID.Invisibility))
             {
