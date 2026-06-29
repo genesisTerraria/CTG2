@@ -890,7 +890,7 @@ public class GameManager : ModSystem
 
             BlueGem.Reset();
 
-            if (isOvertime && !RedGem.IsHeld)
+            if (isOvertime && !RedGem.IsHeld && blueCaptures != redCaptures)
             {
                 winner = 2;
                 EndGame();
@@ -911,7 +911,7 @@ public class GameManager : ModSystem
 
             RedGem.Reset();
 
-            if (isOvertime && !BlueGem.IsHeld)
+            if (isOvertime && !BlueGem.IsHeld && blueCaptures != redCaptures)
             {
                 winner = 1;
                 EndGame();

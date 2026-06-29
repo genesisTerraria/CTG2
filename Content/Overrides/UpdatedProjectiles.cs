@@ -418,7 +418,7 @@ public class ModifyHurtModPlayer : ModPlayer
         }
 
         // Alchemist section
-        if (info.DamageSource.SourceProjectileType == ModContent.ProjectileType<SpaceSplitterProjectile>())
+        if (info.DamageSource.SourceProjectileType == ModContent.ProjectileType<SpaceSplitterProjectile>() && Player.whoAmI == Main.myPlayer)
         {
             if (projIndex >= 0 && projIndex < Main.maxProjectiles)
             {
