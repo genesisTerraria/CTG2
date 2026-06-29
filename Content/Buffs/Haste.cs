@@ -5,7 +5,7 @@ using Terraria.ID;
 
 namespace CTG2.Content.Buffs
 {
-    public class Kenophobia : ModBuff
+    public class Haste : ModBuff
     {
         private const int cooldown = 2;
         private int count = 0;
@@ -27,7 +27,7 @@ namespace CTG2.Content.Buffs
                     player.position,
                     player.width,
                     player.height,
-                    DustID.Shadowflame,
+                    DustID.Cloud,
                     0f,
                     0f,
                     255

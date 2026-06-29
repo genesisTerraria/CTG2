@@ -9,6 +9,7 @@ using CTG2.Content.Buffs;
 using Microsoft.Xna.Framework;
 using CTG2;
 using CTG2.Content.Projectiles;
+using Microsoft.Extensions.Options;
 
 
 public class ProjectileOverrides : GlobalProjectile
@@ -31,7 +32,7 @@ public class ProjectileOverrides : GlobalProjectile
         {
             foreach (Player player in Main.player)
             {
-                if (player.active && Vector2.Distance(projectile.Center, player.Center) <= 3 * 16 && player.team == Main.player[projectile.owner].team)
+                if (player.active && Vector2.Distance(projectile.Center, player.Center) <= 4 * 16 && player.team == Main.player[projectile.owner].team)
                 {
                     var mod = ModContent.GetInstance<CTG2.CTG2>();
                     ModPacket buffPacket = mod.GetPacket();
@@ -48,7 +49,7 @@ public class ProjectileOverrides : GlobalProjectile
         {
             foreach (Player player in Main.player)
             {
-                if (player.active && Vector2.Distance(projectile.Center, player.Center) <= 3 * 16 && player.team == Main.player[projectile.owner].team)
+                if (player.active && Vector2.Distance(projectile.Center, player.Center) <= 4 * 16 && player.team == Main.player[projectile.owner].team)
                 {
                     var mod = ModContent.GetInstance<CTG2.CTG2>();
                     ModPacket buffPacket = mod.GetPacket();
@@ -66,7 +67,7 @@ public class ProjectileOverrides : GlobalProjectile
 
     public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
     {
-        if (projectile.type == ProjectileID.EmeraldBolt)
+        if (projectile.type == ProjectileID.EmeraldBolt && projectile.type == ModContent.ProjectileType<SpaceSplitterProjectile>())
         {
             target.noKnockback = true;
 
@@ -372,40 +373,29 @@ public class ModifyHurtModPlayer : ModPlayer
             Player.AddBuff(BuffID.Dazed, 60);
         }
 
-        // Archer section
-        if (info.DamageSource.SourceProjectileType == 41 && Player.whoAmI == Main.myPlayer)
-        {
-            Player.AddBuff(ModContent.BuffType<Stygiophobia>(), 300);
-        }
-
-        if (info.DamageSource.SourceProjectileType == 1006 && Player.whoAmI == Main.myPlayer)
-        {
-            Player.AddBuff(ModContent.BuffType<Kenophobia>(), 300);
-        }
-
         bool isPickaxe = info.DamageSource.SourceItem != null && (
             info.DamageSource.SourceItem.type == ModContent.ItemType<ShardstonePickaxe>() ||
             info.DamageSource.SourceItem.type == ModContent.ItemType<UpgradedShardstonePickaxe>()
         );
 
-        if (Player.HasBuff(ModContent.BuffType<Kenophobia>()) && Player.HasBuff(ModContent.BuffType<Stygiophobia>()) && !isPickaxe && Player.statLife > 0)
-        {
-            int initialHealth = Player.statLife;
+        // if (Player.HasBuff(ModContent.BuffType<Kenophobia>()) && Player.HasBuff(ModContent.BuffType<Stygiophobia>()) && !isPickaxe && Player.statLife > 0)
+        // {
+        //     int initialHealth = Player.statLife;
 
-            Player.statLife -= 3;
+        //     Player.statLife -= 3;
 
-            CombatText.NewText(Player.getRect(), Color.Red, 3);
+        //     CombatText.NewText(Player.getRect(), Color.Red, 3);
 
-            if (initialHealth <= 3)
-            {
-                PlayerDeathReason reason = PlayerDeathReason.ByCustomReason("Archer passive ability extra damage");
-                reason.SourceItem = info.DamageSource.SourceItem;
-                reason.SourcePlayerIndex = info.DamageSource.SourcePlayerIndex;
-                reason.SourceProjectileType = info.DamageSource.SourceProjectileType;
+        //     if (initialHealth <= 3)
+        //     {
+        //         PlayerDeathReason reason = PlayerDeathReason.ByCustomReason("Archer passive ability extra damage");
+        //         reason.SourceItem = info.DamageSource.SourceItem;
+        //         reason.SourcePlayerIndex = info.DamageSource.SourcePlayerIndex;
+        //         reason.SourceProjectileType = info.DamageSource.SourceProjectileType;
 
-                Player.KillMe(reason, 3, 0);
-            }
-        }
+        //         Player.KillMe(reason, 3, 0);
+        //     }
+        // }
 
         // Ninja section
         if (info.DamageSource.SourceProjectileType == ModContent.ProjectileType<ThrowingStarsProjectile>() && Player.whoAmI == Main.myPlayer)
@@ -430,35 +420,39 @@ public class ModifyHurtModPlayer : ModPlayer
         // Alchemist section
         if (info.DamageSource.SourceProjectileType == ModContent.ProjectileType<SpaceSplitterProjectile>())
         {
-            Projectile hurtProjectile = Main.projectile[info.DamageSource.SourceProjectileLocalIndex];
-            Player owner = Main.player[hurtProjectile.owner];
-            Vector2 dest = hurtProjectile.Center - new Vector2(Player.width / 2f, Player.height / 2f);
+            if (projIndex >= 0 && projIndex < Main.maxProjectiles)
+            {
+                Projectile hurtProjectile = Main.projectile[projIndex];
 
-            var mod = ModContent.GetInstance<CTG2.CTG2>();
-            ModPacket packet = mod.GetPacket();
-            packet.Write((byte)MessageType.RequestTeleport);
-            packet.Write(owner.whoAmI);
-            packet.Write((int)dest.X);
-            packet.Write((int)dest.Y);
-            packet.Send();
+                    Player owner = Main.player[info.DamageSource.SourcePlayerIndex];
+                Vector2 dest = Player.Center;
 
-            ModPacket packet1 = mod.GetPacket();
-            packet1.Write((byte)MessageType.RequestAddBuff);
-            packet1.Write(Player.whoAmI);
-            packet1.Write(320);
-            packet1.Write(120);
-            packet1.Send();
+                var mod = ModContent.GetInstance<CTG2.CTG2>();
+                ModPacket packet = mod.GetPacket();
+                packet.Write((byte)MessageType.RequestTeleport);
+                packet.Write(owner.whoAmI);
+                packet.Write((int)dest.X);
+                packet.Write((int)dest.Y);
+                packet.Send();
 
-            packet1 = mod.GetPacket();
-            packet1.Write((byte)MessageType.RequestAddBuff);
-            packet1.Write(Player.whoAmI);
-            packet1.Write(ModContent.BuffType<TimeDilation>());
-            packet1.Write(120);
-            packet1.Send();
+                ModPacket packet1 = mod.GetPacket();
+                packet1.Write((byte)MessageType.RequestAddBuff);
+                packet1.Write(Player.whoAmI);
+                packet1.Write(320);
+                packet1.Write(120);
+                packet1.Send();
 
-            SoundEngine.PlaySound(SoundID.Item8, owner.Center);
+                packet1 = mod.GetPacket();
+                packet1.Write((byte)MessageType.RequestAddBuff);
+                packet1.Write(Player.whoAmI);
+                packet1.Write(ModContent.BuffType<TimeDilation>());
+                packet1.Write(120);
+                packet1.Send();
 
-            hurtProjectile.Kill();
+                SoundEngine.PlaySound(SoundID.Item8, owner.Center);
+
+                hurtProjectile.Kill();
+            }
         }
 
         if (info.DamageSource.SourceItem != null && info.DamageSource.SourceItem.type == ItemID.TragicUmbrella)
@@ -466,7 +460,7 @@ public class ModifyHurtModPlayer : ModPlayer
             Player.AddBuff(ModContent.BuffType<Endangered>(), 15 * 60);
         }
 
-        if (Player.HasBuff(ModContent.BuffType<Endangered>()) && !isPickaxe && Player.statLife > 0)
+        if (Player.HasBuff(ModContent.BuffType<Endangered>()) && !isPickaxe && Player.statLife > 0 && info.Damage >= 8)
         {
             int initialHealth = Player.statLife;
 

@@ -459,7 +459,6 @@ public class GameManager : ModSystem
 
             // Reset ability attributes
             player.GetModPlayer<Abilities>().cooldown = 0;
-            player.GetModPlayer<Abilities>().class1isHellfire = true;
             player.GetModPlayer<Abilities>().class2PassiveCounter = 0;
             player.GetModPlayer<Abilities>().class2AbilityTimer = -1;
             player.GetModPlayer<Abilities>().class3SpawnTimer = -1;
@@ -482,7 +481,6 @@ public class GameManager : ModSystem
             abilityPacket.Write((byte)MessageType.SyncAbilityAttributes);
             abilityPacket.Write(player.whoAmI);
             abilityPacket.Write(0);
-            abilityPacket.Write(true);
             abilityPacket.Write(0);
             abilityPacket.Write(-1);
             abilityPacket.Write(-1);

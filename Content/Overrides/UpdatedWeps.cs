@@ -33,7 +33,6 @@ namespace CTG2.Content.Items.ModifiedWeps
 
     public class OverloadedWeps : GlobalItem
     {
-
         private uint rForkDelay = 37;
         private uint rForkLastUsedCounter = 0;
         private uint nagDelay = 40;

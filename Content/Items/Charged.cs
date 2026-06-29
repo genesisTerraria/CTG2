@@ -26,21 +26,6 @@ public class Charged : GlobalItem
         }
     }
 
-    public override void UpdateInventory(Item item, Player player)
-    {
-        var manager = player.GetModPlayer<Abilities>();
-
-        if (manager.class1QuickDraw && !manager.class1CooldownSet)
-        {
-            if (manager.class1LastUsedCounter > 50)
-                manager.class1LastUsedCounter -= 50;
-            else
-                manager.class1LastUsedCounter = 0;
-
-            manager.class1CooldownSet = true;
-        }
-    }
-
     public override bool CanUseItem(Item item, Player player)
     {
         var manager = player.GetModPlayer<Abilities>();
@@ -67,10 +52,35 @@ public class Charged : GlobalItem
         else return base.CanBeConsumedAsAmmo(ammo, weapon, player);
     }
 
+    public override bool AltFunctionUse(Item item, Player player)
+    {
+        return Affected;
+    }
+
     public override bool Shoot(Item item, Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
     {
         if (item.useAmmo == AmmoID.Arrow && Affected)
         {
+            int arrowType;
+            var abils = player.GetModPlayer<Abilities>();
+
+            if (!abils.class1UsedLuminite)
+            {
+                arrowType = 639; // luminite arrow
+
+                abils.class1UsedLuminite = true;
+            }
+            else if (player.altFunctionUse == 2)
+            {
+                // Right click -> Shimmer Arrow
+                arrowType = ProjectileID.ShimmerArrow;
+            }
+            else
+            {
+                // Left click -> Hellfire Arrow
+                arrowType = ProjectileID.HellfireArrow;
+            }
+            
             if (player.ownedProjectileCounts[ModContent.ProjectileType<ChargedBowProjectile>()] == 0)
             {
                 Projectile.NewProjectile(
@@ -82,7 +92,7 @@ public class Charged : GlobalItem
                     knockback,
                     player.whoAmI,
                     item.type,
-                    type
+                    arrowType
                 );
             }
             return false;

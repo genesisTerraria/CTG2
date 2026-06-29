@@ -312,6 +312,11 @@ Buffs: {
 		DisplayName: Transmutated
 		Description: Mods.CTG2.Buffs.Transmutated.Description
 	}
+
+	Haste: {
+		Description: Mods.CTG2.Buffs.Haste.Description
+		DisplayName: Haste
+	}
 }
 
 Keybinds: {

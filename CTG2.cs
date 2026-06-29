@@ -1266,7 +1266,6 @@ namespace CTG2
                 case (byte)MessageType.SyncAbilityAttributes:
                     int playerindd = reader.ReadInt32();
                     int cooldown = reader.ReadInt32();
-                    bool class1isHellfire = reader.ReadBoolean();
                     int class2PassiveCounter = reader.ReadInt32();
                     int class2AbilityTimer = reader.ReadInt32();
                     int class3SpawnTimer = reader.ReadInt32();
@@ -1290,7 +1289,6 @@ namespace CTG2
                         var abils = Main.player[playerindd].GetModPlayer<Abilities>();
 
                         abils.cooldown = cooldown;
-                        abils.class1isHellfire = class1isHellfire;
                         abils.class2PassiveCounter = class2PassiveCounter;
                         abils.class2AbilityTimer = class2AbilityTimer;
                         abils.class3SpawnTimer = class3SpawnTimer;

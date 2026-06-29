@@ -10,6 +10,7 @@ using System;
 using System.IO;
 using CTG2.Content;
 using Terraria.DataStructures;
+using CTG2.Content.Buffs;
 
 // --- RENDER LAYER ---
 // This handles drawing so the outline system can wrap around the bow
@@ -170,6 +171,8 @@ public class ChargedBowProjectile : ModProjectile
         bool isShimmer = (int)Projectile.ai[1] == ProjectileID.ShimmerArrow;
         isLuminite = (int)Projectile.ai[1] == 639;
 
+        bool holding = (isHellfire && player.channel) || (isShimmer && Main.mouseRight) || (isLuminite && (player.channel || Main.mouseRight));
+
         if (charge >= 40f) td++; // Increment glow timer
 
         if (Projectile.owner == Main.myPlayer) {
@@ -177,27 +180,23 @@ public class ChargedBowProjectile : ModProjectile
             Rotation = aim.ToRotation();
             player.direction = Math.Cos(Rotation) >= 0 ? 1 : -1;
 
-            if (player.channel && !released) {
+            if (holding && !released) {
                 if (!ammoLocked)
                 {
-                    Item item = player.HeldItem;
-
                     ammoLocked = true;
                 }
 
-                if (manager.class1QuickDraw && !manager.class1ChargeSet)
-                {
-                    if (isShimmer) charge += 40f;
-                    else if (isHellfire) charge += 26.67f;
-                    else charge += 13.33f;
-
-                    manager.class1ChargeSet = true;
-                }
-                else
+                if (!player.HasBuff(ModContent.BuffType<Haste>()))
                 {
                     if (isShimmer) charge += 1f;
                     else if (isHellfire) charge += 0.8f;
                     else charge += 0.333f;
+                }
+                else
+                {
+                    if (isShimmer) charge += 1.2f;
+                    else if (isHellfire) charge += 0.96f;
+                    else charge += 0.4f;
                 }
 
                 if (charge >= 40f && c1 == 0f) {
@@ -217,7 +216,7 @@ public class ChargedBowProjectile : ModProjectile
 
         if (soundCooldownTimer > 0) soundCooldownTimer--;
 
-        if (player.channel && !released && soundCooldownTimer == 0 && charge < 40) {
+        if (holding && !released && soundCooldownTimer == 0 && charge < 40) {
             sound = SoundEngine.PlaySound(bowSound.WithVolumeScale(Main.soundVolume * 1.25f), player.Center);
             soundCooldownTimer = 45;
         }
@@ -260,9 +259,6 @@ public class ChargedBowProjectile : ModProjectile
 
             if (isHellfire || (isShimmer && curvedShimmer))
                 arrow.extraUpdates = 1;
-
-            if (isLuminite)
-                manager.class1UsedLuminite = true;
 
             arrow.netUpdate = true;
             ammoLocked = false;

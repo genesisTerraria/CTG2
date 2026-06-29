@@ -18,7 +18,7 @@ namespace CTG2.Content.Items
             Item.useAnimation = 25;
             Item.useTime = 25;
             Item.damage = 20;
-            Item.shootSpeed = 9f;
+            Item.shootSpeed = 5f;
         }
 
         public override bool Shoot(Player player, EntitySource_ItemUse_WithAmmo source, Vector2 position, Vector2 velocity, int type, int damage, float knockback)
