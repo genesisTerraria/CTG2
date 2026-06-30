@@ -1,5 +1,6 @@
 using System;
 using Terraria.ModLoader;
+using CTG2.ReeseIntegration;
 using System.IO;
 using System.Text.Json;
 using System.Linq;
@@ -940,9 +941,18 @@ namespace CTG2
                     // 1. Update the local state (this happens on Server or the receiving Clients)
                     var manager1 = ModContent.GetInstance<GameManager>();
                     Gem gem1 = gemType1 == 1 ? manager1.RedGem : manager1.BlueGem;
+                    bool wasHeld = gem1.IsHeld;
+                    bool wasCaptured = gem1.IsCaptured;
+                    int previousHeldBy = gem1.HeldBy;
+
                     gem1.IsHeld = isHeld;
                     if (!isHeld)
                     {
+                        if (Main.netMode == NetmodeID.Server && wasHeld && !wasCaptured && previousHeldBy >= 0)
+                        {
+                            ReeseTimelineEvents.GemDropped(gemType1, previousHeldBy);
+                        }
+
                         gem1.HeldBy = -1;
                         gem1.IsPickupPending = false;
                     }
@@ -984,10 +994,19 @@ namespace CTG2
 
                     // 1. Update the local state (this happens on Server or the receiving Clients)
                     var manager3 = ModContent.GetInstance<GameManager>();
+                    Gem capturedGem = gemType3 == 1 ? manager3.RedGem : manager3.BlueGem;
+                    bool captureWasCaptured = capturedGem.IsCaptured;
+                    int capturePreviousHeldBy = capturedGem.HeldBy;
+
                     if (gemType3 == 1)
                         manager3.RedGem.IsCaptured = isCaptured;
                     else
                         manager3.BlueGem.IsCaptured = isCaptured;
+
+                    if (Main.netMode == NetmodeID.Server && isCaptured && !captureWasCaptured && capturePreviousHeldBy >= 0)
+                    {
+                        ReeseTimelineEvents.GemCaptured(gemType3, capturePreviousHeldBy);
+                    }
 
                     // 2. If the Server received this from a client, it must tell all other clients
                     if (Main.netMode == NetmodeID.Server) {
@@ -2072,7 +2091,8 @@ namespace CTG2
                 case (byte)MessageType.RequestPickup:
                 {
                     int gemId = reader.ReadInt32();
-                    int requestingPlayer = reader.ReadInt32();
+                    _ = reader.ReadInt32();
+                    int requestingPlayer = Main.netMode == NetmodeID.Server ? whoAmI : -1;
 
                     var gem = gemId == 1 
                         ? ModContent.GetInstance<GameManager>().RedGem 
@@ -2083,6 +2103,7 @@ namespace CTG2
                         // Server is the single source of truth — first request wins
                         gem.IsHeld = true;
                         gem.HeldBy = requestingPlayer;
+                        ReeseTimelineEvents.GemPickedUp(gemId, requestingPlayer);
 
                         // Broadcast confirmation to ALL clients
                         ModPacket confirm = mod.GetPacket();
