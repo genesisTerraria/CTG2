@@ -26,6 +26,8 @@ namespace CTG2.Content.Commands.Auth
         // Originally this function didn't write out IsAdmin and caused read underflow
         // Login system still worked fine though and this was never called because of underflow
         // Since this is pretty packet intensive if there is lag in the future remove this function
+
+        /*
         public override void SyncPlayer(int toWho, int fromWho, bool newPlayer)
         {
             ModPacket packet = Mod.GetPacket();
@@ -35,7 +37,7 @@ namespace CTG2.Content.Commands.Auth
             packet.Write(IsAdmin);
             packet.Write(Username ?? "");
             packet.Send(toWho, fromWho);
-        }
+        } */
 
         public override void PostUpdate()
         {
