@@ -67,7 +67,7 @@ public class ProjectileOverrides : GlobalProjectile
 
     public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
     {
-        if (projectile.type == ProjectileID.EmeraldBolt && projectile.type == ModContent.ProjectileType<SpaceSplitterProjectile>())
+        if (projectile.type == ProjectileID.EmeraldBolt || projectile.type == ModContent.ProjectileType<SpaceSplitterProjectile>())
         {
             target.noKnockback = true;
 
@@ -297,7 +297,7 @@ public class ProjectileOverrides : GlobalProjectile
             projectile.damage = 31;
         }
         if (projectile.type == ProjectileID.IceSickle || projectile.type == ProjectileID.ChlorophyteOrb || projectile.type == ProjectileID.DemonScythe || projectile.type == ProjectileID.GoldenShowerFriendly || projectile.type == ModContent.ProjectileType<CTG2GoldenShowerProjectile>() || projectile.type == ProjectileID.WeatherPainShot
-         || projectile.type == ModContent.ProjectileType<SittingDuckBobber>())
+         || projectile.type == ModContent.ProjectileType<SittingDuckBobber>() || projectile.type == ProjectileID.JavelinFriendly)
         {
             projectile.penetrate = 1;
         }
@@ -418,7 +418,7 @@ public class ModifyHurtModPlayer : ModPlayer
         }
 
         // Alchemist section
-        if (info.DamageSource.SourceProjectileType == ModContent.ProjectileType<SpaceSplitterProjectile>() && Player.whoAmI == Main.myPlayer)
+        if (info.DamageSource.SourceProjectileType == ModContent.ProjectileType<SpaceSplitterProjectile>())
         {
             if (projIndex >= 0 && projIndex < Main.maxProjectiles)
             {
@@ -548,7 +548,7 @@ public class ModifyHurtModPlayer : ModPlayer
         }
         if (info.DamageSource.SourceProjectileType == 507)
         {
-            Player.AddBuff(BuffID.Dazed, 60);
+            Player.AddBuff(BuffID.Dazed, 90);
         }
         if (info.DamageSource.SourceProjectileType == 520) // frost daggerfish
         {
@@ -586,14 +586,14 @@ public class ModifyHurtModPlayer : ModPlayer
                 packet.Send();
             }
         }
-        if (info.DamageSource.SourceProjectileType == 97)
+        if (info.DamageSource.SourceProjectileType == ModContent.ProjectileType<PolearmProjectile>())
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
             if (attackerPlayer.currentClass.Name == "Gladiator")
             {
-                attacker.AddBuff(215, 120);
-                attacker.AddBuff(114, 120);
+                attacker.AddBuff(BuffID.CatBast, 60);
+                attacker.AddBuff(BuffID.Endurance, 60);
 
                 ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
                 packet.Write((byte)CTG2.MessageType.RequestAddBuff);

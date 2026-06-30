@@ -180,6 +180,11 @@ Items: {
 		Tooltip: ""
 		DisplayName: Magic Geode
 	}
+
+	GladiatorialPolearm: {
+		DisplayName: Gladiatorial Polearm
+		Tooltip: ""
+	}
 }
 
 NPCs: {
@@ -205,6 +210,7 @@ Projectiles: {
 	DissonanceHookProjectile.DisplayName: Dissonance Hook Projectile
 	SpaceSplitterProjectile.DisplayName: Space Splitter Projectile
 	CTG2GoldenShowerProjectile.DisplayName: C T G2 Golden Shower Projectile
+	PolearmProjectile.DisplayName: Polearm Projectile
 }
 
 Tiles: {

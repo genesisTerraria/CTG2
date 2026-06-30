@@ -51,7 +51,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint flamarangDelay = 30;
         private uint flamarangLastUsedCounter = 0;
 
-        private uint goldenShowerDelay = 60;
+        private uint goldenShowerDelay = 70;
         private uint goldenShowerLastUsedCounter = 0;
 
         private uint ghastlyglaiveDelay = 70;
@@ -155,7 +155,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.DamageType = DamageClass.Magic;
                     break;
                 case ItemID.WandofSparking:
-                    item.damage = 12;
+                    item.damage = 8;
                     item.useTime = 8;
                     item.useAnimation = 8;
                     item.shootSpeed = 9f;
@@ -516,7 +516,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                 else
                     return false;
             }
-            else if (item.type == ItemID.CobaltNaginata)
+            else if (item.type == ItemID.CobaltNaginata || item.type == ModContent.ItemType<GladiatorialPolearm>())
             {
                 if (Main.GameUpdateCount - nagLastUsedCounter >= nagDelay)
                 {

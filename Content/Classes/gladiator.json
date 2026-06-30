@@ -1,13 +1,13 @@
 {
-  "HealthPoints": 130,
+  "HealthPoints": 120,
   "ManaPoints": 25,
   "BonusDefense": 0,
-  "BonusMoveSpeed": 0.0,
-  "BonusRunAcceleration": 0.0,
+  "BonusMoveSpeed": 0,
+  "BonusRunAcceleration": 0,
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
-      "Type": 5555,
+      "Type": 5561,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -22,12 +22,12 @@
       "Modded": false
     },
     {
-      "Name": "Cobalt Naginata",
-      "Type": 537,
+      "Name": "Gladiatorial Polearm",
+      "Type": 5553,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 2,
-      "Modded": false
+      "Modded": true
     },
     {
       "Name": "Dirt Block",

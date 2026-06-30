@@ -49,6 +49,7 @@ namespace CTG2.Content
 
         public int class4BuffTimer = -1;
         public bool class4PendingBuffs = false;
+        public bool class4PowerShot = false;
 
         public int class5EndTimer = -1;
         public bool class5PendingBuffs = false;
@@ -736,6 +737,12 @@ namespace CTG2.Content
             SoundEngine.PlaySound(SoundID.DD2_KoboldIgnite.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
 
+        private void GladiatorOnUse2()
+        {
+            class4PowerShot = true;
+
+            SoundEngine.PlaySound(SoundID.Item77.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+        }
 
         private void GladiatorPostStatus()
         {
@@ -743,9 +750,9 @@ namespace CTG2.Content
             {
                 if (class4BuffTimer <= 0)
                 {
-                    Player.AddBuff(BuffID.Slimed, 90);
-                    Player.AddBuff(BuffID.Slow, 90);
-                    Player.AddBuff(BuffID.WitheredArmor, 90);
+                    Player.AddBuff(BuffID.Slimed, 120);
+                    Player.AddBuff(BuffID.Slow, 120);
+                    Player.AddBuff(BuffID.WitheredArmor, 120);
 
                     class4PendingBuffs = false;
                 }
@@ -1645,6 +1652,10 @@ namespace CTG2.Content
                         SetCooldown(25);
                         SetCooldown2(25);
                         AlchemistOnUse2();
+                        break;
+                    case 4:
+                        SetCooldown2(10);
+                        GladiatorOnUse2();
                         break;
                     case 15:
                         SetCooldown2(10);

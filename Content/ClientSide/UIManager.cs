@@ -458,6 +458,53 @@ public class UIManager : ModSystem
                 Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
             }
         }
+        if (selectedClass == 4)
+        {
+            int cooldown2 = abilities.cooldown2;
+
+            Texture2D Ability1Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/GladiatorAbilityIcons/GladiatorAbility1").Value;
+            Texture2D Ability2Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/GladiatorAbilityIcons/GladiatorAbility2").Value;
+
+            int iconSize = 32;
+            int centerX = Main.screenWidth / 2 - 24;
+            int centerY = Main.screenHeight - 32;
+            Rectangle destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+
+            // Draw first ability icon
+            if (cooldown <= 0)
+            {
+                Main.spriteBatch.Draw(Ability1Icon, destRect, Color.White);
+            }
+            else
+            {
+                Main.spriteBatch.Draw(Ability1Icon, destRect, Color.Gray * 0.6f);
+
+                DynamicSpriteFont font = FontAssets.MouseText.Value;
+                string cdText = $"{(int)Math.Ceiling(cooldown / 60f)}";
+                Vector2 textSize = font.MeasureString(cdText);
+                Vector2 textPos = new Vector2(centerX - textSize.X / 2f, centerY - textSize.Y / 2f);
+                Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
+            }
+
+            centerX += 48;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+
+            // Draw second ability icon
+            if (cooldown2 <= 0)
+            {
+                Main.spriteBatch.Draw(Ability2Icon, destRect, Color.White);
+            }
+            else
+            {
+                Main.spriteBatch.Draw(Ability2Icon, destRect, Color.Gray * 0.6f);
+
+                DynamicSpriteFont font = FontAssets.MouseText.Value;
+                string cdText = $"{(int)Math.Ceiling(cooldown2 / 60f)}";
+                Vector2 textSize = font.MeasureString(cdText);
+                Vector2 textPos = new Vector2(centerX - textSize.X / 2f, centerY - textSize.Y / 2f);
+                Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
+            }
+        }
         else if (selectedClass == 15)
         {
             int cooldown2 = abilities.cooldown2;
