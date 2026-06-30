@@ -1,8 +1,8 @@
 using Terraria.ModLoader;
 using Terraria;
 using Microsoft.Xna.Framework;
+using CTG2.ReeseIntegration;
 using CTG2.Content.Commands.Auth;
-using System;
 
 namespace CTG2.Content.Commands
 {
@@ -16,28 +16,14 @@ namespace CTG2.Content.Commands
         public override void Action(CommandCaller caller, string input, string[] args)
         {
             var modPlayer = caller.Player.GetModPlayer<AuthPlayer>();
-             if (!modPlayer.IsAdmin)
-             {
-                 caller.Reply("You must be an admin to use this command.", Color.Red);
-                 return;
-             }
-
-
-        string reason = "Cross-mod integration";
-        if (ModLoader.TryGetMod("Reese", out Mod reese))
-        {
-            try
+            if (!modPlayer.IsAdmin)
             {
-                reese.Call("StopRecording", reason);
+                caller.Reply("You must be an admin to use this command.", Color.Red);
+                return;
             }
-            catch (Exception e)
-            {
-                reese.Logger.Warn("Failed to stop Reese recording via Mod.Call: " + e);
-            }
-        }
-    
 
-            
+            var result = ReeseRecordingControl.StopRecording("Stopped via CTG2 /stoprecording");
+            caller.Reply(result.Message, result.Color);
         }
     }
 }
