@@ -327,6 +327,7 @@ namespace CTG2.Content.ClientSide
             var packet = ModContent.GetInstance<CTG2>().GetPacket();
             packet.Write((byte)MessageType.RequestKickPlayer);
             packet.Write(Main.player[_selectedPlayerIndex].name);
+            packet.Write("none");
             packet.Send();
         }
 
@@ -338,6 +339,7 @@ namespace CTG2.Content.ClientSide
             var packet = ModContent.GetInstance<CTG2>().GetPacket();
             packet.Write((byte)MessageType.RequestBanPlayer);
             packet.Write(Main.player[_selectedPlayerIndex].name);
+            packet.Write("none");
             packet.Send();
         }
 
