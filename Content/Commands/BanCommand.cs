@@ -18,7 +18,7 @@ namespace CTG2.Content.Commands
 
         public override string Command => "ban";
 
-        public override string Usage => "/ban <playerName>";
+        public override string Usage => "/ban <playerName> [\"reason\"]";
 
         public override string Description => "Bans a player from the server.";
 
@@ -31,52 +31,16 @@ namespace CTG2.Content.Commands
                 return;
             }
 
-            string rawInput = Main.chatText; 
-
-            string message = "";
-            if (rawInput.Length > 5) 
+            if (!CommandInputParser.TryParseTargetAndOptionalReason(
+                Main.chatText,
+                Command,
+                args,
+                out string targetName,
+                out string reason,
+                out string error))
             {
-                message = rawInput.Substring(5).Trim();
-            }
-
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                caller.Reply("Message cannot be empty!", Color.Red);
+                caller.Reply(error, Color.Red);
                 return;
-            }
-
-            string[] messageParts = message.Split(' ');
-
-            string targetName = "";
-
-            if (messageParts[0].StartsWith("\""))
-            {
-                List<string> parts = new List<string>();
-                bool foundClosingQuote = false;
-
-                for (int i = 0; i < messageParts.Length; i++)
-                {
-                    parts.Add(messageParts[i]);
-
-                    if (messageParts[i].EndsWith("\""))
-                    {
-                        foundClosingQuote = true;
-
-                        targetName = string.Join(" ", parts).Trim('"');
-
-                        break;
-                    }
-                }
-
-                if (!foundClosingQuote)
-                {
-                    caller.Reply("Missing closing quote for item name.", Color.Red);
-                    return;
-                }
-            }
-            else
-            {
-                targetName = args[0];
             }
 
             foreach (Player player in Main.player)
@@ -96,7 +60,8 @@ namespace CTG2.Content.Commands
 
                     ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
                     packet.Write((byte)MessageType.RequestBanPlayer);
-                    packet.Write(targetName); 
+                    packet.Write(targetName);
+                    packet.Write(reason);
                     packet.Send();
                     caller.Reply($"Player '{player.name}' has been banned.", Color.Green);
                     return;

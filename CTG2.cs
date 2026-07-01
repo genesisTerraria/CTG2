@@ -2493,12 +2493,30 @@ namespace CTG2
         private static void ProcessRequestBanPlayer(ref BinaryReader reader, int playerNumber)
         {
             string playertoban = reader.ReadString();
+            string reason = ReadOptionalModerationReason(reader);
+            string requesterName = GetModerationRequesterName(playerNumber);
+
             for (int k = 0; k < 255; k++)
             {
                 if (Main.player[k].active && Main.player[k].name == playertoban)
                 {
+                    ChatHelper.BroadcastChatMessage(
+                        NetworkText.FromLiteral($"{Main.player[k].name} was banned by {requesterName}. Reason: {reason}"),
+                        Color.OrangeRed);
+
                     Netplay.AddBan(k);
-                    NetMessage.SendData(2, k, -1, NetworkText.FromKey("CLI.BanMessage", new object[0]), 0, 0f, 0f, 0f, 0, 0, 0);
+                    NetMessage.SendData(
+                        MessageID.Kick,
+                        k,
+                        -1,
+                        NetworkText.FromLiteral($"You have been banned by an admin. Reason: {reason}"),
+                        0,
+                        0f,
+                        0f,
+                        0f,
+                        0,
+                        0,
+                        0);
                 }
             }
         }
@@ -2506,14 +2524,45 @@ namespace CTG2
         private static void ProcessRequestKickPlayer(ref BinaryReader reader, int playerNumber)
         {
             string playerToKick = reader.ReadString();
+            string reason = ReadOptionalModerationReason(reader);
+            string requesterName = GetModerationRequesterName(playerNumber);
+
             for (int k = 0; k < 255; k++)
             {
                 if (Main.player[k].active && Main.player[k].name == playerToKick)
                 {
-                    NetMessage.BootPlayer(Main.player[k].whoAmI, NetworkText.FromLiteral("You have been kicked by an admin."));
+                    ChatHelper.BroadcastChatMessage(
+                        NetworkText.FromLiteral($"{Main.player[k].name} was kicked by {requesterName}. Reason: {reason}"),
+                        Color.OrangeRed);
+
+                    NetMessage.BootPlayer(
+                        Main.player[k].whoAmI,
+                        NetworkText.FromLiteral($"You have been kicked by an admin. Reason: {reason}"));
                 }
             }
         }
+
+        private static string ReadOptionalModerationReason(BinaryReader reader)
+        {
+            if (reader.BaseStream.CanSeek && reader.BaseStream.Position < reader.BaseStream.Length)
+                return NormalizeModerationReason(reader.ReadString());
+
+            return "none";
+        }
+
+        private static string NormalizeModerationReason(string reason)
+        {
+            return string.IsNullOrWhiteSpace(reason) ? "none" : reason.Trim();
+        }
+
+        private static string GetModerationRequesterName(int playerNumber)
+        {
+            if (playerNumber >= 0 && playerNumber < Main.player.Length && Main.player[playerNumber].active)
+                return Main.player[playerNumber].name;
+
+            return "an admin";
+        }
+
         public void setRequestedNpcIndex(int index)
         {
             CTG2.requestedNpcIndex = index;

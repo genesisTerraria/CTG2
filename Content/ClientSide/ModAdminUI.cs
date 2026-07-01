@@ -224,6 +224,8 @@ namespace CTG2.Content.ClientSide
                     AddActionButton("Kick", BeginConfirmAction, AdminAction.Kick);
                     AddActionButton("Ban", BeginConfirmAction, AdminAction.Ban);
                     AddActionButton("Mute", BeginConfirmAction, AdminAction.Mute);
+                    _detailButtonList.Add(CreateButton("Ping", SendPing, 0.85f));
+                    _detailButtonList.Add(CreateButton("Whois", SendWhois, 0.85f));
                     AddActionButton("Set Team", OpenTeamSelection, AdminAction.None);
                     break;
 
@@ -325,6 +327,7 @@ namespace CTG2.Content.ClientSide
             var packet = ModContent.GetInstance<CTG2>().GetPacket();
             packet.Write((byte)MessageType.RequestKickPlayer);
             packet.Write(Main.player[_selectedPlayerIndex].name);
+            packet.Write("none");
             packet.Send();
         }
 
@@ -336,6 +339,7 @@ namespace CTG2.Content.ClientSide
             var packet = ModContent.GetInstance<CTG2>().GetPacket();
             packet.Write((byte)MessageType.RequestBanPlayer);
             packet.Write(Main.player[_selectedPlayerIndex].name);
+            packet.Write("none");
             packet.Send();
         }
 
@@ -347,6 +351,28 @@ namespace CTG2.Content.ClientSide
             var packet = ModContent.GetInstance<CTG2>().GetPacket();
             packet.Write((byte)MessageType.RequestMute);
             packet.Write(_selectedPlayerIndex);
+            packet.Send();
+        }
+
+        private void SendPing()
+        {
+            if (!HasSelectedPlayer())
+                return;
+
+            var packet = ModContent.GetInstance<CTG2>().GetPacket();
+            packet.Write((byte)MessageType.RequestPlayerPing);
+            packet.Write(Main.player[_selectedPlayerIndex].whoAmI);
+            packet.Send();
+        }
+
+        private void SendWhois()
+        {
+            if (!HasSelectedPlayer())
+                return;
+
+            var packet = ModContent.GetInstance<CTG2>().GetPacket();
+            packet.Write((byte)MessageType.RequestWhois);
+            packet.Write(Main.player[_selectedPlayerIndex].whoAmI);
             packet.Send();
         }
 
