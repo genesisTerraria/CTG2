@@ -512,7 +512,7 @@ public class GameManager : ModSystem
 
             // Reset classsystem attributes
             player.GetModPlayer<ClassSystem>().blockCounter = 1800;
-            player.GetModPlayer<ClassSystem>().bombCounter = 1200;
+            player.GetModPlayer<ClassSystem>().bombCounter = 0;
             player.GetModPlayer<ClassSystem>().fishCounter = 3600;
             player.GetModPlayer<ClassSystem>().bugCounter = 3600;
 
@@ -520,7 +520,7 @@ public class GameManager : ModSystem
             classSystemPacket.Write((byte)MessageType.SyncClassSystemAttributes);
             classSystemPacket.Write(player.whoAmI);
             classSystemPacket.Write(1800);
-            classSystemPacket.Write(1200);
+            classSystemPacket.Write(0);
             classSystemPacket.Write(3600);
             classSystemPacket.Write(3600);
             classSystemPacket.Send(toClient: player.whoAmI);

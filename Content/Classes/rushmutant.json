@@ -1,6 +1,6 @@
 {
   "HealthPoints": 100,
-  "ManaPoints": 0,
+  "ManaPoints": 1,
   "BonusDefense": 8,
   "BonusMoveSpeed": 0,
   "BonusRunAcceleration": 0,
@@ -30,9 +30,9 @@
       "Modded": true
     },
     {
-      "Name": "Dirt Block",
-      "Type": 2,
-      "Stack": 300,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 3,
       "Modded": false

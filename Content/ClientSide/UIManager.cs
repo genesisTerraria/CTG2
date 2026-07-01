@@ -296,6 +296,11 @@ public class UIManager : ModSystem
         var playerManager = Main.LocalPlayer.GetModPlayer<PlayerManager>();
         int selectedClass = playerManager.currentClass.AbilityID;
 
+        int iconSize;
+        int centerX;
+        int centerY;
+        Rectangle destRect;
+
         if (selectedClass == 1)
         {
             int cooldown2 = abilities.cooldown2;
@@ -303,10 +308,10 @@ public class UIManager : ModSystem
             Texture2D Ability1Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/ArcherAbilityIcons/ArcherAbility1").Value;
             Texture2D Ability2Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/ArcherAbilityIcons/ArcherAbility2").Value;
 
-            int iconSize = 32;
-            int centerX = Main.screenWidth / 2 - 24;
-            int centerY = Main.screenHeight - 32;
-            Rectangle destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+            iconSize = 32;
+            centerX = Main.screenWidth / 2 - 48;
+            centerY = Main.screenHeight - 32;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
 
             // Draw first ability icon
             if (cooldown <= 0)
@@ -342,6 +347,9 @@ public class UIManager : ModSystem
                 Vector2 textPos = new Vector2(centerX - textSize.X / 2f, centerY - textSize.Y / 2f);
                 Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
             }
+
+            centerX += 48;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
         }
         else if (selectedClass == 2)
         {
@@ -350,10 +358,10 @@ public class UIManager : ModSystem
             Texture2D Ability1Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/NinjaAbilityIcons/NinjaAbility1").Value;
             Texture2D Ability2Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/NinjaAbilityIcons/NinjaAbility2").Value;
 
-            int iconSize = 32;
-            int centerX = Main.screenWidth / 2 - 24;
-            int centerY = Main.screenHeight - 32;
-            Rectangle destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+            iconSize = 32;
+            centerX = Main.screenWidth / 2 - 48;
+            centerY = Main.screenHeight - 32;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
 
             // Draw first ability icon
             if (cooldown <= 0)
@@ -389,6 +397,9 @@ public class UIManager : ModSystem
                 Vector2 textPos = new Vector2(centerX - textSize.X / 2f, centerY - textSize.Y / 2f);
                 Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
             }
+
+            centerX += 48;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
         }
         else if (selectedClass == 3)
         {
@@ -399,10 +410,10 @@ public class UIManager : ModSystem
             Texture2D Ability2Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/AlchemistAbilityIcons/AlchemistAbility2").Value;
             Texture2D Ability3Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/AlchemistAbilityIcons/AlchemistAbility3").Value;
 
-            int iconSize = 32;
-            int centerX = Main.screenWidth / 2 - 48;
-            int centerY = Main.screenHeight - 32;
-            Rectangle destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+            iconSize = 32;
+            centerX = Main.screenWidth / 2 - 72;
+            centerY = Main.screenHeight - 32;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
 
             // Draw first ability icon
             if (cooldown <= 0)
@@ -457,18 +468,21 @@ public class UIManager : ModSystem
                 Vector2 textPos = new Vector2(centerX - textSize.X / 2f, centerY - textSize.Y / 2f);
                 Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
             }
+
+            centerX += 48;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
         }
-        if (selectedClass == 4)
+        else if (selectedClass == 4)
         {
             int cooldown2 = abilities.cooldown2;
 
             Texture2D Ability1Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/GladiatorAbilityIcons/GladiatorAbility1").Value;
             Texture2D Ability2Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/GladiatorAbilityIcons/GladiatorAbility2").Value;
 
-            int iconSize = 32;
-            int centerX = Main.screenWidth / 2 - 24;
-            int centerY = Main.screenHeight - 32;
-            Rectangle destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+            iconSize = 32;
+            centerX = Main.screenWidth / 2 - 48;
+            centerY = Main.screenHeight - 32;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
 
             // Draw first ability icon
             if (cooldown <= 0)
@@ -504,6 +518,9 @@ public class UIManager : ModSystem
                 Vector2 textPos = new Vector2(centerX - textSize.X / 2f, centerY - textSize.Y / 2f);
                 Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
             }
+
+            centerX += 48;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
         }
         else if (selectedClass == 15)
         {
@@ -512,10 +529,10 @@ public class UIManager : ModSystem
             Texture2D Ability1Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/TreeAbilityIcons/TreeAbility1").Value;
             Texture2D Ability2Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/TreeAbilityIcons/TreeAbility2").Value;
 
-            int iconSize = 32;
-            int centerX = Main.screenWidth / 2 - 24;
-            int centerY = Main.screenHeight - 32;
-            Rectangle destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+            iconSize = 32;
+            centerX = Main.screenWidth / 2 - 48;
+            centerY = Main.screenHeight - 32;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
 
             // Draw first ability icon
             if (cooldown <= 0)
@@ -551,15 +568,18 @@ public class UIManager : ModSystem
                 Vector2 textPos = new Vector2(centerX - textSize.X / 2f, centerY - textSize.Y / 2f);
                 Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
             }
+
+            centerX += 48;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
         }
         else
         {
             Texture2D icon = ModContent.Request<Texture2D>("CTG2/Content/ClientSide/AbilityIcon").Value;
 
-            int iconSize = 32;
-            int centerX = Main.screenWidth / 2;
-            int centerY = Main.screenHeight - 32;
-            Rectangle destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+            iconSize = 32;
+            centerX = Main.screenWidth / 2 - 24;
+            centerY = Main.screenHeight - 32;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
 
             if (cooldown <= 0)
             {
@@ -575,6 +595,37 @@ public class UIManager : ModSystem
                 Vector2 textPos = new Vector2(centerX - textSize.X / 2f, centerY - textSize.Y / 2f);
                 Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
             }
+
+            centerX += 48;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+        }
+
+        Texture2D potionIcon = ModContent.Request<Texture2D>("CTG2/Content/Classes/GeneralAbilityIcons/PotionSickness").Value;
+
+        // Draw potion cooldown timer
+        int buffIndex = Main.LocalPlayer.FindBuffIndex(BuffID.PotionSickness);
+        float secondsRemaining = 0;
+
+        if (buffIndex != -1)
+        {
+            int ticksRemaining = Main.LocalPlayer.buffTime[buffIndex];
+            // 60 ticks = 1 second
+            secondsRemaining = ticksRemaining;
+        }
+
+        if (secondsRemaining <= 0)
+        {
+            Main.spriteBatch.Draw(potionIcon, destRect, Color.White);
+        }
+        else
+        {
+            Main.spriteBatch.Draw(potionIcon, destRect, Color.Gray * 0.6f);
+
+            DynamicSpriteFont font = FontAssets.MouseText.Value;
+            string cdText = $"{(int)Math.Ceiling(secondsRemaining / 60f)}";
+            Vector2 textSize = font.MeasureString(cdText);
+            Vector2 textPos = new Vector2(centerX - textSize.X / 2f, centerY - textSize.Y / 2f);
+            Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
         }
     }
 }

@@ -89,7 +89,7 @@ namespace ClassesNamespace
         public int currentMana = 20;
 
         public int blockCounter = 1800;
-        public int bombCounter = 1200;
+        public int bombCounter = 0;
         public int fishCounter = 3600;
         public int bugCounter = 3600;
 
@@ -582,8 +582,18 @@ namespace ClassesNamespace
             //         }
             //     }
             // }
-            
-            if (gameTime >= bombCounter && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0) // miner bombs over time
+            if (bombCounter == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0)
+            {
+                if (playerManager.currentClass?.Name == "Ninja")
+                    giveItemDirect(ItemID.MudBlock, 300);
+
+                else
+                    giveItemDirect(ItemID.DirtBlock, 300);
+
+                bombCounter += 1200;
+            }
+
+            if (gameTime >= bombCounter && bombCounter >= 1200 && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0) // miner bombs over time
             {
                 if (playerManager.currentClass?.Name == "Miner")
                     giveItemDirect(ItemID.StickyBomb, 1);
