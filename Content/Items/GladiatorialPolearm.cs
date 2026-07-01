@@ -80,17 +80,19 @@ namespace CTG2.Content.Items
                     	SoundEngine.PlaySound(connectSound.WithVolumeScale(Main.soundVolume * 2f), Projectile.Center); // CHANGE THIS SOUND
 						playedSound = true;
 					}
+
+					owner.AddBuff(BuffID.Ironskin, 4 * 60);
                 }
             }
 
 			int dust = Dust.NewDust(
-                    Projectile.position,
-                    Projectile.width,
-                    Projectile.height,
-                    DustID.Blood,
-                    0f,
-                    0f
-                );
+				Projectile.position,
+				Projectile.width,
+				Projectile.height,
+				DustID.GemRuby,
+				0f,
+				0f
+			);
 
 			Main.dust[dust].noGravity = true;
 			Main.dust[dust].velocity *= 0.5f;

@@ -21,6 +21,9 @@ public class DashInputPlayer : ModPlayer
         if (CTG2.DashKeybind == null || !CTG2.DashKeybind.JustPressed)
             return;
 
+        if (Player.HasBuff(BuffID.Dazed) || Player.HasBuff(BuffID.OgreSpit) || Player.HasBuff(ModContent.BuffType<Transmutated>()))
+            return;
+
         int inputDirection = NormalizeDirection(GetInputDirection());
 
         if (PerformDash(inputDirection, force: false, out byte dashTypeUsed))

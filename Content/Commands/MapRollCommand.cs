@@ -31,7 +31,7 @@ namespace CTG2.Content.Commands
             Player player = caller.Player;
             Random random = new Random();
 
-            int mapNumber = random.Next(1, 18);
+            int mapNumber = random.Next(1, 8);
             string mapName = "";
 
             switch(mapNumber)
@@ -43,52 +43,19 @@ namespace CTG2.Content.Commands
                     mapName = "Stalactite";
                     break;
                 case 3:
-                    mapName = "Classic";
-                    break;
-                case 4:
                     mapName = "Goblin";
                     break;
-                case 5:
+                case 4:
                     mapName = "Keep";
                     break;
-                case 6:
+                case 5:
                     mapName = "Kraken";
                     break;
-                case 7:
+                case 6:
                     mapName = "Cranes";
                     break;
-                case 8:
+                case 7:
                     mapName = "SteppingStones";
-                    break;
-                case 9:
-                    mapName = "Runes";
-                    break;
-                case 10:
-                    mapName = "Shapes";
-                    break;
-                case 11:
-                    mapName = "Drippler";
-                    break;
-                case 12:
-                    mapName = "Crown";
-                    break;
-                case 13:
-                    mapName = "Caliburn";
-                    break;
-                case 14:
-                    mapName = "Crypt";
-                    break;
-                case 15:
-                    mapName = "Cheese";
-                    break;
-                //case 16:
-                    //mapName = "Temple";
-                    //break;
-                case 16:
-                    mapName= "Rings";
-                    break;
-                case 17:
-                    mapName= "Ankh";
                     break;
             }
 
