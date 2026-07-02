@@ -1551,8 +1551,8 @@ namespace CTG2.Content
                         break;
 
                     case 6:
-                        SetCooldown(40);
-                        TankOnUse();
+                        SetCooldown(30);
+                        FishermanOnUse();
 
                         break;
 
@@ -1625,12 +1625,6 @@ namespace CTG2.Content
                     case 18:
                         SetCooldown(5);
                         RngManOnUse();
-
-                        break;
-
-                    case 19:
-                        SetCooldown(30);
-                        FishermanOnUse();
 
                         break;
                 }
