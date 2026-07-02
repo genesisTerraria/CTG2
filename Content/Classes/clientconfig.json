@@ -104,21 +104,19 @@
       ]
     },
     {
-      "name": "Tank",
-      "summary": "Frenzy Mid-Range tank.",
-      "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
-      "inventory": "tank",
-      "icon": 693,
-      "ability-cooldown": 10,
+      "name": "Fisherman",
+      "summary": "",
+      "description": "",
+      "inventory": "fisherman",
+      "icon": 2424,
+      "ability-cooldown": 30,
       "ability-2-cooldown": -1,
       "ability-3-cooldown": -1,
       "health-from-kills": 0,
-      "respawn-time": 11,
-      "buffs": [3, 33, 36, 46, 107],
+      "respawn-time": 9,
+        "buffs": [107],
       "ability-id": 6,
-      "upgrades": [
-
-      ]
+      "upgrades": []
     },
     {
       "name": "Black Mage",
@@ -329,21 +327,6 @@
         "buffs": [],
         "ability-id": 18,
         "upgrades": []
-    },
-    {
-      "name": "Fisherman",
-      "summary": "",
-      "description": "",
-      "inventory": "fisherman",
-      "icon": 2424,
-      "ability-cooldown": 30,
-      "ability-2-cooldown": -1,
-      "ability-3-cooldown": -1,
-      "health-from-kills": 0,
-      "respawn-time": 9,
-        "buffs": [107],
-      "ability-id": 19,
-      "upgrades": []
     }
   ]
 }

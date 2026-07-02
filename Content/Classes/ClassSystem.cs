@@ -551,38 +551,22 @@ namespace ClassesNamespace
             var abilitiesManager = Player.GetModPlayer<Abilities>();
             int gameTime = GameInfo.matchTime - GameInfo.matchStartTime;
 
-            if (abilitiesManager.mutantState == 1 && playerManager.currentClass?.Name == "Mutant")
+            string currentClass = playerManager.currentClass?.Name;
+
+            if (abilitiesManager.mutantState == 1 && currentClass == "Mutant")
             {
-                Player.AddBuff(21, 10 * 60);
+                Player.AddBuff(BuffID.PotionSickness, 10 * 60);
+            }
+            else if (currentClass == "Clown")
+            {
+                Player.AddBuff(BuffID.PotionSickness, 10 * 60);
             }
 
             // clear banned buffs
             Player.ClearBuff(BuffID.Ichor);
             Player.ClearBuff(BuffID.Poisoned);
 
-            // if (playerManager.currentClass?.Name == "Tiki Priest")
-            // {
-            //     foreach (Player player in Main.player)
-            //     {
-            //         if (!player.active || player.dead)
-            //             continue;
-            //         // ai[0] stores tiki's team
-            //         if (player.team != Player.team)
-            //             continue;
-
-            //         if (Vector2.Distance(Player.Center, player.Center) <= 8 * 16 && gameTime % 60 == 0 && gameTime > 0 && GameInfo.matchStage != 0 && GameInfo.matchStage != 3) // 8 block radius
-            //         {
-            //             var mod = ModContent.GetInstance<CTG2.CTG2>();
-
-            //             ModPacket healpacket = mod.GetPacket();
-            //             healpacket.Write((byte)MessageType.RequestHeal);
-            //             healpacket.Write(player.whoAmI);
-            //             healpacket.Write(1);
-            //             healpacket.Send();
-            //         }
-            //     }
-            // }
-            if (bombCounter == 0 && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0)
+            if (bombCounter >= 0 && bombCounter < 1200 && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0)
             {
                 if (playerManager.currentClass?.Name == "Ninja")
                     giveItemDirect(ItemID.MudBlock, 300);
@@ -598,7 +582,7 @@ namespace ClassesNamespace
                 if (playerManager.currentClass?.Name == "Miner")
                     giveItemDirect(ItemID.StickyBomb, 1);
 
-                bombCounter += 1200;
+                bombCounter = gameTime + 1200 - gameTime % 1200;
             }
 
             if (gameTime >= fishCounter && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0) // daggerfish over time
@@ -606,105 +590,10 @@ namespace ClassesNamespace
                 if (playerManager.currentClass?.Name == "Fisherman")
                     CTG2.CTG2.GiveItemToPlayer(Player, ItemID.AtlanticCod, 2, 0);
 
-                fishCounter += 3600;
+                fishCounter = gameTime + 3600 - gameTime % 3600;
             }
-
-            if (gameTime >= bugCounter && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0) // daggerfish over time
-            {
-                if (playerManager.currentClass?.Name == "Beast")
-                    CTG2.CTG2.GiveItemToPlayer(Player, ItemID.LightningBug, 3, 0);
-
-                bugCounter += 3600;
-            }
-
-            // if (gameTime >= blockCounter && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0 && gameTime <= 19000) // blocks over time
-            // {
-            //     int stack = 0;
-
-            //     switch (playerManager.currentClass?.Name)
-            //     {
-            //         case "Archer":
-            //             stack = 50;
-            //             break;
-            //         case "Ninja":
-            //             stack = 50;
-            //             break;
-            //         case "Beast":
-            //             stack = 50;
-            //             break;
-            //         case "Gladiator":
-            //             stack = 50;
-            //             break;
-            //         case "Paladin":
-            //             stack = 50;
-            //             break;
-            //         case "Tank":
-            //             stack = 50;
-            //             break;
-            //         case "Black Mage":
-            //             stack = 50;
-            //             break;
-            //         case "Psychic":
-            //             stack = 50;
-            //             break;
-            //         case "White Mage":
-            //             stack = 50;
-            //             break;
-            //         case "Miner":
-            //             stack = 50;
-            //             break;
-            //         case "Fish":
-            //             stack = 50;
-            //             break;
-            //         case "Clown":
-            //             stack = 50;
-            //             break;
-            //         case "Phoenix":
-            //             stack = 50;
-            //             break;
-            //         case "Tiki Priest":
-            //             stack = 50;
-            //             break;
-            //         case "Tree":
-            //             stack = 50;
-            //             break;
-            //         case "Mutant":
-            //             stack = 50;
-            //             break;
-            //         case "Leech":
-            //             stack = 50;
-            //             break;
-            //     }
-
-            //     giveItemDirect(ItemID.DirtBlock, stack);
-
-            //     blockCounter += 1800;
-            // }
             
             return;
-            // if (Main.GameUpdateCount % 60 != 0) //replace dye after removal every second
-            //     return;
-            // //this is where dyes are set and forced on 
-            // int redDyeType = 1063;
-            // int blueDyeType = 1065;
-            
-            // // Check if Player has a class selected and is on a team
-            // if (playerManager.currentClass != null && !string.IsNullOrEmpty(playerManager.currentClass.Name) && Player.team != 0)
-            // {
-            //     int dyeID = Player.team switch
-            //     {
-            //         1 => redDyeType,
-            //         3 => blueDyeType,
-            //         _ => 0
-            //     };
-            //     for (int i = 0; i <= 9; i++) //i<=3 just sets the armor for not can switch to i<=9 for all accessory slots later
-            //     {
-            //         if (Player.dye[i] == null || Player.dye[i].type != dyeID)
-            //         {
-            //             Player.dye[i] = dyeID == 0 ? new Item() : new Item(dyeID);
-            //         }
-            //     }
-            // }
         }
 
         public void SyncPlayerStats(int toWho, int fromWho)

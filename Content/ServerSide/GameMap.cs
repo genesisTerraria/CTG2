@@ -31,7 +31,9 @@ public enum MapTypes
     Rings,
     Pipes,
     Croc,
-    Ankh
+    Ankh,
+    Temple,
+    TalDarim,
 }
 
 public class MapData

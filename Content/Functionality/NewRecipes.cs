@@ -17,10 +17,6 @@ namespace CTG2.Content.Functionality
             Recipe recipeMud = Recipe.Create(ItemID.DirtBlock, 1);
             recipeMud.AddIngredient(ItemID.MudBlock, 1);
             recipeMud.Register();
-
-            Recipe recipeFish2 = Recipe.Create(ItemID.BombFish, 1);
-            recipeFish2.AddIngredient(ItemID.AtlanticCod, 2);
-            recipeFish2.Register();
         }
     }
 }

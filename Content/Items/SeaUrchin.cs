@@ -21,7 +21,7 @@ namespace CTG2.Content.Items
 		 public override void AddRecipes()
 		{
 			Recipe recipeUrchin = CreateRecipe();
-            recipeUrchin.AddIngredient(ItemID.AtlanticCod, 2);
+            recipeUrchin.AddIngredient(ItemID.AtlanticCod, 1);
             recipeUrchin.Register();
 		}
 

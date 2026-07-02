@@ -67,7 +67,8 @@ public class ProjectileOverrides : GlobalProjectile
 
     public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
     {
-        if (projectile.type == ProjectileID.EmeraldBolt || projectile.type == ModContent.ProjectileType<SpaceSplitterProjectile>())
+        if (projectile.type == ProjectileID.EmeraldBolt || projectile.type == ModContent.ProjectileType<SpaceSplitterProjectile>()
+         || projectile.type == ModContent.ProjectileType<SittingDuckBobber>())
         {
             target.noKnockback = true;
 
@@ -297,7 +298,7 @@ public class ProjectileOverrides : GlobalProjectile
             projectile.damage = 31;
         }
         if (projectile.type == ProjectileID.IceSickle || projectile.type == ProjectileID.ChlorophyteOrb || projectile.type == ProjectileID.DemonScythe || projectile.type == ProjectileID.GoldenShowerFriendly || projectile.type == ModContent.ProjectileType<CTG2GoldenShowerProjectile>() || projectile.type == ProjectileID.WeatherPainShot
-         || projectile.type == ModContent.ProjectileType<SittingDuckBobber>() || projectile.type == ProjectileID.JavelinFriendly)
+         || projectile.type == ProjectileID.JavelinFriendly)
         {
             projectile.penetrate = 1;
         }
@@ -549,10 +550,6 @@ public class ModifyHurtModPlayer : ModPlayer
         if (info.DamageSource.SourceProjectileType == 507)
         {
             Player.AddBuff(BuffID.Dazed, 90);
-        }
-        if (info.DamageSource.SourceProjectileType == 520) // frost daggerfish
-        {
-            Player.AddBuff(46, 120);
         }
         if (info.DamageSource.SourceProjectileType == 153)
         {
