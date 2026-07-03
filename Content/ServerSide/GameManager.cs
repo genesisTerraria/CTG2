@@ -305,6 +305,32 @@ public class GameManager : ModSystem
         pausedPacket.Send();
     }
 
+    public void changetimer(int timeinseconds)
+    {
+        timeinseconds = Math.Max(0, timeinseconds);
+        int maxSeconds = Math.Max(0, (int.MaxValue - matchStartTime) / 60);
+        timeinseconds = Math.Min(timeinseconds, maxSeconds);
+
+        MatchTime = matchStartTime + timeinseconds * 60;
+
+        var mod = ModContent.GetInstance<CTG2>();
+
+        ModPacket packetMatchTime = mod.GetPacket();
+        packetMatchTime.Write((byte)MessageType.RequestMatchTime);
+        packetMatchTime.Write(MatchTime);
+        packetMatchTime.Send();
+
+        if (timeinseconds < 10 * 60 && isOvertime)
+        {
+            isOvertime = false;
+
+            ModPacket packetOvertime = mod.GetPacket();
+            packetOvertime.Write((byte)MessageType.UpdateOvertime);
+            packetOvertime.Write(false);
+            packetOvertime.Send();
+        }
+    }
+
     public void EndGame()
     {
         var mod = ModContent.GetInstance<CTG2>();

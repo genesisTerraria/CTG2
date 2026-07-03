@@ -171,7 +171,9 @@ namespace CTG2
         SetNoKnockback = 125,
         RequestMissing = 126,
         MissingResult = 127,
-        RequestDiscordIdentityRefresh = 128
+        RequestDiscordIdentityRefresh = 128,
+        SendBanUI = 129,
+        RequestChangeTimer = 130
     }
 
     public class CTG2 : Mod
@@ -509,6 +511,17 @@ namespace CTG2
                     }
                     break;
                 }
+                
+                case (byte)MessageType.SendBanUI:
+                {
+                    if(Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                    bool showBanUI = reader.ReadBoolean();
+                    if(showBanUI){BanUI.ShowBanUI();}
+                    else{BanUI.HideBanUI();}
+                    }
+                    break;
+                }
 
                 case (byte)MessageType.KickDiscordIdentityFailed:
                 {
@@ -656,6 +669,24 @@ namespace CTG2
                         manager.UnpauseGame();
 
                     break;
+                case (byte)MessageType.RequestChangeTimer:
+                {
+                    if (Main.netMode != NetmodeID.Server)
+                        break;
+
+                    int timeInSeconds = reader.ReadInt32();
+                    if (whoAmI < 0 || whoAmI >= Main.player.Length || !Main.player[whoAmI].active)
+                        break;
+
+                    if (!Main.player[whoAmI].GetModPlayer<AuthPlayer>().IsAdmin)
+                        break;
+
+                    manager.changetimer(timeInSeconds);
+                    ChatHelper.BroadcastChatMessage(
+                        NetworkText.FromLiteral($"Match timer set to {timeInSeconds / 60}:{timeInSeconds % 60:D2}."),
+                        Color.Yellow);
+                    break;
+                }
                 case (byte)MessageType.RequestSpawnNpc:
                 {
                     var npcX = reader.ReadInt32();
