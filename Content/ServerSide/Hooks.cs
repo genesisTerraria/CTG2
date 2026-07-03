@@ -28,12 +28,31 @@ public static class Hooks
             NetworkText.FromLiteral("All players in the queue have arrived."),
             Color.LightGreen);
 
+        ModContent.GetInstance<CTG2>().Logger.Info(
+            "[NeatQueue] OnFullRosterJoined fired. All queued players are currently in the world.");
+
+        StartScrimsGame();
+
+        // rollRandomMap(MapsAllowedInScrimsDict)
+
+        // A system for storing the score of the scrim has to be made and has to
+        // account for things like admins ending the round themselves
+
+        // substitutes currently aren't accounted for the api has to be setup to
+        // recieve the substitute event and then substitute has to be replace in
+        // the mapping
+    }
+
+    // Kicks off a scrim round: announces captains and starts the ban phase (timer + captain ban UIs).
+    // Games are best of 3, so this runs on full roster join AND again from EndGame between rounds.
+    public static void StartScrimsGame()
+    {
+        if (Main.netMode != NetmodeID.Server)
+            return;
+
         ChatHelper.BroadcastChatMessage(
             NetworkText.FromLiteral($"Both teams have 3 minutes to ban."),
             Color.LightGreen);
-
-        ModContent.GetInstance<CTG2>().Logger.Info(
-            "[NeatQueue] OnFullRosterJoined fired. All queued players are currently in the world.");
 
         var assignmentSystem = ModContent.GetInstance<NeatQueueTeamAssignmentSystem>();
         var captainWhoAmIs = assignmentSystem.GetOnlineCaptainWhoAmIs();
@@ -48,8 +67,7 @@ public static class Hooks
             NetworkText.FromLiteral("The captains are " + string.Join(", ", captainNames) + "."),
             Color.LightGreen); //make sure this format is good
 
-
-        // Clear any bans left over from a previous match and sync the reset to all clients
+        // Clear any bans left over from the previous round and sync the reset to all clients
         ModContent.GetInstance<GameManager>().ResetClassBans();
 
         StartBanTimer(); //showtheban timer to all players in the world
@@ -64,15 +82,6 @@ public static class Hooks
             packet.Write(true);
             packet.Send(toClient: whoAmI);
         }
-
-        // rollRandomMap(MapsAllowedInScrimsDict)
-
-        // A system for storing the score of the scrim has to be made and has to
-        // account for things like admins ending the round themselves
-
-        // substitutes currently aren't accounted for the api has to be setup to
-        // recieve the substitute event and then substitute has to be replace in
-        // the mapping
     }
 
     // True while captains are picking bans; armed by StartBanTimer, cleared when both bans are in

@@ -646,6 +646,10 @@ public class GameManager : ModSystem
         isWaitingForNewGame = true;
         if (pubsConfig)
             newGameTimer = 15 * 60; // 15 seconds * 60 ticks per second
+
+        // Scrims are best of 3 — start the next round's ban phase right away
+        if (scrimsConfig)
+            Hooks.StartScrimsGame();
     }
 
     // Runs every frame while game running. Runs all gem checks, draws timer and gem status.
