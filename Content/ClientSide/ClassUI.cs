@@ -28,6 +28,7 @@ public class ClassUI : UIState
     private UpgradeConfig selectedUpgrade;
     private string _lastGamemode;
     private int _classSelectCooldown; // ticks remaining
+    private int _lastBannedClassID;
     private const int ClassSelectCooldownMax = 60; // 60 ticks = 1 second
     private bool _dragging;
     private Vector2 _dragOffset;
@@ -111,6 +112,22 @@ public class ClassUI : UIState
             _lastGamemode = currentMode;
             PopulateClasses();
         }
+
+        // Refresh the list when the ban for our team changes (ban synced late or team changed)
+        int bannedNow = BannedClassIDForLocalPlayer();
+        if (bannedNow != _lastBannedClassID)
+        {
+            _lastBannedClassID = bannedNow;
+            PopulateClasses();
+        }
+    }
+
+    // Team 0 (no team, e.g. singleplayer testing) falls back to the red-team ban.
+    public static int BannedClassIDForLocalPlayer()
+    {
+        return Main.LocalPlayer.team == 3
+            ? GameInfo.blueTeamBannedClassID
+            : GameInfo.redTeamBannedClassID;
     }
 
     private string GetCurrentGamemode()
@@ -267,6 +284,7 @@ public class ClassUI : UIState
         _classList.Clear();
         _classList2.Clear();
         var gameManager = ModContent.GetInstance<GameManager>();
+        int bannedID = BannedClassIDForLocalPlayer();
         for (int id = 1; id <= 9; id++)
         {
             var cls = CTG2.CTG2.config.Classes.FirstOrDefault(c => c.AbilityID == id);
@@ -276,6 +294,12 @@ public class ClassUI : UIState
             // RNG CTG: only RngMan (column 2) is allowed; keep first column empty like classes 10–19 loop.
             if (gameManager != null && gameManager.rngConfig)
                 continue;
+
+            if (cls.AbilityID == bannedID)
+            {
+                _classList.Add(MakeBannedButton(cls));
+                continue;
+            }
 
             var btn = new UITextPanel<string>(cls.Name)
             {
@@ -339,6 +363,13 @@ public class ClassUI : UIState
                 continue;
             if (cls.AbilityID != 18 && gameManager.rngConfig)
                 continue;
+
+            if (cls.AbilityID == bannedID)
+            {
+                _classList2.Add(MakeBannedButton(cls));
+                continue;
+            }
+
             var btn = new UITextPanel<string>(cls.Name)
             {
                 Width = { Percent = 1f },
@@ -392,8 +423,23 @@ public class ClassUI : UIState
         }
     }
 
+    // Greyed-out, unclickable entry for the class banned for the local player's team
+    private UITextPanel<string> MakeBannedButton(ClassConfig cls)
+    {
+        return new UITextPanel<string>(cls.Name)
+        {
+            Width = { Percent = 1f },
+            Height = { Pixels = 30 },
+            BackgroundColor = new Color(40, 40, 40, 180),
+            TextColor = Color.Gray
+        };
+    }
+
     private void SelectClass(ClassConfig cfg)
     {
+        if (cfg.AbilityID == BannedClassIDForLocalPlayer())
+            return;
+
         var playerManager = Main.LocalPlayer.GetModPlayer<PlayerManager>();
         playerManager.currentClass = cfg;
         

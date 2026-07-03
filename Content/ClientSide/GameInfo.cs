@@ -22,4 +22,8 @@ public static class GameInfo
     public static float blueFurthest = 0;
     public static float redFurthest = 0;
     public static bool paused = false;
+    // AbilityID of the class each team is forbidden from picking (0 = no ban).
+    // redTeamBannedClassID is set by the BLUE captain and applies to red players, and vice versa.
+    public static int redTeamBannedClassID = 0;
+    public static int blueTeamBannedClassID = 0;
 }

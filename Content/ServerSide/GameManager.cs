@@ -61,6 +61,11 @@ public class GameManager : ModSystem
 
     public bool isOvertime = false;
 
+    // AbilityID of the class each team is CANT pick (0 = no ban)
+    // redTeamBannedClassID is set by the BLUE captain and applies to red players, and vice versa.
+    public int redTeamBannedClassID = 0;
+    public int blueTeamBannedClassID = 0;
+
     public GameMap Map { get; private set; }
 
     private string mapName = "";
@@ -149,6 +154,25 @@ public class GameManager : ModSystem
         MatchTime = 0;
     }
 
+    public void BroadcastClassBans()
+    {
+        if (Main.netMode != NetmodeID.Server)
+            return;
+
+        ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
+        packet.Write((byte)MessageType.SyncClassBans);
+        packet.Write(redTeamBannedClassID);
+        packet.Write(blueTeamBannedClassID);
+        packet.Send();
+    }
+
+    public void ResetClassBans()
+    {
+        redTeamBannedClassID = 0;
+        blueTeamBannedClassID = 0;
+        BroadcastClassBans();
+    }
+
     public void ResetGemStateForReplay()
     {
         BlueGem?.Reset();
@@ -181,11 +205,13 @@ public class GameManager : ModSystem
         packetMatchTime.Write(MatchTime);
         packetMatchTime.Send();
 
-        matchStartTime = 1800;
+        // Scrims get a 2 minute class selection grace period (instead of 30s) since the
+        // bans may have affected the comps teams were planning to pick
+        matchStartTime = scrimsConfig ? 7200 : 1800;
 
         ModPacket packetMatchStartTime = mod.GetPacket();
         packetMatchStartTime.Write((byte)MessageType.UpdateMatchStartTime);
-        packetMatchStartTime.Write(1800);
+        packetMatchStartTime.Write(matchStartTime);
         packetMatchStartTime.Send();
 
         if (pubsConfig)
@@ -367,6 +393,9 @@ public class GameManager : ModSystem
         IsGameActive = false;
         HasRoundStarted = false;
         pause = false;
+
+        // clear the bans from the current round
+        ResetClassBans();
 
         // Reset gems
         BlueGem.Reset();
@@ -723,7 +752,8 @@ public class GameManager : ModSystem
                     endEarly = false;
             }
 
-            if (endEarly && !hasStartedEarly && MatchTime < 1500)
+            // Only trigger the early start if more than the 5s buffer remains on the countdown
+            if (endEarly && !hasStartedEarly && MatchTime < matchStartTime - 300)
             {
                 var modCTG = ModContent.GetInstance<CTG2>();
                 
@@ -1198,7 +1228,10 @@ public class GameManager : ModSystem
         {
             Random random = new Random();
 
+            int bannedForTeam = team == 3 ? blueTeamBannedClassID : redTeamBannedClassID;
             int num = random.Next(1, 18);
+            while (num == bannedForTeam)
+                num = random.Next(1, 18);
 
             ModPacket classPacket = mod.GetPacket();
             classPacket.Write((byte)MessageType.SetCurrentClass);

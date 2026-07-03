@@ -173,7 +173,11 @@ namespace CTG2
         MissingResult = 127,
         RequestDiscordIdentityRefresh = 128,
         SendBanUI = 129,
-        RequestChangeTimer = 130
+        RequestChangeTimer = 130,
+        SendBanTimer = 131,
+        RequestForceStartBans = 132,
+        SubmitClassBan = 133,   // client (captain) → server: AbilityID to ban for the opposing team
+        SyncClassBans = 134     // server → all clients: both teams' banned AbilityIDs
     }
 
     public class CTG2 : Mod
@@ -523,6 +527,73 @@ namespace CTG2
                     break;
                 }
 
+                case (byte)MessageType.SendBanTimer:
+                {
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                        int banTimerTicks = reader.ReadInt32();
+                        if (banTimerTicks > 0)
+                            BanTimer.ShowBanTimer(banTimerTicks);
+                        else
+                            BanTimer.HideBanTimer();
+                    }
+                    break;
+                }
+
+                case (byte)MessageType.SubmitClassBan:
+                {
+                    int bannedClassID = reader.ReadInt32();
+
+                    if (Main.netMode != NetmodeID.Server)
+                        break;
+
+                    // Use the authoritative whoAmI from HandlePacket — never trust a client-supplied index.
+                    Player banner = Main.player[whoAmI];
+                    if (!banner.active)
+                        break;
+
+                    var assignmentSystem = ModContent.GetInstance<NeatQueueTeamAssignmentSystem>();
+                    if (!assignmentSystem.TryGetCaptainStatus(whoAmI, out bool isCaptain) || !isCaptain)
+                        Console.WriteLine($"[Bans] Warning: '{banner.name}' submitted a class ban but is not a registered captain.");
+
+                    var gmBans = ModContent.GetInstance<GameManager>();
+                    string bannerTeamName;
+                    if (banner.team == 1) // red captain bans a class for blue players
+                    {
+                        gmBans.blueTeamBannedClassID = bannedClassID;
+                        bannerTeamName = "Red";
+                    }
+                    else if (banner.team == 3) // blue captain bans a class for red players
+                    {
+                        gmBans.redTeamBannedClassID = bannedClassID;
+                        bannerTeamName = "Blue";
+                    }
+                    else
+                    {
+                        Console.WriteLine($"[Bans] Ignored class ban from '{banner.name}' — not on a team.");
+                        break;
+                    }
+
+                    Console.WriteLine($"[Bans] {bannerTeamName} team's captain '{banner.name}' banned class {bannedClassID} for the opposing team.");
+
+                    // Once both captains have banned, end the ban timer and start the game
+                    Hooks.TryCompleteBanPhase();
+                    break;
+                }
+
+                case (byte)MessageType.SyncClassBans:
+                {
+                    int redBanID = reader.ReadInt32();
+                    int blueBanID = reader.ReadInt32();
+
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                    {
+                        GameInfo.redTeamBannedClassID = redBanID;
+                        GameInfo.blueTeamBannedClassID = blueBanID;
+                    }
+                    break;
+                }
+
                 case (byte)MessageType.KickDiscordIdentityFailed:
                 {
                     _ = reader.ReadInt32(); // read for stream alignment only
@@ -684,6 +755,23 @@ namespace CTG2
                     manager.changetimer(timeInSeconds);
                     ChatHelper.BroadcastChatMessage(
                         NetworkText.FromLiteral($"Match timer set to {timeInSeconds / 60}:{timeInSeconds % 60:D2}."),
+                        Color.Yellow);
+                    break;
+                }
+                case (byte)MessageType.RequestForceStartBans:
+                {
+                    if (Main.netMode != NetmodeID.Server)
+                        break;
+
+                    if (whoAmI < 0 || whoAmI >= Main.player.Length || !Main.player[whoAmI].active)
+                        break;
+
+                    if (!Main.player[whoAmI].GetModPlayer<AuthPlayer>().IsAdmin)
+                        break;
+
+                    Hooks.StartBanTimer();
+                    ChatHelper.BroadcastChatMessage(
+                        NetworkText.FromLiteral("Ban timer force-started. Both teams have 3 minutes to ban."),
                         Color.Yellow);
                     break;
                 }

@@ -25,14 +25,17 @@ public class UIManager : ModSystem
     private DamageBoardUI damageBoardState;
     private UserInterface modAdminInterface;
     private ModAdminUI modAdminState;
-    
-    
+    private UserInterface banInterface;
+    private BanUI banUIState;
+
+
     public override void OnWorldLoad()
     {
         // 1) Create your UIState
         classUIState = new ClassUI();
         damageBoardState = new DamageBoardUI();
         modAdminState = new ModAdminUI();
+        banUIState = new BanUI();
 
         // 2) Create a UserInterface and attach your state
         classInterface = new UserInterface();
@@ -41,6 +44,8 @@ public class UIManager : ModSystem
         damageBoardInterface.SetState(damageBoardState);
         modAdminInterface = new UserInterface();
         modAdminInterface.SetState(modAdminState);
+        banInterface = new UserInterface();
+        banInterface.SetState(banUIState);
     }
     
     public override void UpdateUI(GameTime gameTime)
@@ -54,6 +59,11 @@ public class UIManager : ModSystem
         if (Main.LocalPlayer.GetModPlayer<PlayerManager>().ShowModUI)
         {
             modAdminInterface?.Update(gameTime);
+        }
+
+        if (BanUI.Visible)
+        {
+            banInterface?.Update(gameTime);
         }
 
         if (DamageBoardData.Visible)
@@ -96,14 +106,35 @@ public class UIManager : ModSystem
                     },
                     InterfaceScaleType.UI)
                 );
+                insertIndex++;
+            }
+
+            if (BanUI.Visible)
+            {
+                layers.Insert(insertIndex, new LegacyGameInterfaceLayer(
+                    "CTG2: Class Ban UI",
+                    delegate
+                    {
+                        banInterface.Draw(Main.spriteBatch, new GameTime());
+                        return true;
+                    },
+                    InterfaceScaleType.UI)
+                );
             }
             
             layers.Insert(index + 1, new LegacyGameInterfaceLayer(
                 "CTG2: Match Timer",
                 delegate
                 {
+                    if (BanTimer.Visible)
+                    {
+                        BanTimer.Draw();
+                        return true;
+                    }
+
                     DrawTopUI();
                     DrawAbilityCooldown();
+
                     if (DamageBoardData.Visible)
                     {
                         damageBoardInterface?.Draw(Main.spriteBatch, new GameTime());
