@@ -2567,7 +2567,7 @@ namespace CTG2
                     string clientModsRaw = reader.ReadString();
                     string[] clientMods = clientModsRaw.Split(',');
 
-                    string[] allowedMods = { "CTG2", "OptimizedCursor", "HighFPSSupport", "TeamSpectate", "ModLoader", "Terraria", "PlayerBars", "Reese", "CalamityModMusic", "CalamityMod", "ModReloader", "PvPHub"};
+                    string[] allowedMods = { "CTG2", "OptimizedCursor", "HighFPSSupport", "TeamSpectate", "ModLoader", "Terraria", "PlayerBars", "Reese", "CalamityModMusic", "CalamityMod", "ThoriumMod","ModReloader", "PvPHub"};
 
                     foreach (string modName in clientMods)
                     {
