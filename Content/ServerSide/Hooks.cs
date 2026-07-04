@@ -1,5 +1,7 @@
 using System;
+using System.Collections.Generic;
 using System.Globalization;
+using System.Linq;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Chat;
@@ -12,10 +14,12 @@ namespace CTG2.Content.ServerSide;
 //This class will store various timing dependant hooks
 public static class Hooks
 {
+    public const int BanTimerTicks = 3 * 60 * 60; // 3 minutes in ticks (60 ticks per second)
+
     // This hook is fired the instant every queued player is simultaneously in the world
     // It is called by NeatQueueTeamAssignmentSystem.PlayersReady
     // Future match-ready logic (maps/bans/pick timers) should be called from here
-    public static void OnFullRosterJoined()
+    public static void OnFullRosterJoined() //this is called on the server
     {
         if (Main.netMode != NetmodeID.Server)
             return;
@@ -24,44 +28,129 @@ public static class Hooks
             NetworkText.FromLiteral("All players in the queue have arrived."),
             Color.LightGreen);
 
-        ChatHelper.BroadcastChatMessage(
-            NetworkText.FromLiteral($"Both teams have 3 minutes to ban. ({GetEasternTimeStamp()} EST)"),
-            Color.LightGreen);
-
         ModContent.GetInstance<CTG2>().Logger.Info(
             "[NeatQueue] OnFullRosterJoined fired. All queued players are currently in the world.");
 
-        // Example for future scrim automation:
-        // teamOneBanTimer = 3 * 60 * 60 (3 minutes to ban)
-        // teamTwoBanTimer = 3 * 60 * 60
-        // showBanUItocaptains()
+        StartScrimsGame();
+
         // rollRandomMap(MapsAllowedInScrimsDict)
 
-        // Automating scrims requires two big updates:
-        // 1. The payload for the CTG2 server and the railway backend must support captains
-        // 2. A system for storing the score of the scrim has to be made and has to
-        //    account for things like admins ending the round themselves
+        // A system for storing the score of the scrim has to be made and has to
+        // account for things like admins ending the round themselves
+
+        // substitutes currently aren't accounted for the api has to be setup to
+        // recieve the substitute event and then substitute has to be replace in
+        // the mapping
     }
 
-    private static string GetEasternTimeStamp()
+    // Kicks off a scrim round: announces captains and starts the ban phase (timer + captain ban UIs).
+    // Games are best of 3, so this runs on full roster join AND again from EndGame between rounds.
+    public static void StartScrimsGame()
     {
-        DateTime easternNow = TimeZoneInfo.ConvertTimeFromUtc(DateTime.UtcNow, GetEasternTimeZone());
-        return easternNow.ToString("h:mm tt", CultureInfo.InvariantCulture);
+        if (Main.netMode != NetmodeID.Server)
+            return;
+
+        ChatHelper.BroadcastChatMessage(
+            NetworkText.FromLiteral($"Both teams have 3 minutes to ban."),
+            Color.LightGreen);
+
+        var assignmentSystem = ModContent.GetInstance<NeatQueueTeamAssignmentSystem>();
+        var captainWhoAmIs = assignmentSystem.GetOnlineCaptainWhoAmIs();
+
+        List<string> captainNames = new();
+        foreach (int whoAmI in captainWhoAmIs)
+        {captainNames.Add(Main.player[whoAmI].name);}
+        // umm check if the list is empty first????
+        // if there is no captain on either team then give it randomly for now
+        // in the future make it so if there isn't captain the team votes
+        ChatHelper.BroadcastChatMessage(
+            NetworkText.FromLiteral("The captains are " + string.Join(", ", captainNames) + "."),
+            Color.LightGreen); //make sure this format is good
+
+        // Clear any bans left over from the previous round and sync the reset to all clients
+        ModContent.GetInstance<GameManager>().ResetClassBans();
+
+        StartBanTimer(); //showtheban timer to all players in the world
+
+        // show the ban ui only to the captains
+        // how do we account for captains leaving the world during ban process?
+        // do we even care? thats their problem?
+        foreach (int whoAmI in captainWhoAmIs)
+        {
+            ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
+            packet.Write((byte)MessageType.SendBanUI);
+            packet.Write(true);
+            packet.Send(toClient: whoAmI);
+        }
     }
 
-    private static TimeZoneInfo GetEasternTimeZone()
+    // True while captains are picking bans; armed by StartBanTimer, cleared when both bans are in
+    public static bool BanPhaseActive { get; private set; }
+
+    public static void StartBanTimer()
     {
-        try
-        {
-            return TimeZoneInfo.FindSystemTimeZoneById("Eastern Standard Time");
-        }
-        catch (TimeZoneNotFoundException)
-        {
-            return TimeZoneInfo.FindSystemTimeZoneById("America/New_York");
-        }
+        if (Main.netMode != NetmodeID.Server)
+            return;
+
+        BanPhaseActive = true;
+
+        ModPacket banTimerPacket = ModContent.GetInstance<CTG2>().GetPacket();
+        banTimerPacket.Write((byte)MessageType.SendBanTimer);
+        banTimerPacket.Write(BanTimerTicks);
+        banTimerPacket.Send();
     }
 
-    //Perhaps we can check if PlayersReady = true and make a new hook that is called from
-    // GameManager.EndGame(). Here we would check if PlayersReady = true. If they are then
-    // A scrim is active then increase the score within the hook
+    public static void EndBanTimer()
+    {
+        if (Main.netMode != NetmodeID.Server)
+            return;
+
+        // 0 ticks tells clients to hide the ban timer
+        ModPacket banTimerPacket = ModContent.GetInstance<CTG2>().GetPacket();
+        banTimerPacket.Write((byte)MessageType.SendBanTimer);
+        banTimerPacket.Write(0);
+        banTimerPacket.Send();
+    }
+
+    // Called after each ban is recorded
+    //  once both teams have a ban, end the phase and start the game
+    // TODO: give the teams some time between rounds
+    public static void TryCompleteBanPhase()
+    {
+        if (Main.netMode != NetmodeID.Server || !BanPhaseActive)
+            return;
+
+        var gameManager = ModContent.GetInstance<GameManager>();
+        if (gameManager.redTeamBannedClassID <= 0 || gameManager.blueTeamBannedClassID <= 0)
+            return;
+
+        BanPhaseActive = false;
+        EndBanTimer();
+
+
+        gameManager.BroadcastClassBans();
+
+        // Bans are only revealed at the same time
+        // redTeamBannedClassID applies to red players (it is what BLUE's captain banned)
+        string redTeamsBan = GetClassName(gameManager.blueTeamBannedClassID);
+        string blueTeamsBan = GetClassName(gameManager.redTeamBannedClassID);
+        ChatHelper.BroadcastChatMessage(
+            NetworkText.FromLiteral($"Both teams have banned. Red team has banned: {redTeamsBan}. Blue team has banned: {blueTeamsBan}."),
+            Color.OrangeRed);
+
+        ChatHelper.BroadcastChatMessage(
+            NetworkText.FromLiteral("The game is starting!"),
+            Color.LightGreen);
+
+        gameManager.StartGame();
+    }
+
+    private static string GetClassName(int abilityID)
+    {
+        return CTG2.config.Classes.FirstOrDefault(c => c.AbilityID == abilityID)?.Name ?? $"class {abilityID}";
+    }
+
+   
+
 }
+

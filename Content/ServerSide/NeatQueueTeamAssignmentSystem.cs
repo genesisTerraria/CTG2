@@ -16,6 +16,7 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
     private readonly Dictionary<int, DiscordIdentity> _discordIdentityByWhoAmI = new();
     private readonly Dictionary<string, int> _whoAmIByDiscordId = new();
     private readonly Dictionary<string, int> _teamIdByDiscordId = new();
+    private readonly Dictionary<string, bool> _captainByDiscordId = new();
     private readonly Dictionary<string, QueueRosterEntry> _rosterByDiscordId = new();
 
     public bool PlayersReady { get; private set; }
@@ -37,6 +38,7 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
         public string Name;
         public string Team;
         public int? TeamNum;
+        public bool Captain;
     }
 
     public sealed class QueueRosterEntry
@@ -45,6 +47,7 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
         public string Username;
         public string Team;
         public int TeamId;
+        public bool Captain;
     }
 
     public void RegisterDiscordIdentity(int whoAmI, string discordId, string username)
@@ -103,10 +106,12 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
         }
 
         _teamIdByDiscordId.Clear();
+        _captainByDiscordId.Clear();
         _rosterByDiscordId.Clear();
 
         int stored = 0;
         int skipped = 0;
+        int captainCount = 0;
 
         foreach (var assignment in assignmentList)
         {
@@ -127,6 +132,7 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
             }
 
             _teamIdByDiscordId[discordId] = teamId.Value;
+            _captainByDiscordId[discordId] = assignment.Captain;
 
             _rosterByDiscordId[discordId] = new QueueRosterEntry
             {
@@ -135,13 +141,17 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
                 Team = string.IsNullOrWhiteSpace(assignment.Team)
                     ? TeamIdToTeamName(teamId.Value)
                     : assignment.Team.Trim().ToLowerInvariant(),
-                TeamId = teamId.Value
+                TeamId = teamId.Value,
+                Captain = assignment.Captain
             };
+
+            if (assignment.Captain)
+                captainCount++;
 
             stored++;
         }
 
-        Mod.Logger.Info($"[NeatQueue] Stored {stored} assignments (skipped {skipped} invalid)");
+        Mod.Logger.Info($"[NeatQueue] Stored {stored} assignments ({captainCount} captains, skipped {skipped} invalid)");
 
         return (stored, skipped);
     }
@@ -170,6 +180,7 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
     public void ClearAssignments()
     {
         _teamIdByDiscordId.Clear();
+        _captainByDiscordId.Clear();
         _rosterByDiscordId.Clear();
         PlayersReady = false;
         _currentRosterFingerprint = string.Empty;
@@ -196,6 +207,53 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
 
         username = identity.Username;
         return !string.IsNullOrWhiteSpace(username);
+    }
+
+    public bool TryGetCaptainStatus(int whoAmI, out bool isCaptain)
+    {
+        isCaptain = false;
+
+        if (whoAmI < 0 || whoAmI >= Main.player.Length || !Main.player[whoAmI].active)
+        {
+            if (_discordIdentityByWhoAmI.TryGetValue(whoAmI, out DiscordIdentity staleIdentity))
+            {
+                _whoAmIByDiscordId.Remove(staleIdentity.DiscordId);
+            }
+
+            _discordIdentityByWhoAmI.Remove(whoAmI);
+            return false;
+        }
+
+        if (!_discordIdentityByWhoAmI.TryGetValue(whoAmI, out DiscordIdentity identity))
+            return false;
+
+        if (!_captainByDiscordId.TryGetValue(identity.DiscordId, out isCaptain))
+            return false;
+
+        return true;
+    }
+
+    public IReadOnlyList<int> GetOnlineCaptainWhoAmIs()
+    {
+        CleanupStaleIdentities();
+
+        List<int> captains = new();
+
+        foreach (var pair in _captainByDiscordId)
+        {
+            if (!pair.Value)
+                continue;
+
+            if (!_whoAmIByDiscordId.TryGetValue(pair.Key, out int whoAmI))
+                continue;
+
+            if (whoAmI < 0 || whoAmI >= Main.player.Length || !Main.player[whoAmI].active)
+                continue;
+
+            captains.Add(whoAmI);
+        }
+
+        return captains;
     }
 
     public bool TryAssignByDiscordId(string discordId)

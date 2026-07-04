@@ -230,7 +230,8 @@ namespace CTG2.Content.ServerSide
                             DiscordId = dto.DiscordId,
                             Name = dto.Name,
                             Team = dto.Team,
-                            TeamNum = dto.TeamNum
+                            TeamNum = dto.TeamNum,
+                            Captain = dto.Captain
                         });
                     }
 
