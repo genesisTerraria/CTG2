@@ -68,7 +68,8 @@ public class ProjectileOverrides : GlobalProjectile
     public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
     {
         if (projectile.type == ProjectileID.EmeraldBolt || projectile.type == ModContent.ProjectileType<SpaceSplitterProjectile>()
-         || projectile.type == ModContent.ProjectileType<SittingDuckBobber>() || projectile.type == ProjectileID.LaserMachinegunLaser)
+         || projectile.type == ModContent.ProjectileType<SittingDuckBobber>() || projectile.type == ProjectileID.LaserMachinegunLaser
+         || projectile.type == ProjectileID.ThunderSpearShot)
         {
             target.noKnockback = true;
 

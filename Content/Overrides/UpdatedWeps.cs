@@ -200,7 +200,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useAnimation = 22;
                     item.crit = 0;
                     item.shootSpeed = 11f;
-                    item.mana = 15;
+                    item.mana = 10;
                     item.shoot = 33;
                     item.scale = 0;
                     item.UseSound = null;
