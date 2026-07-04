@@ -16,6 +16,9 @@ public static class Hooks
 {
     public const int BanTimerTicks = 3 * 60 * 60; // 3 minutes in ticks (60 ticks per second)
 
+    private const int TeamRed = 1;
+    private const int TeamBlue = 3;
+
     // This hook is fired the instant every queued player is simultaneously in the world
     // It is called by NeatQueueTeamAssignmentSystem.PlayersReady
     // Future match-ready logic (maps/bans/pick timers) should be called from here
@@ -55,14 +58,19 @@ public static class Hooks
             Color.LightGreen);
 
         var assignmentSystem = ModContent.GetInstance<NeatQueueTeamAssignmentSystem>();
-        var captainWhoAmIs = assignmentSystem.GetOnlineCaptainWhoAmIs();
+        List<int> captainWhoAmIs = new(assignmentSystem.GetOnlineCaptainWhoAmIs());
+
+        // If a team is missing a captain (none assigned, or theirs is offline)
+        // promote a random online player from that team for this round
+        // In the future make it so if there isn't a captain the team votes.
+        if (!captainWhoAmIs.Any(whoAmI => Main.player[whoAmI].team == TeamRed))
+            AddRandomCaptainFromTeam(TeamRed, captainWhoAmIs);
+        if (!captainWhoAmIs.Any(whoAmI => Main.player[whoAmI].team == TeamBlue))
+            AddRandomCaptainFromTeam(TeamBlue, captainWhoAmIs);
 
         List<string> captainNames = new();
         foreach (int whoAmI in captainWhoAmIs)
         {captainNames.Add(Main.player[whoAmI].name);}
-        // umm check if the list is empty first????
-        // if there is no captain on either team then give it randomly for now
-        // in the future make it so if there isn't captain the team votes
         ChatHelper.BroadcastChatMessage(
             NetworkText.FromLiteral("The captains are " + string.Join(", ", captainNames) + "."),
             Color.LightGreen); //make sure this format is good
@@ -82,6 +90,28 @@ public static class Hooks
             packet.Write(true);
             packet.Send(toClient: whoAmI);
         }
+    }
+
+    // Picks a random active player on the given team and adds them to captainWhoAmIs
+    // Does nothing if the team has no eligible players
+    private static void AddRandomCaptainFromTeam(int teamId, List<int> captainWhoAmIs)
+    {
+        List<int> candidates = new();
+        for (int i = 0; i < Main.maxPlayers; i++)
+        {
+            Player player = Main.player[i];
+            if (player.active && player.team == teamId && !captainWhoAmIs.Contains(i))
+                candidates.Add(i);
+        }
+
+        if (candidates.Count == 0)
+        {
+            ModContent.GetInstance<CTG2>().Logger.Warn(
+                $"[Scrims] No online players on team {teamId} to promote to captain.");
+            return;
+        }
+
+        captainWhoAmIs.Add(candidates[Main.rand.Next(candidates.Count)]);
     }
 
     // True while captains are picking bans; armed by StartBanTimer, cleared when both bans are in
@@ -114,7 +144,6 @@ public static class Hooks
 
     // Called after each ban is recorded
     //  once both teams have a ban, end the phase and start the game
-    // TODO: give the teams some time between rounds
     public static void TryCompleteBanPhase()
     {
         if (Main.netMode != NetmodeID.Server || !BanPhaseActive)
