@@ -65,6 +65,8 @@ namespace CTG2.Content.Items.ModifiedWeps
 
         private uint flamelashDelay = 55;
         private uint flamelashLastUsedCounter = 0;
+        private uint particleDelay = 50;
+        private uint particleLastUsedCounter = 0;
 
         private uint blowgunDelay = 65;
         private uint blowgunLastUsedCounter = 0;
@@ -623,6 +625,17 @@ namespace CTG2.Content.Items.ModifiedWeps
                 {
                     geodeLastUsedCounter = Main.GameUpdateCount;
                     mPlayer.splitterLastUsedCounter = Math.Max(Main.GameUpdateCount - 5 * 60 + 25, mPlayer.splitterLastUsedCounter);
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (item.type == ModContent.ItemType<ParticleCarbine>())
+            {
+                if (Main.GameUpdateCount - particleLastUsedCounter >= particleDelay)
+                {
+                    particleLastUsedCounter = Main.GameUpdateCount;
 
                     return true;
                 }

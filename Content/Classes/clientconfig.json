@@ -327,6 +327,21 @@
         "buffs": [],
         "ability-id": 18,
         "upgrades": []
+    },
+    {
+        "name": "Astronaut",
+        "summary": "High mobility rusher.",
+        "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+        "inventory": "astronaut",
+        "icon": 2806,
+        "ability-cooldown": -1,
+        "ability-2-cooldown": -1,
+        "ability-3-cooldown": -1,
+        "health-from-kills": 0,
+        "respawn-time": 12,
+        "buffs": [],
+        "ability-id": 19,
+        "upgrades": []
     }
   ]
 }

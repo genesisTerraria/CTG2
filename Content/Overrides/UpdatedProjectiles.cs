@@ -68,7 +68,7 @@ public class ProjectileOverrides : GlobalProjectile
     public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
     {
         if (projectile.type == ProjectileID.EmeraldBolt || projectile.type == ModContent.ProjectileType<SpaceSplitterProjectile>()
-         || projectile.type == ModContent.ProjectileType<SittingDuckBobber>())
+         || projectile.type == ModContent.ProjectileType<SittingDuckBobber>() || projectile.type == ProjectileID.LaserMachinegunLaser)
         {
             target.noKnockback = true;
 
@@ -159,6 +159,13 @@ public class ProjectileOverrides : GlobalProjectile
             if (projectile.timeLeft > 7 * 60)
             {
                 projectile.timeLeft = 7 * 60;
+            }
+        }
+        if (projectile.type == ProjectileID.LaserMachinegunLaser)
+        {
+            if (projectile.timeLeft > 70)
+            {
+                projectile.timeLeft = 70;
             }
         }
         if (projectile.type == 41)
@@ -544,6 +551,19 @@ public class ModifyHurtModPlayer : ModPlayer
                 packet.Write((byte)CTG2.MessageType.RequestMana);
                 packet.Write(attacker.whoAmI);
                 packet.Write(10);
+                packet.Send();
+            }
+        }
+        if (info.DamageSource.SourceProjectileType == ProjectileID.LaserMachinegunLaser)
+        {
+            Player attacker = Main.player[attackerIndex];
+            var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
+            if (attackerPlayer.currentClass.Name == "Astronaut")
+            {
+                ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
+                packet.Write((byte)CTG2.MessageType.RequestMana);
+                packet.Write(attacker.whoAmI);
+                packet.Write(2);
                 packet.Send();
             }
         }

@@ -65,8 +65,6 @@ public class DashInputPlayer : ModPlayer
         if (Player.dashDelay != 0) return false;
         if (Player.mount.Active || Player.dead || Player.frozen || Player.webbed || Player.tongued || Player.stoned)
             return false;
-        if (Player.HasBuff(BuffID.Dazed) || Player.HasBuff(BuffID.OgreSpit) || Player.HasBuff(ModContent.BuffType<Transmutated>()))
-            return false;
         return true;
     }
     private int _prevDashDelay;

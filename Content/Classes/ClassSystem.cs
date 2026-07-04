@@ -596,6 +596,17 @@ namespace ClassesNamespace
             return;
         }
 
+        public override void PostUpdateMiscEffects()
+        {
+            var playerManager = Player.GetModPlayer<PlayerManager>();
+
+            if (playerManager.currentClass?.Name == "Astronaut")
+            {
+                Player.manaRegenDelay = Math.Max(Player.manaRegenDelay, 30);
+                Player.manaRegenCount = 0;
+            }
+        }
+
         public void SyncPlayerStats(int toWho, int fromWho)
         {
             // First ensure the Player's max stats are updated

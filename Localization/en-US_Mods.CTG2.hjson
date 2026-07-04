@@ -185,6 +185,16 @@ Items: {
 		DisplayName: Gladiatorial Polearm
 		Tooltip: ""
 	}
+
+	ParticleCarbine: {
+		Tooltip: ""
+		DisplayName: Particle Carbine
+	}
+
+	TeslaCannon: {
+		Tooltip: ""
+		DisplayName: Tesla Cannon
+	}
 }
 
 NPCs: {
@@ -211,6 +221,7 @@ Projectiles: {
 	SpaceSplitterProjectile.DisplayName: Space Splitter Projectile
 	CTG2GoldenShowerProjectile.DisplayName: C T G2 Golden Shower Projectile
 	PolearmProjectile.DisplayName: Polearm Projectile
+	TeslaBeamProjectile.DisplayName: Tesla Beam Projectile
 }
 
 Tiles: {

@@ -1,4 +1,5 @@
-﻿using CTG2.Content.Configs;
+﻿using CTG2.Content.Buffs;
+using CTG2.Content.Configs;
 using System.IO;
 using Terraria;
 using Terraria.ID;
@@ -53,7 +54,9 @@ public class DashInputSystem : ModSystem
 
         // For the local player, respect the config toggle
         var config = ModContent.GetInstance<CTG2Config>();
-        if (config.IsVanillaDashEnabled)
+        Player player = Main.LocalPlayer;
+
+        if (config.IsVanillaDashEnabled && !(player.HasBuff(BuffID.Dazed) || player.HasBuff(BuffID.OgreSpit) || player.HasBuff(ModContent.BuffType<Transmutated>())))
         {
             orig(self, out dir, out dashing, dashStartAction);
             return;

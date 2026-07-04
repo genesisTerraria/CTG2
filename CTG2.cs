@@ -849,7 +849,7 @@ namespace CTG2
                             className = "Paladin";
                             break;
                         case 6:
-                            className = "Tank";
+                            className = "Fisherman";
                             break;
                         case 7:
                             className = "Black Mage";
@@ -888,7 +888,7 @@ namespace CTG2
                             className = "Rng Man";
                             break;
                         case 19:
-                            className = "Fisherman";
+                            className = "Astronaut";
                             break;
                     }
 
