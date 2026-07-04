@@ -172,12 +172,13 @@ namespace CTG2
         RequestMissing = 126,
         MissingResult = 127,
         RequestDiscordIdentityRefresh = 128,
-        SendBanUI = 129,
-        RequestChangeTimer = 130,
-        SendBanTimer = 131,
-        RequestForceStartBans = 132,
-        SubmitClassBan = 133,   // client (captain) → server: AbilityID to ban for the opposing team
-        SyncClassBans = 134     // server → all clients: both teams' banned AbilityIDs
+        SendBanUI = 129,        // Shows ban UI to captains
+        RequestChangeTimer = 130, // Changes the time (used by command)
+        SendBanTimer = 131,     // Start the ban timer for all clients
+        RequestForceStartBans = 132, // Forcestartbans even if the full roster isn't present
+        SubmitClassBan = 133,   // AbilityID to ban for the opposing team
+        SyncClassBans = 134,    // Both teams' banned AbilityIDs
+        RequestSyncTeams = 135  // reassign all online players to their teams
     }
 
     public class CTG2 : Mod
@@ -773,6 +774,23 @@ namespace CTG2
                     ChatHelper.BroadcastChatMessage(
                         NetworkText.FromLiteral("Ban timer force-started. Both teams have 3 minutes to ban."),
                         Color.Yellow);
+                    break;
+                }
+                case (byte)MessageType.RequestSyncTeams:
+                {
+                    if (Main.netMode != NetmodeID.Server)
+                        break;
+
+                    if (whoAmI < 0 || whoAmI >= Main.player.Length || !Main.player[whoAmI].active)
+                        break;
+
+                    if (!Main.player[whoAmI].GetModPlayer<AuthPlayer>().IsAdmin)
+                        break;
+
+                    string syncResult = ModContent.GetInstance<NeatQueueTeamAssignmentSystem>()
+                        .SyncTeamsToRoster();
+                    ChatHelper.SendChatMessageToClient(
+                        NetworkText.FromLiteral(syncResult), Color.CornflowerBlue, whoAmI);
                     break;
                 }
                 case (byte)MessageType.RequestSpawnNpc:

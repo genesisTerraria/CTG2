@@ -34,6 +34,9 @@ public static class Hooks
         ModContent.GetInstance<CTG2>().Logger.Info(
             "[NeatQueue] OnFullRosterJoined fired. All queued players are currently in the world.");
 
+        // re-apply teams once before starting to make sure someone not in queue doesn't become captain
+        ModContent.GetInstance<NeatQueueTeamAssignmentSystem>().SyncTeamsToRoster();
+
         StartScrimsGame();
 
         // rollRandomMap(MapsAllowedInScrimsDict)
@@ -117,17 +120,75 @@ public static class Hooks
     // True while captains are picking bans; armed by StartBanTimer, cleared when both bans are in
     public static bool BanPhaseActive { get; private set; }
 
+    // Server-side countdown mirroring the client BanTimer display; when it hits 0,
+    // any captain who hasn't banned gets a random ban so the game can't stall
+    private static int _banTimerTicksRemaining;
+
     public static void StartBanTimer()
     {
         if (Main.netMode != NetmodeID.Server)
             return;
 
         BanPhaseActive = true;
+        _banTimerTicksRemaining = BanTimerTicks;
 
         ModPacket banTimerPacket = ModContent.GetInstance<CTG2>().GetPacket();
         banTimerPacket.Write((byte)MessageType.SendBanTimer);
         banTimerPacket.Write(BanTimerTicks);
         banTimerPacket.Send();
+    }
+
+    // Called every tick by gamemanager
+    public static void UpdateBanPhase()
+    {
+        if (Main.netMode != NetmodeID.Server || !BanPhaseActive)
+            return;
+
+        if (--_banTimerTicksRemaining > 0)
+            return;
+
+        var gameManager = ModContent.GetInstance<GameManager>();
+
+        if (gameManager.blueTeamBannedClassID <= 0)
+        {
+            gameManager.blueTeamBannedClassID = PickRandomBannableClassID();
+            ChatHelper.BroadcastChatMessage(
+                NetworkText.FromLiteral("Red team's captain ran out of time, so their ban was chosen randomly."),
+                Color.OrangeRed);
+        }
+        if (gameManager.redTeamBannedClassID <= 0)
+        {
+            gameManager.redTeamBannedClassID = PickRandomBannableClassID();
+            ChatHelper.BroadcastChatMessage(
+                NetworkText.FromLiteral("Blue team's captain ran out of time, so their ban was chosen randomly."),
+                Color.OrangeRed);
+        }
+
+        TryCompleteBanPhase();
+
+        if (BanPhaseActive)
+        {
+            BanPhaseActive = false;
+            EndBanTimer();
+            ModContent.GetInstance<CTG2>().Logger.Error(
+                "[Scrims] Ban timer expired but no random ban could be chosen; ban phase aborted.");
+        }
+    }
+
+    // picks random class if captain didn't ban
+    private static int PickRandomBannableClassID()
+    {
+        bool rngConfig = ModContent.GetInstance<GameManager>().rngConfig;
+        List<int> candidates = CTG2.config.Classes
+            .Where(c => c.AbilityID >= 1 && c.AbilityID <= 19)
+            .Where(c => rngConfig ? c.AbilityID == 18 : c.AbilityID != 18)
+            .Select(c => c.AbilityID)
+            .ToList();
+
+        if (candidates.Count == 0)
+            return 0;
+
+        return candidates[Main.rand.Next(candidates.Count)];
     }
 
     public static void EndBanTimer()

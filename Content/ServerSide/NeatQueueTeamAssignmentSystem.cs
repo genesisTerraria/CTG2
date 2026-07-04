@@ -304,6 +304,47 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
         return assigned;
     }
 
+    // Reassigns every online player to their roster team
+    // Players not in the queue are set to white team
+    public string SyncTeamsToRoster()
+    {
+        if (_teamIdByDiscordId.Count == 0)
+            return "No active NeatQueue scrim roster is loaded.";
+
+        CleanupStaleIdentities();
+
+        var gameManager = ModContent.GetInstance<GameManager>();
+        int onRoster = 0;
+        int notOnRoster = 0;
+
+        for (int i = 0; i < Main.maxPlayers; i++)
+        {
+            Player player = Main.player[i];
+            if (player == null || !player.active)
+                continue;
+
+            int targetTeam = 0; // white unless the player maps to a roster entry
+            if (_discordIdentityByWhoAmI.TryGetValue(i, out DiscordIdentity identity)
+                && _teamIdByDiscordId.TryGetValue(identity.DiscordId, out int rosterTeam))
+            {
+                targetTeam = rosterTeam;
+            }
+
+            if (player.team != targetTeam)
+            {
+                gameManager.HandlePlayerTeamChange(i, targetTeam);
+                Mod.Logger.Info($"[NeatQueue] /syncteams moved {player.name} to {TeamIdToTeamName(targetTeam)}");
+            }
+
+            if (targetTeam == 0)
+                notOnRoster++;
+            else
+                onRoster++;
+        }
+
+        return $"Teams synced: {onRoster} player(s) on roster teams, {notOnRoster} not in roster (set to white).";
+    }
+
     public int GetRosterCount()
     {
         return _rosterByDiscordId.Count;
@@ -465,6 +506,7 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
         {
             TeamBlue => "blue",
             TeamRed => "red",
+            0 => "white",
             _ => $"team {teamId}"
         };
     }

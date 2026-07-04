@@ -1285,6 +1285,10 @@ public class GameManager : ModSystem
     public override void PostUpdateWorld()
     {
         if (!Main.dedServ) return;
+
+        // Ban phase countdown runs even while paused 
+        Hooks.UpdateBanPhase();
+
         if (pause)
         {
             if (pauseTimer % 6 == 0)
