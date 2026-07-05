@@ -484,6 +484,14 @@ namespace CTG2
             {
                 // Client -> Server Packets (these cases will run on the Server)
                 case (byte)MessageType.RequestStartGame:
+                    if (Hooks.BanPhaseActive)
+                    {
+                        // If banphase is active any missing bans should be randomized
+                        // Ban timer is also set to 0 to let the game ui take precedence
+                        Console.WriteLine("Server Received Game Start Request during ban phase; force-completing bans.");
+                        Hooks.ForceCompleteBanPhase();
+                        break;
+                    }
                     manager.StartGame();
                     Console.WriteLine("Server Received Game Start Request!");
                     break;

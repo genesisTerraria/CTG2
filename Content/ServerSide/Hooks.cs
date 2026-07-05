@@ -147,20 +147,30 @@ public static class Hooks
         if (--_banTimerTicksRemaining > 0)
             return;
 
+        ForceCompleteBanPhase();
+    }
+
+    // Fills any missing bans randomly and completes the ban phase
+    // Called when the ban timer expires or when an admin uses /start 
+    public static void ForceCompleteBanPhase()
+    {
+        if (Main.netMode != NetmodeID.Server || !BanPhaseActive)
+            return;
+
         var gameManager = ModContent.GetInstance<GameManager>();
 
         if (gameManager.blueTeamBannedClassID <= 0)
         {
             gameManager.blueTeamBannedClassID = PickRandomBannableClassID();
             ChatHelper.BroadcastChatMessage(
-                NetworkText.FromLiteral("Red team's captain ran out of time, so their ban was chosen randomly."),
+                NetworkText.FromLiteral("Red team's captain didn't submit a ban, so their ban was chosen randomly."),
                 Color.OrangeRed);
         }
         if (gameManager.redTeamBannedClassID <= 0)
         {
             gameManager.redTeamBannedClassID = PickRandomBannableClassID();
             ChatHelper.BroadcastChatMessage(
-                NetworkText.FromLiteral("Blue team's captain ran out of time, so their ban was chosen randomly."),
+                NetworkText.FromLiteral("Blue team's captain didn't submit a ban, so their ban was chosen randomly."),
                 Color.OrangeRed);
         }
 
@@ -171,7 +181,7 @@ public static class Hooks
             BanPhaseActive = false;
             EndBanTimer();
             ModContent.GetInstance<CTG2>().Logger.Error(
-                "[Scrims] Ban timer expired but no random ban could be chosen; ban phase aborted.");
+                "[Scrims] Ban phase force-completed but no random ban could be chosen; ban phase aborted.");
         }
     }
 
