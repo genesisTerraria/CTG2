@@ -21,7 +21,7 @@ namespace CTG2.Content.Items
         public override void SetDefaults()
         {
             Item.CloneDefaults(ItemID.CobaltNaginata);
-			Item.damage = 36;
+			Item.damage = 37;
 			Item.useAnimation = 22;
 			Item.useTime = 22;
 			Item.shootSpeed = 4.2f;

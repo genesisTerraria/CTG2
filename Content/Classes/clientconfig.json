@@ -231,7 +231,7 @@
       "ability-3-cooldown": -1,
       "health-from-kills": 0,
       "respawn-time": 9,
-      "buffs": [6, 107, 158],
+      "buffs": [107, 158],
       "ability-id": 13,
       "upgrades": [
 
@@ -248,7 +248,7 @@
       "ability-3-cooldown": -1,
       "health-from-kills": 0,
       "respawn-time": 9,
-      "buffs": [3, 6, 107, 158],
+      "buffs": [6, 107, 158],
       "ability-id": 14,
       "upgrades": [
 

@@ -29,7 +29,7 @@ namespace CTG2.Content
         public const int ClownSwapRadiusTiles = 20;
         public const float ClownSwapRadiusPixels = ClownSwapRadiusTiles * 16f;
         public const float ClownSwapRadiusPixelsSquared = ClownSwapRadiusPixels * ClownSwapRadiusPixels;
-        public const int WhiteMageHealRadiusTiles = 23;
+        public const int WhiteMageHealRadiusTiles = 16;
         public const float WhiteMageHealRadiusPixels = WhiteMageHealRadiusTiles * 16f;
         public const float WhiteMageHealRadiusPixelsSquared = WhiteMageHealRadiusPixels * WhiteMageHealRadiusPixels;
         private const int PsychicChaosLockoutTicks = 10 * 60;
@@ -38,6 +38,7 @@ namespace CTG2.Content
         public int cooldown = 0;
         public int cooldown2 = 0;
         public int cooldown3 = 0;
+        public bool class1isHellfire = true;
         private bool playedSound = false;
         public uint class1LastUsedCounter = 0;
         public bool class1UsedLuminite = true;
@@ -473,8 +474,51 @@ namespace CTG2.Content
         {
             cooldown3 = seconds * 60;
         }
-        
+
         private void ArcherOnUse()
+        {
+            class1isHellfire = !class1isHellfire;
+
+            for (int i = 0; i < Player.inventory.Length; i++)
+            {
+                int type = Player.inventory[i].type;
+                int stack = Player.inventory[i].stack;
+
+                if (type == ItemID.ShimmerArrow && class1isHellfire)
+                {
+                    Player.inventory[i] = new Item(ItemID.HellfireArrow, stack);
+                }
+                else if (type == ItemID.HellfireArrow && !class1isHellfire)
+                {
+                    Player.inventory[i] = new Item(ItemID.ShimmerArrow, stack);
+                }
+            }
+
+            if (Player.trashItem.type == ItemID.ShimmerArrow && class1isHellfire)
+            {
+                Player.trashItem = new Item(ItemID.HellfireArrow, Player.trashItem.stack);
+            }
+            else if (Player.trashItem.type == ItemID.HellfireArrow && !class1isHellfire)
+            {
+                Player.trashItem = new Item(ItemID.ShimmerArrow, Player.trashItem.stack);
+            }
+
+            if (Main.mouseItem.type == ItemID.ShimmerArrow && class1isHellfire)
+            {
+                Main.mouseItem = new Item(ItemID.HellfireArrow, Main.mouseItem.stack);
+            }
+            else if (Main.mouseItem.type == ItemID.HellfireArrow && !class1isHellfire)
+            {
+                Main.mouseItem = new Item(ItemID.ShimmerArrow, Main.mouseItem.stack);
+            }
+
+            playedSound = false;
+
+            if (class1isHellfire) SoundEngine.PlaySound(SoundID.DD2_PhantomPhoenixShot.WithVolumeScale(Main.soundVolume * 6f), Player.Center);
+            else SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy.WithVolumeScale(Main.soundVolume * 6f), Player.Center);
+        }
+        
+        private void ArcherOnUse2()
         {
             class1UsedLuminite = false;
             
@@ -486,7 +530,7 @@ namespace CTG2.Content
             audioPacketSelf.Send();
         }
 
-        private void ArcherOnUse2()
+        private void ArcherOnUse3()
         {
             SoundEngine.PlaySound(SoundID.Item101, Player.Center);
 
@@ -908,7 +952,7 @@ namespace CTG2.Content
 
         private void WhiteMageOnUse()
         {
-            Player.AddBuff(2, 300);
+            Player.AddBuff(BuffID.Regeneration, 300);
 
             var mod = ModContent.GetInstance<CTG2>();
 
@@ -920,7 +964,7 @@ namespace CTG2.Content
                     packet1.Write((byte)MessageType.RequestAddBuff);
                     packet1.Write(other.whoAmI);
                     packet1.Write(137);
-                    packet1.Write(480);
+                    packet1.Write(300);
                     packet1.Send();
 
                     ModPacket packet2 = mod.GetPacket();
@@ -929,13 +973,6 @@ namespace CTG2.Content
                     packet2.Write(206);
                     packet2.Write(480);
                     packet2.Send();
-
-                    ModPacket packet3 = mod.GetPacket();
-                    packet3.Write((byte)MessageType.RequestAddBuff);
-                    packet3.Write(other.whoAmI);
-                    packet3.Write(2);
-                    packet3.Write(480);
-                    packet3.Send();
 
                     ModPacket audioPacket = mod.GetPacket();
                     audioPacket.Write((byte)MessageType.RequestAudioToClient);
@@ -1520,7 +1557,7 @@ namespace CTG2.Content
                 switch (selectedClass)
                 {
                     case 1:
-                        SetCooldown(23);
+                        SetCooldown(1);
                         ArcherOnUse();
 
                         break;
@@ -1593,8 +1630,11 @@ namespace CTG2.Content
                         break;
 
                     case 13: //not finished
-                        SetCooldown(40);
-                        PhoenixOnUse();
+                        if (Player.statLife > 40)
+                        {
+                            SetCooldown(40);
+                            PhoenixOnUse();
+                        }
 
                         break;
 
@@ -1635,7 +1675,7 @@ namespace CTG2.Content
                 switch (selectedClass)
                 {
                     case 1:
-                        SetCooldown2(40);
+                        SetCooldown2(23);
                         ArcherOnUse2();
                         break;
                     case 2:
@@ -1662,6 +1702,10 @@ namespace CTG2.Content
             {
                 switch (selectedClass)
                 {
+                    case 1:
+                        SetCooldown3(40);
+                        ArcherOnUse3();
+                        break;
                     case 3:
                         SetCooldown3(40);
                         AlchemistOnUse3();

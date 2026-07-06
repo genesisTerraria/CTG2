@@ -29,6 +29,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         public long hellwingLastUsedCounter;
         public long umbrellaLastUsedCounter;
         public long splitterLastUsedCounter;
+        public long orbLastUsedCounter;
     }
 
     public class OverloadedWeps : GlobalItem
@@ -68,11 +69,10 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint particleDelay = 50;
         private uint particleLastUsedCounter = 0;
 
-        private uint blowgunDelay = 65;
+        private uint blowgunDelay = 55;
         private uint blowgunLastUsedCounter = 0;
 
-        private uint orbDelay = 60;
-        private uint orbLastUsedCounter = 0;
+        private uint orbDelay = 120;
 
         private uint thunderZapperDelay = 60;
         private uint thunderZapperLastUsedCounter = 0;
@@ -91,6 +91,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         bool playedAnchorSound = true;
         bool playedUmbrellaSound = true;
         bool playedSplitterSound = true;
+        bool playedOrbSound = true;
 
         public override bool InstancePerEntity => true;
 
@@ -124,18 +125,18 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shootSpeed = 15f;
                     item.useAmmo = AmmoID.None;
                     item.autoReuse = false;
-                    item.damage = 28;
+                    item.damage = 34;
                     item.crit = 0;
                     break;
-                case 1296: // Tiki Priest: Staff of Earth
+                case ItemID.StaffofEarth: // Tiki Priest: Staff of Earth
                     item.useTime = 24;
                     item.useAnimation = 24;
-                    item.mana = 7;
+                    item.mana = 0;
                     item.shootSpeed = 10f;
                     item.autoReuse = false;
-                    item.damage = 22;
+                    item.damage = 18;
                     item.crit = 0;
-                    item.shoot = 229;
+                    item.shoot = ProjectileID.ChlorophyteOrb;
                     item.scale = 0;
                     item.UseSound = SoundID.Item8;
                     break;
@@ -281,22 +282,22 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     break;
 
-                case 218: // phoenix fireball
+                case ItemID.Flamelash: // phoenix fireball
                     item.crit = 0;
-                    item.damage = 29;
+                    item.damage = 31;
                     item.shootSpeed = 13f;
-                    item.shoot = 666;
+                    item.shoot = ProjectileID.DD2FlameBurstTowerT2Shot;
                     item.scale = 0;
                     item.mana = 0;
                     item.useTime = 24;
                     item.useAnimation = 24;
                     break;
 
-                case 3835: // phoenix phantom
+                case ItemID.MonkStaffT1: // phoenix phantom
                     item.crit = 0;
-                    item.damage = 32;
+                    item.damage = 35;
                     item.shootSpeed = 5f;
-                    item.shoot = 706;
+                    item.shoot = ProjectileID.DD2PhoenixBowShot;
                     item.mana = 15;
                     item.scale = 0;
                     item.useTime = 24;
@@ -305,9 +306,9 @@ namespace CTG2.Content.Items.ModifiedWeps
 
                 case 3543: // phoenix aerial bane
                     item.crit = 0;
-                    item.damage = 30;
+                    item.damage = 34;
                     item.shootSpeed = 9f;
-                    item.shoot = 710;
+                    item.shoot = ProjectileID.DD2BetsyArrow;
                     item.mana = 11;
                     item.scale = 0;
                     item.useTime = 24;
@@ -575,9 +576,11 @@ namespace CTG2.Content.Items.ModifiedWeps
             }
             else if (item.type == 1296)
             {
-                if (Main.GameUpdateCount - orbLastUsedCounter >= orbDelay)
+                if (Main.GameUpdateCount - mPlayer.orbLastUsedCounter >= orbDelay)
                 {
-                    orbLastUsedCounter = Main.GameUpdateCount;
+                    mPlayer.orbLastUsedCounter = Main.GameUpdateCount;
+
+                    playedOrbSound = false;
 
                     return true;
                 }
@@ -745,6 +748,12 @@ namespace CTG2.Content.Items.ModifiedWeps
             {
                 SoundEngine.PlaySound(SoundID.MaxMana.WithVolumeScale(Main.soundVolume * 2f), player.Center);
                 playedSplitterSound = true;
+            }
+
+            if (Main.GameUpdateCount - mPlayer.orbLastUsedCounter >= orbDelay && !playedOrbSound)
+            {
+                SoundEngine.PlaySound(SoundID.MaxMana.WithVolumeScale(Main.soundVolume * 2f), player.Center);
+                playedOrbSound = true;
             }
         }
     }

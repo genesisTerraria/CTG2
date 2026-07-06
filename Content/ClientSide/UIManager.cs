@@ -335,9 +335,80 @@ public class UIManager : ModSystem
         if (selectedClass == 1)
         {
             int cooldown2 = abilities.cooldown2;
+            int cooldown3 = abilities.cooldown3;
 
             Texture2D Ability1Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/ArcherAbilityIcons/ArcherAbility1").Value;
             Texture2D Ability2Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/ArcherAbilityIcons/ArcherAbility2").Value;
+            Texture2D Ability3Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/ArcherAbilityIcons/ArcherAbility3").Value;
+
+            iconSize = 32;
+            centerX = Main.screenWidth / 2 - 72;
+            centerY = Main.screenHeight - 32;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+
+            // Draw first ability icon
+            if (cooldown <= 0)
+            {
+                Main.spriteBatch.Draw(Ability1Icon, destRect, Color.White);
+            }
+            else
+            {
+                Main.spriteBatch.Draw(Ability1Icon, destRect, Color.Gray * 0.6f);
+
+                DynamicSpriteFont font = FontAssets.MouseText.Value;
+                string cdText = $"{(int)Math.Ceiling(cooldown / 60f)}";
+                Vector2 textSize = font.MeasureString(cdText);
+                Vector2 textPos = new Vector2(centerX - textSize.X / 2f, centerY - textSize.Y / 2f);
+                Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
+            }
+
+            centerX += 48;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+
+            // Draw second ability icon
+            if (cooldown2 <= 0)
+            {
+                Main.spriteBatch.Draw(Ability2Icon, destRect, Color.White);
+            }
+            else
+            {
+                Main.spriteBatch.Draw(Ability2Icon, destRect, Color.Gray * 0.6f);
+
+                DynamicSpriteFont font = FontAssets.MouseText.Value;
+                string cdText = $"{(int)Math.Ceiling(cooldown2 / 60f)}";
+                Vector2 textSize = font.MeasureString(cdText);
+                Vector2 textPos = new Vector2(centerX - textSize.X / 2f, centerY - textSize.Y / 2f);
+                Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
+            }
+
+            centerX += 48;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+
+            // Draw third ability icon
+            if (cooldown3 <= 0)
+            {
+                Main.spriteBatch.Draw(Ability3Icon, destRect, Color.White);
+            }
+            else
+            {
+                Main.spriteBatch.Draw(Ability3Icon, destRect, Color.Gray * 0.6f);
+
+                DynamicSpriteFont font = FontAssets.MouseText.Value;
+                string cdText = $"{(int)Math.Ceiling(cooldown3 / 60f)}";
+                Vector2 textSize = font.MeasureString(cdText);
+                Vector2 textPos = new Vector2(centerX - textSize.X / 2f, centerY - textSize.Y / 2f);
+                Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
+            }
+
+            centerX += 48;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+        }
+        else if (selectedClass == 4)
+        {
+            int cooldown2 = abilities.cooldown2;
+
+            Texture2D Ability1Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/GladiatorAbilityIcons/GladiatorAbility1").Value;
+            Texture2D Ability2Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/GladiatorAbilityIcons/GladiatorAbility2").Value;
 
             iconSize = 32;
             centerX = Main.screenWidth / 2 - 48;

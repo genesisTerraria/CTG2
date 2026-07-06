@@ -19,7 +19,7 @@ public class ChargedBowDrawer : PlayerDrawLayer
     public override Position GetDefaultPosition() => new AfterParent(PlayerDrawLayers.ArmOverItem);
 
     public override bool GetDefaultVisibility(PlayerDrawSet drawInfo) {
-        // Only draw if the player is holding the projectile and it isn't "released" yet
+        // Only draw if the player is player.channel the projectile and it isn't "released" yet
         return drawInfo.drawPlayer.ownedProjectileCounts[ModContent.ProjectileType<ChargedBowProjectile>()] > 0;
     }
 
@@ -171,8 +171,6 @@ public class ChargedBowProjectile : ModProjectile
         bool isShimmer = (int)Projectile.ai[1] == ProjectileID.ShimmerArrow;
         isLuminite = (int)Projectile.ai[1] == 639;
 
-        bool holding = (isHellfire && player.channel) || (isShimmer && Main.mouseRight) || (isLuminite && (player.channel || Main.mouseRight));
-
         if (charge >= 40f) td++; // Increment glow timer
 
         if (Projectile.owner == Main.myPlayer) {
@@ -180,7 +178,7 @@ public class ChargedBowProjectile : ModProjectile
             Rotation = aim.ToRotation();
             player.direction = Math.Cos(Rotation) >= 0 ? 1 : -1;
 
-            if (holding && !released) {
+            if (player.channel && !released) {
                 if (!ammoLocked)
                 {
                     ammoLocked = true;
@@ -216,7 +214,7 @@ public class ChargedBowProjectile : ModProjectile
 
         if (soundCooldownTimer > 0) soundCooldownTimer--;
 
-        if (holding && !released && soundCooldownTimer == 0 && charge < 40) {
+        if (player.channel && !released && soundCooldownTimer == 0 && charge < 40) {
             sound = SoundEngine.PlaySound(bowSound.WithVolumeScale(Main.soundVolume * 1.25f), player.Center);
             soundCooldownTimer = 45;
         }
