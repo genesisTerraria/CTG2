@@ -69,7 +69,7 @@ public class ProjectileOverrides : GlobalProjectile
     {
         if (projectile.type == ProjectileID.EmeraldBolt || projectile.type == ModContent.ProjectileType<SpaceSplitterProjectile>()
          || projectile.type == ModContent.ProjectileType<SittingDuckBobber>() || projectile.type == ProjectileID.LaserMachinegunLaser
-         || projectile.type == ProjectileID.ThunderSpearShot || projectile.type == 229)
+         || projectile.type == ProjectileID.ThunderSpearShot)
         {
             target.noKnockback = true;
 
@@ -634,12 +634,12 @@ public class ModifyHurtModPlayer : ModPlayer
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
             if (attackerPlayer.currentClass.Name == "Phoenix")
             {
-                attacker.AddBuff(BuffID.ManaRegeneration, 120);
+                attacker.AddBuff(BuffID.StarInBottle, 120);
 
                 ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
                 packet.Write((byte)CTG2.MessageType.RequestAddBuff);
                 packet.Write(attacker.whoAmI);
-                packet.Write(6);
+                packet.Write(158);
                 packet.Write(120);
                 packet.Send();
             }

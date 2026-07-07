@@ -29,6 +29,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         public long hellwingLastUsedCounter;
         public long umbrellaLastUsedCounter;
         public long splitterLastUsedCounter;
+        public long blowgunLastUsedCounter;
         public long orbLastUsedCounter;
     }
 
@@ -69,10 +70,9 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint particleDelay = 50;
         private uint particleLastUsedCounter = 0;
 
-        private uint blowgunDelay = 55;
-        private uint blowgunLastUsedCounter = 0;
+        private uint blowgunDelay = 50;
 
-        private uint orbDelay = 120;
+        private uint orbDelay = 50;
 
         private uint thunderZapperDelay = 60;
         private uint thunderZapperLastUsedCounter = 0;
@@ -134,7 +134,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.mana = 0;
                     item.shootSpeed = 10f;
                     item.autoReuse = false;
-                    item.damage = 18;
+                    item.damage = 28;
                     item.crit = 0;
                     item.shoot = ProjectileID.ChlorophyteOrb;
                     item.scale = 0;
@@ -295,10 +295,10 @@ namespace CTG2.Content.Items.ModifiedWeps
 
                 case ItemID.MonkStaffT1: // phoenix phantom
                     item.crit = 0;
-                    item.damage = 35;
+                    item.damage = 36;
                     item.shootSpeed = 5f;
                     item.shoot = ProjectileID.DD2PhoenixBowShot;
-                    item.mana = 15;
+                    item.mana = 11;
                     item.scale = 0;
                     item.useTime = 24;
                     item.useAnimation = 24;
@@ -306,7 +306,7 @@ namespace CTG2.Content.Items.ModifiedWeps
 
                 case 3543: // phoenix aerial bane
                     item.crit = 0;
-                    item.damage = 34;
+                    item.damage = 33;
                     item.shootSpeed = 9f;
                     item.shoot = ProjectileID.DD2BetsyArrow;
                     item.mana = 11;
@@ -565,9 +565,10 @@ namespace CTG2.Content.Items.ModifiedWeps
             }
             else if (item.type == ItemID.Blowgun)
             {
-                if (Main.GameUpdateCount - blowgunLastUsedCounter >= blowgunDelay)
+                if (Main.GameUpdateCount - mPlayer.blowgunLastUsedCounter >= blowgunDelay)
                 {
-                    blowgunLastUsedCounter = Main.GameUpdateCount;
+                    mPlayer.blowgunLastUsedCounter = Main.GameUpdateCount;
+                    mPlayer.orbLastUsedCounter = Main.GameUpdateCount;
 
                     return true;
                 }
@@ -578,6 +579,7 @@ namespace CTG2.Content.Items.ModifiedWeps
             {
                 if (Main.GameUpdateCount - mPlayer.orbLastUsedCounter >= orbDelay)
                 {
+                    mPlayer.blowgunLastUsedCounter = Main.GameUpdateCount;
                     mPlayer.orbLastUsedCounter = Main.GameUpdateCount;
 
                     playedOrbSound = false;

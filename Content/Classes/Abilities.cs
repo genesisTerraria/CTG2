@@ -38,10 +38,10 @@ namespace CTG2.Content
         public int cooldown = 0;
         public int cooldown2 = 0;
         public int cooldown3 = 0;
-        public bool class1isHellfire = true;
         private bool playedSound = false;
         public uint class1LastUsedCounter = 0;
         public bool class1UsedLuminite = true;
+        private int class1EndTimer = -1;
         public int class2PassiveCounter = 0;
         public int class2AbilityTimer = -1;
 
@@ -474,51 +474,8 @@ namespace CTG2.Content
         {
             cooldown3 = seconds * 60;
         }
-
-        private void ArcherOnUse()
-        {
-            class1isHellfire = !class1isHellfire;
-
-            for (int i = 0; i < Player.inventory.Length; i++)
-            {
-                int type = Player.inventory[i].type;
-                int stack = Player.inventory[i].stack;
-
-                if (type == ItemID.ShimmerArrow && class1isHellfire)
-                {
-                    Player.inventory[i] = new Item(ItemID.HellfireArrow, stack);
-                }
-                else if (type == ItemID.HellfireArrow && !class1isHellfire)
-                {
-                    Player.inventory[i] = new Item(ItemID.ShimmerArrow, stack);
-                }
-            }
-
-            if (Player.trashItem.type == ItemID.ShimmerArrow && class1isHellfire)
-            {
-                Player.trashItem = new Item(ItemID.HellfireArrow, Player.trashItem.stack);
-            }
-            else if (Player.trashItem.type == ItemID.HellfireArrow && !class1isHellfire)
-            {
-                Player.trashItem = new Item(ItemID.ShimmerArrow, Player.trashItem.stack);
-            }
-
-            if (Main.mouseItem.type == ItemID.ShimmerArrow && class1isHellfire)
-            {
-                Main.mouseItem = new Item(ItemID.HellfireArrow, Main.mouseItem.stack);
-            }
-            else if (Main.mouseItem.type == ItemID.HellfireArrow && !class1isHellfire)
-            {
-                Main.mouseItem = new Item(ItemID.ShimmerArrow, Main.mouseItem.stack);
-            }
-
-            playedSound = false;
-
-            if (class1isHellfire) SoundEngine.PlaySound(SoundID.DD2_PhantomPhoenixShot.WithVolumeScale(Main.soundVolume * 6f), Player.Center);
-            else SoundEngine.PlaySound(SoundID.DD2_EtherianPortalSpawnEnemy.WithVolumeScale(Main.soundVolume * 6f), Player.Center);
-        }
         
-        private void ArcherOnUse2()
+        private void ArcherOnUse()
         {
             class1UsedLuminite = false;
             
@@ -530,11 +487,12 @@ namespace CTG2.Content
             audioPacketSelf.Send();
         }
 
-        private void ArcherOnUse3()
+        private void ArcherOnUse2()
         {
             SoundEngine.PlaySound(SoundID.Item101, Player.Center);
 
             Player.AddBuff(ModContent.BuffType<Haste>(), 4 * 60);
+            class1EndTimer = 4 * 60;
         }
 
         private void NinjaPassive()
@@ -1204,6 +1162,7 @@ namespace CTG2.Content
         private void PhoenixOnUse()
         {
             Player.AddBuff(BuffID.NebulaUpMana1, 2 * 60);
+            Player.AddBuff(BuffID.StarInBottle, 2 * 60);
             Player.AddBuff(ModContent.BuffType<RisingSun>(), 4 * 60);
 
             playedSound = false;
@@ -1442,6 +1401,15 @@ namespace CTG2.Content
 
             switch (selectedClass)
             {
+                case 1:
+                    if (endedEarly || (!playedSound && class1EndTimer == 0))
+                    {
+                        SoundEngine.PlaySound(SoundID.Item101, Player.Center);
+                        playedSound = true;
+                        class1EndTimer = -1;
+                    }
+
+                    break;
                 case 2:
                     if (!Player.dead && !Player.ghost && playerManager.playerState == PlayerManager.PlayerState.Active)
                     {
@@ -1557,7 +1525,7 @@ namespace CTG2.Content
                 switch (selectedClass)
                 {
                     case 1:
-                        SetCooldown(1);
+                        SetCooldown(23);
                         ArcherOnUse();
 
                         break;
@@ -1632,7 +1600,7 @@ namespace CTG2.Content
                     case 13: //not finished
                         if (Player.statLife > 40)
                         {
-                            SetCooldown(40);
+                            SetCooldown(45);
                             PhoenixOnUse();
                         }
 
@@ -1675,7 +1643,7 @@ namespace CTG2.Content
                 switch (selectedClass)
                 {
                     case 1:
-                        SetCooldown2(23);
+                        SetCooldown2(40);
                         ArcherOnUse2();
                         break;
                     case 2:
@@ -1702,10 +1670,6 @@ namespace CTG2.Content
             {
                 switch (selectedClass)
                 {
-                    case 1:
-                        SetCooldown3(40);
-                        ArcherOnUse3();
-                        break;
                     case 3:
                         SetCooldown3(40);
                         AlchemistOnUse3();
@@ -1735,6 +1699,9 @@ namespace CTG2.Content
 
                 if (cooldown3 > 0)
                     cooldown3--;
+
+                if (class1EndTimer >= 0)
+                    class1EndTimer--;
 
                 if (class2AbilityTimer >= 0)
                     class2AbilityTimer--;
