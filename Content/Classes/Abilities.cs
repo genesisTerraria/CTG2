@@ -1386,15 +1386,15 @@ namespace CTG2.Content
             if (direction != Vector2.Zero)
                 direction.Normalize();
 
-            float speed = 11f;
+            float speed = 12f;
             Vector2 velocity = direction * speed;
 
             Projectile.NewProjectile(
                 Player.GetSource_FromThis(),
                 Player.Center,
                 velocity,
-                ProjectileID.SuperStarSlash,
-                15,
+                ProjectileID.ElectrosphereMissile,
+                12,
                 0,
                 Player.whoAmI
             );
@@ -1666,7 +1666,7 @@ namespace CTG2.Content
                         break;
 
                     case 18:
-                        SetCooldown(20);
+                        SetCooldown(30);
                         AstronautOnUse();
 
                         break;
@@ -1705,7 +1705,7 @@ namespace CTG2.Content
                         TreeOnUse2();
                         break;
                     case 18:
-                        SetCooldown2(25);
+                        SetCooldown2(30);
                         AstronautOnUse2();
                         break;
                 }
