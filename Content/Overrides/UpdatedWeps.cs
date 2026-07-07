@@ -77,6 +77,9 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint thunderZapperDelay = 60;
         private uint thunderZapperLastUsedCounter = 0;
 
+        private uint spectreDelay = 34;
+        private uint spectreLastUsedCounter = 0;
+
         private uint fisherDelay = 55;
 
         private uint anchorDelay = 120;
@@ -557,6 +560,17 @@ namespace CTG2.Content.Items.ModifiedWeps
                 if (Main.GameUpdateCount - chainKnifeLastUsedCounter >= chainKnifeDelay)
                 {
                     chainKnifeLastUsedCounter = Main.GameUpdateCount;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (item.type == ModContent.ItemType<StaffOfWinter>())
+            {
+                if (Main.GameUpdateCount - spectreLastUsedCounter >= spectreDelay)
+                {
+                    spectreLastUsedCounter = Main.GameUpdateCount;
 
                     return true;
                 }
