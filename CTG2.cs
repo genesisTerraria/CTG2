@@ -1889,6 +1889,7 @@ namespace CTG2
                     {
                         int plyrindex = reader.ReadInt32();
                         Main.player[plyrindex].Heal(200);
+                        Main.player[plyrindex].statMana = Main.player[plyrindex].statManaMax2;
                     }
                     break;
                 case (byte)MessageType.RequestHeal:

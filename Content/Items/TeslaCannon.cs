@@ -21,7 +21,7 @@ namespace CTG2.Content.Items
             Item.damage = 29;              // heavier since it's now a single hit, not sustained DPS
             Item.DamageType = DamageClass.Magic;
             Item.crit = 0;
-            Item.mana = 8;
+            Item.mana = 6;
             Item.scale = 0.8f;
             Item.useTime = 20;             // slow, deliberate railgun cadence
             Item.useAnimation = 20;

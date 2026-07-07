@@ -385,7 +385,7 @@ namespace CTG2.Content
                     int selectedClass = attackerManager.currentClass.AbilityID;
 
                     bool grantRngManHit =
-                        selectedClass == 18
+                        selectedClass == 19
                         && attacker.team != Player.team
                         && (
                             Main.netMode == NetmodeID.Server
@@ -723,8 +723,14 @@ namespace CTG2.Content
         //     }
         // }
 
-
         private void GladiatorOnUse()
+        {
+            class4PowerShot = true;
+
+            SoundEngine.PlaySound(SoundID.Item77.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+        }
+
+        private void GladiatorOnUse2()
         {
             Player.AddBuff(BuffID.WellFed2, 300);
             Player.AddBuff(BuffID.WitheredArmor, 300);
@@ -737,13 +743,6 @@ namespace CTG2.Content
             playedSound = false;
 
             SoundEngine.PlaySound(SoundID.DD2_KoboldIgnite.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
-        }
-
-        private void GladiatorOnUse2()
-        {
-            class4PowerShot = true;
-
-            SoundEngine.PlaySound(SoundID.Item77.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
 
         private void GladiatorPostStatus()
@@ -1349,7 +1348,9 @@ namespace CTG2.Content
             Player.AddBuff(BuffID.Cursed, 18);
 
             Vector2 direction = Main.MouseWorld - Player.Center;
-            direction.Normalize();
+
+            if (direction != Vector2.Zero)
+                direction.Normalize();
 
             float speed = 7f;
             Vector2 velocity = direction * speed;
@@ -1365,6 +1366,40 @@ namespace CTG2.Content
             );
 
             SoundEngine.PlaySound(SoundID.Item66, Player.Center);
+        }
+
+        private void AstronautOnUse()
+        {
+            var fuel = Player.GetModPlayer<PlanetaryExplorationGearPlayer>();
+            fuel.flightTimeRemaining = 60;
+
+            SoundEngine.PlaySound(SoundID.Item61, Player.Center);
+            SoundEngine.PlaySound(SoundID.Item68, Player.Center);
+        }
+
+        private void AstronautOnUse2()
+        {
+            Player.AddBuff(BuffID.Cursed, 18);
+
+            Vector2 direction = Main.MouseWorld - Player.Center;
+
+            if (direction != Vector2.Zero)
+                direction.Normalize();
+
+            float speed = 11f;
+            Vector2 velocity = direction * speed;
+
+            Projectile.NewProjectile(
+                Player.GetSource_FromThis(),
+                Player.Center,
+                velocity,
+                ProjectileID.SuperStarSlash,
+                15,
+                0,
+                Player.whoAmI
+            );
+
+            SoundEngine.PlaySound(SoundID.Item71, Player.Center);
         }
 
         private void RngManOnUse()
@@ -1544,7 +1579,7 @@ namespace CTG2.Content
                         break;
 
                     case 4:
-                        SetCooldown(35);
+                        SetCooldown(6);
                         GladiatorOnUse();
 
                         break;
@@ -1631,6 +1666,12 @@ namespace CTG2.Content
                         break;
 
                     case 18:
+                        SetCooldown(20);
+                        AstronautOnUse();
+
+                        break;
+
+                    case 19:
                         SetCooldown(5);
                         RngManOnUse();
 
@@ -1656,12 +1697,16 @@ namespace CTG2.Content
                         AlchemistOnUse2();
                         break;
                     case 4:
-                        SetCooldown2(10);
+                        SetCooldown2(35);
                         GladiatorOnUse2();
                         break;
                     case 15:
                         SetCooldown2(10);
                         TreeOnUse2();
+                        break;
+                    case 18:
+                        SetCooldown2(25);
+                        AstronautOnUse2();
                         break;
                 }
             }
@@ -1691,7 +1736,7 @@ namespace CTG2.Content
 
             if (!GameInfo.paused)
             {
-                if (cooldown > 0 && (selectedClass != 1 || class1UsedLuminite))
+                if (cooldown > 0 && (selectedClass != 1 || class1UsedLuminite) && (selectedClass != 4 || !class4PowerShot))
                     cooldown--;
 
                 if (cooldown2 > 0)

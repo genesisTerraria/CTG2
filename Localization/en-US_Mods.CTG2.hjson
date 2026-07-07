@@ -195,6 +195,11 @@ Items: {
 		Tooltip: ""
 		DisplayName: Tesla Cannon
 	}
+
+	PlanetaryExplorationGear: {
+		DisplayName: Planetary Exploration Gear
+		Tooltip: ""
+	}
 }
 
 NPCs: {

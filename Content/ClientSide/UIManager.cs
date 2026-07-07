@@ -653,6 +653,56 @@ public class UIManager : ModSystem
             centerX += 48;
             destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
         }
+        else if (selectedClass == 18)
+        {
+            int cooldown2 = abilities.cooldown2;
+
+            Texture2D Ability1Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/AstronautAbilityIcons/AstronautAbility1").Value;
+            Texture2D Ability2Icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/AstronautAbilityIcons/AstronautAbility2").Value;
+
+            iconSize = 32;
+            centerX = Main.screenWidth / 2 - 48;
+            centerY = Main.screenHeight - 32;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+
+            // Draw first ability icon
+            if (cooldown <= 0)
+            {
+                Main.spriteBatch.Draw(Ability1Icon, destRect, Color.White);
+            }
+            else
+            {
+                Main.spriteBatch.Draw(Ability1Icon, destRect, Color.Gray * 0.6f);
+
+                DynamicSpriteFont font = FontAssets.MouseText.Value;
+                string cdText = $"{(int)Math.Ceiling(cooldown / 60f)}";
+                Vector2 textSize = font.MeasureString(cdText);
+                Vector2 textPos = new Vector2(centerX - textSize.X / 2f, centerY - textSize.Y / 2f);
+                Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
+            }
+
+            centerX += 48;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+
+            // Draw second ability icon
+            if (cooldown2 <= 0)
+            {
+                Main.spriteBatch.Draw(Ability2Icon, destRect, Color.White);
+            }
+            else
+            {
+                Main.spriteBatch.Draw(Ability2Icon, destRect, Color.Gray * 0.6f);
+
+                DynamicSpriteFont font = FontAssets.MouseText.Value;
+                string cdText = $"{(int)Math.Ceiling(cooldown2 / 60f)}";
+                Vector2 textSize = font.MeasureString(cdText);
+                Vector2 textPos = new Vector2(centerX - textSize.X / 2f, centerY - textSize.Y / 2f);
+                Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
+            }
+
+            centerX += 48;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+        }
         else
         {
             Texture2D icon = ModContent.Request<Texture2D>("CTG2/Content/ClientSide/AbilityIcon").Value;

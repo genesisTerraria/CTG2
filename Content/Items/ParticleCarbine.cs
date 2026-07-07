@@ -14,7 +14,7 @@ namespace CTG2.Content.Items
             Item.UseSound = SoundID.Item91;
             Item.damage = 25;
             Item.useAmmo = AmmoID.None;
-            Item.shootSpeed = 10;
+            Item.shootSpeed = 8.5f;
             Item.shoot = ProjectileID.LaserMachinegunLaser;
         }
     }

@@ -359,9 +359,9 @@ public class ClassUI : UIState
             if (cls == null)
                 continue;
 
-            if (cls.AbilityID == 18 && !gameManager.rngConfig)
+            if (cls.AbilityID == 19 && !gameManager.rngConfig)
                 continue;
-            if (cls.AbilityID != 18 && gameManager.rngConfig)
+            if (cls.AbilityID != 19 && gameManager.rngConfig)
                 continue;
 
             if (cls.AbilityID == bannedID)

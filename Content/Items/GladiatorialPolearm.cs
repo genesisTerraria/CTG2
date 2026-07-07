@@ -81,7 +81,7 @@ namespace CTG2.Content.Items
 						playedSound = true;
 					}
 
-					owner.AddBuff(BuffID.Ironskin, 4 * 60);
+					owner.AddBuff(BuffID.Ironskin, 6 * 60);
                 }
             }
 

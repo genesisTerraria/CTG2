@@ -18,6 +18,14 @@ public class ProjectileOverrides : GlobalProjectile
 
     private bool playedSoundBoomerangs = false;
 
+    public override void SetDefaults(Projectile projectile)
+    {
+        if (projectile.type == ProjectileID.SuperStarSlash)
+        {
+            projectile.tileCollide = true;
+        }
+    }
+
 
     public override bool PreKill(Projectile projectile, int timeLeft)
     {
@@ -68,8 +76,7 @@ public class ProjectileOverrides : GlobalProjectile
     public override void ModifyHitPlayer(Projectile projectile, Player target, ref Player.HurtModifiers modifiers)
     {
         if (projectile.type == ProjectileID.EmeraldBolt || projectile.type == ModContent.ProjectileType<SpaceSplitterProjectile>()
-         || projectile.type == ModContent.ProjectileType<SittingDuckBobber>() || projectile.type == ProjectileID.LaserMachinegunLaser
-         || projectile.type == ProjectileID.ThunderSpearShot)
+         || projectile.type == ModContent.ProjectileType<SittingDuckBobber>() || projectile.type == ProjectileID.ThunderSpearShot)
         {
             target.noKnockback = true;
 
@@ -125,6 +132,10 @@ public class ProjectileOverrides : GlobalProjectile
                 projectile.timeLeft = 300;
             }
         }
+        if (projectile.type == ProjectileID.SuperStarSlash)
+        {
+            projectile.tileCollide = true;
+        }
         if (!playedSoundBoomerangs && (projectile.type == ProjectileID.ThornChakram || projectile.type == ProjectileID.Flamarang))
         {
             SoundEngine.PlaySound(SoundID.Item1, projectile.Center);
@@ -164,9 +175,9 @@ public class ProjectileOverrides : GlobalProjectile
         }
         if (projectile.type == ProjectileID.LaserMachinegunLaser)
         {
-            if (projectile.timeLeft > 70)
+            if (projectile.timeLeft > 65)
             {
-                projectile.timeLeft = 70;
+                projectile.timeLeft = 65;
             }
         }
         if (projectile.type == 41)
@@ -294,6 +305,10 @@ public class ProjectileOverrides : GlobalProjectile
             projectile.alpha = 255;
             projectile.tileCollide = false;
             projectile.timeLeft = 1; // dies almost instantly
+        }
+        if (projectile.type == ProjectileID.SuperStarSlash)
+        {
+            projectile.tileCollide = true;
         }
         if (projectile.type == ProjectileID.NebulaArcanumExplosionShot)
         {
@@ -541,6 +556,10 @@ public class ModifyHurtModPlayer : ModPlayer
         {
             Player.AddBuff(ModContent.BuffType<Transmutated>(), 90);
             Player.AddBuff(BuffID.Cursed, 90);
+        }
+        if (info.DamageSource.SourceProjectileType == ProjectileID.SuperStarSlash)
+        {
+            Player.AddBuff(BuffID.VortexDebuff, 120);
         }
         if (info.DamageSource.SourceProjectileType == 732)
         {

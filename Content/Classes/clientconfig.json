@@ -314,21 +314,6 @@
       "upgrades": []
     },
     {
-        "name": "Rng Man",
-        "summary": "Gains random items every hit.",
-        "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
-        "inventory": "rngman",
-        "icon": 95,
-        "ability-cooldown": 5,
-        "ability-2-cooldown": -1,
-        "ability-3-cooldown": -1,
-        "health-from-kills": 0,
-        "respawn-time": 2,
-        "buffs": [],
-        "ability-id": 18,
-        "upgrades": []
-    },
-    {
         "name": "Astronaut",
         "summary": "High mobility rusher.",
         "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
@@ -339,6 +324,21 @@
         "ability-3-cooldown": -1,
         "health-from-kills": 0,
         "respawn-time": 12,
+        "buffs": [107],
+        "ability-id": 18,
+        "upgrades": []
+    },
+    {
+        "name": "Rng Man",
+        "summary": "Gains random items every hit.",
+        "description": "The sole survivor of their guild, this little fellow is a master at archery, able to quickly manuever around their opponents.",
+        "inventory": "rngman",
+        "icon": 95,
+        "ability-cooldown": 5,
+        "ability-2-cooldown": -1,
+        "ability-3-cooldown": -1,
+        "health-from-kills": 0,
+        "respawn-time": 2,
         "buffs": [],
         "ability-id": 19,
         "upgrades": []
