@@ -10,6 +10,7 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using CTG2.ReeseIntegration;
+using PvPHubIntegration;
 
 namespace CTG2.Content.GameHooks;
 
@@ -40,6 +41,7 @@ public static partial class Hooks
         // re-apply teams once before starting to make sure someone not in queue doesn't become captain
         ModContent.GetInstance<NeatQueueTeamAssignmentSystem>().SyncTeamsToRoster();
         ReeseAPI.StartReeseRecording();
+        StatsTracking.StartScrimTracking();
         
 
         StartScrimsGame();
