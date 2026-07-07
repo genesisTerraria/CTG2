@@ -9,6 +9,7 @@ using Terraria;
 using CTG2.Content;
 using CTG2.Content.Classes;
 using CTG2.Content.ClientSide;
+using CTG2.Content.GameHooks;
 using CTG2.Content.ServerSide;
 using CTG2.Content.Commands;
 using CTG2.Content.Items;

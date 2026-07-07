@@ -11,6 +11,7 @@ using Terraria.Chat;
 using Terraria.Localization;
 using CTG2.Content.ClientSide;
 using CTG2.Content.Buffs;
+using CTG2.Content.GameHooks;
 using Terraria.Enums;
 using ClassesNamespace;
 
