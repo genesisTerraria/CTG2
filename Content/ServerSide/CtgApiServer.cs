@@ -9,6 +9,7 @@ using System.Text.Json.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using CTG2.Content.Configs;
+using CTG2.Content.GameHooks;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
@@ -330,6 +331,8 @@ namespace CTG2.Content.ServerSide
                 try
                 {
                     applied = ModContent.GetInstance<CTG2>().ApplyGamemodeChange(mode, "CTG2 HTTP API");
+                    if (applied && mode == "pubs")
+                        Hooks.OnScrimEnded();
                 }
                 catch (Exception ex)
                 {

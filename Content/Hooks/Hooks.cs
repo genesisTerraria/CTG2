@@ -2,22 +2,25 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
+using CTG2.Content.ServerSide;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Chat;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using CTG2.ReeseIntegration;
 
-namespace CTG2.Content.ServerSide;
+namespace CTG2.Content.GameHooks;
 
 //This class will store various timing dependant hooks
-public static class Hooks
+public static partial class Hooks
 {
     public const int BanTimerTicks = 3 * 60 * 60; // 3 minutes in ticks (60 ticks per second)
 
     private const int TeamRed = 1;
     private const int TeamBlue = 3;
+
 
     // This hook is fired the instant every queued player is simultaneously in the world
     // It is called by NeatQueueTeamAssignmentSystem.PlayersReady
@@ -36,6 +39,8 @@ public static class Hooks
 
         // re-apply teams once before starting to make sure someone not in queue doesn't become captain
         ModContent.GetInstance<NeatQueueTeamAssignmentSystem>().SyncTeamsToRoster();
+        ReeseAPI.StartReeseRecording();
+        
 
         StartScrimsGame();
 

@@ -1,5 +1,6 @@
 using CTG2.Content.Commands.Auth;
 using CTG2.Content.ClientSide;
+using CTG2.Content.GameHooks;
 using CTG2.Content.ServerSide;
 using Microsoft.Xna.Framework;
 using Terraria;
