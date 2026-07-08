@@ -22,6 +22,13 @@ namespace CTG2.Content.ServerSide
         private const int DefaultPort = 9071;
         private const string SecretsFileName = "ctg2-api-secrets.json";
 
+        /// <summary>
+        /// Winner of the most recent NeatQueue match: "red", "blue", or null if unknown.
+        /// Set from the MATCH_COMPLETED webhook before <see cref="Hooks.OnScrimEnded"/> runs,
+        /// and reset when a new match starts (scrims mode).
+        /// </summary>
+        public static string LastMatchWinner { get; private set; }
+
         private HttpListener _listener;
         private CancellationTokenSource _cancellationTokenSource;
         private Task _listenerTask;
@@ -176,7 +183,7 @@ namespace CTG2.Content.ServerSide
                         return;
                     }
 
-                    bool applied = await ApplyGamemodeOnMainThreadAsync(mode);
+                    bool applied = await ApplyGamemodeOnMainThreadAsync(mode, NormalizeWinner(request?.Winner));
                     if (!applied)
                     {
                         await WriteJsonAsync(context, 400, new { ok = false, error = "Invalid mode." });
@@ -321,7 +328,7 @@ namespace CTG2.Content.ServerSide
             }
         }
 
-        private async Task<bool> ApplyGamemodeOnMainThreadAsync(string mode)
+        private async Task<bool> ApplyGamemodeOnMainThreadAsync(string mode, string winner)
         {
             bool applied = false;
             Exception caughtException = null;
@@ -331,8 +338,20 @@ namespace CTG2.Content.ServerSide
                 try
                 {
                     applied = ModContent.GetInstance<CTG2>().ApplyGamemodeChange(mode, "CTG2 HTTP API");
-                    if (applied && mode == "pubs")
-                        Hooks.OnScrimEnded();
+                    if (applied)
+                    {
+                        if (mode == "pubs")
+                        {
+                            // Store the winner before OnScrimEnded so the hook can read it
+                            LastMatchWinner = winner;
+                            Mod.Logger.Info($"[NeatQueue] Match winner: {winner ?? "unknown"}");
+                            Hooks.OnScrimEnded();
+                        }
+                        else if (mode == "scrims")
+                        {
+                            LastMatchWinner = null;
+                        }
+                    }
                 }
                 catch (Exception ex)
                 {
@@ -356,6 +375,12 @@ namespace CTG2.Content.ServerSide
 
             return providedBytes.Length == configuredBytes.Length &&
                 CryptographicOperations.FixedTimeEquals(providedBytes, configuredBytes);
+        }
+
+        private static string NormalizeWinner(string winner)
+        {
+            string normalized = winner?.Trim().ToLowerInvariant();
+            return normalized == "red" || normalized == "blue" ? normalized : null;
         }
 
         private static string NormalizeMode(string mode)
@@ -506,6 +531,7 @@ namespace CTG2.Content.ServerSide
         private class GamemodeRequest
         {
             public string Mode { get; set; }
+            public string Winner { get; set; }
         }
 
         private class NeatQueueTeamsRequest
