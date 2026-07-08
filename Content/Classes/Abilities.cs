@@ -1394,7 +1394,7 @@ namespace CTG2.Content
                 Player.Center,
                 velocity,
                 ProjectileID.ElectrosphereMissile,
-                12,
+                16,
                 0,
                 Player.whoAmI
             );

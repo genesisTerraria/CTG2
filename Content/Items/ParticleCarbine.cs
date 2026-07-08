@@ -12,7 +12,7 @@ namespace CTG2.Content.Items
         {
             Item.CloneDefaults(ItemID.Handgun);
             Item.UseSound = SoundID.Item91;
-            Item.damage = 25;
+            Item.damage = 28;
             Item.useAmmo = AmmoID.None;
             Item.shootSpeed = 8.5f;
             Item.shoot = ProjectileID.LaserMachinegunLaser;

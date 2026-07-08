@@ -10,7 +10,7 @@ namespace CTG2.Content.Items;
 public class PlanetaryExplorationGear : ModItem
 {
     // --- Tunables (edit these) -----------------------------------------
-    public const int FlightTimeMax = 48;       // ticks
+    public const int FlightTimeMax = 60;       // ticks
     public const float FlightSpeed = 5f;        // max horizontal air speed
     public const float FlightAcceleration = 0.4f;
     public const float AscentSpeed = 5f;        // vertical speed holding jump

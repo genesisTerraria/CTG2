@@ -18,7 +18,7 @@ namespace CTG2.Content.Items
     {
         public override void SetDefaults()
         {
-            Item.damage = 29;              // heavier since it's now a single hit, not sustained DPS
+            Item.damage = 32;              // heavier since it's now a single hit, not sustained DPS
             Item.DamageType = DamageClass.Magic;
             Item.crit = 0;
             Item.mana = 6;
