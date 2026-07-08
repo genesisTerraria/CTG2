@@ -26,6 +26,7 @@ public static partial class Hooks
         ModContent.GetInstance<GameManager>().ResetClassBans(); // clear bans from both teams
         ModContent.GetInstance<NeatQueueTeamAssignmentSystem>().ClearAssignments(); // clear the team assignments for each player
         ReeseAPI.StopReeseRecording("Queue ended. Server returned to pubs mode."); // stop the scrim recording
+        AnnounceQueueWinner(); // announce the winner of the queue from NeatQueue
         StatsTracking.AnnounceScrimStats(); // announce the final stats of the game
         StatsTracking.StopScrimTracking(); // stop tracking stats since a scrim no longer exists
         
@@ -38,5 +39,19 @@ public static partial class Hooks
             Color.LightGreen);
 
 
+    }
+
+    private static void AnnounceQueueWinner()
+    {
+        string winner = CtgApiServer.LastMatchWinner ?? "none";
+        Color winnerColor = winner switch
+        {
+            "red" => Color.IndianRed,
+            "blue" => Color.CornflowerBlue,
+            _ => Color.Gray
+        };
+        ChatHelper.BroadcastChatMessage(
+            NetworkText.FromLiteral($"The queue has ended. The winner of the queue is: {winner}"),
+            winnerColor);
     }
 }
