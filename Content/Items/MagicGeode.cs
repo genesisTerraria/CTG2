@@ -12,7 +12,7 @@ namespace CTG2.Content.Items
 		{
 	  		Item.CloneDefaults(ItemID.Geode);
 
-            Item.damage = 30;
+            Item.damage = 33;
             Item.useTime = 8;
             Item.useAnimation = 8;
             Item.shootSpeed = 8f;

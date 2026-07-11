@@ -179,7 +179,8 @@ namespace CTG2
         RequestForceStartBans = 132, // Forcestartbans even if the full roster isn't present
         SubmitClassBan = 133,   // AbilityID to ban for the opposing team
         SyncClassBans = 134,    // Both teams' banned AbilityIDs
-        RequestSyncTeams = 135  // reassign all online players to their teams
+        RequestSyncTeams = 135,  // reassign all online players to their teams
+        SyncFlightTime = 136
     }
 
     public class CTG2 : Mod
@@ -1865,6 +1866,26 @@ namespace CTG2
                     if (Main.netMode == NetmodeID.Server)
                     {
                         modPlayer.SyncPlayer(-1, fromWho);
+                    }
+                    //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"sync called once"), Color.Orange);
+                    break;
+                }
+                case (byte)MessageType.SyncFlightTime:
+                {
+                    int playerID = reader.ReadInt32();
+                    int duration = reader.ReadInt32();
+
+                    var fuel = Main.player[playerID].GetModPlayer<PlanetaryExplorationGearPlayer>();
+                    fuel.flightTimeRemaining = duration;
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        ModPacket audioPacketSelf = mod.GetPacket();
+                        audioPacketSelf.Write((byte)MessageType.SyncFlightTime);
+                        audioPacketSelf.Write(playerID);
+                        audioPacketSelf.Write(duration);
+                        audioPacketSelf.Send(-1);
+
                     }
                     //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"sync called once"), Color.Orange);
                     break;

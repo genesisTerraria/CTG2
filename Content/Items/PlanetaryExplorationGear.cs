@@ -10,11 +10,11 @@ namespace CTG2.Content.Items;
 public class PlanetaryExplorationGear : ModItem
 {
     // --- Tunables (edit these) -----------------------------------------
-    public const int FlightTimeMax = 60;       // ticks
+    public const int FlightTimeMax = 45;       // ticks
     public const float FlightSpeed = 5f;        // max horizontal air speed
     public const float FlightAcceleration = 0.4f;
     public const float AscentSpeed = 5f;        // vertical speed holding jump
-    public const float GroundRegenRate = 1.25f;       // fuel regained per tick while grounded
+    public const float GroundRegenRate = 1.5f;       // fuel regained per tick while grounded
     public const bool InstantRegenOnGround = false; // true = vanilla-style full refill
     // ---------------------------------------------------------------------
 
@@ -83,6 +83,11 @@ public class PlanetaryExplorationGearPlayer : ModPlayer
     public bool hasJetpack;
     public float flightTimeRemaining;
 
+    // Tracks equip state across frames so PostUpdateEquips can detect the
+    // equip/unequip edge. hasJetpack itself gets wiped every frame by
+    // ResetEffects, so we can't compare against it directly next frame.
+    private bool hadJetpackLastFrame;
+
     public override void OnEnterWorld()
     {
         flightTimeRemaining = PlanetaryExplorationGear.FlightTimeMax;
@@ -91,6 +96,29 @@ public class PlanetaryExplorationGearPlayer : ModPlayer
     public override void ResetEffects()
     {
         hasJetpack = false;
+    }
+
+    public override void PostUpdateEquips()
+    {
+        // Runs after all UpdateAccessory hooks for this tick, so hasJetpack
+        // is settled: true only if the jetpack is still equipped right now.
+        if (hadJetpackLastFrame && !hasJetpack)
+        {
+            OnJetpackUnequipped();
+        }
+
+        hadJetpackLastFrame = hasJetpack;
+    }
+    private void OnJetpackUnequipped()
+    {
+        // Fires once, the tick the jetpack comes off.
+        // Stop any active thrust immediately rather than let residual
+        // velocity/animation state linger from the last equipped frame.
+        Player.wingTime = 0;
+        flightTimeRemaining = 0;
+
+        // TODO: hide the fuel bar HUD element here.
+        // TODO: stop the thrust sound loop here, if/when one exists.
     }
 
     public override void PostUpdate()

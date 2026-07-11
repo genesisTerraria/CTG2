@@ -119,9 +119,9 @@ public class ProjectileOverrides : GlobalProjectile
         }
         if (projectile.type == ProjectileID.Electrosphere)
         {
-            if (projectile.timeLeft > 180)
+            if (projectile.timeLeft > 240)
             {
-                projectile.timeLeft = 180;
+                projectile.timeLeft = 240;
             }
         }
         if (projectile.type == ProjectileID.Hellwing)

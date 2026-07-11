@@ -31,6 +31,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         public long splitterLastUsedCounter;
         public long blowgunLastUsedCounter;
         public long orbLastUsedCounter;
+        public long particleLastUsedCounter;
     }
 
     public class OverloadedWeps : GlobalItem
@@ -67,8 +68,7 @@ namespace CTG2.Content.Items.ModifiedWeps
 
         private uint flamelashDelay = 55;
         private uint flamelashLastUsedCounter = 0;
-        private uint particleDelay = 55;
-        private uint particleLastUsedCounter = 0;
+        private uint particleDelay = 62;
 
         private uint blowgunDelay = 50;
 
@@ -76,9 +76,6 @@ namespace CTG2.Content.Items.ModifiedWeps
 
         private uint thunderZapperDelay = 60;
         private uint thunderZapperLastUsedCounter = 0;
-
-        private uint spectreDelay = 34;
-        private uint spectreLastUsedCounter = 0;
 
         private uint fisherDelay = 55;
 
@@ -122,8 +119,8 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.damage = 25;
                     break;
                 case ItemID.Blowgun: // Tiki Priest
-                    item.useTime = 25;
-                    item.useAnimation = 25;
+                    item.useTime = 20;
+                    item.useAnimation = 20;
                     item.shoot = 267;
                     item.shootSpeed = 15f;
                     item.useAmmo = AmmoID.None;
@@ -132,8 +129,8 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     break;
                 case ItemID.StaffofEarth: // Tiki Priest: Staff of Earth
-                    item.useTime = 24;
-                    item.useAnimation = 24;
+                    item.useTime = 20;
+                    item.useAnimation = 20;
                     item.mana = 0;
                     item.shootSpeed = 10f;
                     item.autoReuse = false;
@@ -203,7 +200,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useTime = 22;
                     item.useAnimation = 22;
                     item.crit = 0;
-                    item.shootSpeed = 11f;
+                    item.shootSpeed = 12f;
                     item.mana = 10;
                     item.shoot = 33;
                     item.scale = 0;
@@ -301,7 +298,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.damage = 36;
                     item.shootSpeed = 5f;
                     item.shoot = ProjectileID.DD2PhoenixBowShot;
-                    item.mana = 11;
+                    item.mana = 15;
                     item.scale = 0;
                     item.useTime = 24;
                     item.useAnimation = 24;
@@ -566,17 +563,6 @@ namespace CTG2.Content.Items.ModifiedWeps
                 else
                     return false;
             }
-            else if (item.type == ModContent.ItemType<StaffOfWinter>())
-            {
-                if (Main.GameUpdateCount - spectreLastUsedCounter >= spectreDelay)
-                {
-                    spectreLastUsedCounter = Main.GameUpdateCount;
-
-                    return true;
-                }
-                else
-                    return false;
-            }
             else if (item.type == ItemID.Blowgun)
             {
                 if (Main.GameUpdateCount - mPlayer.blowgunLastUsedCounter >= blowgunDelay)
@@ -652,14 +638,21 @@ namespace CTG2.Content.Items.ModifiedWeps
             }
             else if (item.type == ModContent.ItemType<ParticleCarbine>())
             {
-                if (Main.GameUpdateCount - particleLastUsedCounter >= particleDelay)
+                if (Main.GameUpdateCount - mPlayer.particleLastUsedCounter >= particleDelay && !player.HasBuff(BuffID.Cursed))
                 {
-                    particleLastUsedCounter = Main.GameUpdateCount;
+                    mPlayer.particleLastUsedCounter = Main.GameUpdateCount;
 
                     return true;
                 }
                 else
                     return false;
+            }
+            else if (item.type == ModContent.ItemType<TeslaCannon>() && !player.HasBuff(BuffID.Cursed))
+            {
+                if (player.statMana >= 6)
+                    mPlayer.particleLastUsedCounter = Main.GameUpdateCount;
+
+                return true;
             }
             else if (item.type == ModContent.ItemType<SpaceSplitter>())
             {

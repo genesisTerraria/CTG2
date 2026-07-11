@@ -257,9 +257,9 @@ public class BanUI : UIState
             if (cls == null)
                 continue;
 
-            if (cls.AbilityID == 18 && !gameManager.rngConfig)
+            if (cls.AbilityID == 19 && !gameManager.rngConfig)
                 continue;
-            if (cls.AbilityID != 18 && gameManager.rngConfig)
+            if (cls.AbilityID != 19 && gameManager.rngConfig)
                 continue;
 
             _classList2.Add(MakeClassButton(cls));

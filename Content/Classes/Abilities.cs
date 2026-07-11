@@ -834,7 +834,7 @@ namespace CTG2.Content
             Player.AddBuff(137, 420);
             Player.AddBuff(320, 420);
 
-            Player.statMana = Math.Min(Player.statMana + 14, Player.statManaMax2);
+            Player.statMana = Math.Min(Player.statMana + 7, Player.statManaMax2);
 
             class7EndTimer = 420;
             // if (Player.GetModPlayer<Abilities>().class7HitCounter >= 10)
@@ -1373,13 +1373,20 @@ namespace CTG2.Content
             var fuel = Player.GetModPlayer<PlanetaryExplorationGearPlayer>();
             fuel.flightTimeRemaining = 60;
 
+            var mod = ModContent.GetInstance<CTG2>();
+            ModPacket audioPacketSelf = mod.GetPacket();
+            audioPacketSelf.Write((byte)MessageType.SyncFlightTime);
+            audioPacketSelf.Write(Player.whoAmI);
+            audioPacketSelf.Write(60);
+            audioPacketSelf.Send();
+
             SoundEngine.PlaySound(SoundID.Item61, Player.Center);
             SoundEngine.PlaySound(SoundID.Item68, Player.Center);
         }
 
         private void AstronautOnUse2()
         {
-            Player.AddBuff(BuffID.Cursed, 18);
+            Player.AddBuff(BuffID.Cursed, 26);
 
             Vector2 direction = Main.MouseWorld - Player.Center;
 
@@ -1394,7 +1401,7 @@ namespace CTG2.Content
                 Player.Center,
                 velocity,
                 ProjectileID.ElectrosphereMissile,
-                16,
+                18,
                 0,
                 Player.whoAmI
             );
@@ -1666,7 +1673,7 @@ namespace CTG2.Content
                         break;
 
                     case 18:
-                        SetCooldown(30);
+                        SetCooldown(25);
                         AstronautOnUse();
 
                         break;
@@ -1705,7 +1712,7 @@ namespace CTG2.Content
                         TreeOnUse2();
                         break;
                     case 18:
-                        SetCooldown2(30);
+                        SetCooldown2(32);
                         AstronautOnUse2();
                         break;
                 }
