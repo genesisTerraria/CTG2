@@ -17,12 +17,11 @@ public class ProtectedRegionTile : GlobalTile
     */
     public static List<Rectangle> ProtectedRegions = new List<Rectangle>
     {
-        new Rectangle(2085, 918, 17, 9), //spawn area (change this later)
-        new Rectangle(762, 666, 94, 83), //blue base
-        new Rectangle(1190, 666, 98, 83), //red base
-        new Rectangle(1659, 584, 115, 51), //red class selection
-        new Rectangle(2411, 580, 115, 54), //blue class selection
-        new Rectangle(0, 225, 1400, 263)
+        new Rectangle(1658, 385, 92, 82), // blue base
+        new Rectangle(2085, 385, 92, 82), // red base
+        new Rectangle(3565, 391, 107, 47), // red class selection
+        new Rectangle(3896, 384, 107, 47), // blue class selection
+        new Rectangle(0, 225, 1400, 263) // lobby
     };
     public override bool CanPlace(int i, int j, int type)
     {

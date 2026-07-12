@@ -1,9 +1,9 @@
 {
-  "HealthPoints": 100,
-  "ManaPoints": 0,
+  "HealthPoints": 500,
+  "ManaPoints": 200,
   "BonusDefense": 0,
-  "BonusMoveSpeed": 0.0,
-  "BonusRunAcceleration": 0.0,
+  "BonusMoveSpeed": 0,
+  "BonusRunAcceleration": 0,
   "InventoryItems": [
     {
       "Name": "Stardust Pickaxe",
@@ -30,57 +30,57 @@
       "Modded": false
     },
     {
-      "Name": "The Grand Design",
-      "Type": 3611,
-      "Stack": 1,
+      "Name": "Dirt Block",
+      "Type": 2,
+      "Stack": 20348,
       "Prefix": 0,
       "Slot": 3,
       "Modded": false
     },
     {
-      "Name": "Actuation Rod",
-      "Type": 3620,
+      "Name": "Map Save Wand",
+      "Type": 5558,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 4,
-      "Modded": false
+      "Modded": true
     },
     {
-      "Name": "Actuator",
-      "Type": 849,
+      "Name": "Lihzahrd Brick",
+      "Type": 1101,
       "Stack": 9999,
       "Prefix": 0,
       "Slot": 5,
       "Modded": false
     },
     {
-      "Name": "Dirt Block",
-      "Type": 2,
-      "Stack": 10049,
+      "Name": "Green Brick",
+      "Type": 137,
+      "Stack": 9999,
       "Prefix": 0,
       "Slot": 6,
       "Modded": false
     },
     {
-      "Name": "Garden Gnome",
-      "Type": 4609,
-      "Stack": 8,
+      "Name": "Pink Brick",
+      "Type": 139,
+      "Stack": 9999,
       "Prefix": 0,
       "Slot": 7,
       "Modded": false
     },
     {
-      "Name": "Heart Lantern",
-      "Type": 1859,
-      "Stack": 21,
+      "Name": "Stardust Hamaxe",
+      "Type": 3525,
+      "Stack": 9999,
       "Prefix": 0,
       "Slot": 8,
       "Modded": false
     },
     {
-      "Name": "Echo Coating",
-      "Type": 5344,
-      "Stack": 9999,
+      "Name": "Deep Red Paint",
+      "Type": 1085,
+      "Stack": 9946,
       "Prefix": 0,
       "Slot": 9,
       "Modded": false
@@ -246,41 +246,41 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "The Grand Design",
+      "Type": 3611,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 30,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Garden Gnome",
+      "Type": 4609,
+      "Stack": 8,
       "Prefix": 0,
       "Slot": 31,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Heart Lantern",
+      "Type": 1859,
+      "Stack": 21,
       "Prefix": 0,
       "Slot": 32,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Actuator",
+      "Type": 849,
+      "Stack": 9999,
       "Prefix": 0,
       "Slot": 33,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Echo Coating",
+      "Type": 5344,
+      "Stack": 9987,
       "Prefix": 0,
       "Slot": 34,
       "Modded": false
@@ -302,9 +302,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Pink Brick Wall",
+      "Type": 140,
+      "Stack": 9949,
       "Prefix": 0,
       "Slot": 37,
       "Modded": false
@@ -318,33 +318,33 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Super Healing Potion",
+      "Type": 3544,
+      "Stack": 9998,
       "Prefix": 0,
       "Slot": 39,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Mud Block",
+      "Type": 176,
+      "Stack": 9877,
       "Prefix": 0,
       "Slot": 40,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Echo Block",
+      "Type": 4392,
+      "Stack": 9882,
       "Prefix": 0,
       "Slot": 41,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Actuation Rod",
+      "Type": 3620,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 42,
       "Modded": false
@@ -382,9 +382,9 @@
       "Modded": false
     },
     {
-      "Name": "Deep Red Paint",
-      "Type": 1085,
-      "Stack": 9999,
+      "Name": "Demonite Brick Wall",
+      "Type": 606,
+      "Stack": 9996,
       "Prefix": 0,
       "Slot": 47,
       "Modded": false
@@ -502,57 +502,57 @@
       "Modded": false
     },
     {
-      "Name": "Architect Gizmo Pack",
-      "Type": 3061,
+      "Name": "Hand Of Creation",
+      "Type": 5126,
       "Stack": 1,
-      "Prefix": 64,
+      "Prefix": 0,
       "Slot": 62,
       "Modded": false
     },
     {
-      "Name": "Spectre Goggles",
-      "Type": 4409,
-      "Stack": 1,
+      "Name": "",
+      "Type": 0,
+      "Stack": 0,
       "Prefix": 0,
       "Slot": 63,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Celestial Starboard",
+      "Type": 4954,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 64,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Ancient Chisel",
+      "Type": 4056,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 65,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Extendo Grip",
+      "Type": 2215,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 66,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Toolbox",
+      "Type": 1923,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 67,
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Terraspark Boots",
+      "Type": 5000,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 68,
       "Modded": false
@@ -590,9 +590,9 @@
       "Modded": false
     },
     {
-      "Name": "",
-      "Type": 0,
-      "Stack": 0,
+      "Name": "Spectre Goggles",
+      "Type": 4409,
+      "Stack": 1,
       "Prefix": 0,
       "Slot": 73,
       "Modded": false

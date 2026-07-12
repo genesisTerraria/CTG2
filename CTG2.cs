@@ -1017,7 +1017,7 @@ namespace CTG2
                             className = "Clown";
                             break;
                         case 13:
-                            className = "Flame Bunny";
+                            className = "Phoenix";
                             break;
                         case 14:
                             className = "Tiki Priest";
@@ -1032,10 +1032,10 @@ namespace CTG2
                             className = "Leech";
                             break;
                         case 18:
-                            className = "Rng Man";
+                            className = "Astronaut";
                             break;
                         case 19:
-                            className = "Astronaut";
+                            className = "RNG Man";
                             break;
                     }
 
@@ -2007,7 +2007,7 @@ namespace CTG2
                         ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
                         packet.Write((byte)MessageType.Mute);
                         packet.Write(mutedPlayer);
-                        packet.Send(toClient: mutedPlayer);
+                        packet.Send(-1);
                     }
 
                     break;
@@ -2016,12 +2016,10 @@ namespace CTG2
                 {
                     int mutedPlayer = reader.ReadInt32();
 
+                    Main.player[mutedPlayer].GetModPlayer<ChatPlayer>().IsMuted = true;
+
                     if (mutedPlayer == Main.myPlayer)
                     {
-                        Main.player[mutedPlayer]
-                            .GetModPlayer<ChatPlayer>()
-                            .IsMuted = true;
-
                         Main.NewText("You have been muted.", Color.Red);
                     }
                     break;
@@ -2035,7 +2033,7 @@ namespace CTG2
                         ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
                         packet.Write((byte)MessageType.Unmute);
                         packet.Write(unmutedPlayer);
-                        packet.Send(toClient: unmutedPlayer);
+                        packet.Send(-1);
                     }
 
                     break;
@@ -2044,12 +2042,10 @@ namespace CTG2
                 {
                     int unmutedPlayer = reader.ReadInt32();
 
+                    Main.player[unmutedPlayer].GetModPlayer<ChatPlayer>().IsMuted = false;
+
                     if (unmutedPlayer == Main.myPlayer)
                     {
-                        Main.player[unmutedPlayer]
-                            .GetModPlayer<ChatPlayer>()
-                            .IsMuted = false;
-
                         Main.NewText("You have been unmuted.", Color.Green);
                     }
                     break;

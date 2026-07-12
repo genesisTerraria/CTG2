@@ -1,10 +1,7 @@
 using System;
 using Terraria;
 using Terraria.ModLoader;
-using CTG2.Content;
 using Microsoft.Xna.Framework;
-using Terraria.WorldBuilding;
-using System.Collections;
 using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.Chat;
@@ -12,7 +9,6 @@ using Terraria.Localization;
 using CTG2.Content.ClientSide;
 using CTG2.Content.Buffs;
 using CTG2.Content.GameHooks;
-using Terraria.Enums;
 using ClassesNamespace;
 
 namespace CTG2.Content.ServerSide;
@@ -86,7 +82,7 @@ public class GameManager : ModSystem
     // Spectator tracking
     private Dictionary<int, bool> playerSpectatorStatus = new Dictionary<int, bool>();
     private Dictionary<int, int> spectatorOriginalTeams = new Dictionary<int, int>();
-    private Vector2 spectatorSpawnPoint = new Vector2((13332 + 19316) / 2, 11000); // Center area for spectators
+    private Vector2 spectatorSpawnPoint = new Vector2(1917 * 16, 411 * 16); // Center area for spectators
 
     // New game delay tracking
     public bool isWaitingForNewGame = false;

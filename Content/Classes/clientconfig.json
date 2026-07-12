@@ -1,12 +1,12 @@
 {
-  "blue-class-select": [39460, 9750],
-  "blue-base": [12340, 10882],
-  "blue-gem": [13332, 11504],
-  "red-class-select": [27350, 9800],
-  "red-base": [20381, 10882],
-  "red-gem": [19316, 11504],
+  "blue-class-select": [63184, 6496],
+  "blue-base": [26664, 6352],
+  "blue-gem": [27648, 6976],
+  "red-class-select": [57904, 6608],
+  "red-base": [34696, 6352],
+  "red-gem": [33632, 6976],
   "lobby": [10000, 10000],
-  "map-paste": [856, 682],
+  "map-paste": [1751, 399],
   "classes": [
     {
       "name": "Archer",

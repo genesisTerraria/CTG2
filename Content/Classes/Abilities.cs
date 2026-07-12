@@ -425,26 +425,17 @@ namespace CTG2.Content
             {
                 Player attacker = Main.player[attackerIndex];
                 int damage = info.Damage;
-                var attackerManager = attacker.GetModPlayer<PlayerManager>();
+                // var attackerManager = attacker.GetModPlayer<PlayerManager>();
 
                 switch (projectileType)
                 {
-                    case ProjectileID.HellfireArrow: // Archer ability
-                        if (attacker.HasBuff(320) && attacker.team != Player.team)
-                        {
-                            Player.AddBuff(30, 60);
-                            Player.AddBuff(44, 60);
-                        }
-                        break;
-
-                    case 15:
-                    case 19: // Flame Bunny ability
-                        if (attacker.HasBuff(320) && attacker.HasBuff(137) && attacker.team != Player.team)
-                        {
-                            Player.AddBuff(39, 20);
-                            Player.AddBuff(70, 20);
-                        }
-                        break;
+                    // case ProjectileID.HellfireArrow: // Archer ability
+                    //     if (attacker.HasBuff(320) && attacker.team != Player.team)
+                    //     {
+                    //         Player.AddBuff(30, 60);
+                    //         Player.AddBuff(44, 60);
+                    //     }
+                    //     break;
 
                     case 273:
                     case 304: // Leech ability
