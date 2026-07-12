@@ -15,7 +15,6 @@ namespace CTG2.Content.ServerSide;
 
 public class GameManager : ModSystem
 {
-    // True when 
     public bool IsGameActive { get; private set; }
     public bool HasRoundStarted { get; private set; }
 
