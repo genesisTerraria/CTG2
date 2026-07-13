@@ -368,6 +368,11 @@ namespace CTG2.Content.Items.ModifiedWeps
             {
                 SoundEngine.PlaySound(SoundID.NPCDeath19, player.Center);
             }
+            else if (item.type == ItemID.GoldenShower)
+            {
+                Projectile.NewProjectile(source, position, velocity, ModContent.ProjectileType<CTG2GoldenShowerProjectile>(), damage, knockback, player.whoAmI);
+                return false;
+            }
 
             return base.Shoot(item, player, source, position, velocity, type, damage, knockback);
         }

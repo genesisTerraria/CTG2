@@ -1336,21 +1336,19 @@ namespace CTG2.Content
 
         private void FishermanOnUse()
         {
-            Player.AddBuff(BuffID.Cursed, 18);
-
             Vector2 direction = Main.MouseWorld - Player.Center;
 
             if (direction != Vector2.Zero)
                 direction.Normalize();
 
-            float speed = 7f;
+            float speed = 12f;
             Vector2 velocity = direction * speed;
 
             Projectile.NewProjectile(
                 Player.GetSource_FromThis(),
                 Player.Center,
                 velocity,
-                969,
+                ProjectileID.FishHook,
                 25,
                 0,
                 Player.whoAmI
@@ -1589,7 +1587,7 @@ namespace CTG2.Content
                         break;
 
                     case 6:
-                        SetCooldown(30);
+                        SetCooldown(10);
                         FishermanOnUse();
 
                         break;

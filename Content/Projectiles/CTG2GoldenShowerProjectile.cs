@@ -7,30 +7,38 @@ namespace CTG2.Content.Projectiles
 {
     public class CTG2GoldenShowerProjectile : ModProjectile
     {
+        // desired hitbox size (smaller than the vanilla 32x32)
+        private const int HitboxWidth = 8;
+        private const int HitboxHeight = 8;
+
         public override string Texture => "Terraria/Images/Projectile_" + ProjectileID.GoldenShowerFriendly;
+
+        public override void SetStaticDefaults()
+        {
+            Main.projFrames[Projectile.type] = 3; // GoldenShowerFriendly has 3 animation frames
+        }
 
         public override void SetDefaults()
         {
             Projectile.CloneDefaults(ProjectileID.GoldenShowerFriendly);
+            Projectile.penetrate = 1;
             AIType = ProjectileID.GoldenShowerFriendly;
-
-            Projectile.width = 8;
-            Projectile.height = 8;
         }
 
-        public override void ModifyDamageHitbox(ref Rectangle hitbox)
+        public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
         {
-            const int hitboxSize = 8;
+            // Shrink the hitbox around its own center, keeping position/AI/draw untouched
+            int shrinkX = (projHitbox.Width - HitboxWidth) / 2;
+            int shrinkY = (projHitbox.Height - HitboxHeight) / 2;
 
-            int centerX = hitbox.X + hitbox.Width / 2;
-            int centerY = hitbox.Y + hitbox.Height / 2;
-
-            hitbox = new Rectangle(
-                centerX - hitboxSize / 2,
-                centerY - hitboxSize / 2,
-                hitboxSize,
-                hitboxSize
+            Rectangle smallerHitbox = new Rectangle(
+                projHitbox.X + shrinkX,
+                projHitbox.Y + shrinkY,
+                HitboxWidth,
+                HitboxHeight
             );
+
+            return smallerHitbox.Intersects(targetHitbox);
         }
     }
 }

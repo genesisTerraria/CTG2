@@ -14,7 +14,7 @@ namespace CTG2.Content.Items
 
 			Item.damage = 34;
 			Item.shoot = ProjectileID.MiniSharkron;
-			Item.shootSpeed = 12.5f;
+			Item.shootSpeed = 14.7f;
 			Item.ammo = AmmoID.None;
 		}
 

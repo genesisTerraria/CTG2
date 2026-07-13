@@ -311,8 +311,8 @@ public class ProjectileOverrides : GlobalProjectile
         {
             projectile.damage = 31;
         }
-        if (projectile.type == ProjectileID.IceSickle || projectile.type == ProjectileID.ChlorophyteOrb || projectile.type == ProjectileID.DemonScythe || projectile.type == ProjectileID.GoldenShowerFriendly || projectile.type == ModContent.ProjectileType<CTG2GoldenShowerProjectile>() || projectile.type == ProjectileID.WeatherPainShot
-         || projectile.type == ProjectileID.JavelinFriendly)
+        if (projectile.type == ProjectileID.IceSickle || projectile.type == ProjectileID.ChlorophyteOrb
+         || projectile.type == ProjectileID.DemonScythe || projectile.type == ProjectileID.JavelinFriendly)
         {
             projectile.penetrate = 1;
         }
@@ -545,8 +545,8 @@ public class ModifyHurtModPlayer : ModPlayer
         }
         if (info.DamageSource.SourceProjectileType == ProjectileID.ApprenticeStaffT3Shot)
         {
-            Player.AddBuff(ModContent.BuffType<Transmutated>(), 90);
-            Player.AddBuff(BuffID.Cursed, 90);
+            Player.AddBuff(ModContent.BuffType<Transmutated>(), 60);
+            Player.AddBuff(BuffID.Cursed, 60);
         }
         if (info.DamageSource.SourceProjectileType == 732)
         {
