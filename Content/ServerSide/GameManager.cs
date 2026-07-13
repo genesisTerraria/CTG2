@@ -1,7 +1,10 @@
 using System;
 using Terraria;
 using Terraria.ModLoader;
+using CTG2.Content;
 using Microsoft.Xna.Framework;
+using Terraria.WorldBuilding;
+using System.Collections;
 using System.Collections.Generic;
 using Terraria.ID;
 using Terraria.Chat;
@@ -9,12 +12,14 @@ using Terraria.Localization;
 using CTG2.Content.ClientSide;
 using CTG2.Content.Buffs;
 using CTG2.Content.GameHooks;
+using Terraria.Enums;
 using ClassesNamespace;
 
 namespace CTG2.Content.ServerSide;
 
 public class GameManager : ModSystem
 {
+    // True when 
     public bool IsGameActive { get; private set; }
     public bool HasRoundStarted { get; private set; }
 

@@ -481,6 +481,8 @@ public class PlayerManager : ModPlayer
 
     public void LockTeam()
     {
+
+
         if (gameManager != null && gameManager.IsGameActive)
         {
             int blueTeamId = 3;
@@ -489,6 +491,7 @@ public class PlayerManager : ModPlayer
 
             if (Player.team != blueTeamId && Player.team != redTeamId)
             {
+
                 Player.team = 0;
                 this.team = 0;
                 if (Main.netMode != NetmodeID.SinglePlayer)
