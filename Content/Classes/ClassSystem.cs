@@ -557,6 +557,11 @@ namespace ClassesNamespace
             {
                 Player.AddBuff(BuffID.PotionSickness, 10 * 60);
             }
+            if (currentClass == "Clown")
+            {
+                Player.AddBuff(BuffID.PotionSickness, 10 * 60);
+            }
+
 
             // clear banned buffs
             Player.ClearBuff(BuffID.Ichor);
