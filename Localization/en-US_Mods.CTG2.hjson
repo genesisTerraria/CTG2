@@ -205,6 +205,11 @@ Items: {
 		DisplayName: Gladiatorial Javelin
 		Tooltip: ""
 	}
+
+	PropulsionBooster: {
+		DisplayName: Propulsion Booster
+		Tooltip: ""
+	}
 }
 
 NPCs: {

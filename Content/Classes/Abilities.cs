@@ -1349,7 +1349,7 @@ namespace CTG2.Content
                 Player.Center,
                 velocity,
                 ProjectileID.FishHook,
-                25,
+                0,
                 0,
                 Player.whoAmI
             );

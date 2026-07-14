@@ -40,5 +40,12 @@ namespace CTG2.Content.Projectiles
 
             return smallerHitbox.Intersects(targetHitbox);
         }
+
+        public override bool TileCollideStyle(ref int width, ref int height, ref bool fallThrough, ref Vector2 hitboxCenterFrac)
+        {
+            width = HitboxWidth;
+            height = HitboxHeight;
+            return true;
+        }
     }
 }

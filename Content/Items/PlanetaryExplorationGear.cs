@@ -10,7 +10,7 @@ namespace CTG2.Content.Items;
 public class PlanetaryExplorationGear : ModItem
 {
     // --- Tunables (edit these) -----------------------------------------
-    public const int FlightTimeMax = 45;       // ticks
+    public const int FlightTimeMax = 30;       // ticks
     public const float FlightSpeed = 5f;        // max horizontal air speed
     public const float FlightAcceleration = 0.4f;
     public const float AscentSpeed = 5f;        // vertical speed holding jump
@@ -71,14 +71,9 @@ public class PlanetaryExplorationGear : ModItem
 
 public class PlanetaryExplorationGearPlayer : ModPlayer
 {
-    // Approximate vanilla gravity/terminal fall speed for the no-fuel fall.
-    private const float NormalGravity = 0.15f;
-    private const float TerminalFallSpeed = 10f;
-
     // Fuel consumed per tick of active thrust.
     private const float FuelPerTick = 1f;
     private const float ThrustRampUp = 0.3f;   // 0-1, higher = faster to reach full ascent speed
-    private const float ThrustRampDown = 0.3f; // 0-1, higher = faster to stop on release
 
     public bool hasJetpack;
     public float flightTimeRemaining;
@@ -146,13 +141,6 @@ public class PlanetaryExplorationGearPlayer : ModPlayer
             flightTimeRemaining = System.Math.Max(0f, flightTimeRemaining - FuelPerTick);
             float targetVelocity = -PlanetaryExplorationGear.AscentSpeed;
             Player.velocity.Y = MathHelper.Lerp(Player.velocity.Y, targetVelocity, ThrustRampUp);
-        }
-        else
-        {
-            if (Player.velocity.Y < 0f)
-                Player.velocity.Y = MathHelper.Lerp(Player.velocity.Y, 0f, ThrustRampDown);
-
-            Player.velocity.Y = System.Math.Min(Player.velocity.Y + NormalGravity, TerminalFallSpeed);
         }
 
         Player.wingTime = (int)flightTimeRemaining;
