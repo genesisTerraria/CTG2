@@ -372,6 +372,7 @@ Keybinds: {
 	BlackMageDash.DisplayName: Black Mage Dash
 	PhoenixOmni-DirectionalDash.DisplayName: Phoenix Omni- Directional Dash
 	"Damage Board.DisplayName": Damage  Board
+	Omni-Dash.DisplayName: Omni- Dash
 }
 
 Configs: {

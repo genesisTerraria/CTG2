@@ -75,6 +75,7 @@ namespace CTG2.Content
         public CtgClass class16RegenData;
 
         public int class17EndTimer = -1;
+        public int class18EndTimer = -1;
 
         public bool initializedMutant;
         public int mutantState = 1;
@@ -1359,22 +1360,6 @@ namespace CTG2.Content
 
         private void AstronautOnUse()
         {
-            var fuel = Player.GetModPlayer<PlanetaryExplorationGearPlayer>();
-            fuel.flightTimeRemaining = 60;
-
-            var mod = ModContent.GetInstance<CTG2>();
-            ModPacket audioPacketSelf = mod.GetPacket();
-            audioPacketSelf.Write((byte)MessageType.SyncFlightTime);
-            audioPacketSelf.Write(Player.whoAmI);
-            audioPacketSelf.Write(60);
-            audioPacketSelf.Send();
-
-            SoundEngine.PlaySound(SoundID.Item61, Player.Center);
-            SoundEngine.PlaySound(SoundID.Item68, Player.Center);
-        }
-
-        private void AstronautOnUse2()
-        {
             Player.AddBuff(BuffID.Cursed, 26);
 
             Vector2 direction = Main.MouseWorld - Player.Center;
@@ -1396,6 +1381,19 @@ namespace CTG2.Content
             );
 
             SoundEngine.PlaySound(SoundID.Item71, Player.Center);
+        }
+
+        private void AstronautOnUse2()
+        {
+            class18EndTimer = 7 * 60;
+
+            Player.AddBuff(BuffID.MagicPower, 7 * 60);
+            Player.AddBuff(BuffID.Electrified, 7 * 60);
+
+            playedSound = false;
+
+            SoundEngine.PlaySound(SoundID.Item61, Player.Center);
+            SoundEngine.PlaySound(SoundID.Item68, Player.Center);
         }
 
         private void RngManOnUse()
@@ -1514,6 +1512,16 @@ namespace CTG2.Content
                         SoundEngine.PlaySound(SoundID.Item90, Player.Center);
                         playedSound = true;
                         class17EndTimer = -1;
+                    }
+
+                    break;
+                case 18:
+                    if (endedEarly || (!playedSound && class18EndTimer == 0))
+                    {
+                        SoundEngine.PlaySound(SoundID.Item61, Player.Center);
+                        SoundEngine.PlaySound(SoundID.Item68, Player.Center);
+                        playedSound = true;
+                        class18EndTimer = -1;
                     }
 
                     break;
@@ -1662,7 +1670,7 @@ namespace CTG2.Content
                         break;
 
                     case 18:
-                        SetCooldown(25);
+                        SetCooldown(32);
                         AstronautOnUse();
 
                         break;
@@ -1701,7 +1709,7 @@ namespace CTG2.Content
                         TreeOnUse2();
                         break;
                     case 18:
-                        SetCooldown2(32);
+                        SetCooldown2(45);
                         AstronautOnUse2();
                         break;
                 }
@@ -1767,6 +1775,9 @@ namespace CTG2.Content
                 
                 if (class17EndTimer >= 0)
                     class17EndTimer--;
+
+                if (class18EndTimer >= 0)
+                    class18EndTimer--;
             }
         }
         

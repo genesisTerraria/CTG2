@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using CTG2;
 using CTG2.Content.Projectiles;
 using Microsoft.Extensions.Options;
+using CTG2.Content;
 
 
 public class ProjectileOverrides : GlobalProjectile
@@ -554,10 +555,11 @@ public class ModifyHurtModPlayer : ModPlayer
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
             if (attackerPlayer.currentClass.Name == "Astronaut")
             {
+                int amount = attacker.HasBuff(BuffID.MagicPower) ? 4 : 2;
                 ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
                 packet.Write((byte)CTG2.MessageType.RequestMana);
                 packet.Write(attacker.whoAmI);
-                packet.Write(2);
+                packet.Write(amount);
                 packet.Send();
             }
         }

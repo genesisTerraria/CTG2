@@ -1,13 +1,13 @@
 {
-  "HealthPoints": 140,
+  "HealthPoints": 120,
   "ManaPoints": 6,
-  "BonusDefense": 0,
+  "BonusDefense": 8,
   "BonusMoveSpeed": 0,
   "BonusRunAcceleration": 0,
   "InventoryItems": [
     {
       "Name": "Upgraded Shardstone Pickaxe",
-      "Type": 5574,
+      "Type": 5573,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -15,7 +15,7 @@
     },
     {
       "Name": "Tesla Cannon",
-      "Type": 5571,
+      "Type": 5570,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 1,
