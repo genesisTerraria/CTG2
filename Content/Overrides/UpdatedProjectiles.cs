@@ -110,13 +110,6 @@ public class ProjectileOverrides : GlobalProjectile
 
         //     projectile.Center = center;
         // }
-        if (projectile.type == 969)
-        {
-            if (projectile.timeLeft > 120)
-            {
-                projectile.timeLeft = 120;
-            }
-        }
         if (projectile.type == ProjectileID.Electrosphere)
         {
             if (projectile.timeLeft > 240)
@@ -312,7 +305,7 @@ public class ProjectileOverrides : GlobalProjectile
             projectile.damage = 31;
         }
         if (projectile.type == ProjectileID.IceSickle || projectile.type == ProjectileID.ChlorophyteOrb
-         || projectile.type == ProjectileID.DemonScythe || projectile.type == ProjectileID.JavelinFriendly)
+         || projectile.type == ProjectileID.DemonScythe)
         {
             projectile.penetrate = 1;
         }
@@ -380,12 +373,6 @@ public class ModifyHurtModPlayer : ModPlayer
                     }
                 }
             }
-        }
-
-        if (info.DamageSource.SourceProjectileType == 969 && Player.whoAmI == Main.myPlayer)
-        {
-            //Player.AddBuff(ModContent.BuffType<Netted>(), 60);
-            Player.AddBuff(BuffID.Dazed, 60);
         }
 
         bool isPickaxe = info.DamageSource.SourceItem != null && (
@@ -574,9 +561,9 @@ public class ModifyHurtModPlayer : ModPlayer
                 packet.Send();
             }
         }
-        if (info.DamageSource.SourceProjectileType == 507)
+        if (info.DamageSource.SourceProjectileType == ProjectileID.JavelinFriendly)
         {
-            Player.AddBuff(BuffID.Dazed, 90);
+            Player.AddBuff(BuffID.Dazed, 60);
         }
         if (info.DamageSource.SourceProjectileType == 153)
         {

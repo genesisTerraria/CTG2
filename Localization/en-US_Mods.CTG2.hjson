@@ -200,6 +200,11 @@ Items: {
 		DisplayName: Planetary Exploration Gear
 		Tooltip: ""
 	}
+
+	GladiatorialJavelin: {
+		DisplayName: Gladiatorial Javelin
+		Tooltip: ""
+	}
 }
 
 NPCs: {

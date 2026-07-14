@@ -38,7 +38,7 @@ namespace CTG2.Content.Items.ModifiedWeps
     {
         private uint rForkDelay = 37;
         private uint rForkLastUsedCounter = 0;
-        private uint nagDelay = 40;
+        private uint nagDelay = 50;
         private uint nagLastUsedCounter = 0;
 
         private uint zapinatorDelay = 51;
@@ -254,22 +254,11 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.crit = 0;
                     break;
                 case 537: // cobalt naginata
-                    item.damage = 36;
+                    item.damage = 38;
                     item.useAnimation = 22;
                     item.useTime = 22;
                     item.shootSpeed = 4.2f;
                     item.crit = 0;
-                    break;
-                case ItemID.Gungnir:
-                    item.damage = 22;
-                    item.useAnimation = 22;
-                    item.useTime = 22;
-                    item.crit = 0;
-                    item.shootSpeed = 14f;
-                    item.mana = 25;
-                    item.knockBack = 10;
-                    item.shoot = 507;
-                    item.UseSound = SoundID.DD2_DarkMageAttack;
                     break;
                 case 4347: //gray zapinator
                     item.damage = 35;
