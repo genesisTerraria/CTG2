@@ -13,11 +13,11 @@ namespace CTG2.Content.Items
     public class PlanetaryExplorationGear : ModItem
     {
         // --- Jetpack tunables -----------------------------------------
-        public const int FlightTimeMax = 20;       // ticks
+        public const int FlightTimeMax = 30;       // ticks
         public const float FlightSpeed = 4.5f;        // max horizontal air speed
         public const float FlightAcceleration = 0.4f;
         public const float AscentSpeed = 5f;        // vertical speed holding jump
-        public const float GroundRegenRate = 0.667f;  // fuel regained per tick while grounded
+        public const float GroundRegenRate = 1f;  // fuel regained per tick while grounded
         public const bool InstantRegenOnGround = false;
 
 
@@ -104,7 +104,7 @@ namespace CTG2.Content.Items
 
         // --- Dash state ---------------------------------------------------
         private bool playedSound = false;
-        public const int DashCooldown = 120;
+        public const int DashCooldown = 90;
         public const int DashDuration = 15;
         public float DashVelocity = 13.5f;
         public float DashDecay = 0.95f; // multiplier applied to dash velocity every tick
@@ -196,7 +196,7 @@ namespace CTG2.Content.Items
 
                     // Full dash velocity applied equally in all directions —
                     // no horizontal-reduction, no jetpack interference.
-                    float flightTimeMultiplier = 0.67f + 0.33f * (flightTimeRemaining / 20f);
+                    float flightTimeMultiplier = 0.67f + 0.33f * (flightTimeRemaining / 30);
                     currentDashVelocity = direction * DashVelocity * flightTimeMultiplier;
                     Player.velocity = currentDashVelocity;
 
