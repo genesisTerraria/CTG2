@@ -717,13 +717,6 @@ namespace CTG2.Content
 
         private void GladiatorOnUse()
         {
-            class4PowerShot = true;
-
-            SoundEngine.PlaySound(SoundID.Item77.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
-        }
-
-        private void GladiatorOnUse2()
-        {
             Player.AddBuff(BuffID.WellFed2, 300);
             Player.AddBuff(BuffID.WitheredArmor, 300);
             Player.AddBuff(BuffID.WeaponImbueGold, 300);
@@ -735,6 +728,13 @@ namespace CTG2.Content
             playedSound = false;
 
             SoundEngine.PlaySound(SoundID.DD2_KoboldIgnite.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+        }
+
+        private void GladiatorOnUse2()
+        {
+            class4PowerShot = true;
+
+            SoundEngine.PlaySound(SoundID.Item77.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
 
         private void GladiatorPostStatus()
@@ -1583,7 +1583,7 @@ namespace CTG2.Content
                         break;
 
                     case 4:
-                        SetCooldown(6);
+                        SetCooldown(35);
                         GladiatorOnUse();
 
                         break;
@@ -1701,7 +1701,7 @@ namespace CTG2.Content
                         AlchemistOnUse2();
                         break;
                     case 4:
-                        SetCooldown2(35);
+                        SetCooldown2(6);
                         GladiatorOnUse2();
                         break;
                     case 15:

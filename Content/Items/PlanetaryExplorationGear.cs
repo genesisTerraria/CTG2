@@ -103,7 +103,7 @@ namespace CTG2.Content.Items
         private bool hadJetpackLastFrame;
 
         // --- Dash state ---------------------------------------------------
-        private bool playedSound = false;
+        private bool playedSound = true;
         public const int DashCooldown = 90;
         public const int DashDuration = 15;
         public float DashVelocity = 13.5f;
@@ -174,6 +174,8 @@ namespace CTG2.Content.Items
 
         public override void PreUpdateMovement()
         {
+            if (!DashAccessoryEquipped) return;
+
             if (DashDelay == 0 && !playedSound)
             {
                 SoundEngine.PlaySound(SoundID.Item130.WithVolumeScale(2f));
@@ -284,6 +286,8 @@ namespace CTG2.Content.Items
 
         public override void OnHurt(Player.HurtInfo info)
         {
+            if (!DashAccessoryEquipped) return;
+
             if (DashTimer > 0)
             {
                 // Cancel the dash entirely — let knockback own the velocity from here.

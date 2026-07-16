@@ -74,7 +74,6 @@ public class Charged : GlobalItem
         if (!abils.class1UsedLuminite)
         {
             arrowType = 639; // Luminite
-            abils.class1UsedLuminite = true;
         }
         else
         {

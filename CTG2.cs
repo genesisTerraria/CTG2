@@ -291,7 +291,7 @@ namespace CTG2
                 }
             }
 
-            BlessingOfTheDragonsKeybind = KeybindLoader.RegisterKeybind(this, "Omni-Dash", "LeftShift");
+            BlessingOfTheDragonsKeybind = KeybindLoader.RegisterKeybind(this, "Omni-DirectionalDash", "LeftShift");
             AdvancedBinocularsKeybind = KeybindLoader.RegisterKeybind(this, "AdvancedBinoculars", "MouseRight");
             Ability1Keybind = KeybindLoader.RegisterKeybind(this, "Ability 1", "R");
             Ability2Keybind = KeybindLoader.RegisterKeybind(this, "Ability 2", "F");
@@ -2007,7 +2007,7 @@ namespace CTG2
                         ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
                         packet.Write((byte)MessageType.Mute);
                         packet.Write(mutedPlayer);
-                        packet.Send(toClient: mutedPlayer);
+                        packet.Send(-1);
                     }
 
                     break;
@@ -2018,12 +2018,11 @@ namespace CTG2
 
                     if (mutedPlayer == Main.myPlayer)
                     {
-                        Main.player[mutedPlayer]
-                            .GetModPlayer<ChatPlayer>()
-                            .IsMuted = true;
-
                         Main.NewText("You have been muted.", Color.Red);
                     }
+
+                    Main.player[mutedPlayer].GetModPlayer<ChatPlayer>().IsMuted = true;
+
                     break;
                 }
                 case (byte)MessageType.RequestUnmute:
@@ -2035,7 +2034,7 @@ namespace CTG2
                         ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
                         packet.Write((byte)MessageType.Unmute);
                         packet.Write(unmutedPlayer);
-                        packet.Send(toClient: unmutedPlayer);
+                        packet.Send(-1);
                     }
 
                     break;
@@ -2046,12 +2045,11 @@ namespace CTG2
 
                     if (unmutedPlayer == Main.myPlayer)
                     {
-                        Main.player[unmutedPlayer]
-                            .GetModPlayer<ChatPlayer>()
-                            .IsMuted = false;
-
                         Main.NewText("You have been unmuted.", Color.Green);
                     }
+
+                    Main.player[unmutedPlayer].GetModPlayer<ChatPlayer>().IsMuted = false;
+
                     break;
                 }
                 case (byte)MessageType.LateJoin:

@@ -373,6 +373,7 @@ Keybinds: {
 	PhoenixOmni-DirectionalDash.DisplayName: Phoenix Omni- Directional Dash
 	"Damage Board.DisplayName": Damage  Board
 	Omni-Dash.DisplayName: Omni- Dash
+	Omni-DirectionalDash.DisplayName: Omni- Directional Dash
 }
 
 Configs: {
