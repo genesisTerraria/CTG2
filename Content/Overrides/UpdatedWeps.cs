@@ -68,7 +68,7 @@ namespace CTG2.Content.Items.ModifiedWeps
 
         private uint flamelashDelay = 55;
         private uint flamelashLastUsedCounter = 0;
-        private uint particleDelay = 62;
+        private uint particleDelay = 55;
 
         private uint blowgunDelay = 50;
 

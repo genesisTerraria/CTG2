@@ -549,7 +549,8 @@ public class ModifyHurtModPlayer : ModPlayer
                 packet.Send();
             }
         }
-        if (info.DamageSource.SourceProjectileType == ProjectileID.LaserMachinegunLaser)
+        if (info.DamageSource.SourceProjectileType == ProjectileID.LaserMachinegunLaser
+         || info.DamageSource.SourceProjectileType == ProjectileID.ElectrosphereMissile)
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();

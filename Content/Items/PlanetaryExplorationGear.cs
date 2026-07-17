@@ -13,11 +13,11 @@ namespace CTG2.Content.Items
     public class PlanetaryExplorationGear : ModItem
     {
         // --- Jetpack tunables -----------------------------------------
-        public const int FlightTimeMax = 30;       // ticks
+        public const int FlightTimeMax = 35;       // ticks
         public const float FlightSpeed = 4.5f;        // max horizontal air speed
         public const float FlightAcceleration = 0.4f;
         public const float AscentSpeed = 5f;        // vertical speed holding jump
-        public const float GroundRegenRate = 1f;  // fuel regained per tick while grounded
+        public const float GroundRegenRate = 2f;  // fuel regained per tick while grounded
         public const bool InstantRegenOnGround = false;
 
 
