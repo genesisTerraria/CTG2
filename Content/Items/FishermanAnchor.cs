@@ -11,7 +11,7 @@ namespace CTG2.Content.Items
 		public override void SetDefaults()
 		{
 	  		Item.CloneDefaults(ItemID.Anchor);
-			Item.damage = 31;
+			Item.damage = 35;
 			Item.useAnimation = 25;
 			Item.useTime = 25;
 		}

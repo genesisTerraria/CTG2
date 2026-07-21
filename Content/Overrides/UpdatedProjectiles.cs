@@ -150,6 +150,20 @@ public class ProjectileOverrides : GlobalProjectile
 
             projectile.penetrate = 1;
         }
+        if (projectile.type == ProjectileID.EmeraldBolt)
+        {
+            if (projectile.timeLeft > 45)
+            {
+                projectile.timeLeft = 45;
+            }
+        }
+        if (projectile.type == ProjectileID.DiamondBolt)
+        {
+            if (projectile.timeLeft > 70)
+            {
+                projectile.timeLeft = 70;
+            }
+        }
         if (projectile.type == ProjectileID.ApprenticeStaffT3Shot)
         {
             // Force a new timeLeft value (e.g., 120 ticks = 2 seconds)

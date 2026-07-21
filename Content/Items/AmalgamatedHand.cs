@@ -6,10 +6,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
 using Terraria.Audio;
 using Terraria.GameContent;
-using Microsoft.Xna.Framework.Audio;
-using ReLogic.Utilities;
 using System.Collections.Generic;
-using Terraria.Localization;
 using System;
 
 
@@ -451,7 +448,7 @@ namespace CTG2.Content.Items {
 			// Flails do a few custom things, you'll want to keep these to have the same feel as vanilla flails.
 
 			if (CurrentAIState == AIState.Spinning) {
-				modifiers.SourceDamage *= 0.5f;
+				modifiers.SourceDamage *= 0.33f;
 			}
 
 			// The hitDirection is always set to hit away from the player, even if the flail damages the npc while returning

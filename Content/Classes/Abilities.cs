@@ -1342,7 +1342,7 @@ namespace CTG2.Content
             if (direction != Vector2.Zero)
                 direction.Normalize();
 
-            float speed = 12f;
+            float speed = 13f;
             Vector2 velocity = direction * speed;
 
             Projectile.NewProjectile(
@@ -1595,7 +1595,7 @@ namespace CTG2.Content
                         break;
 
                     case 6:
-                        SetCooldown(10);
+                        SetCooldown(6);
                         FishermanOnUse();
 
                         break;
@@ -1720,7 +1720,7 @@ namespace CTG2.Content
                 switch (selectedClass)
                 {
                     case 3:
-                        SetCooldown3(40);
+                        SetCooldown3(46);
                         AlchemistOnUse3();
                         break;
                 }

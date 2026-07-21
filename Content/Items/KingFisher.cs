@@ -42,7 +42,7 @@ namespace CTG2.Content.Items
         {
             Projectile.CloneDefaults(366);
 
-            Projectile.damage = 24;
+            Projectile.damage = 27;
             Projectile.friendly = true;
             Projectile.hostile = false;
         }

@@ -54,7 +54,7 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint flamarangDelay = 30;
         private uint flamarangLastUsedCounter = 0;
 
-        private uint goldenShowerDelay = 70;
+        private uint goldenShowerDelay = 65;
         private uint goldenShowerLastUsedCounter = 0;
 
         private uint ghastlyglaiveDelay = 70;
@@ -70,12 +70,17 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint flamelashLastUsedCounter = 0;
         private uint particleDelay = 55;
 
-        private uint blowgunDelay = 50;
+        private uint blowgunDelay = 44;
 
-        private uint orbDelay = 50;
+        private uint orbDelay = 44;
 
         private uint thunderZapperDelay = 60;
         private uint thunderZapperLastUsedCounter = 0;
+
+        private uint winterStaffDelay = 24;
+        private uint winterStaffLastUsedCounter = 0;
+        private uint handDelay = 35;
+        private uint handLastUsedCounter = 0;
 
         private uint fisherDelay = 55;
 
@@ -158,10 +163,10 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.DamageType = DamageClass.Magic;
                     break;
                 case ItemID.WandofSparking:
-                    item.damage = 8;
+                    item.damage = 10;
                     item.useTime = 8;
                     item.useAnimation = 8;
-                    item.shootSpeed = 9f;
+                    item.shootSpeed = 12f;
                     item.crit = 0;
                     item.mana = 18;
                     item.shoot = ProjectileID.EmeraldBolt;
@@ -215,10 +220,10 @@ namespace CTG2.Content.Items.ModifiedWeps
                     break;
 
                 case 1446: //spectre staff
-                    item.shoot = 126;
+                    item.shoot = ProjectileID.DiamondBolt;
                     item.shootSpeed = 13f;
                     item.scale = 0.86f;
-                    item.damage = 28;
+                    item.damage = 26;
                     item.useTime = 17;
                     item.useAnimation = 17;
                     item.crit = 0;
@@ -278,8 +283,8 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shoot = ProjectileID.DD2FlameBurstTowerT2Shot;
                     item.scale = 0;
                     item.mana = 0;
-                    item.useTime = 24;
-                    item.useAnimation = 24;
+                    item.useTime = 19;
+                    item.useAnimation = 19;
                     break;
 
                 case ItemID.MonkStaffT1: // phoenix phantom
@@ -289,8 +294,8 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shoot = ProjectileID.DD2PhoenixBowShot;
                     item.mana = 15;
                     item.scale = 0;
-                    item.useTime = 24;
-                    item.useAnimation = 24;
+                    item.useTime = 19;
+                    item.useAnimation = 19;
                     break;
 
                 case 3543: // phoenix aerial bane
@@ -300,8 +305,8 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shoot = ProjectileID.DD2BetsyArrow;
                     item.mana = 11;
                     item.scale = 0;
-                    item.useTime = 24;
-                    item.useAnimation = 24;
+                    item.useTime = 19;
+                    item.useAnimation = 19;
                     break;
                 case 4760: //Pala shield
                     item.shoot = 0;
@@ -322,7 +327,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.shootSpeed = 58f;
                     item.crit = 0;
                     item.mana = 11;
-                    break;
+                    break;   
                 case ItemID.MonkStaffT2: //ghastly glaive
                     item.damage = 27;
                     item.useTime = 14;
@@ -428,6 +433,28 @@ namespace CTG2.Content.Items.ModifiedWeps
                     mPlayer.anchorLastUsedCounter = Main.GameUpdateCount;
 
                     playedAnchorSound = false;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (item.type == ModContent.ItemType<StaffOfWinter>())
+            {
+                if (Main.GameUpdateCount - winterStaffLastUsedCounter >= winterStaffDelay)
+                {
+                    winterStaffLastUsedCounter = Main.GameUpdateCount;
+
+                    return true;
+                }
+                else
+                    return false;
+            }
+            else if (item.type == ModContent.ItemType<AmalgamatedHand>())
+            {
+                if (Main.GameUpdateCount - handLastUsedCounter >= handDelay)
+                {
+                    handLastUsedCounter = Main.GameUpdateCount;
 
                     return true;
                 }
