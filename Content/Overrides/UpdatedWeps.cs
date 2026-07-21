@@ -127,7 +127,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.useTime = 20;
                     item.useAnimation = 20;
                     item.shoot = 267;
-                    item.shootSpeed = 15f;
+                    item.shootSpeed = 17f;
                     item.useAmmo = AmmoID.None;
                     item.autoReuse = false;
                     item.damage = 34;
