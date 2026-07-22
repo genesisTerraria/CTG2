@@ -58,7 +58,7 @@ namespace CTG2.Content.Items
             // Let vanilla bobber AI run first, THEN override what it reset
             base.AI();
 
-            Projectile.damage = 24;
+            Projectile.damage = 27;
             Projectile.friendly = Projectile.ai[0] == 0f; // Only damage while in flight
         }
     }

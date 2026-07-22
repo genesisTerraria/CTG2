@@ -104,10 +104,10 @@ namespace CTG2.Content.Items
 
         // --- Dash state ---------------------------------------------------
         private bool playedSound = true;
-        public const int DashCooldown = 90;
-        public const int DashDuration = 15;
-        public float DashVelocity = 13.5f;
-        public float DashDecay = 0.95f; // multiplier applied to dash velocity every tick
+        public const int DashCooldown = 60;
+        public const int DashDuration = 10;
+        public float DashVelocity = 11f;
+        public float DashDecay = 0.94f; // multiplier applied to dash velocity every tick
         public bool dashKeybindActive = false;
         public bool DashAccessoryEquipped;
         public int DashDelay = 0;
@@ -198,13 +198,13 @@ namespace CTG2.Content.Items
 
                     // Full dash velocity applied equally in all directions —
                     // no horizontal-reduction, no jetpack interference.
-                    float flightTimeMultiplier = 0.67f + 0.33f * (flightTimeRemaining / 30);
+                    float flightTimeMultiplier = 0.67f + 0.33f * (Math.Min(flightTimeRemaining, 15) / 15);
                     currentDashVelocity = direction * DashVelocity * flightTimeMultiplier;
                     Player.velocity = currentDashVelocity;
 
                     DashDelay = DashCooldown;
                     DashTimer = DashDuration;
-                    flightTimeRemaining = 0;
+                    flightTimeRemaining = Math.Max(flightTimeRemaining - 15, 0);
                     recentlyEnded = true;
                     playedSound = false;
 
