@@ -562,7 +562,6 @@ namespace ClassesNamespace
                 Player.AddBuff(BuffID.PotionSickness, 10 * 60);
             }
 
-
             // clear banned buffs
             Player.ClearBuff(BuffID.Ichor);
             Player.ClearBuff(BuffID.Poisoned);
@@ -592,6 +591,18 @@ namespace ClassesNamespace
                     CTG2.CTG2.GiveItemToPlayer(Player, ItemID.AtlanticCod, 2, 0);
 
                 fishCounter = gameTime + 3600 - gameTime % 3600;
+            }
+
+            // Damage scaling based on game time
+            int minScaleTime = 15 * 60 * 60;
+
+            if (gameTime >= minScaleTime)
+            {
+                float bonus = (gameTime - minScaleTime) / 18000f;
+                if (bonus > 1)
+                    bonus = 1;
+                    
+                Player.GetDamage(DamageClass.Generic) += bonus;
             }
             
             return;

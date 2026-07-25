@@ -61,6 +61,7 @@ public class GameManager : ModSystem
     public bool rngConfig = false; // same as pubs, but different classes
 
     public bool isOvertime = false;
+    public bool isDoubleOvertime = false;
 
     // AbilityID of the class each team is CANT pick (0 = no ban)
     // redTeamBannedClassID is set by the BLUE captain and applies to red players, and vice versa.
@@ -356,6 +357,15 @@ public class GameManager : ModSystem
             packetOvertime.Write(false);
             packetOvertime.Send();
         }
+        if (timeinseconds < 15 * 60 && isDoubleOvertime)
+        {
+            isDoubleOvertime = false;
+
+            ModPacket packetOvertime = mod.GetPacket();
+            packetOvertime.Write((byte)MessageType.UpdateDoubleOvertime);
+            packetOvertime.Write(false);
+            packetOvertime.Send();
+        }
     }
 
     public void EndGame()
@@ -377,6 +387,7 @@ public class GameManager : ModSystem
         blueGemCarrier = "Waiting for new game...";
         redGemCarrier = "Waiting for new game...";
         isOvertime = false;
+        isDoubleOvertime = false;
         mapName = "";
         blueTeamSize = 0;
         redTeamSize = 0;
@@ -445,6 +456,7 @@ public class GameManager : ModSystem
         packet.Write(matchStage);
         packet.Write(MatchTime);
         packet.Write(isOvertime);
+        packet.Write(isDoubleOvertime);
         packet.Write(intPercentageBlue);
         packet.Write(intPercentageRed);
         packet.Write(blueGemCarrier);
@@ -1007,8 +1019,15 @@ public class GameManager : ModSystem
                 packetOvertime.Write(true);
                 packetOvertime.Send();
 
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Overtime has started! The game will end when a team has more captures and their gem is not possessed."), Color.Cyan);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("[GAME] Overtime has started! The game will end when a team has more captures and their gem is not possessed."), Color.Cyan);
             }
+        }
+
+        if (!isDoubleOvertime && MatchTime >= 15 * 60 * 60 + matchStartTime)
+        {
+            isDoubleOvertime = true;
+
+            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("[GAME] Double overtime has started! Your damage level will rise over time."), Color.Cyan);
         }
 
         // Kill all mobs during class selection
@@ -1324,6 +1343,7 @@ public class GameManager : ModSystem
             {
                 if (p.active) 
                 {
+                    // Sync admin/logged in status
                     ForcePlayerStatSync(-1, p.whoAmI);
 
                     var mod = ModContent.GetInstance<CTG2>();
@@ -1723,6 +1743,7 @@ public class GameManager : ModSystem
         packet.Write(matchStage);
         packet.Write(MatchTime);
         packet.Write(isOvertime);
+        packet.Write(isDoubleOvertime);
         packet.Write(intPercentageBlue);
         packet.Write(intPercentageRed);
         packet.Write(blueGemCarrier);
