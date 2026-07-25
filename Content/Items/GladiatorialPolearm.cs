@@ -71,7 +71,10 @@ namespace CTG2.Content.Items
 
             foreach (Projectile proj in Main.projectile)
             {
-                if (proj.active && proj.Hitbox.Intersects(Projectile.Hitbox) && Main.player[proj.owner].team != owner.team)
+                if (proj.active && proj.Hitbox.Intersects(Projectile.Hitbox) && Main.player[proj.owner].team != owner.team
+				 && proj.type != ModContent.ProjectileType<ChargedBowProjectile>()
+				 && proj.type != ModContent.ProjectileType<FoliageTendrilsProjectile>()
+				 && proj.type != ProjectileID.FishHook)
                 {
                     proj.Kill();
 
@@ -81,7 +84,7 @@ namespace CTG2.Content.Items
 						playedSound = true;
 					}
 
-					owner.AddBuff(BuffID.Ironskin, 6 * 60);
+					owner.AddBuff(BuffID.Endurance, 4 * 60);
                 }
             }
 

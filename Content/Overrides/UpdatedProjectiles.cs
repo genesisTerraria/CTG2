@@ -620,20 +620,12 @@ public class ModifyHurtModPlayer : ModPlayer
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
             if (attackerPlayer.currentClass.Name == "Gladiator")
             {
-                attacker.AddBuff(BuffID.CatBast, 60);
-                attacker.AddBuff(BuffID.Endurance, 60);
+                attacker.AddBuff(BuffID.Ironskin, 120);
 
                 ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
                 packet.Write((byte)CTG2.MessageType.RequestAddBuff);
                 packet.Write(attacker.whoAmI);
-                packet.Write(215);
-                packet.Write(120);
-                packet.Send();
-
-                packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
-                packet.Write((byte)CTG2.MessageType.RequestAddBuff);
-                packet.Write(attacker.whoAmI);
-                packet.Write(114);
+                packet.Write(5);
                 packet.Write(120);
                 packet.Send();
             }
