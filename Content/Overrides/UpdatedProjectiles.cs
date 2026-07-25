@@ -362,6 +362,24 @@ public class ModifyHurtModPlayer : ModPlayer
         return base.CanHitPvpWithProj(proj, target);
     }
 
+    public override void ModifyHurt(ref Player.HurtModifiers modifiers)
+    {
+        var source = modifiers.DamageSource;
+
+        if (source.SourceProjectileLocalIndex >= 0 && source.SourceProjectileLocalIndex < Main.maxProjectiles)
+        {
+            Projectile proj = Main.projectile[source.SourceProjectileLocalIndex];
+
+            if (proj.active
+                && proj.type == source.SourceProjectileType
+                && proj.ModProjectile is AmalgamatedHandProjectile1 flail
+                && flail.IsSpinning)
+            {
+                modifiers.SourceDamage *= 0.5f;
+            }
+        }
+    }
+
     [System.Obsolete]
     public override void OnHurt(Player.HurtInfo info)
     {

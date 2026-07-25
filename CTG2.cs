@@ -1176,6 +1176,7 @@ namespace CTG2
                     break;
                 }
 
+
                 case (byte)MessageType.ClearInventory:
                     int playerIdxx = reader.ReadInt32();
                     var manager4 = ModContent.GetInstance<GameManager>();

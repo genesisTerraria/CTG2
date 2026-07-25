@@ -23,18 +23,15 @@ namespace CTG2.Content.Items {
 			Item.rare = ItemRarityID.Red;
 		}
 
-
-		public override void ModifyTooltips(List<TooltipLine> tooltips) {
-			TooltipLine tooltip = new TooltipLine(Mod, "CTG2: Amalgamated Hand", "Left-click: spin, timed drop-shots, forward thrusts\nRight-click: dragging, forward thrusts") { OverrideColor = Color.Red };
-			tooltips.Add(tooltip);
-		}
-
+		// public override void ModifyTooltips(List<TooltipLine> tooltips) {
+		// 	TooltipLine tooltip = new TooltipLine(Mod, "CTG2: Amalgamated Hand", "Left-click: spin, timed drop-shots, forward thrusts\nRight-click: dragging, forward thrusts") { OverrideColor = Color.Red };
+		// 	tooltips.Add(tooltip);
+		// }
 
 		public override bool AltFunctionUse(Player player)
 		{
 			return false; // uncomment to allow 1.3 flail
 		}
-
 
 		public override bool CanUseItem(Player player)
 		{
@@ -78,6 +75,8 @@ namespace CTG2.Content.Items {
 			set => Projectile.ai[0] = (float)value;
 		}
 		public ref float StateTimer => ref Projectile.ai[1];
+		// In AmalgamatedHandProjectile1
+		public bool IsSpinning => CurrentAIState == AIState.Spinning;
 		public ref float CollisionCounter => ref Projectile.localAI[0];
 		public ref float SpinningStateTimer => ref Projectile.localAI[1];
 		public float LifeTimer = 0;
@@ -423,7 +422,8 @@ namespace CTG2.Content.Items {
 			return false;
 		}
 
-		public override bool? CanDamage() {
+		public override bool? CanDamage()
+		{
 			// Flails in spin mode won't damage enemies within the first 12 ticks. Visually this delays the first hit until the player swings the flail around for a full spin before damaging anything.
 			if (CurrentAIState == AIState.Spinning && SpinningStateTimer <= 12f) {
 				return false;
@@ -431,7 +431,8 @@ namespace CTG2.Content.Items {
 			return base.CanDamage();
 		}
 
-		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox) {
+		public override bool? Colliding(Rectangle projHitbox, Rectangle targetHitbox)
+		{
 			// Flails do special collision logic that serves to hit anything within an ellipse centered on the player when the flail is spinning around the player. For example, the projectile rotating around the player won't actually hit a bee if it is directly on the player usually, but this code ensures that the bee is hit. This code makes hitting enemies while spinning more consistent and not reliant of the actual position of the flail projectile.
 			if (CurrentAIState == AIState.Spinning) {
 				Vector2 mountedCenter = Main.player[Projectile.owner].MountedCenter;
@@ -444,28 +445,18 @@ namespace CTG2.Content.Items {
 			return base.Colliding(projHitbox, targetHitbox);
 		}
 
-		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers) {
+		public override void ModifyHitNPC(NPC target, ref NPC.HitModifiers modifiers)
+		{
 			// Flails do a few custom things, you'll want to keep these to have the same feel as vanilla flails.
 
 			if (CurrentAIState == AIState.Spinning) {
 				modifiers.SourceDamage *= 0.5f;
 			}
-
-			// The hitDirection is always set to hit away from the player, even if the flail damages the npc while returning
-			modifiers.HitDirectionOverride = (Main.player[Projectile.owner].Center.X < target.Center.X).ToDirectionInt();
-
-			// Knockback is only 25% as powerful when in spin mode
-			if (CurrentAIState == AIState.Spinning) {
-				modifiers.Knockback *= 0.25f;
-			}
-			// Knockback is only 50% as powerful when in drop down mode
-			else if (CurrentAIState == AIState.Dropping) {
-				modifiers.Knockback *= 0.5f;
-			}
 		}
 
 		// PreDraw is used to draw a chain and trail before the projectile is drawn normally.
-		public override bool PreDraw(ref Color lightColor) {
+		public override bool PreDraw(ref Color lightColor)
+		{
 			Vector2 playerArmPosition = Main.GetPlayerArmPosition(Projectile);
 
 			// This fixes a vanilla GetPlayerArmPosition bug causing the chain to draw incorrectly when stepping up slopes. The flail itself still draws incorrectly due to another similar bug. This should be removed once the vanilla bug is fixed.
