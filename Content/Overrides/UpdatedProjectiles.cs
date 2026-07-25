@@ -125,6 +125,15 @@ public class ProjectileOverrides : GlobalProjectile
                 projectile.timeLeft = 300;
             }
         }
+        if (projectile.type == ProjectileID.DripplerFlailExtraBall)
+        {
+            if (projectile.timeLeft > 150)
+            {
+                projectile.timeLeft = 150;
+            }
+
+            projectile.penetrate = 1;
+        }
         if (!playedSoundBoomerangs && (projectile.type == ProjectileID.ThornChakram || projectile.type == ProjectileID.Flamarang))
         {
             SoundEngine.PlaySound(SoundID.Item1, projectile.Center);
@@ -320,7 +329,7 @@ public class ProjectileOverrides : GlobalProjectile
             projectile.damage = 31;
         }
         if (projectile.type == ProjectileID.IceSickle || projectile.type == ProjectileID.ChlorophyteOrb
-         || projectile.type == ProjectileID.DemonScythe)
+         || projectile.type == ProjectileID.DemonScythe || projectile.type == ProjectileID.DripplerFlailExtraBall)
         {
             projectile.penetrate = 1;
         }
@@ -459,34 +468,23 @@ public class ModifyHurtModPlayer : ModPlayer
             {
                 Projectile hurtProjectile = Main.projectile[projIndex];
 
-                Player owner = Main.player[info.DamageSource.SourcePlayerIndex];
-                Vector2 dest = Player.position;
+                if (hurtProjectile.active && hurtProjectile.type == ModContent.ProjectileType<SpaceSplitterProjectile>())
+                {
+                    Player owner = Main.player[info.DamageSource.SourcePlayerIndex];
+                    Vector2 dest = Player.position;
 
-                var mod = ModContent.GetInstance<CTG2.CTG2>();
-                ModPacket packet = mod.GetPacket();
-                packet.Write((byte)MessageType.RequestTeleport);
-                packet.Write(owner.whoAmI);
-                packet.Write((int)dest.X);
-                packet.Write((int)dest.Y);
-                packet.Send();
+                    var mod = ModContent.GetInstance<CTG2.CTG2>();
+                    ModPacket packet = mod.GetPacket();
+                    packet.Write((byte)MessageType.RequestTeleport);
+                    packet.Write(owner.whoAmI);
+                    packet.Write((int)dest.X);
+                    packet.Write((int)dest.Y);
+                    packet.Send();
 
-                ModPacket packet1 = mod.GetPacket();
-                packet1.Write((byte)MessageType.RequestAddBuff);
-                packet1.Write(Player.whoAmI);
-                packet1.Write(320);
-                packet1.Write(120);
-                packet1.Send();
+                    SoundEngine.PlaySound(SoundID.Item8, owner.Center);
 
-                packet1 = mod.GetPacket();
-                packet1.Write((byte)MessageType.RequestAddBuff);
-                packet1.Write(Player.whoAmI);
-                packet1.Write(ModContent.BuffType<TimeDilation>());
-                packet1.Write(120);
-                packet1.Send();
-
-                SoundEngine.PlaySound(SoundID.Item8, owner.Center);
-
-                hurtProjectile.Kill();
+                    hurtProjectile.Kill();
+                }
             }
         }
 

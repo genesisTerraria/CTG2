@@ -1,13 +1,13 @@
 {
   "HealthPoints": 150,
   "ManaPoints": 1,
-  "BonusDefense": 2,
-  "BonusMoveSpeed": 0.0,
-  "BonusRunAcceleration": 0.0,
+  "BonusDefense": 3,
+  "BonusMoveSpeed": 0,
+  "BonusRunAcceleration": 0,
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
-      "Type": 5559,
+      "Type": 5564,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -23,7 +23,7 @@
     },
     {
       "Name": "King Fisher",
-      "Type": 5555,
+      "Type": 5557,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 2,
@@ -80,7 +80,7 @@
     {
       "Name": "Atlantic Cod",
       "Type": 2299,
-      "Stack": 6,
+      "Stack": 5,
       "Prefix": 0,
       "Slot": 9,
       "Modded": false
@@ -505,7 +505,7 @@
       "Name": "Lucky Horseshoe",
       "Type": 158,
       "Stack": 1,
-      "Prefix": 0,
+      "Prefix": 64,
       "Slot": 62,
       "Modded": false
     },
