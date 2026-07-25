@@ -1740,10 +1740,10 @@ namespace CTG2.Content
 
             if (!GameInfo.paused)
             {
-                if (cooldown > 0 && (selectedClass != 1 || class1UsedLuminite) && (selectedClass != 4 || !class4PowerShot))
+                if (cooldown > 0 && (selectedClass != 1 || class1UsedLuminite))
                     cooldown--;
 
-                if (cooldown2 > 0)
+                if (cooldown2 > 0 && (selectedClass != 4 || !class4PowerShot))
                     cooldown2--;
 
                 if (cooldown3 > 0)

@@ -448,7 +448,7 @@ namespace CTG2.Content.Items {
 			// Flails do a few custom things, you'll want to keep these to have the same feel as vanilla flails.
 
 			if (CurrentAIState == AIState.Spinning) {
-				modifiers.SourceDamage *= 0.33f;
+				modifiers.SourceDamage *= 0.5f;
 			}
 
 			// The hitDirection is always set to hit away from the player, even if the flail damages the npc while returning

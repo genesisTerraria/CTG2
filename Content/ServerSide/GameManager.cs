@@ -950,13 +950,6 @@ public class GameManager : ModSystem
             packetRedCaptures.Send();
 
             BlueGem.Reset();
-
-            if (isOvertime && !RedGem.IsHeld && blueCaptures != redCaptures)
-            {
-                winner = 2;
-                EndGame();
-                return;
-            }
         }
 
         else if (RedGem.IsCaptured && !endGameCalled)
@@ -971,29 +964,35 @@ public class GameManager : ModSystem
             packetBlueCaptures.Send();
 
             RedGem.Reset();
-
-            if (isOvertime && !BlueGem.IsHeld && blueCaptures != redCaptures)
-            {
-                winner = 1;
-                EndGame();
-                return;
-            }
         }
 
-        int capDifference = blueCaptures - redCaptures;
-        bool shouldContinue = (capDifference == 1 && BlueGem.IsHeld) || (capDifference == -1 && RedGem.IsHeld);
+        bool blueWin = blueCaptures - redCaptures > 1 || (!BlueGem.IsHeld && blueCaptures > redCaptures);
+        bool redWin = redCaptures - blueCaptures > 1 || (!RedGem.IsHeld && redCaptures > blueCaptures);
 
-        if (!isOvertime && MatchTime >= 60 * 60 * 10 + matchStartTime && !shouldContinue)
+        if (isOvertime && blueWin)
+        {
+            winner = 1;
+            EndGame();
+            return;
+        }
+        else if (isOvertime && redWin)
+        {
+            winner = 2;
+            EndGame();
+            return;
+        }
+
+        if (!isOvertime && MatchTime >= 60 * 60 * 10 + matchStartTime)
         {
             isOvertime = true;
 
-            if (blueCaptures > redCaptures)
+            if (blueWin)
             {
                 winner = 1;
                 EndGame();
                 return;
             }
-            else if (redCaptures > blueCaptures)
+            else if (redWin)
             {
                 winner = 2;
                 EndGame();
@@ -1001,7 +1000,6 @@ public class GameManager : ModSystem
             }
             else
             {
-                isOvertime = true;
                 GameInfo.overtime = true;
                 
                 ModPacket packetOvertime = mod.GetPacket();
@@ -1009,14 +1007,13 @@ public class GameManager : ModSystem
                 packetOvertime.Write(true);
                 packetOvertime.Send();
 
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Overtime has started! The next gem capture will win the game!"), Color.Cyan);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("Overtime has started! The game will end when a team has more captures and their gem is not possessed."), Color.Cyan);
             }
         }
 
         // Kill all mobs during class selection
         if (GameInfo.matchStage == 1 && killonce == true)
         {
-
             if (killonce)
             {
                 for (int i = 0; i < Main.maxNPCs; i++)
