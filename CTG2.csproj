@@ -11,6 +11,13 @@
   <ItemGroup>
     <Content Include="Assets\**" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Reference Include="PvPHub">
+      <HintPath>..\PvPHub\bin\Debug\net8.0\PvPHub.dll</HintPath>
+      <Private>false</Private>
+    </Reference>
+  </ItemGroup>
   <Import Project="..\tModLoader.targets" />
 
 </Project>

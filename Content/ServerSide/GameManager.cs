@@ -1390,6 +1390,7 @@ public class GameManager : ModSystem
                         packet.Write(3);
                         packet.Write(newGameTimer);
                         packet.Write(false);
+                        packet.Write(false);
                         packet.Write(0);
                         packet.Write(0);
                         packet.Write("Waiting for new game...");
@@ -1470,6 +1471,7 @@ public class GameManager : ModSystem
                 packet.Write((byte)MessageType.SyncGameInformation);
                 packet.Write(3);
                 packet.Write(newGameTimer);
+                packet.Write(false);
                 packet.Write(false);
                 packet.Write(0);
                 packet.Write(0);

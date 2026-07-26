@@ -42,6 +42,7 @@ public static partial class Hooks
         ModContent.GetInstance<NeatQueueTeamAssignmentSystem>().SyncTeamsToRoster();
         ReeseAPI.StartReeseRecording();
         StatsTracking.StartScrimTracking();
+        MatchUpload.MarkMatchStart(); // stamp the match start time for the PvPHub payload
         
 
         StartScrimsGame();
