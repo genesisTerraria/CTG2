@@ -61,6 +61,15 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
             return;
         }
 
+
+        if (_discordIdentityByWhoAmI.TryGetValue(whoAmI, out DiscordIdentity previousIdentity)
+            && previousIdentity.DiscordId != discordId
+            && _whoAmIByDiscordId.TryGetValue(previousIdentity.DiscordId, out int mappedWhoAmI)
+            && mappedWhoAmI == whoAmI)
+        {
+            _whoAmIByDiscordId.Remove(previousIdentity.DiscordId);
+        }
+
         if (_whoAmIByDiscordId.TryGetValue(discordId, out int previousWhoAmI) && previousWhoAmI != whoAmI)
         {
             _discordIdentityByWhoAmI.Remove(previousWhoAmI);
@@ -192,16 +201,8 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
     {
         username = string.Empty;
 
-        if (whoAmI < 0 || whoAmI >= Main.player.Length || !Main.player[whoAmI].active)
-        {
-            if (_discordIdentityByWhoAmI.TryGetValue(whoAmI, out DiscordIdentity staleIdentity))
-            {
-                _whoAmIByDiscordId.Remove(staleIdentity.DiscordId);
-            }
-
-            _discordIdentityByWhoAmI.Remove(whoAmI);
+        if (!IsPlayerCurrentlyOnline(whoAmI))
             return false;
-        }
 
         if (!_discordIdentityByWhoAmI.TryGetValue(whoAmI, out DiscordIdentity identity))
             return false;
@@ -214,16 +215,8 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
     {
         isCaptain = false;
 
-        if (whoAmI < 0 || whoAmI >= Main.player.Length || !Main.player[whoAmI].active)
-        {
-            if (_discordIdentityByWhoAmI.TryGetValue(whoAmI, out DiscordIdentity staleIdentity))
-            {
-                _whoAmIByDiscordId.Remove(staleIdentity.DiscordId);
-            }
-
-            _discordIdentityByWhoAmI.Remove(whoAmI);
+        if (!IsPlayerCurrentlyOnline(whoAmI))
             return false;
-        }
 
         if (!_discordIdentityByWhoAmI.TryGetValue(whoAmI, out DiscordIdentity identity))
             return false;
@@ -236,8 +229,6 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
 
     public IReadOnlyList<int> GetOnlineCaptainWhoAmIs()
     {
-        CleanupStaleIdentities();
-
         List<int> captains = new();
 
         foreach (var pair in _captainByDiscordId)
@@ -248,7 +239,7 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
             if (!_whoAmIByDiscordId.TryGetValue(pair.Key, out int whoAmI))
                 continue;
 
-            if (whoAmI < 0 || whoAmI >= Main.player.Length || !Main.player[whoAmI].active)
+            if (!IsPlayerCurrentlyOnline(whoAmI))
                 continue;
 
             captains.Add(whoAmI);
@@ -273,11 +264,8 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
             return false;
         }
 
-        if (whoAmI < 0 || whoAmI >= Main.player.Length || !Main.player[whoAmI].active)
+        if (!IsPlayerCurrentlyOnline(whoAmI))
         {
-            // Defensive cleanup of stale identity entries
-            _whoAmIByDiscordId.Remove(discordId);
-            _discordIdentityByWhoAmI.Remove(whoAmI);
             Mod.Logger.Info($"[NeatQueue] Have assignment for discord_id={discordId} but no online player yet (will assign on connect)");
             return false;
         }
@@ -311,8 +299,6 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
     {
         if (_teamIdByDiscordId.Count == 0)
             return "No active NeatQueue scrim roster is loaded.";
-
-        CleanupStaleIdentities();
 
         var gameManager = ModContent.GetInstance<GameManager>();
         int onRoster = 0;
@@ -353,8 +339,6 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
 
     public IReadOnlyList<QueueRosterEntry> GetMissingPlayers()
     {
-        CleanupStaleIdentities();
-
         List<QueueRosterEntry> missing = new();
 
         foreach (var entry in _rosterByDiscordId.Values)
@@ -399,31 +383,7 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
         if (!_whoAmIByDiscordId.TryGetValue(discordId, out int whoAmI))
             return false;
 
-        if (whoAmI < 0 || whoAmI >= Main.player.Length || !Main.player[whoAmI].active)
-            return false;
-
-        return true;
-    }
-    //Once a scrim match ends we need to clear up their identities
-    private void CleanupStaleIdentities()
-    {
-        List<int> staleWhoAmIs = new();
-
-        foreach (var pair in _discordIdentityByWhoAmI)
-        {
-            int whoAmI = pair.Key;
-
-            if (whoAmI < 0 || whoAmI >= Main.player.Length || !Main.player[whoAmI].active)
-                staleWhoAmIs.Add(whoAmI);
-        }
-
-        foreach (int whoAmI in staleWhoAmIs)
-        {
-            if (_discordIdentityByWhoAmI.TryGetValue(whoAmI, out var identity))
-                _whoAmIByDiscordId.Remove(identity.DiscordId);
-
-            _discordIdentityByWhoAmI.Remove(whoAmI);
-        }
+        return IsPlayerCurrentlyOnline(whoAmI);
     }
 
     public void UnregisterWhoAmI(int whoAmI)
@@ -445,8 +405,6 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
     // true only when every Discord ID in the current roster is online at the same time
     private bool AreAllRosterPlayersCurrentlyOnline()
     {
-        CleanupStaleIdentities();
-
         if (_rosterByDiscordId.Count == 0)
             return false;
 
@@ -472,6 +430,14 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
 
         PlayersReady = true;
         Hooks.OnFullRosterJoined();
+    }
+
+    private static bool IsPlayerCurrentlyOnline(int whoAmI)
+    {
+        return whoAmI >= 0
+            && whoAmI < Main.player.Length
+            && Main.player[whoAmI] != null
+            && Main.player[whoAmI].active;
     }
 
     private static int? ResolveTeamId(string team, int? teamNum)
