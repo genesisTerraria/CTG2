@@ -451,6 +451,7 @@ namespace ClassesNamespace
             Player.AddBuff(BuffID.Shine, 600);
             Player.AddBuff(BuffID.NightOwl, 600);
             Player.AddBuff(BuffID.Gills, 600);
+            Player.AddBuff(ModContent.BuffType<OvertimeBuff>(), 600);
             
             ApplyPermBuffs();
 
@@ -591,18 +592,6 @@ namespace ClassesNamespace
                     CTG2.CTG2.GiveItemToPlayer(Player, ItemID.AtlanticCod, 2, 0);
 
                 fishCounter = gameTime + 3600 - gameTime % 3600;
-            }
-
-            // Damage scaling based on game time
-            int minScaleTime = 15 * 60 * 60;
-
-            if (gameTime >= minScaleTime)
-            {
-                float bonus = (gameTime - minScaleTime) / 18000f;
-                if (bonus > 1)
-                    bonus = 1;
-                    
-                Player.GetDamage(DamageClass.Generic) += bonus;
             }
             
             return;
