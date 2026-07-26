@@ -1027,7 +1027,7 @@ public class GameManager : ModSystem
         {
             isDoubleOvertime = true;
 
-            ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("[GAME] Double overtime has started! Your damage level will rise over time."), Color.Cyan);
+            //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral("[GAME] Double overtime has started! Your damage level will rise over time."), Color.Cyan);
         }
 
         // Kill all mobs during class selection

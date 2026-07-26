@@ -451,7 +451,7 @@ namespace ClassesNamespace
             Player.AddBuff(BuffID.Shine, 600);
             Player.AddBuff(BuffID.NightOwl, 600);
             Player.AddBuff(BuffID.Gills, 600);
-            Player.AddBuff(ModContent.BuffType<OvertimeBuff>(), 600);
+            //Player.AddBuff(ModContent.BuffType<OvertimeBuff>(), 600);
             
             ApplyPermBuffs();
 
