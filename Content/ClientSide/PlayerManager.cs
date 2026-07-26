@@ -40,6 +40,7 @@ public class PlayerManager : ModPlayer
     public int deaths = 0;
     public int damage = 0;
     public int damageTaken = 0;
+    public int gemCaptures = 0;
 
     public PlayerState playerState = PlayerState.None; // UPDATE THIS EVERY STATE TRANSITION 
     public double classSelectionTimer = -1;

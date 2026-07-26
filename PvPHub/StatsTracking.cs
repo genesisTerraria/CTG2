@@ -18,6 +18,7 @@ public class StatsTracking : ModPlayer
     public int accumDeaths = 0;
     public int accumDamage = 0;
     public int accumDamageTaken = 0;
+    public int accumGemCaptures = 0;
 
     public static void StartScrimTracking()
     {
@@ -45,11 +46,11 @@ public class StatsTracking : ModPlayer
             StatsTracking stats = player.GetModPlayer<StatsTracking>();
             if (player.team == 1)
             {
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/FF0000:{player.name}]: {stats.accumKills} Kills, {stats.accumDeaths} Deaths, {stats.accumDamage} Damage, {stats.accumDamageTaken} Damage Taken"), Color.Yellow);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/FF0000:{player.name}]: {stats.accumKills} Kills, {stats.accumDeaths} Deaths, {stats.accumDamage} Damage, {stats.accumDamageTaken} Damage Taken, {stats.accumGemCaptures} Gem Captures"), Color.Yellow);
             }
             else if (player.team == 3)
             {
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/0077B6:{player.name}]: {stats.accumKills} Kills, {stats.accumDeaths} Deaths, {stats.accumDamage} Damage, {stats.accumDamageTaken} Damage Taken"), Color.Yellow);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/0077B6:{player.name}]: {stats.accumKills} Kills, {stats.accumDeaths} Deaths, {stats.accumDamage} Damage, {stats.accumDamageTaken} Damage Taken, {stats.accumGemCaptures} Gem Captures"), Color.Yellow);
             }
         }
     }
@@ -72,6 +73,15 @@ public class StatsTracking : ModPlayer
         accumDeaths = 0;
         accumDamage = 0;
         accumDamageTaken = 0;
+        accumGemCaptures = 0;
+    }
+
+    public static void RecordGemCapture(Player player)
+    {
+        if (player == null || !player.active || !ShouldTrackStats())
+            return;
+
+        player.GetModPlayer<StatsTracking>().accumGemCaptures++;
     }
 
     public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)

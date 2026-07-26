@@ -14,6 +14,7 @@ using CTG2.Content.Buffs;
 using CTG2.Content.GameHooks;
 using Terraria.Enums;
 using ClassesNamespace;
+using PvPHubIntegration;
 
 namespace CTG2.Content.ServerSide;
 
@@ -193,6 +194,22 @@ public class GameManager : ModSystem
         redGemCarrier = "At Base";
         blueCarrierName = "";
         redCarrierName = "";
+    }
+
+    public void RecordGemCapture(int playerIndex)
+    {
+        if (Main.netMode != NetmodeID.Server || !IsGameActive)
+            return;
+
+        if (playerIndex < 0 || playerIndex >= Main.maxPlayers)
+            return;
+
+        Player player = Main.player[playerIndex];
+        if (player == null || !player.active)
+            return;
+
+        player.GetModPlayer<PlayerManager>().gemCaptures++;
+        StatsTracking.RecordGemCapture(player);
     }
 
     public void StartGame(bool realMatch = true)
@@ -516,17 +533,18 @@ public class GameManager : ModSystem
 
             if (player.team == 1)
             {
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/FF0000:{player.name}]: {PlayerManager.GetPlayerManager(player.whoAmI).kills} Kills, {PlayerManager.GetPlayerManager(player.whoAmI).deaths} Deaths, {PlayerManager.GetPlayerManager(player.whoAmI).damage} Damage, {PlayerManager.GetPlayerManager(player.whoAmI).damageTaken} Damage Taken"), Color.Yellow);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/FF0000:{player.name}]: {playerManager.kills} Kills, {playerManager.deaths} Deaths, {playerManager.damage} Damage, {playerManager.damageTaken} Damage Taken, {playerManager.gemCaptures} Gem Captures"), Color.Yellow);
             }
             else if (player.team == 3)
             {
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/0077B6:{player.name}]: {PlayerManager.GetPlayerManager(player.whoAmI).kills} Kills, {PlayerManager.GetPlayerManager(player.whoAmI).deaths} Deaths, {PlayerManager.GetPlayerManager(player.whoAmI).damage} Damage, {PlayerManager.GetPlayerManager(player.whoAmI).damageTaken} Damage Taken"), Color.Yellow);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/0077B6:{player.name}]: {playerManager.kills} Kills, {playerManager.deaths} Deaths, {playerManager.damage} Damage, {playerManager.damageTaken} Damage Taken, {playerManager.gemCaptures} Gem Captures"), Color.Yellow);
             }
 
-            PlayerManager.GetPlayerManager(player.whoAmI).kills = 0;
-            PlayerManager.GetPlayerManager(player.whoAmI).deaths = 0;
-            PlayerManager.GetPlayerManager(player.whoAmI).damage = 0;
-            PlayerManager.GetPlayerManager(player.whoAmI).damageTaken = 0;
+            playerManager.kills = 0;
+            playerManager.deaths = 0;
+            playerManager.damage = 0;
+            playerManager.damageTaken = 0;
+            playerManager.gemCaptures = 0;
 
             ModPacket kdrPacket = mod.GetPacket();
             kdrPacket.Write((byte)MessageType.UpdatePlayerKDR);

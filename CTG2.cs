@@ -1179,6 +1179,7 @@ namespace CTG2
                     if (Main.netMode == NetmodeID.Server && isCaptured && !captureWasCaptured && capturePreviousHeldBy >= 0)
                     {
                         ReeseTimelineEvents.GemCaptured(gemType3, capturePreviousHeldBy);
+                        manager3.RecordGemCapture(capturePreviousHeldBy);
                     }
 
                     // 2. If the Server received this from a client, it must tell all other clients
