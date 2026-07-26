@@ -603,6 +603,33 @@ public class UIManager : ModSystem
             centerX += 48;
             destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
         }
+        else if (selectedClass == 6)
+        {
+            Texture2D icon = ModContent.Request<Texture2D>("CTG2/Content/Classes/FishermanAbilityIcons/FishermanAbilityIcon1").Value;
+
+            iconSize = 32;
+            centerX = Main.screenWidth / 2 - 24;
+            centerY = Main.screenHeight - 32;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+
+            if (cooldown <= 0)
+            {
+                Main.spriteBatch.Draw(icon, destRect, Color.White);
+            }
+            else
+            {
+                Main.spriteBatch.Draw(icon, destRect, Color.Gray * 0.6f);
+
+                DynamicSpriteFont font = FontAssets.MouseText.Value;
+                string cdText = $"{(int)Math.Ceiling(cooldown / 60f)}";
+                Vector2 textSize = font.MeasureString(cdText);
+                Vector2 textPos = new Vector2(centerX - textSize.X / 2f, centerY - textSize.Y / 2f);
+                Utils.DrawBorderString(Main.spriteBatch, cdText, textPos, Color.White);
+            }
+
+            centerX += 48;
+            destRect = new Rectangle(centerX - iconSize / 2, centerY - iconSize / 2, iconSize, iconSize);
+        }
         else if (selectedClass == 15)
         {
             int cooldown2 = abilities.cooldown2;

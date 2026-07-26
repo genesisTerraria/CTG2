@@ -238,7 +238,11 @@ public class ChargedBowProjectile : ModProjectile
 
             float damageReduction = 0;
             if (isHellfire) damageReduction = 4f;
-            else if (isLuminite) damageReduction = -10f;
+            else if (isLuminite)
+            {
+                damageReduction = -10f;
+                manager.class1UsedLuminite = true;
+            }
 
             float critDamageIncrease = player.HasBuff(176) ? 4 : 0;
 

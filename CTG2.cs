@@ -179,7 +179,9 @@ namespace CTG2
         RequestForceStartBans = 132, // Forcestartbans even if the full roster isn't present
         SubmitClassBan = 133,   // AbilityID to ban for the opposing team
         SyncClassBans = 134,    // Both teams' banned AbilityIDs
-        RequestSyncTeams = 135  // reassign all online players to their teams
+        RequestSyncTeams = 135,  // reassign all online players to their teams
+        SyncFlightTime = 136,
+        UpdateDoubleOvertime = 137
     }
 
     public class CTG2 : Mod
@@ -290,7 +292,7 @@ namespace CTG2
                 }
             }
 
-            BlessingOfTheDragonsKeybind = KeybindLoader.RegisterKeybind(this, "PhoenixDash", "LeftShift");
+            BlessingOfTheDragonsKeybind = KeybindLoader.RegisterKeybind(this, "Omni-DirectionalDash", "LeftShift");
             AdvancedBinocularsKeybind = KeybindLoader.RegisterKeybind(this, "AdvancedBinoculars", "MouseRight");
             Ability1Keybind = KeybindLoader.RegisterKeybind(this, "Ability 1", "R");
             Ability2Keybind = KeybindLoader.RegisterKeybind(this, "Ability 2", "F");
@@ -1175,6 +1177,7 @@ namespace CTG2
                     break;
                 }
 
+
                 case (byte)MessageType.ClearInventory:
                     int playerIdxx = reader.ReadInt32();
                     var manager4 = ModContent.GetInstance<GameManager>();
@@ -1373,6 +1376,9 @@ namespace CTG2
                 case (byte)MessageType.UpdateOvertime:
                     GameInfo.overtime = reader.ReadBoolean();
                     break;
+                case (byte)MessageType.UpdateDoubleOvertime:
+                    GameInfo.doubleOvertime = reader.ReadBoolean();
+                    break;
                 case (byte)MessageType.UpdateMapName:
                     GameInfo.mapName = reader.ReadString();
                     break;
@@ -1411,6 +1417,7 @@ namespace CTG2
                     GameInfo.matchStage = reader.ReadInt32();
                     GameInfo.matchTime = reader.ReadInt32();
                     GameInfo.overtime = reader.ReadBoolean();
+                    GameInfo.doubleOvertime = reader.ReadBoolean();
                     GameInfo.blueGemX = reader.ReadInt32();
                     GameInfo.redGemX = reader.ReadInt32();
                     GameInfo.blueGemCarrier = reader.ReadString();
@@ -1869,6 +1876,26 @@ namespace CTG2
                     //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"sync called once"), Color.Orange);
                     break;
                 }
+                case (byte)MessageType.SyncFlightTime:
+                {
+                    int playerID = reader.ReadInt32();
+                    int duration = reader.ReadInt32();
+
+                    var fuel = Main.player[playerID].GetModPlayer<PlanetaryExplorationGearPlayer>();
+                    fuel.flightTimeRemaining = duration;
+
+                    if (Main.netMode == NetmodeID.Server)
+                    {
+                        ModPacket audioPacketSelf = mod.GetPacket();
+                        audioPacketSelf.Write((byte)MessageType.SyncFlightTime);
+                        audioPacketSelf.Write(playerID);
+                        audioPacketSelf.Write(duration);
+                        audioPacketSelf.Send(-1);
+
+                    }
+                    //ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"sync called once"), Color.Orange);
+                    break;
+                }
                 case (byte)MessageType.SyncPlayerArmor:
                     byte playerIDd = reader.ReadByte();
                     Player targetd = Main.player[playerIDd];
@@ -1986,7 +2013,7 @@ namespace CTG2
                         ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
                         packet.Write((byte)MessageType.Mute);
                         packet.Write(mutedPlayer);
-                        packet.Send(toClient: mutedPlayer);
+                        packet.Send(-1);
                     }
 
                     break;
@@ -1997,12 +2024,11 @@ namespace CTG2
 
                     if (mutedPlayer == Main.myPlayer)
                     {
-                        Main.player[mutedPlayer]
-                            .GetModPlayer<ChatPlayer>()
-                            .IsMuted = true;
-
                         Main.NewText("You have been muted.", Color.Red);
                     }
+
+                    Main.player[mutedPlayer].GetModPlayer<ChatPlayer>().IsMuted = true;
+
                     break;
                 }
                 case (byte)MessageType.RequestUnmute:
@@ -2014,7 +2040,7 @@ namespace CTG2
                         ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
                         packet.Write((byte)MessageType.Unmute);
                         packet.Write(unmutedPlayer);
-                        packet.Send(toClient: unmutedPlayer);
+                        packet.Send(-1);
                     }
 
                     break;
@@ -2025,12 +2051,11 @@ namespace CTG2
 
                     if (unmutedPlayer == Main.myPlayer)
                     {
-                        Main.player[unmutedPlayer]
-                            .GetModPlayer<ChatPlayer>()
-                            .IsMuted = false;
-
                         Main.NewText("You have been unmuted.", Color.Green);
                     }
+
+                    Main.player[unmutedPlayer].GetModPlayer<ChatPlayer>().IsMuted = false;
+
                     break;
                 }
                 case (byte)MessageType.LateJoin:

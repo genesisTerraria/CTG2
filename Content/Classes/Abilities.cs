@@ -75,6 +75,7 @@ namespace CTG2.Content
         public CtgClass class16RegenData;
 
         public int class17EndTimer = -1;
+        public int class18EndTimer = -1;
 
         public bool initializedMutant;
         public int mutantState = 1;
@@ -425,26 +426,17 @@ namespace CTG2.Content
             {
                 Player attacker = Main.player[attackerIndex];
                 int damage = info.Damage;
-                var attackerManager = attacker.GetModPlayer<PlayerManager>();
+                // var attackerManager = attacker.GetModPlayer<PlayerManager>();
 
                 switch (projectileType)
                 {
-                    case ProjectileID.HellfireArrow: // Archer ability
-                        if (attacker.HasBuff(320) && attacker.team != Player.team)
-                        {
-                            Player.AddBuff(30, 60);
-                            Player.AddBuff(44, 60);
-                        }
-                        break;
-
-                    case 15:
-                    case 19: // Flame Bunny ability
-                        if (attacker.HasBuff(320) && attacker.HasBuff(137) && attacker.team != Player.team)
-                        {
-                            Player.AddBuff(39, 20);
-                            Player.AddBuff(70, 20);
-                        }
-                        break;
+                    // case ProjectileID.HellfireArrow: // Archer ability
+                    //     if (attacker.HasBuff(320) && attacker.team != Player.team)
+                    //     {
+                    //         Player.AddBuff(30, 60);
+                    //         Player.AddBuff(44, 60);
+                    //     }
+                    //     break;
 
                     case 273:
                     case 304: // Leech ability
@@ -725,13 +717,6 @@ namespace CTG2.Content
 
         private void GladiatorOnUse()
         {
-            class4PowerShot = true;
-
-            SoundEngine.PlaySound(SoundID.Item77.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
-        }
-
-        private void GladiatorOnUse2()
-        {
             Player.AddBuff(BuffID.WellFed2, 300);
             Player.AddBuff(BuffID.WitheredArmor, 300);
             Player.AddBuff(BuffID.WeaponImbueGold, 300);
@@ -743,6 +728,13 @@ namespace CTG2.Content
             playedSound = false;
 
             SoundEngine.PlaySound(SoundID.DD2_KoboldIgnite.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
+        }
+
+        private void GladiatorOnUse2()
+        {
+            class4PowerShot = true;
+
+            SoundEngine.PlaySound(SoundID.Item77.WithVolumeScale(Main.soundVolume * 2f), Player.Center);
         }
 
         private void GladiatorPostStatus()
@@ -834,7 +826,7 @@ namespace CTG2.Content
             Player.AddBuff(137, 420);
             Player.AddBuff(320, 420);
 
-            Player.statMana = Math.Min(Player.statMana + 14, Player.statManaMax2);
+            Player.statMana = Math.Min(Player.statMana + 7, Player.statManaMax2);
 
             class7EndTimer = 420;
             // if (Player.GetModPlayer<Abilities>().class7HitCounter >= 10)
@@ -1345,22 +1337,20 @@ namespace CTG2.Content
 
         private void FishermanOnUse()
         {
-            Player.AddBuff(BuffID.Cursed, 18);
-
             Vector2 direction = Main.MouseWorld - Player.Center;
 
             if (direction != Vector2.Zero)
                 direction.Normalize();
 
-            float speed = 7f;
+            float speed = 13f;
             Vector2 velocity = direction * speed;
 
             Projectile.NewProjectile(
                 Player.GetSource_FromThis(),
                 Player.Center,
                 velocity,
-                969,
-                25,
+                ProjectileID.FishHook,
+                0,
                 0,
                 Player.whoAmI
             );
@@ -1370,16 +1360,7 @@ namespace CTG2.Content
 
         private void AstronautOnUse()
         {
-            var fuel = Player.GetModPlayer<PlanetaryExplorationGearPlayer>();
-            fuel.flightTimeRemaining = 60;
-
-            SoundEngine.PlaySound(SoundID.Item61, Player.Center);
-            SoundEngine.PlaySound(SoundID.Item68, Player.Center);
-        }
-
-        private void AstronautOnUse2()
-        {
-            Player.AddBuff(BuffID.Cursed, 18);
+            Player.AddBuff(BuffID.Cursed, 26);
 
             Vector2 direction = Main.MouseWorld - Player.Center;
 
@@ -1394,12 +1375,25 @@ namespace CTG2.Content
                 Player.Center,
                 velocity,
                 ProjectileID.ElectrosphereMissile,
-                16,
+                18,
                 0,
                 Player.whoAmI
             );
 
             SoundEngine.PlaySound(SoundID.Item71, Player.Center);
+        }
+
+        private void AstronautOnUse2()
+        {
+            class18EndTimer = 7 * 60;
+
+            Player.AddBuff(BuffID.MagicPower, 7 * 60);
+            Player.AddBuff(BuffID.Electrified, 7 * 60);
+
+            playedSound = false;
+
+            SoundEngine.PlaySound(SoundID.Item61, Player.Center);
+            SoundEngine.PlaySound(SoundID.Item68, Player.Center);
         }
 
         private void RngManOnUse()
@@ -1521,6 +1515,16 @@ namespace CTG2.Content
                     }
 
                     break;
+                case 18:
+                    if (endedEarly || (!playedSound && class18EndTimer == 0))
+                    {
+                        SoundEngine.PlaySound(SoundID.Item61, Player.Center);
+                        SoundEngine.PlaySound(SoundID.Item68, Player.Center);
+                        playedSound = true;
+                        class18EndTimer = -1;
+                    }
+
+                    break;
             }
 
             if (cooldown == 1)
@@ -1579,7 +1583,7 @@ namespace CTG2.Content
                         break;
 
                     case 4:
-                        SetCooldown(6);
+                        SetCooldown(35);
                         GladiatorOnUse();
 
                         break;
@@ -1591,7 +1595,7 @@ namespace CTG2.Content
                         break;
 
                     case 6:
-                        SetCooldown(30);
+                        SetCooldown(6);
                         FishermanOnUse();
 
                         break;
@@ -1666,7 +1670,7 @@ namespace CTG2.Content
                         break;
 
                     case 18:
-                        SetCooldown(30);
+                        SetCooldown(32);
                         AstronautOnUse();
 
                         break;
@@ -1697,7 +1701,7 @@ namespace CTG2.Content
                         AlchemistOnUse2();
                         break;
                     case 4:
-                        SetCooldown2(35);
+                        SetCooldown2(6);
                         GladiatorOnUse2();
                         break;
                     case 15:
@@ -1705,7 +1709,7 @@ namespace CTG2.Content
                         TreeOnUse2();
                         break;
                     case 18:
-                        SetCooldown2(30);
+                        SetCooldown2(45);
                         AstronautOnUse2();
                         break;
                 }
@@ -1716,7 +1720,7 @@ namespace CTG2.Content
                 switch (selectedClass)
                 {
                     case 3:
-                        SetCooldown3(40);
+                        SetCooldown3(46);
                         AlchemistOnUse3();
                         break;
                 }
@@ -1736,10 +1740,10 @@ namespace CTG2.Content
 
             if (!GameInfo.paused)
             {
-                if (cooldown > 0 && (selectedClass != 1 || class1UsedLuminite) && (selectedClass != 4 || !class4PowerShot))
+                if (cooldown > 0 && (selectedClass != 1 || class1UsedLuminite))
                     cooldown--;
 
-                if (cooldown2 > 0)
+                if (cooldown2 > 0 && (selectedClass != 4 || !class4PowerShot))
                     cooldown2--;
 
                 if (cooldown3 > 0)
@@ -1771,6 +1775,9 @@ namespace CTG2.Content
                 
                 if (class17EndTimer >= 0)
                     class17EndTimer--;
+
+                if (class18EndTimer >= 0)
+                    class18EndTimer--;
             }
         }
         

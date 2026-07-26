@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework;
 using CTG2;
 using CTG2.Content.Projectiles;
 using Microsoft.Extensions.Options;
+using CTG2.Content;
 
 
 public class ProjectileOverrides : GlobalProjectile
@@ -110,18 +111,11 @@ public class ProjectileOverrides : GlobalProjectile
 
         //     projectile.Center = center;
         // }
-        if (projectile.type == 969)
-        {
-            if (projectile.timeLeft > 120)
-            {
-                projectile.timeLeft = 120;
-            }
-        }
         if (projectile.type == ProjectileID.Electrosphere)
         {
-            if (projectile.timeLeft > 180)
+            if (projectile.timeLeft > 240)
             {
-                projectile.timeLeft = 180;
+                projectile.timeLeft = 240;
             }
         }
         if (projectile.type == ProjectileID.Hellwing)
@@ -130,6 +124,15 @@ public class ProjectileOverrides : GlobalProjectile
             {
                 projectile.timeLeft = 300;
             }
+        }
+        if (projectile.type == ProjectileID.DripplerFlailExtraBall)
+        {
+            if (projectile.timeLeft > 150)
+            {
+                projectile.timeLeft = 150;
+            }
+
+            projectile.penetrate = 1;
         }
         if (!playedSoundBoomerangs && (projectile.type == ProjectileID.ThornChakram || projectile.type == ProjectileID.Flamarang))
         {
@@ -155,6 +158,20 @@ public class ProjectileOverrides : GlobalProjectile
             }
 
             projectile.penetrate = 1;
+        }
+        if (projectile.type == ProjectileID.EmeraldBolt)
+        {
+            if (projectile.timeLeft > 45)
+            {
+                projectile.timeLeft = 45;
+            }
+        }
+        if (projectile.type == ProjectileID.DiamondBolt)
+        {
+            if (projectile.timeLeft > 70)
+            {
+                projectile.timeLeft = 70;
+            }
         }
         if (projectile.type == ProjectileID.ApprenticeStaffT3Shot)
         {
@@ -311,8 +328,8 @@ public class ProjectileOverrides : GlobalProjectile
         {
             projectile.damage = 31;
         }
-        if (projectile.type == ProjectileID.IceSickle || projectile.type == ProjectileID.ChlorophyteOrb || projectile.type == ProjectileID.DemonScythe || projectile.type == ProjectileID.GoldenShowerFriendly || projectile.type == ModContent.ProjectileType<CTG2GoldenShowerProjectile>() || projectile.type == ProjectileID.WeatherPainShot
-         || projectile.type == ProjectileID.JavelinFriendly)
+        if (projectile.type == ProjectileID.IceSickle || projectile.type == ProjectileID.ChlorophyteOrb
+         || projectile.type == ProjectileID.DemonScythe || projectile.type == ProjectileID.DripplerFlailExtraBall)
         {
             projectile.penetrate = 1;
         }
@@ -354,6 +371,24 @@ public class ModifyHurtModPlayer : ModPlayer
         return base.CanHitPvpWithProj(proj, target);
     }
 
+    public override void ModifyHurt(ref Player.HurtModifiers modifiers)
+    {
+        var source = modifiers.DamageSource;
+
+        if (source.SourceProjectileLocalIndex >= 0 && source.SourceProjectileLocalIndex < Main.maxProjectiles)
+        {
+            Projectile proj = Main.projectile[source.SourceProjectileLocalIndex];
+
+            if (proj.active
+                && proj.type == source.SourceProjectileType
+                && proj.ModProjectile is AmalgamatedHandProjectile1 flail
+                && flail.IsSpinning)
+            {
+                modifiers.SourceDamage *= 0.5f;
+            }
+        }
+    }
+
     [System.Obsolete]
     public override void OnHurt(Player.HurtInfo info)
     {
@@ -380,12 +415,6 @@ public class ModifyHurtModPlayer : ModPlayer
                     }
                 }
             }
-        }
-
-        if (info.DamageSource.SourceProjectileType == 969 && Player.whoAmI == Main.myPlayer)
-        {
-            //Player.AddBuff(ModContent.BuffType<Netted>(), 60);
-            Player.AddBuff(BuffID.Dazed, 60);
         }
 
         bool isPickaxe = info.DamageSource.SourceItem != null && (
@@ -439,34 +468,23 @@ public class ModifyHurtModPlayer : ModPlayer
             {
                 Projectile hurtProjectile = Main.projectile[projIndex];
 
-                Player owner = Main.player[info.DamageSource.SourcePlayerIndex];
-                Vector2 dest = Player.position;
+                if (hurtProjectile.active && hurtProjectile.type == ModContent.ProjectileType<SpaceSplitterProjectile>())
+                {
+                    Player owner = Main.player[info.DamageSource.SourcePlayerIndex];
+                    Vector2 dest = Player.position;
 
-                var mod = ModContent.GetInstance<CTG2.CTG2>();
-                ModPacket packet = mod.GetPacket();
-                packet.Write((byte)MessageType.RequestTeleport);
-                packet.Write(owner.whoAmI);
-                packet.Write((int)dest.X);
-                packet.Write((int)dest.Y);
-                packet.Send();
+                    var mod = ModContent.GetInstance<CTG2.CTG2>();
+                    ModPacket packet = mod.GetPacket();
+                    packet.Write((byte)MessageType.RequestTeleport);
+                    packet.Write(owner.whoAmI);
+                    packet.Write((int)dest.X);
+                    packet.Write((int)dest.Y);
+                    packet.Send();
 
-                ModPacket packet1 = mod.GetPacket();
-                packet1.Write((byte)MessageType.RequestAddBuff);
-                packet1.Write(Player.whoAmI);
-                packet1.Write(320);
-                packet1.Write(120);
-                packet1.Send();
+                    SoundEngine.PlaySound(SoundID.Item8, owner.Center);
 
-                packet1 = mod.GetPacket();
-                packet1.Write((byte)MessageType.RequestAddBuff);
-                packet1.Write(Player.whoAmI);
-                packet1.Write(ModContent.BuffType<TimeDilation>());
-                packet1.Write(120);
-                packet1.Send();
-
-                SoundEngine.PlaySound(SoundID.Item8, owner.Center);
-
-                hurtProjectile.Kill();
+                    hurtProjectile.Kill();
+                }
             }
         }
 
@@ -545,8 +563,8 @@ public class ModifyHurtModPlayer : ModPlayer
         }
         if (info.DamageSource.SourceProjectileType == ProjectileID.ApprenticeStaffT3Shot)
         {
-            Player.AddBuff(ModContent.BuffType<Transmutated>(), 90);
-            Player.AddBuff(BuffID.Cursed, 90);
+            Player.AddBuff(ModContent.BuffType<Transmutated>(), 60);
+            Player.AddBuff(BuffID.Cursed, 60);
         }
         if (info.DamageSource.SourceProjectileType == 732)
         {
@@ -561,22 +579,24 @@ public class ModifyHurtModPlayer : ModPlayer
                 packet.Send();
             }
         }
-        if (info.DamageSource.SourceProjectileType == ProjectileID.LaserMachinegunLaser)
+        if (info.DamageSource.SourceProjectileType == ProjectileID.LaserMachinegunLaser
+         || info.DamageSource.SourceProjectileType == ProjectileID.ElectrosphereMissile)
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
             if (attackerPlayer.currentClass.Name == "Astronaut")
             {
+                int amount = attacker.HasBuff(BuffID.MagicPower) ? 4 : 2;
                 ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
                 packet.Write((byte)CTG2.MessageType.RequestMana);
                 packet.Write(attacker.whoAmI);
-                packet.Write(2);
+                packet.Write(amount);
                 packet.Send();
             }
         }
-        if (info.DamageSource.SourceProjectileType == 507)
+        if (info.DamageSource.SourceProjectileType == ProjectileID.JavelinFriendly)
         {
-            Player.AddBuff(BuffID.Dazed, 90);
+            Player.AddBuff(BuffID.Dazed, 60);
         }
         if (info.DamageSource.SourceProjectileType == 153)
         {
@@ -616,20 +636,12 @@ public class ModifyHurtModPlayer : ModPlayer
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
             if (attackerPlayer.currentClass.Name == "Gladiator")
             {
-                attacker.AddBuff(BuffID.CatBast, 60);
-                attacker.AddBuff(BuffID.Endurance, 60);
+                attacker.AddBuff(BuffID.Ironskin, 120);
 
                 ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
                 packet.Write((byte)CTG2.MessageType.RequestAddBuff);
                 packet.Write(attacker.whoAmI);
-                packet.Write(215);
-                packet.Write(120);
-                packet.Send();
-
-                packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
-                packet.Write((byte)CTG2.MessageType.RequestAddBuff);
-                packet.Write(attacker.whoAmI);
-                packet.Write(114);
+                packet.Write(5);
                 packet.Write(120);
                 packet.Send();
             }

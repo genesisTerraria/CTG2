@@ -200,6 +200,16 @@ Items: {
 		DisplayName: Planetary Exploration Gear
 		Tooltip: ""
 	}
+
+	GladiatorialJavelin: {
+		DisplayName: Gladiatorial Javelin
+		Tooltip: ""
+	}
+
+	PropulsionBooster: {
+		DisplayName: Propulsion Booster
+		Tooltip: ""
+	}
 }
 
 NPCs: {
@@ -362,6 +372,8 @@ Keybinds: {
 	BlackMageDash.DisplayName: Black Mage Dash
 	PhoenixOmni-DirectionalDash.DisplayName: Phoenix Omni- Directional Dash
 	"Damage Board.DisplayName": Damage  Board
+	Omni-Dash.DisplayName: Omni- Dash
+	Omni-DirectionalDash.DisplayName: Omni- Directional Dash
 }
 
 Configs: {

@@ -12,7 +12,7 @@ namespace CTG2.Content.Items
 		{
 	  		Item.CloneDefaults(ItemID.DemonScythe);
 	     
-			Item.damage = 34;
+			Item.damage = 31;
             Item.shoot = 496;
             Item.useAnimation = 18;
             Item.useTime = 18;
