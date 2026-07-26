@@ -349,6 +349,11 @@ Buffs: {
 		Description: Mods.CTG2.Buffs.Haste.Description
 		DisplayName: Haste
 	}
+
+	OvertimeBuff: {
+		DisplayName: Overtime Buff
+		Description: Mods.CTG2.Buffs.OvertimeBuff.Description
+	}
 }
 
 Keybinds: {
