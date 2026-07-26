@@ -63,6 +63,8 @@ public class GameManager : ModSystem
     public bool isOvertime = false;
     public bool isDoubleOvertime = false;
 
+    public bool RealMatch { get; private set; }
+
     // AbilityID of the class each team is CANT pick (0 = no ban)
     // redTeamBannedClassID is set by the BLUE captain and applies to red players, and vice versa.
     public int redTeamBannedClassID = 0;
@@ -153,6 +155,7 @@ public class GameManager : ModSystem
         Map = new GameMap(CTG2.config.MapPaste[0], CTG2.config.MapPaste[1]);
         GameMap.PreloadAllMaps();
         IsGameActive = false;
+        RealMatch = false;
         MatchTime = 0;
     }
 
@@ -192,15 +195,26 @@ public class GameManager : ModSystem
         redCarrierName = "";
     }
 
-    public void StartGame()
+    public void StartGame(bool realMatch = true)
     {
         var mod = ModContent.GetInstance<CTG2>();
 
         isWaitingForNewGame = false;
         IsGameActive = true;
+        RealMatch = realMatch;
         hasStartedEarly = false;
         endGameCalled = false;
         MatchTime = 0;
+
+        if (scrimsConfig)
+        {
+            string matchTypeMessage = RealMatch
+                ? "This match has been marked as real. Accumulative stats will be tracked."
+                : "This game has been marked as practice. Accumulative stats won't be tracked.";
+            ChatHelper.BroadcastChatMessage(
+                NetworkText.FromLiteral(matchTypeMessage),
+                RealMatch ? Color.LightGreen : Color.Orange);
+        }
         
         ModPacket packetMatchTime = mod.GetPacket();
         packetMatchTime.Write((byte)MessageType.ServerGameUpdate);
@@ -403,6 +417,7 @@ public class GameManager : ModSystem
         resetEndGame = true;
         endGameCalled = true;
         IsGameActive = false;
+        RealMatch = false;
         HasRoundStarted = false;
         pause = false;
 

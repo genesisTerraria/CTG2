@@ -1,4 +1,5 @@
 using System;
+using CTG2.Content.ServerSide;
 using Microsoft.Xna.Framework;
 using Terraria;
 using Terraria.Chat;
@@ -107,7 +108,11 @@ public class StatsTracking : ModPlayer
 
     private static bool ShouldTrackStats()
     {
-        return scrimsActive && Main.netMode == NetmodeID.Server;
+        if (!scrimsActive || Main.netMode != NetmodeID.Server)
+            return false;
+
+        GameManager gameManager = ModContent.GetInstance<GameManager>();
+        return gameManager.IsGameActive && gameManager.RealMatch;
     }
 
     private static bool IsValidPlayerIndex(int playerIndex)

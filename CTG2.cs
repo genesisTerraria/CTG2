@@ -487,17 +487,42 @@ namespace CTG2
             {
                 // Client -> Server Packets (these cases will run on the Server)
                 case (byte)MessageType.RequestStartGame:
+                {
+                    bool realMatch = reader.ReadBoolean();
+
+                    if (Main.netMode != NetmodeID.Server)
+                        break;
+
+                    if (whoAmI < 0 || whoAmI >= Main.player.Length || !Main.player[whoAmI].active)
+                        break;
+
+                    if (!Main.player[whoAmI].GetModPlayer<AuthPlayer>().IsAdmin)
+                    {
+                        Logger.Warn($"Rejected start request from non-admin player {whoAmI} ({Main.player[whoAmI].name}).");
+                        break;
+                    }
+
+                    if (manager.IsGameActive)
+                    {
+                        ChatHelper.SendChatMessageToClient(
+                            NetworkText.FromLiteral("You must end the current game to start a new game."),
+                            Color.Red,
+                            whoAmI);
+                        break;
+                    }
+
                     if (Hooks.BanPhaseActive)
                     {
                         // If banphase is active any missing bans should be randomized
                         // Ban timer is also set to 0 to let the game ui take precedence
                         Console.WriteLine("Server Received Game Start Request during ban phase; force-completing bans.");
-                        Hooks.ForceCompleteBanPhase();
+                        Hooks.ForceCompleteBanPhase(realMatch);
                         break;
                     }
-                    manager.StartGame();
-                    Console.WriteLine("Server Received Game Start Request!");
+                    manager.StartGame(realMatch);
+                    Console.WriteLine($"Server Received Game Start Request! realMatch={realMatch}");
                     break;
+                }
 
                 case (byte)MessageType.LogDiscordIdentity:
                 {

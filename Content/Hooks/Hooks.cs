@@ -160,7 +160,7 @@ public static partial class Hooks
 
     // Fills any missing bans randomly and completes the ban phase
     // Called when the ban timer expires or when an admin uses /start 
-    public static void ForceCompleteBanPhase()
+    public static void ForceCompleteBanPhase(bool realMatch = true)
     {
         if (Main.netMode != NetmodeID.Server || !BanPhaseActive)
             return;
@@ -182,7 +182,7 @@ public static partial class Hooks
                 Color.OrangeRed);
         }
 
-        TryCompleteBanPhase();
+        TryCompleteBanPhase(realMatch);
 
         if (BanPhaseActive)
         {
@@ -223,7 +223,7 @@ public static partial class Hooks
 
     // Called after each ban is recorded
     //  once both teams have a ban, end the phase and start the game
-    public static void TryCompleteBanPhase()
+    public static void TryCompleteBanPhase(bool realMatch = true)
     {
         if (Main.netMode != NetmodeID.Server || !BanPhaseActive)
             return;
@@ -250,7 +250,7 @@ public static partial class Hooks
             NetworkText.FromLiteral("The game is starting!"),
             Color.LightGreen);
 
-        gameManager.StartGame();
+        gameManager.StartGame(realMatch);
     }
 
     private static string GetClassName(int abilityID)
