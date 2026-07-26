@@ -26,6 +26,27 @@ class ReeseAPI
         }
     }
 
+    // Stops the recording and returns the saved replay file path
+    public static string StopReeseRecordingAndGetFilePath(string reason = "Cross-mod integration")
+    {
+        if (!ModLoader.TryGetMod("Reese", out Mod reese))
+            return null;
+
+        try
+        {
+            object stopResult = reese.Call("StopRecordingAndGetFilePath", reason);
+            ChatHelper.BroadcastChatMessage(
+                NetworkText.FromLiteral("Reese recording stopped"),
+                Color.LightGreen);
+            return stopResult as string;
+        }
+        catch (Exception e)
+        {
+            reese.Logger.Warn("Failed to stop Reese recording via Mod.Call: " + e);
+            return null;
+        }
+    }
+
     public static void StopReeseRecording(string reason = "Cross-mod integration")
     {
         if (ModLoader.TryGetMod("Reese", out Mod reese))

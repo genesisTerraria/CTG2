@@ -25,18 +25,15 @@ public static partial class Hooks
 
         ModContent.GetInstance<GameManager>().ResetClassBans(); // clear bans from both teams
         ModContent.GetInstance<NeatQueueTeamAssignmentSystem>().ClearAssignments(); // clear the team assignments for each player
-        ReeseAPI.StopReeseRecording("Queue ended. Server returned to pubs mode."); // stop the scrim recording
+        string replayFilePath = ReeseAPI.StopReeseRecordingAndGetFilePath("Queue ended. Server returned to pubs mode."); // stop the scrim recording and keep the replay path for upload
         AnnounceQueueWinner(); // announce the winner of the queue from NeatQueue
         StatsTracking.AnnounceScrimStats(); // announce the final stats of the game
+        MatchUpload.UploadPayload(CtgApiServer.LastMatchWinner, replayFilePath); // upload the match + replay to PvPHub (must run before StopScrimTracking)
         StatsTracking.StopScrimTracking(); // stop tracking stats since a scrim no longer exists
         
-        // pvphubIntegration.createpayload() create payload with existing stats
-        // pvphub.uploadpayload() send the payload once done
 
 
-        ChatHelper.BroadcastChatMessage(
-            NetworkText.FromLiteral("Queue ended. Server returned to pubs mode."),
-            Color.LightGreen);
+
 
 
     }
