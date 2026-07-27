@@ -7,7 +7,7 @@
   "InventoryItems": [
     {
       "Name": "Shardstone Pickaxe",
-      "Type": 5562,
+      "Type": 5564,
       "Stack": 1,
       "Prefix": 0,
       "Slot": 0,
@@ -513,7 +513,7 @@
       "Name": "Feral Claws",
       "Type": 211,
       "Stack": 1,
-      "Prefix": 65,
+      "Prefix": 0,
       "Slot": 63,
       "Modded": false
     },

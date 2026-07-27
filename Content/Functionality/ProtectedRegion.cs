@@ -30,6 +30,7 @@ public class ProtectedRegionTile : GlobalTile
 
         return base.CanPlace(i, j, type);
     }
+
     public override bool CanKillTile(int i, int j, int type, ref bool blockDamaged)
     {
         if (IsInProtectedRegion(i, j) && type != 127)
@@ -37,7 +38,6 @@ public class ProtectedRegionTile : GlobalTile
 
         return base.CanKillTile(i, j, type, ref blockDamaged);
     }
-
 
     public static bool IsInProtectedRegion(int i, int j)
     {
@@ -47,6 +47,45 @@ public class ProtectedRegionTile : GlobalTile
                 return true;
         }
         return false;
+    }
+
+    public override bool CanExplode(int i, int j, int type)
+    {
+        if (IsInProtectedRegion(i, j) && type != 127)
+            return false;
+
+        return base.CanExplode(i, j, type);
+    }
+}
+
+
+public class ProtectedRegionWall : GlobalWall
+{
+    public static List<Rectangle> ProtectedRegions = new List<Rectangle>
+    {
+        new Rectangle(1658, 385, 92, 82), // blue base
+        new Rectangle(2085, 385, 92, 82), // red base
+        new Rectangle(3565, 391, 107, 47), // red class selection
+        new Rectangle(3896, 384, 107, 47), // blue class selection
+        new Rectangle(0, 225, 1400, 263) // lobby
+    };
+
+    public static bool IsInProtectedRegion(int i, int j)
+    {
+        foreach (var region in ProtectedRegions)
+        {
+            if (region.Contains(i, j))
+                return true;
+        }
+        return false;
+    }
+
+    public override bool CanExplode(int i, int j, int type)
+    {
+         if (IsInProtectedRegion(i, j))
+            return false;
+
+        return base.CanExplode(i, j, type);
     }
 }
 

@@ -306,7 +306,6 @@ namespace ClassesNamespace
             }
         }
 
-
         private void SpawnCustomItem(int itemID, int? prefix = null, int? damage = null, int? useTime = null, int? useAnimation = null, float? scale = null, float? knockBack = null, int? shoot = null, float? shootSpeed = null, Color? colorOverride = null)
         {
             Item item = new Item();
@@ -567,7 +566,9 @@ namespace ClassesNamespace
             Player.ClearBuff(BuffID.Ichor);
             Player.ClearBuff(BuffID.Poisoned);
 
-            if (bombCounter >= 0 && bombCounter < 1200 && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0)
+            int minerBombCooldown = 20 * 60;
+
+            if (bombCounter >= 0 && bombCounter < minerBombCooldown && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0)
             {
                 if (playerManager.currentClass?.Name == "Ninja")
                     giveItemDirect(ItemID.MudBlock, 300);
@@ -575,15 +576,15 @@ namespace ClassesNamespace
                 else
                     giveItemDirect(ItemID.DirtBlock, 300);
 
-                bombCounter += 1200;
+                bombCounter += minerBombCooldown;
             }
 
-            if (gameTime >= bombCounter && bombCounter >= 1200 && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0) // miner bombs over time
+            if (gameTime >= bombCounter && bombCounter >= minerBombCooldown && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0) // miner bombs over time
             {
                 if (playerManager.currentClass?.Name == "Miner")
                     giveItemDirect(ItemID.StickyBomb, 1);
 
-                bombCounter = gameTime + 1200 - gameTime % 1200;
+                bombCounter = gameTime + minerBombCooldown - gameTime % minerBombCooldown;
             }
 
             if (gameTime >= fishCounter && playerManager.playerState == PlayerManager.PlayerState.Active && Player.team != 0) // daggerfish over time

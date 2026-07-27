@@ -13,7 +13,6 @@ public static class GameInfo
     public static string blueGemCarrierName = "";
     public static string redGemCarrierName = "";
     public static bool overtime = false;
-    public static bool doubleOvertime = false;
     public static string mapName = "";
     public static int blueTeamSize = 0;
     public static int redTeamSize = 0;

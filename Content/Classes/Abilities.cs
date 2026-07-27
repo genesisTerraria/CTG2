@@ -60,6 +60,7 @@ namespace CTG2.Content
 
         public int class8HP = 0;
         public bool psychicActive = false;
+        public float class10PendingMinecart = 0f; // 0 = no pending boost, ±1 = direction
 
         public int class11EndTimer = -1;
 
@@ -941,7 +942,7 @@ namespace CTG2.Content
         }
 
 
-        private void MinerOnUse() //not finished
+        private void MinerOnUse()
         {
             int offsetXLow = 0;
             int offsetXHigh = 0;
@@ -1012,6 +1013,32 @@ namespace CTG2.Content
 
             playedSound = false;
             SoundEngine.PlaySound(SoundID.DD2_MonkStaffGroundImpact.WithVolumeScale(Main.soundVolume * 6f), Player.Center);
+        }
+
+
+        private void MinerOnUse2()
+        {
+            Vector2 direction = Main.MouseWorld - Player.Center;
+
+            if (direction != Vector2.Zero)
+                direction.Normalize();
+
+            float speed = 5.5f;
+            Vector2 velocity = direction * speed;
+
+            Projectile.NewProjectile(
+                Player.GetSource_FromThis(),
+                Player.Center,
+                velocity,
+                ProjectileID.BouncyGrenade,
+                10,
+                0,
+                Player.whoAmI
+            );
+
+            SoundEngine.PlaySound(SoundID.Item1, Player.Center);
+
+            Player.AddBuff(BuffID.Cursed, 21);
         }
 
 
@@ -1703,6 +1730,10 @@ namespace CTG2.Content
                     case 4:
                         SetCooldown2(6);
                         GladiatorOnUse2();
+                        break;
+                    case 10:
+                        SetCooldown2(6);
+                        MinerOnUse2();
                         break;
                     case 15:
                         SetCooldown2(10);

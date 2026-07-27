@@ -149,6 +149,13 @@ public class ProjectileOverrides : GlobalProjectile
                 projectile.timeLeft = 180;
             }
         }
+        if (projectile.type == ProjectileID.BouncyGrenade)
+        {
+            if (projectile.timeLeft > 60)
+            {
+                projectile.timeLeft = 60;
+            }
+        }
         if (projectile.type == ProjectileID.SporeCloud)
         {
             // Force a new timeLeft value (e.g., 120 ticks = 2 seconds)

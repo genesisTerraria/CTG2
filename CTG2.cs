@@ -180,8 +180,7 @@ namespace CTG2
         SubmitClassBan = 133,   // AbilityID to ban for the opposing team
         SyncClassBans = 134,    // Both teams' banned AbilityIDs
         RequestSyncTeams = 135,  // reassign all online players to their teams
-        SyncFlightTime = 136,
-        UpdateDoubleOvertime = 137
+        SyncFlightTime = 136
     }
 
     public class CTG2 : Mod
@@ -1402,9 +1401,6 @@ namespace CTG2
                 case (byte)MessageType.UpdateOvertime:
                     GameInfo.overtime = reader.ReadBoolean();
                     break;
-                case (byte)MessageType.UpdateDoubleOvertime:
-                    GameInfo.doubleOvertime = reader.ReadBoolean();
-                    break;
                 case (byte)MessageType.UpdateMapName:
                     GameInfo.mapName = reader.ReadString();
                     break;
@@ -1443,7 +1439,6 @@ namespace CTG2
                     GameInfo.matchStage = reader.ReadInt32();
                     GameInfo.matchTime = reader.ReadInt32();
                     GameInfo.overtime = reader.ReadBoolean();
-                    GameInfo.doubleOvertime = reader.ReadBoolean();
                     GameInfo.blueGemX = reader.ReadInt32();
                     GameInfo.redGemX = reader.ReadInt32();
                     GameInfo.blueGemCarrier = reader.ReadString();

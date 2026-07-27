@@ -210,6 +210,11 @@ Items: {
 		DisplayName: Propulsion Booster
 		Tooltip: ""
 	}
+
+	HalfDamageStickyGrenade: {
+		DisplayName: Half Damage Sticky Grenade
+		Tooltip: ""
+	}
 }
 
 NPCs: {
@@ -237,6 +242,8 @@ Projectiles: {
 	CTG2GoldenShowerProjectile.DisplayName: C T G2 Golden Shower Projectile
 	PolearmProjectile.DisplayName: Polearm Projectile
 	TeslaBeamProjectile.DisplayName: Tesla Beam Projectile
+	HalfDamageStickyGrenadeProjectile.DisplayName: Half Damage Sticky Grenade Projectile
+	ConcussiveGrenadeProjectile.DisplayName: Concussive Grenade Projectile
 }
 
 Tiles: {
