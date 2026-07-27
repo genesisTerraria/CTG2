@@ -44,12 +44,15 @@ namespace CTG2.Content.Overrides
 
             if (player.whoAmI == projectile.owner)
             {
-                modifiers.FinalDamage *= 0.5f;
-            }
+                if (type == ProjectileID.StickyGrenade)
+                {
+                    modifiers.FinalDamage *= 0.5f;
+                }
 
-            if (type == ProjectileID.BouncyGrenade)
-            {
-                modifiers.Knockback *= 2f;
+                if (type == ProjectileID.BouncyGrenade)
+                {
+                    modifiers.Knockback *= 2f;
+                }
             }
         }
     }
