@@ -70,9 +70,9 @@ namespace CTG2.Content.Items.ModifiedWeps
         private uint flamelashLastUsedCounter = 0;
         private uint particleDelay = 55;
 
-        private uint blowgunDelay = 44;
+        private uint blowgunDelay = 49;
 
-        private uint orbDelay = 44;
+        private uint orbDelay = 49;
 
         private uint thunderZapperDelay = 60;
         private uint thunderZapperLastUsedCounter = 0;
@@ -219,7 +219,7 @@ namespace CTG2.Content.Items.ModifiedWeps
                     item.consumable = false;
                     break;
 
-                case 1446: //spectre staff
+                case ItemID.SpectreStaff: //spectre staff
                     item.shoot = ProjectileID.DiamondBolt;
                     item.shootSpeed = 13f;
                     item.scale = 0.86f;
