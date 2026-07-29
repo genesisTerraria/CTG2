@@ -11,6 +11,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using CTG2.ReeseIntegration;
 using PvPHubIntegration;
+using CTG2.ScrimsData;
 
 namespace CTG2.Content.GameHooks;
 
@@ -43,6 +44,7 @@ public static partial class Hooks
         ReeseAPI.StartReeseRecording();
         StatsTracking.StartScrimTracking();
         MatchUpload.MarkMatchStart(); // stamp the match start time for the PvPHub payload
+        ScrimsDataTracker.OnQueueStarted(); // reset the per-round upload counter for the new queue
         
 
         StartScrimsGame();

@@ -7,6 +7,7 @@ using Terraria.Localization;
 using Terraria.ModLoader;
 using CTG2.ReeseIntegration;
 using PvPHubIntegration;
+using CTG2.ScrimsData;
 
 namespace CTG2.Content.GameHooks;
 
@@ -30,6 +31,7 @@ public static partial class Hooks
         StatsTracking.AnnounceScrimStats(); // announce the final stats of the game
         MatchUpload.UploadPayload(CtgApiServer.LastMatchWinner, replayFilePath); // upload the match + replay to PvPHub (must run before StopScrimTracking)
         StatsTracking.StopScrimTracking(); // stop tracking stats since a scrim no longer exists
+        ScrimsDataTracker.OnQueueEnded(); // per-round uploads already happened in EndGame. Just clear the round counter
         
 
 

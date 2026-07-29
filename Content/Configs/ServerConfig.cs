@@ -22,5 +22,10 @@ namespace CTG2.Content.Configs
         [Tooltip("Optional HttpListener prefix. CTG2_API_HOST_PREFIX overrides this value when set. Leave blank to use http://*:<port>/.")]
         [DefaultValue("")]
         public string ApiHostPrefix;
+
+        [Label("ScrimsData Upload URL")]
+        [Tooltip("Backend endpoint that receives per-round scrims stats. Leave blank to disable uploads. CTG2_SCRIMSDATA_UPLOAD_URL overrides this value when set.")]
+        [DefaultValue("")]
+        public string ScrimsDataUploadUrl;
     }
 }

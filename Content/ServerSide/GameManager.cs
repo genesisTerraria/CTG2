@@ -15,6 +15,7 @@ using CTG2.Content.GameHooks;
 using Terraria.Enums;
 using ClassesNamespace;
 using PvPHubIntegration;
+using CTG2.ScrimsData;
 
 namespace CTG2.Content.ServerSide;
 
@@ -211,6 +212,22 @@ public class GameManager : ModSystem
         StatsTracking.RecordGemCapture(player);
     }
 
+    public void RecordGemPickup(int playerIndex)
+    {
+        if (Main.netMode != NetmodeID.Server || !IsGameActive)
+            return;
+
+        if (playerIndex < 0 || playerIndex >= Main.maxPlayers)
+            return;
+
+        Player player = Main.player[playerIndex];
+        if (player == null || !player.active)
+            return;
+
+        player.GetModPlayer<PlayerManager>().gemPickups++;
+        StatsTracking.RecordGemPickup(player);
+    }
+
     public void StartGame(bool realMatch = true)
     {
         var mod = ModContent.GetInstance<CTG2>();
@@ -218,6 +235,7 @@ public class GameManager : ModSystem
         isWaitingForNewGame = false;
         IsGameActive = true;
         RealMatch = realMatch;
+        HasRoundStarted = false; // becomes true when class selection ends and gameplay begins
         hasStartedEarly = false;
         endGameCalled = false;
         MatchTime = 0;
@@ -395,6 +413,9 @@ public class GameManager : ModSystem
 
         Console.WriteLine("GameManager: Starting EndGame sequence");
 
+        // Queue payload to be sent
+        ScrimsDataTracker.CaptureAndQueueRound(this, winner);
+
         ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Game has ended!"), Color.Cyan);
 
         ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"Gem captures: [c/0077B6:{blueCaptures}] v [c/FF0000:{redCaptures}]"), Color.Yellow);
@@ -521,18 +542,20 @@ public class GameManager : ModSystem
 
             if (player.team == 1)
             {
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/FF0000:{player.name}]: {playerManager.kills} Kills, {playerManager.deaths} Deaths, {playerManager.damage} Damage, {playerManager.damageTaken} Damage Taken, {playerManager.gemCaptures} Gem Captures"), Color.Yellow);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/FF0000:{player.name}]: {playerManager.kills} Kills, {playerManager.deaths} Deaths, {playerManager.damage} Damage, {playerManager.damageTaken} Damage Taken, {playerManager.gemPickups} Gem Pickups, {playerManager.gemCaptures} Gem Captures"), Color.Yellow);
             }
             else if (player.team == 3)
             {
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/0077B6:{player.name}]: {playerManager.kills} Kills, {playerManager.deaths} Deaths, {playerManager.damage} Damage, {playerManager.damageTaken} Damage Taken, {playerManager.gemCaptures} Gem Captures"), Color.Yellow);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/0077B6:{player.name}]: {playerManager.kills} Kills, {playerManager.deaths} Deaths, {playerManager.damage} Damage, {playerManager.damageTaken} Damage Taken, {playerManager.gemPickups} Gem Pickups, {playerManager.gemCaptures} Gem Captures"), Color.Yellow);
             }
 
             playerManager.kills = 0;
             playerManager.deaths = 0;
+            playerManager.lavaDeaths = 0;
             playerManager.damage = 0;
             playerManager.damageTaken = 0;
             playerManager.gemCaptures = 0;
+            playerManager.gemPickups = 0;
 
             ModPacket kdrPacket = mod.GetPacket();
             kdrPacket.Write((byte)MessageType.UpdatePlayerKDR);
@@ -861,6 +884,7 @@ public class GameManager : ModSystem
         else if (MatchTime >= matchStartTime && matchStage == 1)
         {
             matchStage = 2; // Active Gameplay phase
+            HasRoundStarted = true; // class selection is over; this round now counts as played
             ModPacket packetMatchStage = mod.GetPacket();
             packetMatchStage.Write((byte)MessageType.UpdateMatchStage);
             packetMatchStage.Write(matchStage);
@@ -1273,6 +1297,9 @@ public class GameManager : ModSystem
             classPacket.Write(player.whoAmI);
             classPacket.Write(num);
             classPacket.Send(toClient: player.whoAmI);
+
+            if (!rngConfig)
+                CTG2.SetPlayerClass(player.whoAmI, CTG2.GetClassByAbilityId(num)?.Name);
 
             ModPacket classPacket2 = mod.GetPacket();
             classPacket2.Write((byte)MessageType.UpdatePickedClass);
@@ -1735,7 +1762,7 @@ public class GameManager : ModSystem
             }
         }
     }
-
+    // This info is synced to clients joining the world
     public void SyncGameInfo(int playerIndex)
     {
         if (Main.netMode == NetmodeID.MultiplayerClient) return;
@@ -1773,6 +1800,25 @@ public class GameManager : ModSystem
         packet.Write(blueCarrierName);
         packet.Write(redCarrierName);
         packet.Send(toClient: playerIndex);
+
+        // Bring any joining players up to date on everyone's class since SyncPlayerClass
+        // is only broadcast at pick time.
+        for (int i = 0; i < Main.maxPlayers; i++) // Sync EVERY players class
+        {
+            Player other = Main.player[i];
+            if (other == null || !other.active) // Do afk players count as inactive? If so their class wont sync and fix this.
+                continue;
+
+            string otherClass = other.GetModPlayer<PlayerManager>().currentClass?.Name;
+            if (string.IsNullOrEmpty(otherClass))
+                continue;
+
+            ModPacket classPacket = mod.GetPacket();
+            classPacket.Write((byte)MessageType.SyncPlayerClass);
+            classPacket.Write((byte)i);
+            classPacket.Write(otherClass);
+            classPacket.Send(toClient: playerIndex);
+        }
     }
 
     private string GetCurrentGamemode()

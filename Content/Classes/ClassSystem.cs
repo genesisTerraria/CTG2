@@ -327,6 +327,10 @@ namespace ClassesNamespace
 
         private void ApplyPermBuffs()
         {
+            //only apply buffs client side
+            if (Player.whoAmI != Main.myPlayer)
+                return;
+
             var playerManager = Player.GetModPlayer<PlayerManager>();
             var classData = playerManager?.currentClass;
 
@@ -407,6 +411,10 @@ namespace ClassesNamespace
 
         public void setClass()
         {
+            // Rewrites the inventory, so it must only ever run for the local player
+            if (Player.whoAmI != Main.myPlayer)
+                return;
+
             CtgClass classInfo;
             var playerManager = Player.GetModPlayer<PlayerManager>();
             if (playerManager.currentClass.Inventory != lastPlayerClass && GameInfo.matchStage != 0) //make this run only during matchstages or defaults to archer.json and onenterworld can never be run
@@ -547,6 +555,16 @@ namespace ClassesNamespace
 
         public override void PostUpdate()
         {
+            // clear banned buffs
+            Player.ClearBuff(BuffID.Ichor);
+            Player.ClearBuff(BuffID.Poisoned);
+
+            // Everything below keys off currentClass and writes to the inventory or buffs.
+            // Now that currentClass is synced, restrict it to the owning client so the server
+            // and remote clients don't duplicate the grants into their own copies.
+            if (Player.whoAmI != Main.myPlayer)
+                return;
+
             var playerManager = Player.GetModPlayer<PlayerManager>();
             var abilitiesManager = Player.GetModPlayer<Abilities>();
             int gameTime = GameInfo.matchTime - GameInfo.matchStartTime;
@@ -561,10 +579,6 @@ namespace ClassesNamespace
             {
                 Player.AddBuff(BuffID.PotionSickness, 10 * 60);
             }
-
-            // clear banned buffs
-            Player.ClearBuff(BuffID.Ichor);
-            Player.ClearBuff(BuffID.Poisoned);
 
             int minerBombCooldown = 20 * 60;
 
@@ -600,6 +614,9 @@ namespace ClassesNamespace
 
         public override void PostUpdateMiscEffects()
         {
+            if (Player.whoAmI != Main.myPlayer)
+                return;
+
             var playerManager = Player.GetModPlayer<PlayerManager>();
 
             if (playerManager.currentClass?.Name == "Astronaut")

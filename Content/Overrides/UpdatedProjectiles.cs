@@ -403,6 +403,9 @@ public class ModifyHurtModPlayer : ModPlayer
         int attackerIndex = info.DamageSource.SourcePlayerIndex;
         int projIndex = info.DamageSource.SourceProjectileLocalIndex;
 
+        // OnHurt re-fires on the server and on every remote client. Now that it's synced, gate them so they still fire once
+        bool attackerIsLocal = attackerIndex == Main.myPlayer;
+
         if (projIndex >= 0 && projIndex < Main.maxProjectiles)
         {
             Projectile proj = Main.projectile[projIndex];
@@ -519,8 +522,7 @@ public class ModifyHurtModPlayer : ModPlayer
             }
         }
 
-        // Paladin section
-        if (modPlayer.currentClass.Name == "Paladin")
+        if (Player.whoAmI == Main.myPlayer && modPlayer.currentClass.Name == "Paladin")
         {
             if (Player.HeldItem.type == 4760 && Main.mouseRight) // Paladin buffs when hit
             {
@@ -533,7 +535,7 @@ public class ModifyHurtModPlayer : ModPlayer
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
-            if (attackerPlayer.currentClass.Name == "Tiki Priest")
+            if (attackerIsLocal && attackerPlayer.currentClass.Name == "Tiki Priest")
             {
                 foreach (Player player in Main.player)
                 {
@@ -559,7 +561,7 @@ public class ModifyHurtModPlayer : ModPlayer
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
-            if (attackerPlayer.currentClass.Name == "Tree")
+            if (attackerIsLocal && attackerPlayer.currentClass.Name == "Tree")
             {
                 ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
                 packet.Write((byte)CTG2.MessageType.RequestHeal);
@@ -577,7 +579,7 @@ public class ModifyHurtModPlayer : ModPlayer
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
-            if (attackerPlayer.currentClass.Name == "Psychic")
+            if (attackerIsLocal && attackerPlayer.currentClass.Name == "Psychic")
             {
                 ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
                 packet.Write((byte)CTG2.MessageType.RequestMana);
@@ -591,7 +593,7 @@ public class ModifyHurtModPlayer : ModPlayer
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
-            if (attackerPlayer.currentClass.Name == "Astronaut")
+            if (attackerIsLocal && attackerPlayer.currentClass.Name == "Astronaut")
             {
                 int amount = attacker.HasBuff(BuffID.MagicPower) ? 4 : 2;
                 ModPacket packet = ModContent.GetInstance<CTG2.CTG2>().GetPacket();
@@ -609,7 +611,7 @@ public class ModifyHurtModPlayer : ModPlayer
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
-            if (attackerPlayer.currentClass.Name == "Mutant")
+            if (attackerIsLocal && attackerPlayer.currentClass.Name == "Mutant")
             {
                 attacker.AddBuff(2, 120);
                 attacker.AddBuff(48, 240);
@@ -641,7 +643,7 @@ public class ModifyHurtModPlayer : ModPlayer
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
-            if (attackerPlayer.currentClass.Name == "Gladiator")
+            if (attackerIsLocal && attackerPlayer.currentClass.Name == "Gladiator")
             {
                 attacker.AddBuff(BuffID.Ironskin, 120);
 
@@ -657,7 +659,7 @@ public class ModifyHurtModPlayer : ModPlayer
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
-            if (attackerPlayer.currentClass.Name == "Phoenix")
+            if (attackerIsLocal && attackerPlayer.currentClass.Name == "Phoenix")
             {
                 attacker.AddBuff(BuffID.StarInBottle, 120);
 
@@ -673,7 +675,7 @@ public class ModifyHurtModPlayer : ModPlayer
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
-            if (attackerPlayer.currentClass.Name == "Leech")
+            if (attackerIsLocal && attackerPlayer.currentClass.Name == "Leech")
             {
                 attacker.AddBuff(58, 90);
 
@@ -690,7 +692,7 @@ public class ModifyHurtModPlayer : ModPlayer
         {
             Player attacker = Main.player[attackerIndex];
             var attackerPlayer = attacker.GetModPlayer<PlayerManager>();
-            if (attackerPlayer.currentClass.Name == "Leech")
+            if (attackerIsLocal && attackerPlayer.currentClass.Name == "Leech")
             {
                 attacker.AddBuff(2, 90);
                 attacker.AddBuff(5, 90);

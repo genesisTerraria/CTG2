@@ -22,6 +22,11 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
 
     public bool PlayersReady { get; private set; }
 
+    // NeatQueue identity of the current match, taken from the /neatqueue/teams payload
+    // These fields are submitted in the payload (null when not sent)
+    public string CurrentQueueName { get; private set; } = string.Empty;
+    public int? CurrentMatchNumber { get; private set; }
+
     // Fingerprint of the current roster. Prevents a duplicate /neatqueue/teams call from
     // resetting PlayersReady or re-firing the arrival broadcast.
     private string _currentRosterFingerprint = string.Empty;
@@ -98,7 +103,9 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
 
     public (int storedCount, int skippedCount) ReplaceAssignments(
         IEnumerable<NeatQueueAssignment> assignments,
-        string rosterIdentity = null)
+        string rosterIdentity = null,
+        string queueName = null,
+        int? matchNumber = null)
     {
         // Materialize once so we can both fingerprint and iterate without re-enumerating a lazy source.
         var assignmentList = assignments?.ToList() ?? new List<NeatQueueAssignment>();
@@ -112,7 +119,17 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
         {
             _currentRosterFingerprint = newFingerprint;
             PlayersReady = false;
+            CurrentQueueName = queueName?.Trim() ?? string.Empty;
+            CurrentMatchNumber = matchNumber;
             Mod.Logger.Info("[NeatQueue] New roster detected; PlayersReady reset to false");
+        }
+        else
+        {
+            // Duplicate post for the same match: only fill in identity fields it provides.
+            if (!string.IsNullOrWhiteSpace(queueName))
+                CurrentQueueName = queueName.Trim();
+            if (matchNumber.HasValue)
+                CurrentMatchNumber = matchNumber;
         }
 
         _teamIdByDiscordId.Clear();
@@ -194,7 +211,26 @@ public class NeatQueueTeamAssignmentSystem : ModSystem
         _rosterByDiscordId.Clear();
         PlayersReady = false;
         _currentRosterFingerprint = string.Empty;
+        CurrentQueueName = string.Empty;
+        CurrentMatchNumber = null;
         Mod.Logger.Info("[NeatQueue] Cleared assignment map");
+    }
+
+    // Full Discord identity (discord id + current username) for a player
+    public bool TryGetDiscordIdentity(int whoAmI, out string discordId, out string username)
+    {
+        discordId = string.Empty;
+        username = string.Empty;
+
+        if (!IsPlayerCurrentlyOnline(whoAmI))
+            return false;
+
+        if (!_discordIdentityByWhoAmI.TryGetValue(whoAmI, out DiscordIdentity identity))
+            return false;
+
+        discordId = identity.DiscordId ?? string.Empty;
+        username = identity.Username ?? string.Empty;
+        return !string.IsNullOrWhiteSpace(discordId);
     }
 
     public bool TryGetDiscordUsername(int whoAmI, out string username)

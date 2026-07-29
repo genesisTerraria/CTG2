@@ -160,9 +160,9 @@ public static class MatchUpload
                 // CHECK (value > 0) a 0 stat must be omitted, not sent
                 var stats = new Dictionary<string, uint>();
                 if (player.Damage > 0)
-                    stats["damage"] = player.Damage;
+                    stats["damage_dealt"] = player.Damage;
                 if (player.DamageTaken > 0)
-                    stats["damageTaken"] = player.DamageTaken;
+                    stats["damage_taken"] = player.DamageTaken;
 
                 payloadPlayers[player.SteamId] = new global::PvPHub.Common.MainMenu.API.MatchHistory.MatchApi.MatchPlayerPayload(
                     player.Name,
@@ -201,9 +201,21 @@ public static class MatchUpload
                         : await global::PvPHub.Common.MainMenu.API.MatchHistory.MatchApi.PostOfficialMatchAsync(payload);
 
                     if (result.IsSuccess)
+                    {
                         logger.Info($"[MatchUpload] Match uploaded to PvPHub. winner={winner} players={players.Count} replay={hasReplay}");
-                    else
-                        logger.Warn($"[MatchUpload] PvPHub rejected the match upload: {result.ErrorMessage} ({result.RequestSummary})");
+                        return;
+                    }
+
+                    logger.Warn($"[MatchUpload] PvPHub rejected the match upload: {result.ErrorMessage} ({result.RequestSummary})");
+
+                    if (hasReplay)
+                    {
+                        var fallback = await global::PvPHub.Common.MainMenu.API.MatchHistory.MatchApi.PostOfficialMatchAsync(payload);
+                        if (fallback.IsSuccess)
+                            logger.Info($"[MatchUpload] Match recorded without replay after v2 failure. winner={winner} players={players.Count}");
+                        else
+                            logger.Warn($"[MatchUpload] Fallback upload without replay also failed: {fallback.ErrorMessage} ({fallback.RequestSummary})");
+                    }
                 }
                 catch (Exception e)
                 {

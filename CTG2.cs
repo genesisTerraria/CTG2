@@ -180,7 +180,8 @@ namespace CTG2
         SubmitClassBan = 133,   // AbilityID to ban for the opposing team
         SyncClassBans = 134,    // Both teams' banned AbilityIDs
         RequestSyncTeams = 135,  // reassign all online players to their teams
-        SyncFlightTime = 136
+        SyncFlightTime = 136,
+        SyncPlayerClass = 137   // server to clients, tells everyone which class a player picked
     }
 
     public class CTG2 : Mod
@@ -209,6 +210,57 @@ namespace CTG2
         private static readonly Action<int, uint, bool> ReeseSnapshotWriterCallback = WriteReeseReplaySnapshot;
         private static readonly Action<uint, string> ReeseStateResetCallback = OnReeseReplayStateReset;
 
+
+        // Load() reads clientconfig.json on the server too, so the server can turn a class
+        // name back into the full ClassConfig without anything extra going over the wire.
+        public static ClassConfig GetClassByName(string name)
+        {
+            if (string.IsNullOrEmpty(name) || config?.Classes == null)
+                return null;
+
+            foreach (ClassConfig cls in config.Classes)
+            {
+                if (cls.Name == name)
+                    return cls;
+            }
+
+            return null;
+        }
+
+        public static ClassConfig GetClassByAbilityId(int abilityId)
+        {
+            if (config?.Classes == null)
+                return null;
+
+            foreach (ClassConfig cls in config.Classes)
+            {
+                if (cls.AbilityID == abilityId)
+                    return cls;
+            }
+
+            return null;
+        }
+
+        public static void SetPlayerClass(int playerIndex, string className, bool broadcast = true)
+        {
+            if (playerIndex < 0 || playerIndex >= Main.maxPlayers)
+                return;
+
+            Player player = Main.player[playerIndex];
+            if (player == null || !player.active)
+                return;
+
+            player.GetModPlayer<PlayerManager>().currentClass = GetClassByName(className) ?? new ClassConfig();
+
+            if (!broadcast || Main.netMode != NetmodeID.Server)
+                return;
+
+            ModPacket packet = ModContent.GetInstance<CTG2>().GetPacket();
+            packet.Write((byte)MessageType.SyncPlayerClass);
+            packet.Write((byte)playerIndex);
+            packet.Write(className ?? "");
+            packet.Send();
+        }
 
         // static methods
         private static string GetTeamName(int teamId)
@@ -1756,6 +1808,10 @@ namespace CTG2
 
                     int team = selectingPlayer.team;
 
+                    // Record the pick on the server and mirror it to every client, so class-dependent
+                    // logic is no longer limited to the picking player's own client.
+                    SetPlayerClass(playerSelecting, classSelected);
+
                     string formattedMsg = $"{selectingPlayer.name} picked {classSelected}";
 
                     foreach (Player team_player in Main.player)
@@ -1764,6 +1820,16 @@ namespace CTG2
                             ChatHelper.SendChatMessageToClient(NetworkText.FromLiteral(formattedMsg), Color.Yellow, team_player.whoAmI);
                     }
                     break;
+                case (byte)MessageType.SyncPlayerClass:
+                {
+                    int classPlayerIndex = reader.ReadByte();
+                    string syncedClassName = reader.ReadString();
+
+                    if (Main.netMode == NetmodeID.MultiplayerClient)
+                        SetPlayerClass(classPlayerIndex, syncedClassName, broadcast: false);
+
+                    break;
+                }
                 case (byte)MessageType.RequestAudio:
                 {
                     string filepath = reader.ReadString();
@@ -2297,6 +2363,7 @@ namespace CTG2
                         gem.IsHeld = true;
                         gem.HeldBy = requestingPlayer;
                         ReeseTimelineEvents.GemPickedUp(gemId, requestingPlayer);
+                        ModContent.GetInstance<GameManager>().RecordGemPickup(requestingPlayer);
 
                         // Broadcast confirmation to ALL clients
                         ModPacket confirm = mod.GetPacket();

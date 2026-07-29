@@ -376,8 +376,6 @@ namespace CTG2.Content
             int projectileType = info.DamageSource.SourceProjectileType;
             int attackerIndex = info.DamageSource.SourcePlayerIndex;
 
-            // RngMan passive runs on the victim's ModPlayer instance; grant must run where the attacker is simulated
-            // as local (multiplayer client) or on the server / single-player host — not only when the victim is local.
             if (attackerIndex >= 0 && attackerIndex < Main.maxPlayers)
             {
                 Player attacker = Main.player[attackerIndex];
@@ -389,11 +387,7 @@ namespace CTG2.Content
                     bool grantRngManHit =
                         selectedClass == 19
                         && attacker.team != Player.team
-                        && (
-                            Main.netMode == NetmodeID.Server
-                            || Main.netMode == NetmodeID.SinglePlayer
-                            || (Main.netMode == NetmodeID.MultiplayerClient && attackerIndex == Main.myPlayer)
-                        );
+                        && attackerIndex == Main.myPlayer;
 
                     if (grantRngManHit)
                     {
@@ -1438,8 +1432,10 @@ namespace CTG2.Content
         }
 
 
-        public override void PostItemCheck() // Upon activation
+        public override void PostItemCheck() 
         {
+            if (Player.whoAmI != Main.myPlayer) return;
+
             if (Main.netMode == NetmodeID.Server) return;
 
             if (!initializedMutant)

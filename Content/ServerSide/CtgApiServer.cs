@@ -253,7 +253,7 @@ namespace CTG2.Content.ServerSide
                         try
                         {
                             var sys = ModContent.GetInstance<NeatQueueTeamAssignmentSystem>();
-                            (storedCount, skippedCount) = sys.ReplaceAssignments(systemAssignments, rosterIdentity);
+                            (storedCount, skippedCount) = sys.ReplaceAssignments(systemAssignments, rosterIdentity, request.Queue, request.MatchNumber);
                             assignedOnlineCount = sys.TryAssignAllOnline();
                             sys.EvaluateRosterReadiness();
                             sys.RequestDiscordIdentityRefreshFromOnlinePlayers();

@@ -38,9 +38,11 @@ public class PlayerManager : ModPlayer
 
     public int kills = 0;
     public int deaths = 0;
+    public int lavaDeaths = 0;
     public int damage = 0;
     public int damageTaken = 0;
     public int gemCaptures = 0;
+    public int gemPickups = 0;
 
     public PlayerState playerState = PlayerState.None; // UPDATE THIS EVERY STATE TRANSITION 
     public double classSelectionTimer = -1;
@@ -111,29 +113,42 @@ public class PlayerManager : ModPlayer
             Player killer = Main.player[killerIndex];
             var killerManager = killer.GetModPlayer<PlayerManager>();
 
-            if (killerManager.currentClass.Name == "Gladiator")
+            // Fires on every client so check if we are the killer before giving rewards
+            if (killerIndex == Main.myPlayer)
             {
-                killer.statLife += 10;
-                killer.HealEffect(10, true);
-            }
-            else if (killerManager.currentClass.Name == "Fisherman")
-            {
-                ModPacket packet = Mod.GetPacket();
-                packet.Write((byte)MessageType.GiveItemToKiller);
-                packet.Write((byte)killerIndex);
-                packet.Write((int)ItemID.AtlanticCod);
-                packet.Write((int)5);
-                packet.Write((byte)0);
-                packet.Send();
+                if (killerManager.currentClass.Name == "Gladiator")
+                {
+                    killer.statLife += 10;
+                    killer.HealEffect(10, true);
+                }
+                else if (killerManager.currentClass.Name == "Fisherman")
+                {
+                    ModPacket packet = Mod.GetPacket();
+                    packet.Write((byte)MessageType.GiveItemToKiller);
+                    packet.Write((byte)killerIndex);
+                    packet.Write((int)ItemID.AtlanticCod);
+                    packet.Write((int)5);
+                    packet.Write((byte)0);
+                    packet.Send();
+                }
             }
 
             killerManager.kills++;
         }
         victimManager.deaths++;
 
+
+        if (damageSource.SourceOtherIndex == 2) // lava index from vanilla
+            victimManager.lavaDeaths++;
+
         if (GameInfo.matchStage == 2)
         {
-            awaitingRespawn = true;
+            // Awaiting respawn only matters on the local client
+            // If other clients accessed this it would cause players to become invisible
+            // Since our client may believe that they are dead
+            if (Player.whoAmI == Main.myPlayer)
+                awaitingRespawn = true;
+
             //Player.ghost = true;
             Player.dead = true;
         }
@@ -154,18 +169,25 @@ public class PlayerManager : ModPlayer
             timeScale = (int) Math.Max(0, timeElapsed / 120f);
         }
 
-        // removed switch, using config-based respawn time.
-        customRespawnTimer = currentClass.RespawnTime * 60 + timeScale;
+        // customRespawnTimer must never tick on someone else's copy of this player.
+        if (Player.whoAmI == Main.myPlayer)
+        {
+            customRespawnTimer = currentClass.RespawnTime * 60 + timeScale;
 
-        Player.respawnTimer = customRespawnTimer;
+            Player.respawnTimer = customRespawnTimer;
+        }
     }
 
     // Set Custom Spawn Points
     public override void OnRespawn()
     {
+
+        awaitingRespawn = false;
+        customRespawnTimer = -1;
+
         Player.immune = false;
         Player.immuneTime = 0;
-        
+
         int blueBaseX = CTG2.config.BlueBase[0] / 16;
         int blueBaseY = CTG2.config.BlueBase[1] / 16;
         int redBaseX = CTG2.config.RedBase[0] / 16;
@@ -282,7 +304,7 @@ public class PlayerManager : ModPlayer
         if (GameInfo.matchStage == 3)
             return; // Don't decrement ability/buff timers
 
-        if (awaitingRespawn) //was lowkey angry while coding this will clean up later
+        if (awaitingRespawn && Player.whoAmI == Main.myPlayer) 
         {
             customRespawnTimer--;
 
@@ -355,8 +377,11 @@ public class PlayerManager : ModPlayer
     // When a player disconnects, this hook can clean up their data.
     public override void PlayerDisconnect()
     {
+        // Don't let a synced class linger on a slot that a different player may reuse
+        currentClass = new ClassConfig();
+
         var gameManager = ModContent.GetInstance<GameManager>();
-    
+
         if (gameManager.BlueGem.IsHeld && gameManager.BlueGem.HeldBy == Player.whoAmI)
         {
             Color blueColor = new Color(0, 119, 182);

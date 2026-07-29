@@ -19,6 +19,7 @@ public class StatsTracking : ModPlayer
     public int accumDamage = 0;
     public int accumDamageTaken = 0;
     public int accumGemCaptures = 0;
+    public int accumGemPickups = 0;
 
     public static void StartScrimTracking()
     {
@@ -46,11 +47,11 @@ public class StatsTracking : ModPlayer
             StatsTracking stats = player.GetModPlayer<StatsTracking>();
             if (player.team == 1)
             {
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/FF0000:{player.name}]: {stats.accumKills} Kills, {stats.accumDeaths} Deaths, {stats.accumDamage} Damage, {stats.accumDamageTaken} Damage Taken, {stats.accumGemCaptures} Gem Captures"), Color.Yellow);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/FF0000:{player.name}]: {stats.accumKills} Kills, {stats.accumDeaths} Deaths, {stats.accumDamage} Damage, {stats.accumDamageTaken} Damage Taken, {stats.accumGemPickups} Gem Pickups, {stats.accumGemCaptures} Gem Captures"), Color.Yellow);
             }
             else if (player.team == 3)
             {
-                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/0077B6:{player.name}]: {stats.accumKills} Kills, {stats.accumDeaths} Deaths, {stats.accumDamage} Damage, {stats.accumDamageTaken} Damage Taken, {stats.accumGemCaptures} Gem Captures"), Color.Yellow);
+                ChatHelper.BroadcastChatMessage(NetworkText.FromLiteral($"[c/0077B6:{player.name}]: {stats.accumKills} Kills, {stats.accumDeaths} Deaths, {stats.accumDamage} Damage, {stats.accumDamageTaken} Damage Taken, {stats.accumGemPickups} Gem Pickups, {stats.accumGemCaptures} Gem Captures"), Color.Yellow);
             }
         }
     }
@@ -74,6 +75,7 @@ public class StatsTracking : ModPlayer
         accumDamage = 0;
         accumDamageTaken = 0;
         accumGemCaptures = 0;
+        accumGemPickups = 0;
     }
 
     public static void RecordGemCapture(Player player)
@@ -82,6 +84,14 @@ public class StatsTracking : ModPlayer
             return;
 
         player.GetModPlayer<StatsTracking>().accumGemCaptures++;
+    }
+
+    public static void RecordGemPickup(Player player)
+    {
+        if (player == null || !player.active || !ShouldTrackStats())
+            return;
+
+        player.GetModPlayer<StatsTracking>().accumGemPickups++;
     }
 
     public override void Kill(double damage, int hitDirection, bool pvp, PlayerDeathReason damageSource)
@@ -118,6 +128,9 @@ public class StatsTracking : ModPlayer
 
     private static bool ShouldTrackStats()
     {
+        // gameManager.RealMatch: true when bans are done or an admin calls /start real
+        // scrimsActive: true when all players in current queue have joined. Ultimately set by OnFullRosterJoined()]
+        // gameManager.IsGameActive: true GameManager.startgame() is called
         if (!scrimsActive || Main.netMode != NetmodeID.Server)
             return false;
 
