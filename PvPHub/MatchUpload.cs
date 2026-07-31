@@ -207,15 +207,6 @@ public static class MatchUpload
                     }
 
                     logger.Warn($"[MatchUpload] PvPHub rejected the match upload: {result.ErrorMessage} ({result.RequestSummary})");
-
-                    if (hasReplay)
-                    {
-                        var fallback = await global::PvPHub.Common.MainMenu.API.MatchHistory.MatchApi.PostOfficialMatchAsync(payload);
-                        if (fallback.IsSuccess)
-                            logger.Info($"[MatchUpload] Match recorded without replay after v2 failure. winner={winner} players={players.Count}");
-                        else
-                            logger.Warn($"[MatchUpload] Fallback upload without replay also failed: {fallback.ErrorMessage} ({fallback.RequestSummary})");
-                    }
                 }
                 catch (Exception e)
                 {
